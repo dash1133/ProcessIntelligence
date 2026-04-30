@@ -754,11 +754,10 @@ function App() {
                         {getIcon("Users", { size: 12, className: "text-white" })} Call A&M Expert
                       </button>
                     </div>
-                    <div className="flex items-center gap-4 text-[10px] text-gray-400">
-                      <span>{getIcon("Clock", { size: 10, className: "inline mr-0.5 -mt-0.5" })}{alert.dateGenerated}</span>
+                    <div className="flex items-center gap-3 text-[10px] text-gray-400">
+                      <span>{alert.dateGenerated}</span>
                       <span>{audienceIcons[alert.audienceType]} {alert.audience}</span>
-                      <span className={`px-1.5 py-0.5 rounded ${alert.frequency === "Real-time" ? "bg-emerald-50 text-emerald-600" : "bg-gray-100 text-gray-500"}`}>{alert.frequency} · {alert.schedule}</span>
-                      <span className="text-xs font-semibold" style={{color: alert.priority === "critical" ? "#dc2626" : "#d97706"}}>{alert.metric}</span>
+                      <span className="text-xs font-semibold ml-auto" style={{color: alert.priority === "critical" ? "#dc2626" : "#d97706"}}>{alert.metric}</span>
                     </div>
                   </div>
                 </div>
@@ -780,44 +779,37 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-4 divide-x divide-gray-100">
           {[
             { topic: "AI in Assessment", color: "text-blue-700", bg: "bg-blue-50", items: [
-              { title: "Frontier Models Cross 0.94 Agreement on Constructed-Response Scoring vs Expert Raters",     time: "3 hours ago", source: "Journal of Educational Measurement",  impact: "AI scoring lever" },
-              { title: "Pearson Pilots AI-Generated Reading Items Across Two Live Forms — 64% First-Pass Approval", time: "Yesterday",   source: "EdSurge",                              impact: "Item gen lever" },
-              { title: "Open Adaptive-Testing Engine Released by University Consortium — Lower Cost Alternative",   time: "2 days ago", source: "Inside Higher Ed",                     impact: "Industry shift" },
+              { title: "Frontier Models Hit 0.94 Agreement on CR Scoring vs Expert Raters",   time: "3h",   source: "J. Educ. Measurement", impact: "AI scoring lever" },
+              { title: "Pearson Pilots AI-Generated Items — 64% First-Pass Approval",          time: "1d",   source: "EdSurge",              impact: "Item gen lever" },
             ]},
             { topic: "EdTech Industry", color: "text-emerald-700", bg: "bg-emerald-50", items: [
-              { title: "Global Standardized-Test Volumes Soft −5.8% YoY as AI Skills Shift Hiring Signals",         time: "4 hours ago", source: "HolonIQ",         impact: "Revenue pressure" },
-              { title: "Duolingo English Test Crosses 6,000 Accepting Institutions — Pricing 60% Below Peers",      time: "Yesterday",   source: "TechCrunch EDU",  impact: "Competitive risk" },
-              { title: "Coursera & Khan Academy Launch AI Tutors That Embed Formative Assessment",                   time: "2 days ago", source: "EdSurge",          impact: "Channel shift" },
+              { title: "Global Test Volumes Soft −5.8% YoY as AI Reshapes Hiring Signals",     time: "4h",   source: "HolonIQ",       impact: "Revenue pressure" },
+              { title: "Duolingo English Test Hits 6,000 Institutions — 60% Below Peers",      time: "1d",   source: "TechCrunch",    impact: "Competitive risk" },
             ]},
             { topic: "Policy & Standards", color: "text-amber-700", bg: "bg-amber-50", items: [
-              { title: "EU AI Act: Education-Sector AI Scoring Falls Under High-Risk Category — Audit Mandate 2027", time: "Yesterday",   source: "European Commission", impact: "Compliance" },
-              { title: "Industry Coalition Publishes Fairness Standards for AI-Scored Constructed Responses",        time: "Yesterday",   source: "AERA",                impact: "Standards" },
-              { title: "FERPA Guidance Update: Student-Response Data in LLM Training Pipelines",                     time: "2 days ago", source: "U.S. Dept. of Ed",     impact: "Compliance" },
+              { title: "EU AI Act: Education AI Scoring = High-Risk · Audit Mandate 2027",    time: "1d",   source: "EU Commission", impact: "Compliance" },
+              { title: "Coalition Publishes Fairness Standards for AI-Scored Responses",       time: "1d",   source: "AERA",          impact: "Standards" },
             ]},
             { topic: "AI Cost & Tooling", color: "text-purple-700", bg: "bg-purple-50", items: [
-              { title: "Anthropic Cuts Batch-Inference Pricing 50% — Implications for Large-Scale CR Scoring",      time: "2 hours ago", source: "Anthropic Newsroom",   impact: "Cost lever" },
-              { title: "Open-Source 70B Scoring Models Now Match Proprietary on Reading Comprehension Tasks",        time: "Yesterday",   source: "Hugging Face",          impact: "Make-vs-buy" },
-              { title: "ProctorOne Raises Live Proctoring Rates 14% + Surcharge — Two Vendors Bid Lower",           time: "Yesterday",   source: "Inside Higher Ed",      impact: "Cost pressure" },
+              { title: "Anthropic Cuts Batch-Inference Pricing 50% — CR Scoring Impact",       time: "2h",   source: "Anthropic",     impact: "Cost lever" },
+              { title: "ProctorOne Raises Rates 14% + Surcharge — Two Vendors Bid Lower",      time: "1d",   source: "Inside Higher Ed", impact: "Cost pressure" },
             ]},
           ].map((section, si) => (
-            <div key={si} className="p-5">
-              <div className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full mb-3 ${section.bg} ${section.color}`}>
+            <div key={si} className="p-4">
+              <div className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2 py-0.5 rounded-full mb-2.5 ${section.bg} ${section.color}`}>
                 {section.topic}
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {section.items.map((news, ni) => (
-                  <div key={ni} className="flex items-start gap-2.5 group cursor-pointer" onClick={() => { setActiveView("chat"); sendMessage("How does this affect our cost-out plan and AI roadmap? News: " + news.title); }}>
-                    <div className={`flex-shrink-0 w-1.5 h-1.5 mt-1.5 rounded-full ${section.bg.replace("50","400")}`}></div>
-                    <div className="min-w-0">
-                      <p className="text-sm text-gray-800 leading-snug group-hover:text-blue-600 transition-colors">{news.title}</p>
-                      <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                        <span className="text-xs text-gray-400">{news.source}</span>
-                        <span className="text-xs text-gray-300">·</span>
-                        <span className="text-xs text-gray-400">{news.time}</span>
-                        {news.impact && (
-                          <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${news.impact === "Positive" ? "bg-emerald-50 text-emerald-600" : news.impact === "Cost pressure" || news.impact === "Margin risk" || news.impact === "Supply risk" ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-700"}`}>{news.impact}</span>
-                        )}
-                      </div>
+                  <div key={ni} className="group cursor-pointer" onClick={() => { setActiveView("chat"); sendMessage("How does this affect our cost-out plan and AI roadmap? News: " + news.title); }}>
+                    <p className="text-xs text-gray-800 leading-snug group-hover:text-blue-600 transition-colors">{news.title}</p>
+                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                      <span className="text-[10px] text-gray-400">{news.source}</span>
+                      <span className="text-[10px] text-gray-300">·</span>
+                      <span className="text-[10px] text-gray-400">{news.time}</span>
+                      {news.impact && (
+                        <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${news.impact === "Cost pressure" || news.impact === "Revenue pressure" || news.impact === "Competitive risk" ? "bg-red-50 text-red-600" : news.impact === "Compliance" || news.impact === "Standards" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-600"}`}>{news.impact}</span>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -1411,7 +1403,7 @@ function App() {
             <div className="w-5 h-5 rounded bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             </div>
-            <span className="font-semibold" style={{color:"#1e3a6e"}}>Margin Intelligence <span className="font-normal text-gray-400">by ComOps</span></span>
+            <span className="font-semibold" style={{color:"#1e3a6e"}}>Agentic Private Markets</span>
           </div>
         </div>
       </footer>
