@@ -337,6 +337,151 @@ function App() {
     );
   };
 
+  // ── DIAGNOSTIC VIEW ──
+  const renderDiagnostic = () => {
+    const taskGroups = [
+      { name: "Project Setup", tasks: [
+        { label: "File Manager", badge: "2" },
+        { label: "Ontology" },
+        { label: "DRL Management" },
+        { label: "DRL Management (List Builder)" },
+      ]},
+      { name: "Margin Transparency", tasks: [
+        { label: "Activity Driver Mapping",       done: true },
+        { label: "SG&A Analysis",                  done: true },
+        { label: "Distribution & Logistics An…",   done: true },
+        { label: "Pricing Analysis",               done: true },
+        { label: "Sourcing Analysis",              done: true },
+        { label: "Vendor Spend Analysis",          done: true },
+      ]},
+      { name: "Clean Sheet", tasks: [
+        { label: "Clean-Sheet Total Cost St…",          done: true },
+        { label: "Clean-Sheet Pricing Structure",        done: true },
+        { label: "Clean-Sheet Sourcing Cost Stru…",      done: true },
+        { label: "Clean-Sheet Organization Struct…",     done: true },
+      ]},
+      { name: "PMO", tasks: [
+        { label: "AI PMO Analysis",                done: true },
+        { label: "Margin Initiative Sizing & …",   done: true },
+        { label: "Pricing Lever Prioritization",   done: true },
+        { label: "Pricing Initiative Sizing & …",  done: true },
+        { label: "Sourcing & Logistics Initia…",   done: true },
+        { label: "SG&A Reduction & Redesi…",       done: true },
+      ]},
+      { name: "Others", tasks: [
+        { label: "Project Chat", done: true },
+      ]},
+    ];
+
+    const TaskTile = ({ t }) => (
+      <div className="flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="flex-shrink-0 w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center">
+            {getIcon("FileText", { size: 13, className: "text-blue-500" })}
+          </span>
+          <span className="text-xs text-gray-800 truncate">{t.label}</span>
+          <span className="flex-shrink-0 w-3.5 h-3.5 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center text-[9px] font-semibold leading-none">i</span>
+        </div>
+        {t.badge && <span className="flex-shrink-0 text-[10px] font-semibold px-1.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">{t.badge}</span>}
+        {t.done && <span className="flex-shrink-0 w-5 h-5 rounded bg-emerald-50 border border-emerald-100 flex items-center justify-center">{getIcon("CheckCircle", { size: 12, className: "text-emerald-600" })}</span>}
+      </div>
+    );
+
+    return (
+      <div className="overflow-y-auto h-full scrollbar-thin" style={{ background: "#f5f7fa" }}>
+        {/* Sub-header: breadcrumb + pill tabs */}
+        <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-2 text-sm">
+            {getIcon("Home", { size: 14, className: "text-gray-400" })}
+            <span className="text-gray-500">Cost optimization</span>
+            <span className="text-gray-300">›</span>
+            <span className="font-semibold text-gray-900">Mereon Assessment Group</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white shadow-sm">
+              {getIcon("Shield", { size: 14, className: "text-white" })}
+              COST OPTIMIZATION
+            </button>
+            <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
+              {getIcon("Package", { size: 14, className: "text-gray-500" })}
+              SUPPLY CHAIN
+            </button>
+          </div>
+        </div>
+
+        <div className="p-6">
+          {/* Client info card */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-6">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 mb-3">
+                  <h1 className="text-2xl font-bold text-gray-900">Mereon Assessment Group</h1>
+                  <span className="w-4 h-4 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center text-[10px] font-semibold">i</span>
+                </div>
+                <div className="flex items-center gap-x-6 gap-y-2 flex-wrap text-xs">
+                  {[
+                    { icon: "Briefcase", label: "Target Company", value: "Mereon Assessment Group" },
+                    { icon: "Layers",    label: "Industry",       value: "Education" },
+                    { icon: "FileText",  label: "Sub Industry",   value: "Testing & Assessment" },
+                    { icon: "Users",     label: "Users",          value: "10" },
+                    { icon: "Clock",     label: "Last Updated",   value: "4/30/2026" },
+                  ].map((m, i) => (
+                    <div key={i} className="flex items-center gap-1.5">
+                      {getIcon(m.icon, { size: 13, className: "text-gray-400" })}
+                      <span className="text-gray-500">{m.label}:</span>
+                      <span className="font-medium text-gray-800">{m.value}</span>
+                    </div>
+                  ))}
+                  <div className="flex items-center gap-1.5">
+                    {getIcon("MessageCircle", { size: 13, className: "text-gray-400" })}
+                    <span className="text-gray-500">Email:</span>
+                    <span className="font-medium text-gray-800">ci+mereon_assessment@agpm.ai</span>
+                    <button className="text-gray-300 hover:text-blue-500 transition-colors">{getIcon("Paperclip", { size: 12 })}</button>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-shrink-0">
+                <button className="flex items-center gap-2 text-sm bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:border-blue-300 hover:text-blue-700 transition-colors">
+                  {getIcon("Package", { size: 14, className: "text-gray-500" })}
+                  Cost Optimization Files
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* AGENTS section */}
+          <div className="mb-4">
+            <h2 className="text-sm font-bold text-gray-900 tracking-widest uppercase mb-3">Agents</h2>
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-3 bg-white border-2 border-blue-500 rounded-xl px-4 py-2.5 shadow-sm cursor-pointer min-w-[180px]">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">Z</div>
+                <span className="text-sm font-semibold text-gray-900 flex-1">ZBO</span>
+                <span className="w-7 h-7 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  {getIcon("MessageSquare", { size: 14, className: "text-blue-600" })}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Task groupings */}
+          <div className="space-y-1">
+            {taskGroups.map((g) => (
+              <div key={g.name} className="bg-white rounded-xl border border-gray-200 px-5 py-4 mb-3">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-900">{g.name}</h3>
+                  <span className="text-xs text-blue-600 font-medium">{g.tasks.length} task{g.tasks.length === 1 ? "" : "s"}</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+                  {g.tasks.map((t, i) => <TaskTile key={i} t={t} />)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // ── DASHBOARD VIEW ──
   const renderDashboard = () => (
     <div className="p-6 overflow-y-auto h-full scrollbar-thin" style={{ background: "#f5f7fa" }}>
@@ -1331,8 +1476,8 @@ function App() {
 
         {/* Center Tabs */}
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">
-            {getIcon("Activity", { size: 15, className: "text-gray-500" })}
+          <button onClick={() => setActiveView("diagnostic")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeView === "diagnostic" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+            {getIcon("Activity", { size: 15, className: activeView === "diagnostic" ? "text-white" : "text-gray-500" })}
             Diagnostic
           </button>
           <button onClick={() => setActiveView("dashboard")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeView === "dashboard" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
@@ -1389,6 +1534,7 @@ function App() {
           {activeView === "compare" && renderCompare()}
           {activeView === "simulate" && renderSimulate()}
           {activeView === "artifacts" && renderArtifacts()}
+          {activeView === "diagnostic" && renderDiagnostic()}
         </main>
       </div>
 
