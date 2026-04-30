@@ -374,16 +374,24 @@ function App() {
     ];
 
     const TaskTile = ({ t }) => (
-      <div className="flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="flex-shrink-0 w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center">
-            {getIcon("FileText", { size: 13, className: "text-blue-500" })}
+      <div className="flex items-center justify-between gap-2 bg-white border border-blue-100 rounded-lg px-3 py-2.5 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <span className="flex-shrink-0 w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center border border-blue-100">
+            {getIcon("BarChart3", { size: 12, className: "text-blue-500" })}
           </span>
-          <span className="text-xs text-gray-800 truncate">{t.label}</span>
+          <span className="text-[13px] text-gray-800 truncate flex-1">{t.label}</span>
           <span className="flex-shrink-0 w-3.5 h-3.5 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center text-[9px] font-semibold leading-none">i</span>
         </div>
-        {t.badge && <span className="flex-shrink-0 text-[10px] font-semibold px-1.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">{t.badge}</span>}
-        {t.done && <span className="flex-shrink-0 w-5 h-5 rounded bg-emerald-50 border border-emerald-100 flex items-center justify-center">{getIcon("CheckCircle", { size: 12, className: "text-emerald-600" })}</span>}
+        {t.badge && (
+          <span className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-medium px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">
+            {getIcon("FileText", { size: 10, className: "text-emerald-600" })} {t.badge}
+          </span>
+        )}
+        {t.done && (
+          <span className="flex-shrink-0 w-5 h-5 rounded bg-emerald-50 flex items-center justify-center">
+            {getIcon("CheckCircle", { size: 12, className: "text-emerald-600" })}
+          </span>
+        )}
       </div>
     );
 
@@ -463,15 +471,15 @@ function App() {
             </div>
           </div>
 
-          {/* Task groupings */}
-          <div className="space-y-1">
-            {taskGroups.map((g) => (
-              <div key={g.name} className="bg-white rounded-xl border border-gray-200 px-5 py-4 mb-3">
+          {/* Task groupings — flat sections separated by horizontal rules */}
+          <div>
+            {taskGroups.map((g, gi) => (
+              <div key={g.name} className={gi > 0 ? "border-t border-gray-200 pt-5 mt-5" : ""}>
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-sm font-semibold text-gray-900">{g.name}</h3>
                   <span className="text-xs text-blue-600 font-medium">{g.tasks.length} task{g.tasks.length === 1 ? "" : "s"}</span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                   {g.tasks.map((t, i) => <TaskTile key={i} t={t} />)}
                 </div>
               </div>
@@ -1503,7 +1511,8 @@ function App() {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
+        {/* Sidebar — hidden in Diagnostic view to match the full-width frame */}
+        {activeView !== "diagnostic" && (
         <nav className={`${sidebarCollapsed ? "w-16" : "w-56"} bg-white border-r border-gray-200 flex flex-col flex-shrink-0 transition-all duration-200`}>
           <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100">
             {!sidebarCollapsed && <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Navigation</span>}
@@ -1524,6 +1533,7 @@ function App() {
             })}
           </div>
         </nav>
+        )}
 
         {/* Main Content */}
         <main className="flex-1 overflow-hidden">
