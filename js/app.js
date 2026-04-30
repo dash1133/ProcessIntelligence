@@ -339,37 +339,48 @@ function App() {
 
   // ── DIAGNOSTIC VIEW ──
   const renderDiagnostic = () => {
+    // Task structure mirrors the engagement methodology:
+    // Data → Taxonomy → Cost Allocation → Cost-to-Serve → Opportunities → Initiatives → Reporting
     const taskGroups = [
-      { name: "Project Setup", tasks: [
-        { label: "File Manager", badge: "2" },
+      { name: "Data Foundation", tasks: [
+        { label: "File Manager (TB · GL · Vendor · Census)", badge: "2" },
         { label: "Ontology" },
         { label: "DRL Management" },
         { label: "DRL Management (List Builder)" },
+        { label: "AI Data Cleansing & Enrichment" },
       ]},
-      { name: "Margin Transparency", tasks: [
-        { label: "Activity Driver Mapping",       done: true },
-        { label: "SG&A Analysis",                  done: true },
-        { label: "Distribution & Logistics An…",   done: true },
-        { label: "Pricing Analysis",               done: true },
-        { label: "Sourcing Analysis",              done: true },
-        { label: "Vendor Spend Analysis",          done: true },
+      { name: "Process & Activity Taxonomy", tasks: [
+        { label: "Sub-Function Mapping",   done: true },
+        { label: "Process Mapping",        done: true },
+        { label: "Activity Mapping",       done: true },
+        { label: "Activity Driver Mapping", done: true },
       ]},
-      { name: "Clean Sheet", tasks: [
-        { label: "Clean-Sheet Total Cost St…",          done: true },
-        { label: "Clean-Sheet Pricing Structure",        done: true },
-        { label: "Clean-Sheet Sourcing Cost Stru…",      done: true },
-        { label: "Clean-Sheet Organization Struct…",     done: true },
+      { name: "Cost Allocation & Cost-to-Serve", tasks: [
+        { label: "Labor Cost by Activity",          done: true },
+        { label: "Non-Labor Cost by Activity",      done: true },
+        { label: "SG&A Cost Analysis",              done: true },
+        { label: "Vendor Spend Analysis",           done: true },
+        { label: "Cost-to-Serve by Customer/Product", done: true },
+        { label: "Cost-to-Serve by Geography/BU",   done: true },
       ]},
-      { name: "PMO", tasks: [
-        { label: "AI PMO Analysis",                done: true },
-        { label: "Margin Initiative Sizing & …",   done: true },
-        { label: "Pricing Lever Prioritization",   done: true },
-        { label: "Pricing Initiative Sizing & …",  done: true },
-        { label: "Sourcing & Logistics Initia…",   done: true },
-        { label: "SG&A Reduction & Redesi…",       done: true },
+      { name: "Opportunity Identification", tasks: [
+        { label: "Process Redesign Opportunities",     done: true },
+        { label: "Automation & Workflow Opportunities", done: true },
+        { label: "AI Opportunity Sizing",              done: true },
+        { label: "Margin Leakage Detection",            done: true },
+        { label: "Anomaly & Red-Flag Spend",           done: true },
       ]},
-      { name: "Others", tasks: [
-        { label: "Project Chat", done: true },
+      { name: "PMO & Initiative Sizing", tasks: [
+        { label: "AI PMO Analysis",            done: true },
+        { label: "Productivity Initiative Sizing",  done: true },
+        { label: "Cycle Time Initiative Sizing",    done: true },
+        { label: "Margin Improvement Sizing",      done: true },
+        { label: "Scalability Initiative Sizing",  done: true },
+      ]},
+      { name: "Cost Transparency & Reporting", tasks: [
+        { label: "Repeatable Cost Reporting", done: true },
+        { label: "System Connectivity",       done: true },
+        { label: "Project Chat",              done: true },
       ]},
     ];
 
@@ -461,9 +472,9 @@ function App() {
           <div className="mb-4">
             <h2 className="text-sm font-bold text-gray-900 tracking-widest uppercase mb-3">Agents</h2>
             <div className="flex items-center gap-3 flex-wrap">
-              <div className="flex items-center gap-3 bg-white border-2 border-blue-500 rounded-xl px-4 py-2.5 shadow-sm cursor-pointer min-w-[180px]">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">Z</div>
-                <span className="text-sm font-semibold text-gray-900 flex-1">ZBO</span>
+              <div className="flex items-center gap-3 bg-white border-2 border-blue-500 rounded-xl px-4 py-2.5 shadow-sm cursor-pointer min-w-[200px]">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">AI</div>
+                <span className="text-sm font-semibold text-gray-900 flex-1">AI ZBO</span>
                 <span className="w-7 h-7 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
                   {getIcon("MessageSquare", { size: 14, className: "text-blue-600" })}
                 </span>
