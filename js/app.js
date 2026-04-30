@@ -30,16 +30,16 @@ function App() {
     setTimeout(() => {
       let response = "";
       const lower = text.toLowerCase();
-      if (lower.includes("call") || lower.includes("abandon")) {
-        response = "Here's the breakdown on after-hours call abandonment:\n\n**Worst offenders:**\n- ServiceMaster TX — 41% abandonment (was 19% last quarter)\n- Comfort Pro FL — 38% abandonment\n- AirFlow NE — 36% abandonment\n\n**Root cause:** These brands rely on voicemail after 6 PM. Competitors using AI voice agents capture 92%+ of after-hours calls.\n\n**My recommendation:** Deploy AI voice triage across these 12 brands first. The model shows a 90-day payback period. Want me to run the full simulation?";
-      } else if (lower.includes("dispatch") || lower.includes("utilization")) {
-        response = "I've analyzed dispatch patterns across all 42 brands. The utilization gap is primarily driven by:\n\n**1. Geographic sprawl** — 14 brands have avg drive times over 40 minutes\n**2. Skill mismatch** — 23% of dispatches require a return visit due to wrong skill assignment\n**3. Manual scheduling** — 28 brands still use human-only dispatch\n\nBrands using AI dispatch (like ComfortKing FL) run at 89% utilization vs the platform average of 72%.\n\n**Projected impact of full AI dispatch rollout:** +$4.1M EBITDA annually. Should I open the simulation to model different rollout scenarios?";
+      if (lower.includes("scoring") || lower.includes("sla") || lower.includes("backlog")) {
+        response = "Here's the read on the constructed-response scoring queue:\n\n**Where the pain is:**\n- Linguara Speaking & Writing — 5.4-day backlog (SLA: 2.0)\n- GradPath Analytical Writing — 4.1-day backlog\n- WorkLingua Corporate — 3.8-day backlog\n\n**Root cause:** Active rater pool is down 22% YoY, while corporate-window volume is up 14%. AI scoring has only been turned on for a narrow set of item types.\n\n**My recommendation:** Move to a 70% AI / 30% human-review mix on Reading and Listening immediately, then ramp to constructed-response over 60 days. Clears the backlog inside a week and structurally drops cost per response from $1.85 → $1.20. Want me to model the rollout?";
+      } else if (lower.includes("vendor") || lower.includes("proctor") || lower.includes("delivery")) {
+        response = "I've analyzed Test Delivery vendor spend. The shape of the cost line:\n\n**1. Concentration risk** — 64% of online proctoring volume sits with ProctorOne, who just announced +18% MoM rate movement\n**2. Surcharge creep** — new $0.42/test infra surcharge effective May 1\n**3. Available alternatives** — ExamGuard and SecureProctor have bid 9–12% below current rates on equivalent SLAs\n\nA 2-vendor split plus an internal AI-proctoring lane absorbing 25–30% of volume would cut delivery unit cost from $11.20 → $8.40 per test.\n\n**Projected impact:** ~$6.2M annualized savings, ~9-month implementation. Should I open the simulation?";
       } else if (lower.includes("simulate") || lower.includes("what if") || lower.includes("scenario")) {
-        response = "I'd recommend starting with the highest-ROI simulation. Based on current data:\n\n**Ranked by ROI:**\n1. AI Membership Growth Engine — 610% ROI ($900K invest)\n2. Top-Performer Playbook Clone — 520% ROI\n3. AI Voice Agents — 380% ROI\n4. Dynamic Dispatch — 290% ROI\n\nI can run any of these with custom variables. Which one interests you, or shall I run all four and compare?";
-      } else if (lower.includes("compare") || lower.includes("brand") || lower.includes("best") || lower.includes("worst")) {
-        response = "Here's your brand performance snapshot:\n\n**Top 3 (Tier A):**\n- ComfortKing FL — $7,240/tech/week, 92% call capture, 78 NPS\n- AirFlow NE — $6,890/tech/week, 88% call capture, 74 NPS\n\n**Bottom 3 (Tier C):**\n- PrimePipe OH — $2,890/tech/week, 64% call capture, 49 NPS\n- HomeFirst CHI — $3,210/tech/week, 68% call capture, 54 NPS\n\nThe gap between Tier A and C is 3.2x on revenue/tech. Want me to deep dive into what makes ComfortKing FL's operations so effective?";
+        response = "Ranked by ROI on cost-out, here are the simulations I'd run:\n\n**Ranked by ROI:**\n1. AI + Human Scoring Mix — 510% ROI ($2.1M invest, $4.8M annual savings)\n2. AI-Assisted Item Generation — 420% ROI ($3.4M invest)\n3. AI-Personalized Score Reporting — 380% ROI ($900K invest)\n4. Test Delivery Vendor Consolidation — 340% ROI ($1.8M invest, $6.2M annual savings)\n\nI can run any of these with custom variables. Which one first, or shall I run all four and compare?";
+      } else if (lower.includes("compare") || lower.includes("product") || lower.includes("best") || lower.includes("worst")) {
+        response = "Here's the cost-efficacy view across product lines:\n\n**Best (Tier A):**\n- Linguara Reading & Listening — $28.40/test, 71% AI scoring share, 64 NPS\n- GradPath — $36.20/test, 58% AI scoring share, 66 NPS\n\n**Worst (Tier C):**\n- Mereon Skills Index — $58.40/test, 18% AI scoring share, 51 NPS\n- Mereon AcademicEnglish — $52.70/test, 22% AI scoring share, 55 NPS\n\nThe gap is 2.1x on cost per test, and AI scoring share is the dominant explanatory variable. Want me to deep-dive on what's holding AI adoption back in the Tier C lines?";
       } else {
-        response = "I've analyzed that question against your portfolio data. Here are a few things I'm tracking that might be relevant:\n\n- Platform-wide revenue is trending at +6.4% WoW ($23.1M this week)\n- 3 acquisitions in pipeline could add $45M annual revenue\n- Seasonal HVAC surge begins in ~6 weeks — capacity planning is critical\n\nI can dig deeper into any area. You can also ask me to run a what-if simulation, compare brands, or analyze any specific metric.";
+        response = "I've analyzed that against the workspace data. A few things worth flagging right now:\n\n- Cost-to-Revenue is at 68.4% vs 58% target (+10.4pp gap), with revenue −6.4% YoY\n- AI Automation Rate is 34% vs 65% target — biggest single lever on cost-out\n- Northstar University System renewal ($8.4M ACV) closes May 22 and is currently flagged at-risk\n\nI can dig deeper into any area. You can also ask me to run a what-if simulation, compare product lines, or pull any specific cost-efficacy metric.";
       }
       setChatMessages((prev) => [...prev, { role: "assistant", content: response, timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }]);
     }, 1200);
@@ -55,11 +55,11 @@ function App() {
   // ── ROOT CAUSE ANALYSIS PROMPTS ──
   const getRCAPrompt = (alert) => {
     const rcaMap = {
-      "Data Quality":     `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which vendor catalogues or ERP import jobs are contributing most to the missing fields, 2) which categories have the highest enrichment gaps, 3) likely root cause (new-item onboarding process, vendor data quality, or mapping failures), and 4) a prioritized remediation plan with estimated effort per field.`,
-      "Customer Risk":    `Run a root cause analysis on this alert: "${alert.title}". Analyze: 1) what likely triggered the cancellation spike — competitor pricing, internal policy change, or service failure, 2) which SKUs and categories were cancelled and whether there's a pattern, 3) how this account's order history has trended over the past 90 days, and 4) recommended retention action with talking points for the sales rep.`,
-      "Inventory Health": `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which categories and vendors contributed most to the obsolescence additions this week, 2) how long these SKUs were held before reclassification and whether reorder points were properly set, 3) whether purchasing practices or demand forecast errors are the root cause, and 4) recommended disposition: vendor return, clearance pricing, or write-down.`,
-      "Margin Risk":      `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which specific SKUs and orders drove the margin collapse for this account, 2) whether this was caused by a pricing override, an unexpected cost increase, or a product mix shift toward lower-margin items, 3) which rep or channel was responsible and whether this was a one-time exception or a pattern, and 4) recommended corrective actions to restore margin floor.`,
-      "Stockout Risk":    `Run a root cause analysis on this alert: "${alert.title}". Analyze: 1) the daily demand run-rate vs on-hand inventory trajectory showing when stockout will occur, 2) whether the reorder point was missed, there is no active purchase order, or supplier shipped short, 3) supplier lead time vs days remaining until stockout, and 4) fastest resolution path — emergency PO, substitute SKU, or transfer from another DC.`,
+      "Item Bank Quality": `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which forms and product lines are driving the attrition–replenishment gap, 2) authoring throughput vs. psychometric review pass rates over the last 6 months, 3) likely root cause (author capacity, review bottleneck, or AI-generation pilot under-scaled), and 4) a prioritized remediation plan including AI-assisted item generation rollout with unit-cost projections.`,
+      "Customer Risk":     `Run a root cause analysis on this alert: "${alert.title}". Analyze: 1) what is driving the renewal risk — pricing vs. peer benchmark, score-release SLA, or a competitor incumbency, 2) the account's usage history, complaint signals, and stakeholder map, 3) which Mereon process levers (AI scoring mix, vendor consolidation, AI-narrated reporting) most directly close the perceived value gap, and 4) a recommended counter-bid with pricing, SLA commitments, and timing.`,
+      "Process Health":    `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which queues, item types, and product lines are driving the SLA breach risk, 2) capacity vs. volume curves over the past 90 days and whether AI offload has been ramped, 3) likely root cause (rater pool decline, volume spike, AI rollout under-scaled), and 4) a remediation plan that combines short-term human capacity moves with structural AI scoring share increases and the implied unit-cost change.`,
+      "Cost Overrun":      `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which vendors, contracts, and process areas are driving the cost overrun, 2) whether this is rate movement, volume, or scope creep, 3) which alternative sources (competing vendors, internal AI lanes, make-vs-buy) are credibly available within the contract window, and 4) a recommended action sequence: RFP timing, parallel-track AI proof of concept, and contract renegotiation levers.`,
+      "Capacity Risk":     `Run a root cause analysis on this alert: "${alert.title}". Analyze: 1) the demand vs. confirmed capacity curve for the affected window, by region and channel, 2) whether the gap is brick-and-mortar, online-proctored, or rater capacity, 3) lead times for each capacity lever (uplift, vendor overflow, internal AI proctoring), and 4) the fastest resolution path with cost, revenue protected, and any SLA exposure.`,
     };
     return rcaMap[alert.category] || `Run a root cause analysis on: "${alert.title}". Context: ${alert.detail}`;
   };
@@ -162,44 +162,10 @@ function App() {
         </div>
       );
     };
-    if (id === "sku_rationalization") return <Bars vals={[85, 60, 45, 30, 70, 55]} colors={["#fee2e2", "#fef3c7", "#ddd6fe", "#fee2e2", "#fef3c7", "#ddd6fe"]} />;
-    if (id === "substitution_opps") return (
-      <div className="px-4 pb-4 space-y-1.5">
-        {[{ from: "3M Tape #7710", lift: "+17pp" }, { from: "Grainger Bolt M8", lift: "+14pp" }, { from: "Safety GL-L", lift: "+16pp" }].map((r, i) => (
-          <div key={i} className="flex items-center justify-between bg-emerald-50 rounded-lg px-3 py-1.5">
-            <span className="text-xs text-gray-600 truncate">{r.from}</span>
-            <span className="text-xs font-bold text-emerald-600 ml-2 flex-shrink-0">{r.lift}</span>
-          </div>
-        ))}
-      </div>
-    );
-    if (id === "inventory_turns") return <Bars vals={[90, 55, 40, 75, 30, 65, 50]} colors={["#c7d2fe", "#c7d2fe", "#fca5a5", "#c7d2fe", "#fca5a5", "#c7d2fe", "#c7d2fe"]} />;
-    if (id === "stockout_risk") return (
-      <div className="px-4 pb-4 space-y-1.5">
-        {[{ sku: "FAS-0041", days: "2.1d", crit: true }, { sku: "PVC-0072", days: "3.4d", crit: false }, { sku: "ELE-0128", days: "4.8d", crit: false }].map((r, i) => (
-          <div key={i} className="flex items-center justify-between rounded-lg px-3 py-1.5 border border-gray-100">
-            <span className="text-xs font-medium text-gray-700">{r.sku}</span>
-            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${r.crit ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-600"}`}>{r.days}</span>
-          </div>
-        ))}
-      </div>
-    );
-    if (id === "supplier_fill_rate") return <Bars vals={[92, 88, 95, 76, 83, 91]} colors={["#fed7aa", "#fed7aa", "#d1fae5", "#fecaca", "#fed7aa", "#d1fae5"]} />;
-    if (id === "gm_by_sku") return <LineChart points={[18, 22, 19, 24, 21, 28, 23, 26, 31, 29]} color="#8b5cf6" />;
-    if (id === "item_master") return (
-      <div className="px-4 pb-4">
-        {[{ label: "Vendor Part #", pct: 72 }, { label: "Product Image", pct: 58 }, { label: "UOM", pct: 91 }, { label: "Hazmat Flag", pct: 44 }].map((r, i) => (
-          <div key={i} className="mb-2">
-            <div className="flex justify-between text-xs mb-0.5"><span className="text-gray-500">{r.label}</span><span className="font-semibold text-gray-800">{r.pct}%</span></div>
-            <div className="h-1.5 bg-gray-100 rounded-full"><div className="h-1.5 rounded-full transition-all" style={{ width: r.pct + "%", background: r.pct > 80 ? "#06b6d4" : r.pct > 60 ? "#f97316" : "#ef4444" }}></div></div>
-          </div>
-        ))}
-      </div>
-    );
-    if (id === "sku_velocity") return (
+    if (id === "ai_scoring_adoption") return (
       <div className="px-4 pb-4">
         <div className="flex items-end gap-2 h-16 mb-2">
-          {[{ tier: "A", pct: 75, color: "#bfdbfe" }, { tier: "B", pct: 55, color: "#c7d2fe" }, { tier: "C", pct: 35, color: "#fef3c7" }, { tier: "D", pct: 15, color: "#fce7f3" }].map((t, i) => (
+          {[{ tier: "Reading", pct: 80, color: "#bfdbfe" }, { tier: "Listening", pct: 70, color: "#bfdbfe" }, { tier: "Writing", pct: 35, color: "#fef3c7" }, { tier: "Speaking", pct: 22, color: "#fce7f3" }].map((t, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-1">
               <div className="w-full rounded-t" style={{ height: t.pct + "%", background: t.color }}></div>
               <span className="text-[10px] font-semibold text-gray-500">{t.tier}</span>
@@ -208,10 +174,55 @@ function App() {
         </div>
       </div>
     );
-    if (id === "price_compliance") return <LineChart points={[3, 5, 4, 8, 6, 12, 9, 7, 11, 8]} color="#14b8a6" />;
-    if (id === "working_capital") return (
+    if (id === "item_bank_coverage") return (
+      <div className="px-4 pb-4 space-y-1.5">
+        {[{ from: "Linguara Reading Form A", lift: "−312" }, { from: "GradPath Quant Form B", lift: "−180" }, { from: "EduCert Math Form C", lift: "+44" }].map((r, i) => (
+          <div key={i} className="flex items-center justify-between bg-emerald-50 rounded-lg px-3 py-1.5">
+            <span className="text-xs text-gray-600 truncate">{r.from}</span>
+            <span className={`text-xs font-bold ml-2 flex-shrink-0 ${r.lift.startsWith("+") ? "text-emerald-600" : "text-red-600"}`}>{r.lift}</span>
+          </div>
+        ))}
+      </div>
+    );
+    if (id === "vendor_spend") return <Bars vals={[90, 55, 40, 75, 30, 65, 50]} colors={["#fca5a5", "#c7d2fe", "#c7d2fe", "#fca5a5", "#c7d2fe", "#c7d2fe", "#c7d2fe"]} />;
+    if (id === "scoring_sla_tracker") return (
+      <div className="px-4 pb-4 space-y-1.5">
+        {[{ sku: "Linguara · CR Speaking", days: "5.4d", crit: true }, { sku: "GradPath · Analytical Writing", days: "4.1d", crit: true }, { sku: "WorkLingua · CR", days: "3.8d", crit: false }].map((r, i) => (
+          <div key={i} className="flex items-center justify-between rounded-lg px-3 py-1.5 border border-gray-100">
+            <span className="text-xs font-medium text-gray-700">{r.sku}</span>
+            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${r.crit ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-600"}`}>{r.days}</span>
+          </div>
+        ))}
+      </div>
+    );
+    if (id === "test_center_utilization") return <Bars vals={[92, 88, 95, 76, 83, 91]} colors={["#fed7aa", "#fed7aa", "#fecaca", "#d1fae5", "#fed7aa", "#fecaca"]} />;
+    if (id === "cost_per_test") return <LineChart points={[34, 36, 35, 38, 37, 40, 39, 41, 42, 42.3]} color="#8b5cf6" />;
+    if (id === "process_cycle_time") return (
+      <div className="px-4 pb-4">
+        {[{ label: "Item → Approved", pct: 38 }, { label: "Form Assembly", pct: 72 }, { label: "Delivery → Score", pct: 48 }, { label: "Score → Reported", pct: 92 }].map((r, i) => (
+          <div key={i} className="mb-2">
+            <div className="flex justify-between text-xs mb-0.5"><span className="text-gray-500">{r.label}</span><span className="font-semibold text-gray-800">{r.pct}%</span></div>
+            <div className="h-1.5 bg-gray-100 rounded-full"><div className="h-1.5 rounded-full transition-all" style={{ width: r.pct + "%", background: r.pct > 80 ? "#06b6d4" : r.pct > 60 ? "#f97316" : "#ef4444" }}></div></div>
+          </div>
+        ))}
+      </div>
+    );
+    if (id === "renewal_risk") return (
+      <div className="px-4 pb-4">
+        <div className="flex items-end gap-2 h-16 mb-2">
+          {[{ tier: "Safe",   pct: 70, color: "#d1fae5" }, { tier: "Watch", pct: 50, color: "#fef3c7" }, { tier: "At Risk", pct: 35, color: "#fed7aa" }, { tier: "Critical", pct: 15, color: "#fecaca" }].map((t, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center gap-1">
+              <div className="w-full rounded-t" style={{ height: t.pct + "%", background: t.color }}></div>
+              <span className="text-[10px] font-semibold text-gray-500">{t.tier}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+    if (id === "ai_quality_drift") return <LineChart points={[0.96, 0.95, 0.95, 0.94, 0.94, 0.93, 0.94, 0.93, 0.92, 0.93].map(v => v * 100 - 90)} color="#14b8a6" />;
+    if (id === "infra_cost_per_test") return (
       <div className="px-4 pb-4 grid grid-cols-3 gap-2">
-        {[{ label: "DIO", val: "68d", color: "#f59e0b" }, { label: "DSO", val: "42d", color: "#10b981" }, { label: "DPO", val: "31d", color: "#6366f1" }].map((m, i) => (
+        {[{ label: "Cloud",   val: "$2.10", color: "#f59e0b" }, { label: "Engine",  val: "$1.40", color: "#10b981" }, { label: "Reports", val: "$0.60", color: "#6366f1" }].map((m, i) => (
           <div key={i} className="rounded-lg p-2.5 text-center" style={{ background: m.color + "18" }}>
             <div className="text-lg font-bold" style={{ color: m.color }}>{m.val}</div>
             <div className="text-[10px] text-gray-500 mt-0.5 font-medium">{m.label}</div>
@@ -224,7 +235,7 @@ function App() {
 
   // ── WIDGET MASTER MODAL ──
   const renderWidgetMaster = () => {
-    const widgetId = selectedWidget || "sku_rationalization";
+    const widgetId = selectedWidget || "ai_scoring_adoption";
     const w = WIDGET_CATALOGUE.find(x => x.id === widgetId) || WIDGET_CATALOGUE[0];
     const catColors = {
       Inventory: "bg-blue-50 text-blue-700", Margin: "bg-emerald-50 text-emerald-700",
@@ -238,7 +249,7 @@ function App() {
           <div className="w-64 flex-shrink-0 border-r border-gray-100 flex flex-col" style={{ background: "#f8fafc" }}>
             <div className="px-4 py-4 border-b border-gray-100">
               <div className="text-sm font-semibold text-gray-900">Initiatives Library</div>
-              <div className="text-xs text-gray-400 mt-0.5">{WIDGET_CATALOGUE.length} profitability levers</div>
+              <div className="text-xs text-gray-400 mt-0.5">{WIDGET_CATALOGUE.length} cost-efficacy levers</div>
             </div>
             <div className="flex-1 overflow-y-auto scrollbar-thin py-1.5">
               {WIDGET_CATALOGUE.map(wgt => (
@@ -338,13 +349,14 @@ function App() {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
                 {getIcon("Zap", { size: 18, className: "text-white" })}
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">Good morning, Carrie. Here's what needs your attention.</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Good morning, Daniel. Here's where cost is running ahead of revenue.</h2>
             </div>
             <div className="ml-12 flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-gray-400">Managing:</span>
-              {["Fasteners", "Safety & PPE", "PVC & Fittings", "Electrical"].map((cat, i) => (
+              <span className="text-xs text-gray-400">Process lens:</span>
+              {["Item Development", "Test Delivery", "Scoring Operations", "Score Reporting"].map((cat, i) => (
                 <span key={i} className="text-xs font-medium px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100">{cat}</span>
               ))}
+              <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-red-50 text-red-700 border border-red-100">Revenue −6.4% YoY</span>
             </div>
           </div>
           <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0">
@@ -359,7 +371,7 @@ function App() {
             <div className="flex-1 flex items-center gap-3 bg-white border border-gray-200 rounded-lg px-4 py-2.5 shadow-sm focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <input
                 type="text"
-                placeholder="e.g. What's dragging margin in Safety & PPE this month?"
+                placeholder="e.g. Where can I take cost out of Test Delivery without hurting SLA?"
                 className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder-gray-400"
                 onKeyDown={(e) => { if (e.key === "Enter" && e.target.value.trim()) { setActiveView("chat"); sendMessage(e.target.value); e.target.value = ""; } }}
               />
@@ -374,10 +386,10 @@ function App() {
           </div>
           <div className="flex gap-2 mt-3 ml-10 flex-wrap">
             {[
-              { label: "Which SKUs should I cut in Fasteners?", icon: "Layers" },
-              { label: "Show substitution wins in Safety & PPE", icon: "TrendingUp" },
-              { label: "Where am I losing margin this week?", icon: "BarChart3" },
-              { label: "Find like-for-like items in Electrical", icon: "Package" },
+              { label: "Where is cost running ahead of revenue this quarter?", icon: "BarChart3" },
+              { label: "Which initiatives close the most cost-to-revenue gap?", icon: "Target" },
+              { label: "Show AI scoring readiness across product lines", icon: "Sparkles" },
+              { label: "Vendor consolidation savings in Test Delivery", icon: "Layers" },
             ].map((q, i) => (
               <button key={i} onClick={() => { setActiveView("chat"); sendMessage(q.label); }} className="flex items-center gap-1.5 text-xs bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700 transition-all shadow-sm">
                 {getIcon(q.icon, { size: 12, className: "text-gray-400" })} {q.label}
@@ -403,18 +415,18 @@ function App() {
                 onChange={e => setKpiCategory(e.target.value)}
                 className="appearance-none text-xs font-semibold bg-white border border-gray-200 rounded-lg pl-3 pr-7 py-1.5 text-gray-700 hover:border-blue-300 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 cursor-pointer shadow-sm transition-all"
               >
-                <option value="all">All Categories</option>
-                <option value="Fasteners">Fasteners</option>
-                <option value="Safety & PPE">Safety &amp; PPE</option>
-                <option value="PVC & Fittings">PVC &amp; Fittings</option>
-                <option value="Electrical">Electrical</option>
+                <option value="all">All Processes</option>
+                <option value="Item Development">Item Development</option>
+                <option value="Test Delivery">Test Delivery</option>
+                <option value="Scoring Operations">Scoring Operations</option>
+                <option value="Score Reporting">Score Reporting</option>
               </select>
               <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M6 9l6 6 6-6"/></svg>
               </span>
             </div>
           </div>
-          <button onClick={() => { setActiveView("chat"); sendMessage("Run a full KPI performance analysis for my categories — highlight where I am furthest from target and suggest the highest-leverage actions."); }} className="text-xs text-gray-500 hover:text-blue-600 bg-white border border-gray-200 px-3 py-1.5 rounded-lg hover:border-blue-200 transition-all flex items-center gap-1.5 shadow-sm">
+          <button onClick={() => { setActiveView("chat"); sendMessage("Run a full cost-efficacy analysis across our processes — highlight where I am furthest from target and suggest the highest-leverage cost-out actions."); }} className="text-xs text-gray-500 hover:text-blue-600 bg-white border border-gray-200 px-3 py-1.5 rounded-lg hover:border-blue-200 transition-all flex items-center gap-1.5 shadow-sm">
             {getIcon("Sparkles", { size: 12 })} Ask AI to explain
           </button>
         </div>
@@ -463,14 +475,14 @@ function App() {
         </div>
       </div>
 
-      {/* Key Initiatives toolbar */}
+      {/* Cost-Out Initiatives toolbar */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-semibold text-gray-700 mr-1">Key Initiatives</span>
-          {["all", "Fasteners", "Safety & PPE", "PVC & Fittings", "Electrical"].map(cat => (
+          <span className="text-sm font-semibold text-gray-700 mr-1">Cost-Out Initiatives</span>
+          {["all", "Item Development", "Test Delivery", "Scoring Operations", "Score Reporting"].map(cat => (
             <button key={cat} onClick={() => setInitiativeCategory(cat)}
               className={`text-xs px-3 py-1 rounded-lg font-medium transition-all border ${initiativeCategory === cat ? "bg-blue-600 text-white border-blue-600 shadow-sm" : "bg-white text-gray-500 border-gray-200 hover:border-blue-300 hover:text-blue-600"}`}>
-              {cat === "all" ? "All" : cat}
+              {cat === "all" ? "All Processes" : cat}
             </button>
           ))}
         </div>
@@ -479,22 +491,22 @@ function App() {
         </button>
       </div>
 
-      {/* Row 1: Rationalization + Substitution (2-col) */}
+      {/* Row 1: Cost Reduction Initiatives + Process Automation Opportunities */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        {/* SKU Rationalization */}
+        {/* Cost Reduction Initiatives — track progress */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              {getIcon("Layers", { size: 18, className: "text-blue-500" })}
-              <h3 className="text-base font-semibold text-gray-900">SKU Rationalization</h3>
+              {getIcon("Target", { size: 18, className: "text-blue-500" })}
+              <h3 className="text-base font-semibold text-gray-900">Cost Reduction Initiatives</h3>
             </div>
-            <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Action needed</span>
+            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">$18.4M committed FY26</span>
           </div>
           <div className="grid grid-cols-3 gap-3 mb-4">
             {[
-              { label: "Dead Stock", value: "7,200", sub: "0 turns, 90d", color: "text-red-600", bg: "bg-red-50" },
-              { label: "Slow Movers", value: "8,600", sub: "<1 turn/yr", color: "text-amber-600", bg: "bg-amber-50" },
-              { label: "Duplicates", value: "3,240", sub: "like-for-like", color: "text-purple-600", bg: "bg-purple-50" },
+              { label: "On Track",   value: "5", sub: "of 9 active",      color: "text-emerald-600", bg: "bg-emerald-50" },
+              { label: "At Risk",    value: "3", sub: "needs intervention", color: "text-amber-600",   bg: "bg-amber-50" },
+              { label: "Off Track",  value: "1", sub: "escalate",          color: "text-red-600",     bg: "bg-red-50" },
             ].map((s, i) => (
               <div key={i} className={`${s.bg} rounded-lg p-3 text-center`}>
                 <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
@@ -503,52 +515,68 @@ function App() {
               </div>
             ))}
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {[
-              { cat: "Fasteners",      category: "Fasteners",      candidates: 420, saving: "$180K" },
-              { cat: "PVC & Fittings", category: "PVC & Fittings", candidates: 310, saving: "$140K" },
-              { cat: "Safety & PPE",   category: "Safety & PPE",   candidates: 280, saving: "$95K" },
-              { cat: "Electrical",     category: "Electrical",      candidates: 195, saving: "$68K" },
-            ].filter(r => initiativeCategory === "all" || r.cat === initiativeCategory).map((r, i) => (
-              <div key={i} className="flex items-center justify-between py-1.5 border-b border-gray-50 last:border-0">
-                <span className="text-sm text-gray-700">{r.category}</span>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-gray-400">{r.candidates} candidates</span>
-                  <span className="text-xs font-medium text-emerald-600">{r.saving}</span>
-                  <button onClick={() => { setActiveView("chat"); sendMessage("Show rationalization candidates in " + r.category); }} className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded hover:bg-blue-100 transition-colors">Review</button>
+              { cat: "Test Delivery",      name: "Vendor Consolidation (ProctorOne RFP)",    target: "$6.2M", progress: 32, status: "on",  owner: "L. Park"  },
+              { cat: "Scoring Operations", name: "AI Scoring Mix — 70/30 Constructed-Resp.", target: "$4.8M", progress: 58, status: "on",  owner: "P. Nair"  },
+              { cat: "Item Development",   name: "AI-Assisted Item Generation Rollout",      target: "$3.4M", progress: 24, status: "risk", owner: "J. Walsh" },
+              { cat: "Score Reporting",    name: "Reporting Infra Right-Sizing",             target: "$1.8M", progress: 71, status: "on",  owner: "D. Chen"  },
+              { cat: "Test Delivery",      name: "Test Center Footprint Optimization",       target: "$1.2M", progress: 12, status: "off", owner: "L. Park"  },
+              { cat: "Scoring Operations", name: "Rater Pool Productivity Program",          target: "$0.9M", progress: 44, status: "risk", owner: "P. Nair"  },
+            ].filter(r => initiativeCategory === "all" || r.cat === initiativeCategory).map((r, i) => {
+              const statusBar = { on: "bg-emerald-500", risk: "bg-amber-500", off: "bg-red-500" };
+              const statusBadge = { on: "bg-emerald-50 text-emerald-700", risk: "bg-amber-50 text-amber-700", off: "bg-red-50 text-red-700" };
+              const statusLabel = { on: "On Track", risk: "At Risk", off: "Off Track" };
+              return (
+                <div key={i} className="border border-gray-100 rounded-lg p-2.5 hover:border-blue-200 hover:shadow-sm transition-all">
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <div className="min-w-0">
+                      <div className="text-xs font-medium text-gray-800 truncate">{r.name}</div>
+                      <div className="text-[10px] text-gray-400">{r.cat} · {r.owner}</div>
+                    </div>
+                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded flex-shrink-0 ${statusBadge[r.status]}`}>{statusLabel[r.status]}</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div className={`h-full rounded-full ${statusBar[r.status]}`} style={{ width: `${r.progress}%` }} />
+                    </div>
+                    <span className="text-[10px] text-gray-500 w-8 text-right">{r.progress}%</span>
+                    <span className="text-xs font-semibold text-emerald-700 w-12 text-right">{r.target}</span>
+                    <button onClick={() => { setActiveView("chat"); sendMessage("Walk me through progress and risks for the " + r.name + " initiative."); }} className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded hover:bg-blue-100 transition-colors flex-shrink-0">Review</button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* Substitution Opportunities */}
+        {/* Process Automation Opportunities — identify new initiatives */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              {getIcon("TrendingUp", { size: 18, className: "text-emerald-500" })}
-              <h3 className="text-base font-semibold text-gray-900">Substitution Opportunities</h3>
+              {getIcon("Sparkles", { size: 18, className: "text-emerald-500" })}
+              <h3 className="text-base font-semibold text-gray-900">Process Automation Opportunities</h3>
             </div>
-            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">+$2.4M potential</span>
+            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">+$11.6M potential</span>
           </div>
           <div className="space-y-2.5">
             {[
-              { cat: "Fasteners",      from: "Grainger Bolt M8",       to: "FastenRight M8-X",     lift: "+17pp", volume: "8,800 units/mo" },
-              { cat: "Safety & PPE",   from: "Safety Glove L-12",      to: "ProGuard GL-L",         lift: "+16pp", volume: "2,100 units/mo" },
-              { cat: "PVC & Fittings", from: "PVC 90° Elbow #4",       to: "InLine 90E-4",          lift: "+13pp", volume: "3,600 units/mo" },
-              { cat: "Electrical",     from: "Leviton Wire Nut WN4",   to: "Ideal Wing-Nut WN4",    lift: "+15pp", volume: "5,200 units/mo" },
+              { cat: "Item Development",   from: "Manual item authoring",                to: "AI-assisted generation + psych. review",   lift: "−$3,100/item", volume: "8 product lines" },
+              { cat: "Scoring Operations", from: "100% human CR scoring",                to: "70% AI / 30% human-review mix",            lift: "−$0.65/resp.", volume: "1.2M responses/qtr" },
+              { cat: "Test Delivery",      from: "ProctorOne live online proctoring",     to: "Multi-vendor + internal AI proctoring",   lift: "−$2.80/test",  volume: "640K tests/qtr" },
+              { cat: "Score Reporting",    from: "Static templated score reports",        to: "AI-narrated personalized reports",        lift: "−$1.30/test",  volume: "5.3K tickets deflected/qtr" },
             ].filter(s => initiativeCategory === "all" || s.cat === initiativeCategory).map((s, i) => (
               <div key={i} className="border border-gray-100 rounded-lg p-3 hover:border-blue-200 hover:shadow-sm transition-all">
                 <div className="flex items-start justify-between mb-1.5">
                   <div>
-                    <div className="text-xs text-gray-400 mb-0.5">Replace: <span className="text-gray-700 font-medium">{s.from}</span></div>
-                    <div className="text-xs text-gray-400">With: <span className="text-emerald-700 font-medium">{s.to}</span></div>
+                    <div className="text-xs text-gray-400 mb-0.5">Today: <span className="text-gray-700 font-medium">{s.from}</span></div>
+                    <div className="text-xs text-gray-400">Move to: <span className="text-emerald-700 font-medium">{s.to}</span></div>
                   </div>
                   <span className="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">{s.lift}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">{s.volume}</span>
-                  <button onClick={() => { setActiveView("chat"); sendMessage("Analyze substitution from " + s.from + " to " + s.to); }} className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded hover:bg-blue-100 transition-colors">Analyze</button>
+                  <span className="text-xs text-gray-400">{s.cat} · {s.volume}</span>
+                  <button onClick={() => { setActiveView("chat"); sendMessage("Build the business case for moving from \"" + s.from + "\" to \"" + s.to + "\"."); }} className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded hover:bg-blue-100 transition-colors">Build case</button>
                 </div>
               </div>
             ))}
@@ -556,58 +584,57 @@ function App() {
         </div>
       </div>
 
-      {/* Row 2: Inventory Turns + Stockout Risk */}
+      {/* Row 2: Cost Efficacy by Process + Process Risk Monitor */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
-        {/* Inventory Turns */}
+        {/* Cost Efficacy by Process */}
         <div className="lg:col-span-3 bg-white rounded-xl border border-gray-200">
           <div className="px-5 pt-5 pb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               {getIcon("BarChart3", { size: 18, className: "text-blue-500" })}
-              <h3 className="text-base font-semibold text-gray-900">Inventory Turns by Category</h3>
+              <h3 className="text-base font-semibold text-gray-900">Cost Efficacy by Process</h3>
             </div>
-            <span className="text-xs text-gray-400">Target: 6.0x</span>
+            <span className="text-xs text-gray-400">Target: $34.00 / test</span>
           </div>
           <div className="px-5 pb-5">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100">
-                  <th className="text-left py-2.5 font-medium text-gray-500 text-xs">Category</th>
-                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">SKUs</th>
-                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Turns</th>
-                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Days on Hand</th>
-                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">GM%</th>
+                  <th className="text-left py-2.5 font-medium text-gray-500 text-xs">Process</th>
+                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Volume / Qtr</th>
+                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Cost Efficacy</th>
+                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Cycle Time</th>
+                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">AI Auto.</th>
                   <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { cat: "Fasteners",      managed: true,  skus: 8420, turns: 7.2, doh: 51,  margin: "28.4%", status: "good" },
-                  { cat: "PVC & Fittings", managed: true,  skus: 6310, turns: 5.8, doh: 63,  margin: "24.1%", status: "good" },
-                  { cat: "Electrical",     managed: true,  skus: 5940, turns: 4.9, doh: 74,  margin: "21.6%", status: "warning" },
-                  { cat: "HVAC Supplies",  managed: false, skus: 4820, turns: 3.8, doh: 96,  margin: "19.2%", status: "warning" },
-                  { cat: "Safety & PPE",   managed: true,  skus: 4200, turns: 3.1, doh: 118, margin: "31.0%", status: "critical" },
-                  { cat: "Adhesives & Tape",managed: false,skus: 3710, turns: 2.4, doh: 152, margin: "17.8%", status: "critical" },
-                  { cat: "Copper & Plumbing",managed:false,skus: 3200, turns: 5.2, doh: 70,  margin: "22.5%", status: "good" },
-                  { cat: "Hand Tools",     managed: false, skus: 2800, turns: 1.8, doh: 203, margin: "14.2%", status: "critical" },
+                  { cat: "Item Development",   managed: true,  volume: "8,420 items",     unitCost: "$4,250 / item",  efficacy: 0.66, cycle: "94 days",   ai: "28%", status: "warning"  },
+                  { cat: "Test Delivery",      managed: true,  volume: "640K tests",      unitCost: "$18.60 / test",   efficacy: 0.78, cycle: "—",         ai: "41%", status: "critical" },
+                  { cat: "Scoring Operations", managed: true,  volume: "1.2M responses",   unitCost: "$1.85 / resp.",   efficacy: 0.59, cycle: "4.2 days",  ai: "46%", status: "critical" },
+                  { cat: "Score Reporting",    managed: true,  volume: "640K reports",     unitCost: "$4.10 / test",    efficacy: 1.00, cycle: "<1 day",    ai: "21%", status: "good"     },
+                  { cat: "Customer Support",   managed: false, volume: "8.4K tickets",     unitCost: "$48 / ticket",    efficacy: 0.72, cycle: "1.8 days",  ai: "12%", status: "warning"  },
+                  { cat: "Item Translation",   managed: false, volume: "1,200 items",     unitCost: "$1,820 / item",  efficacy: 0.84, cycle: "32 days",   ai: "8%",  status: "warning"  },
+                  { cat: "Form Assembly",      managed: false, volume: "184 forms",       unitCost: "$22K / form",     efficacy: 0.92, cycle: "18 days",   ai: "31%", status: "good"     },
+                  { cat: "Psychometric Review",managed: false, volume: "2,140 items",     unitCost: "$640 / item",     efficacy: 0.76, cycle: "11 days",   ai: "0%",  status: "warning"  },
                 ].filter(r => initiativeCategory === "all" || r.cat === initiativeCategory).map((r, i) => {
                   const statusStyles = { good: "bg-emerald-50 text-emerald-700", warning: "bg-amber-50 text-amber-700", critical: "bg-red-50 text-red-700" };
-                  const statusLabels = { good: "On track", warning: "Below target", critical: "Critical" };
+                  const statusLabels = { good: "On target", warning: "Below target", critical: "Critical" };
                   const barColors = { good: "bg-emerald-500", warning: "bg-amber-500", critical: "bg-red-500" };
-                  const pctOfTarget = Math.min(r.turns / 6.0, 1);
                   return (
                     <tr key={i} className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors">
                       <td className="py-2.5 font-medium text-gray-900 text-sm">{r.cat}</td>
-                      <td className="py-2.5 text-right text-gray-500 text-sm">{r.skus.toLocaleString()}</td>
+                      <td className="py-2.5 text-right text-gray-500 text-sm">{r.volume}</td>
                       <td className="py-2.5 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <div className="w-14 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <div className={`h-full rounded-full ${barColors[r.status]}`} style={{ width: `${pctOfTarget * 100}%` }} />
+                            <div className={`h-full rounded-full ${barColors[r.status]}`} style={{ width: `${r.efficacy * 100}%` }} />
                           </div>
-                          <span className="text-sm font-semibold text-gray-800 w-8">{r.turns}x</span>
+                          <span className="text-sm font-semibold text-gray-800 whitespace-nowrap">{r.unitCost}</span>
                         </div>
                       </td>
-                      <td className="py-2.5 text-right text-gray-600 text-sm">{r.doh}d</td>
-                      <td className="py-2.5 text-right text-gray-600 text-sm font-medium">{r.margin}</td>
+                      <td className="py-2.5 text-right text-gray-600 text-sm">{r.cycle}</td>
+                      <td className="py-2.5 text-right text-gray-600 text-sm font-medium">{r.ai}</td>
                       <td className="py-2.5 text-right">
                         <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusStyles[r.status]}`}>{statusLabels[r.status]}</span>
                       </td>
@@ -617,26 +644,26 @@ function App() {
               </tbody>
             </table>
             <div className="mt-3 flex justify-end">
-              <button onClick={() => { setActiveView("chat"); sendMessage("Run inventory turns analysis and identify improvement opportunities by category"); }} className="text-xs text-gray-500 hover:text-blue-600 font-medium px-3 py-1.5 rounded-lg border border-gray-200 hover:border-blue-200 transition-colors">Run AI Analysis</button>
+              <button onClick={() => { setActiveView("chat"); sendMessage("Run cost-efficacy analysis across processes and identify the highest-leverage cost-out moves."); }} className="text-xs text-gray-500 hover:text-blue-600 font-medium px-3 py-1.5 rounded-lg border border-gray-200 hover:border-blue-200 transition-colors">Run AI Analysis</button>
             </div>
           </div>
         </div>
 
-        {/* Stockout Risk */}
+        {/* Process Risk Monitor */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               {getIcon("AlertTriangle", { size: 18, className: "text-amber-500" })}
-              <h3 className="text-base font-semibold text-gray-900">Stockout Risk</h3>
+              <h3 className="text-base font-semibold text-gray-900">Process Risk Monitor</h3>
             </div>
-            <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-medium">1,240 at risk</span>
+            <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-medium">8 active risks</span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-4">
             {[
-              { label: "Critical (<3d)", value: "184", color: "text-red-600", bg: "bg-red-50" },
-              { label: "Warning (<7d)", value: "462", color: "text-amber-600", bg: "bg-amber-50" },
-              { label: "Revenue at Risk", value: "$1.8M", color: "text-gray-800", bg: "bg-gray-50" },
-              { label: "Avg Lead Time", value: "12 days", color: "text-gray-800", bg: "bg-gray-50" },
+              { label: "SLA Breach",         value: "3",      color: "text-red-600",   bg: "bg-red-50"   },
+              { label: "Capacity Shortfall", value: "2",      color: "text-amber-600", bg: "bg-amber-50" },
+              { label: "Cost at Risk",       value: "$5.4M",  color: "text-gray-800",  bg: "bg-gray-50"  },
+              { label: "Revenue at Risk",    value: "$2.6M",  color: "text-gray-800",  bg: "bg-gray-50"  },
             ].map((s, i) => (
               <div key={i} className={`${s.bg} rounded-lg p-3`}>
                 <div className={`text-lg font-bold ${s.color}`}>{s.value}</div>
@@ -646,10 +673,11 @@ function App() {
           </div>
           <div className="space-y-2.5">
             {[
-              { cat: "Fasteners",      label: "Bolts & Hex Nuts",          skus: 84,  risk: "critical", revenue: "$420K" },
-              { cat: "Electrical",     label: "Wire Nuts & Conduit",        skus: 52,  risk: "critical", revenue: "$310K" },
-              { cat: "PVC & Fittings", label: "PVC Elbows & Couplings",    skus: 38,  risk: "high",     revenue: "$195K" },
-              { cat: "Safety & PPE",   label: "FR Workwear & Cut Gloves",  skus: 29,  risk: "high",     revenue: "$140K" },
+              { cat: "Test Delivery",      label: "APAC test center capacity — May peak",   metric: "3,840 sessions short", risk: "critical", impact: "$1.2M" },
+              { cat: "Scoring Operations", label: "CR scoring queue · 4.2-day SLA breach",  metric: "6 enterprise accts.",  risk: "critical", impact: "$320K" },
+              { cat: "Test Delivery",      label: "ProctorOne rate spike +18% MoM",         metric: "Annualized impact",   risk: "critical", impact: "$2.1M" },
+              { cat: "Item Development",   label: "Linguara form retirement risk",          metric: "1,228-item shortfall", risk: "high",     impact: "$1.4M" },
+              { cat: "Score Reporting",    label: "Reporting infra cost outpacing volume",   metric: "+14% YoY vs +2% vol", risk: "high",     impact: "$0.4M" },
             ].filter(r => initiativeCategory === "all" || r.cat === initiativeCategory).map((r, i) => {
               const riskColors = { critical: "bg-red-100 text-red-700", high: "bg-amber-100 text-amber-700" };
               return (
@@ -662,14 +690,14 @@ function App() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-xs text-gray-400">{r.skus} SKUs</span>
-                    <span className="text-xs font-medium text-red-600">{r.revenue}</span>
+                    <span className="text-xs text-gray-400 truncate max-w-[120px]" title={r.metric}>{r.metric}</span>
+                    <span className="text-xs font-medium text-red-600">{r.impact}</span>
                   </div>
                 </div>
               );
             })}
           </div>
-          <button onClick={() => { setActiveView("chat"); sendMessage("Show all stockout risk SKUs with reorder recommendations"); }} className="mt-4 w-full text-xs bg-amber-50 border border-amber-200 text-amber-700 py-2 rounded-lg hover:bg-amber-100 transition-colors font-medium">Generate Reorder Plan</button>
+          <button onClick={() => { setActiveView("chat"); sendMessage("Build me a mitigation plan for the active process risks across delivery, scoring, and item development."); }} className="mt-4 w-full text-xs bg-amber-50 border border-amber-200 text-amber-700 py-2 rounded-lg hover:bg-amber-100 transition-colors font-medium">Generate Mitigation Plan</button>
         </div>
       </div>
 
@@ -682,22 +710,22 @@ function App() {
             <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium ml-1">{ALERTS.filter(a => a.priority === "critical").length} critical</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">Category Manager · Carrie Shen</span>
+            <span className="text-xs text-gray-400">Chief Operating Officer · Daniel Reyes</span>
             <button onClick={() => setActiveView("alerts")} className="text-xs text-blue-600 hover:underline font-medium">View all</button>
           </div>
         </div>
         <div className="divide-y divide-gray-50">
           {ALERTS.map((alert) => {
             const catStyles = {
-              "Data Quality":    { badge: "bg-blue-100 text-blue-700",   icon: "bg-blue-100",   iconColor: "text-blue-500"   },
-              "Customer Risk":   { badge: "bg-orange-100 text-orange-700", icon: "bg-orange-100", iconColor: "text-orange-500" },
-              "Inventory Health":{ badge: "bg-purple-100 text-purple-700", icon: "bg-purple-100", iconColor: "text-purple-500" },
-              "Margin Risk":     { badge: "bg-amber-100 text-amber-700",  icon: "bg-amber-100",  iconColor: "text-amber-500"  },
-              "Stockout Risk":   { badge: "bg-red-100 text-red-700",      icon: "bg-red-100",    iconColor: "text-red-500"    },
+              "Item Bank Quality":{ badge: "bg-blue-100 text-blue-700",   icon: "bg-blue-100",   iconColor: "text-blue-500"   },
+              "Customer Risk":    { badge: "bg-orange-100 text-orange-700", icon: "bg-orange-100", iconColor: "text-orange-500" },
+              "Process Health":   { badge: "bg-purple-100 text-purple-700", icon: "bg-purple-100", iconColor: "text-purple-500" },
+              "Cost Overrun":     { badge: "bg-amber-100 text-amber-700",  icon: "bg-amber-100",  iconColor: "text-amber-500"  },
+              "Capacity Risk":    { badge: "bg-red-100 text-red-700",      icon: "bg-red-100",    iconColor: "text-red-500"    },
             };
             const priStyles = { critical: "bg-red-100 text-red-700 border-red-200", high: "bg-amber-100 text-amber-700 border-amber-200" };
             const audienceIcons = { user: "👤", group: "👥", enterprise: "🏢" };
-            const cs = catStyles[alert.category] || catStyles["Data Quality"];
+            const cs = catStyles[alert.category] || catStyles["Item Bank Quality"];
             return (
               <div key={alert.id} className="px-5 py-4 hover:bg-gray-50 transition-colors">
                 <div className="flex items-start gap-4">
@@ -740,36 +768,36 @@ function App() {
         </div>
       </div>
 
-      {/* Row 4: Market News — full width, grouped by topic */}
+      {/* Row 4: AI & EdTech News — full width, grouped by topic */}
       <div className="bg-white rounded-xl border border-gray-200">
         <div className="px-5 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {getIcon("Activity", { size: 18, className: "text-gray-500" })}
-            <h3 className="text-base font-semibold text-gray-900">Market News</h3>
+            {getIcon("Sparkles", { size: 18, className: "text-blue-500" })}
+            <h3 className="text-base font-semibold text-gray-900">AI &amp; EdTech News</h3>
           </div>
-          <span className="text-xs text-gray-400">Fasteners · Safety & PPE · PVC & Fittings · Electrical</span>
+          <span className="text-xs text-gray-400">AI in Assessment · EdTech Industry · Policy &amp; Standards · AI Cost &amp; Tooling</span>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-4 divide-x divide-gray-100">
           {[
-            { topic: "Fasteners", color: "text-slate-700", bg: "bg-slate-50", items: [
-              { title: "Steel & Stainless Fastener Prices Up 8% on New Tariff Measures", time: "2 hours ago", source: "Reuters", impact: "Cost pressure" },
-              { title: "FastenRight Announces 12-Day Lead Time Extension on Metric Bolts", time: "5 hours ago", source: "FastenRight Supplier Update", impact: "Supply risk" },
-              { title: "Fastener Supply Disruptions Easing in Southeast Asia — Q3 Outlook", time: "Yesterday", source: "Supply Chain Dive", impact: "Positive" },
+            { topic: "AI in Assessment", color: "text-blue-700", bg: "bg-blue-50", items: [
+              { title: "Frontier Models Cross 0.94 Agreement on Constructed-Response Scoring vs Expert Raters",     time: "3 hours ago", source: "Journal of Educational Measurement",  impact: "AI scoring lever" },
+              { title: "Pearson Pilots AI-Generated Reading Items Across Two Live Forms — 64% First-Pass Approval", time: "Yesterday",   source: "EdSurge",                              impact: "Item gen lever" },
+              { title: "Open Adaptive-Testing Engine Released by University Consortium — Lower Cost Alternative",   time: "2 days ago", source: "Inside Higher Ed",                     impact: "Industry shift" },
             ]},
-            { topic: "Safety & PPE", color: "text-amber-700", bg: "bg-amber-50", items: [
-              { title: "OSHA Tightens FR Workwear Enforcement in Petrochemical Sector", time: "4 hours ago", source: "Industry Week", impact: "Demand driver" },
-              { title: "3M Raises PPE Pricing 6% Effective June 1 — Substitution Window Open", time: "Yesterday", source: "3M Distributor Notice", impact: "Margin risk" },
-              { title: "ANSI/ISEA 138 Update: New Impact-Resistant Glove Standards for 2027", time: "2 days ago", source: "ISEA", impact: "Compliance" },
+            { topic: "EdTech Industry", color: "text-emerald-700", bg: "bg-emerald-50", items: [
+              { title: "Global Standardized-Test Volumes Soft −5.8% YoY as AI Skills Shift Hiring Signals",         time: "4 hours ago", source: "HolonIQ",         impact: "Revenue pressure" },
+              { title: "Duolingo English Test Crosses 6,000 Accepting Institutions — Pricing 60% Below Peers",      time: "Yesterday",   source: "TechCrunch EDU",  impact: "Competitive risk" },
+              { title: "Coursera & Khan Academy Launch AI Tutors That Embed Formative Assessment",                   time: "2 days ago", source: "EdSurge",          impact: "Channel shift" },
             ]},
-            { topic: "PVC & Fittings", color: "text-emerald-700", bg: "bg-emerald-50", items: [
-              { title: "New EPA Regulations on PVC Manufacturing Expected Q3 — Price Impact Likely", time: "Yesterday", source: "Chemical Week", impact: "Cost pressure" },
-              { title: "Mexico Nearshoring Boosts PVC Fitting Supply — Lead Times Improving", time: "Yesterday", source: "Inbound Logistics", impact: "Positive" },
-              { title: "Charlotte Pipe Discontinues 3\" SCH80 Line — 47 Affected SKUs", time: "2 days ago", source: "Charlotte Pipe Notice", impact: "SKU action needed" },
+            { topic: "Policy & Standards", color: "text-amber-700", bg: "bg-amber-50", items: [
+              { title: "EU AI Act: Education-Sector AI Scoring Falls Under High-Risk Category — Audit Mandate 2027", time: "Yesterday",   source: "European Commission", impact: "Compliance" },
+              { title: "Industry Coalition Publishes Fairness Standards for AI-Scored Constructed Responses",        time: "Yesterday",   source: "AERA",                impact: "Standards" },
+              { title: "FERPA Guidance Update: Student-Response Data in LLM Training Pipelines",                     time: "2 days ago", source: "U.S. Dept. of Ed",     impact: "Compliance" },
             ]},
-            { topic: "Electrical", color: "text-blue-700", bg: "bg-blue-50", items: [
-              { title: "Copper Wire Rod Prices Rise 11% — Direct Impact on Electrical SKU Costs", time: "3 hours ago", source: "Metal Bulletin", impact: "Cost pressure" },
-              { title: "NFPA 70E 2026 Update: Arc Flash PPE Requirements Tighten", time: "Yesterday", source: "NFPA", impact: "Compliance" },
-              { title: "ABB Consolidating Connector SKU Line — Return Program Active Through June", time: "2 days ago", source: "ABB Distributor Alert", impact: "Inventory action" },
+            { topic: "AI Cost & Tooling", color: "text-purple-700", bg: "bg-purple-50", items: [
+              { title: "Anthropic Cuts Batch-Inference Pricing 50% — Implications for Large-Scale CR Scoring",      time: "2 hours ago", source: "Anthropic Newsroom",   impact: "Cost lever" },
+              { title: "Open-Source 70B Scoring Models Now Match Proprietary on Reading Comprehension Tasks",        time: "Yesterday",   source: "Hugging Face",          impact: "Make-vs-buy" },
+              { title: "ProctorOne Raises Live Proctoring Rates 14% + Surcharge — Two Vendors Bid Lower",           time: "Yesterday",   source: "Inside Higher Ed",      impact: "Cost pressure" },
             ]},
           ].map((section, si) => (
             <div key={si} className="p-5">
@@ -778,7 +806,7 @@ function App() {
               </div>
               <div className="space-y-3">
                 {section.items.map((news, ni) => (
-                  <div key={ni} className="flex items-start gap-2.5 group cursor-pointer" onClick={() => { setActiveView("chat"); sendMessage("Tell me more about this news and how it affects my categories: " + news.title); }}>
+                  <div key={ni} className="flex items-start gap-2.5 group cursor-pointer" onClick={() => { setActiveView("chat"); sendMessage("How does this affect our cost-out plan and AI roadmap? News: " + news.title); }}>
                     <div className={`flex-shrink-0 w-1.5 h-1.5 mt-1.5 rounded-full ${section.bg.replace("50","400")}`}></div>
                     <div className="min-w-0">
                       <p className="text-sm text-gray-800 leading-snug group-hover:text-blue-600 transition-colors">{news.title}</p>
@@ -839,7 +867,7 @@ function App() {
       {/* Quick Actions */}
       <div className="px-6 pt-3 pb-1 bg-white border-t border-gray-100">
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {["What's the biggest risk today?", "Compare top vs bottom brands", "Run what-if on AI voice agents", "Show dispatch optimization plan"].map((q, i) => (
+          {["Where is cost running ahead of revenue?", "Compare cost efficacy across product lines", "Run what-if on AI scoring mix", "Show vendor consolidation plan"].map((q, i) => (
             <button key={i} onClick={() => sendMessage(q)} className="flex-shrink-0 text-xs bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700 transition-colors">{q}</button>
           ))}
         </div>
@@ -865,7 +893,7 @@ function App() {
   const renderAlerts = () => (
     <div className="p-6 space-y-4 overflow-y-auto h-full scrollbar-thin">
       <div className="flex items-center justify-between mb-2">
-        <div><h2 className="text-lg font-semibold text-gray-900">AI Agent Alerts</h2><p className="text-sm text-gray-500">Monitoring all portfolio companies continuously</p></div>
+        <div><h2 className="text-lg font-semibold text-gray-900">AI Agent Alerts</h2><p className="text-sm text-gray-500">Monitoring cost efficacy and process risk continuously</p></div>
         <div className="flex items-center gap-1 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-medium">{getIcon("Sparkles", { size: 12 })} AI Confidence Scores</div>
       </div>
       {ALERTS.map((alert) => (
@@ -1327,10 +1355,10 @@ function App() {
             {getIcon("Bell", { size: 18, className: "text-gray-400 hover:text-gray-600" })}
           </div>
           <div className="flex items-center gap-2.5 cursor-pointer">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold" style={{background:"#1e3a6e"}}>C</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold" style={{background:"#1e3a6e"}}>D</div>
             <div className="text-right">
-              <div className="text-sm font-medium text-gray-900">Carrie Shen</div>
-              <div className="text-xs text-gray-400">Category Manager, NY, USA</div>
+              <div className="text-sm font-medium text-gray-900">Daniel Reyes</div>
+              <div className="text-xs text-gray-400">Chief Operating Officer · Princeton, NJ</div>
             </div>
             {getIcon("ChevronDown", { size: 14, className: "text-gray-400" })}
           </div>
