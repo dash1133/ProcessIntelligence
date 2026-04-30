@@ -1305,19 +1305,19 @@ function App() {
           {/* Breadcrumb */}
           <button onClick={() => setActiveView("dashboard")} className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors">
             {getIcon("Home", { size: 15, className: "text-gray-400" })}
-            <span>My Workspace</span>
+            <span>Leave Behind</span>
           </button>
         </div>
 
         {/* Center Tabs */}
         <div className="flex items-center gap-2">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">
+            {getIcon("Activity", { size: 15, className: "text-gray-500" })}
+            Diagnostic
+          </button>
           <button onClick={() => setActiveView("dashboard")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeView === "dashboard" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
             {getIcon("Home", { size: 15, className: activeView === "dashboard" ? "text-white" : "text-gray-500" })}
-            My Workspace
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">
-            {getIcon("Users", { size: 15, className: "text-gray-500" })}
-            Shared Projects
+            Leave Behind
           </button>
         </div>
 
