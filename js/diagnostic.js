@@ -25,7 +25,7 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "drl_management", label: "DRL Management",                  appType: "list-builder", icon: "Grid",                description: "Data Reference Library — curated lists used in mappings and validations." },
   ]},
   { name: "Process & Activity Taxonomy", tasks: [
-    { id: "process_mapping",  label: "Process Mapping",            appType: "list-builder", icon: "Layers",   description: "Sub-function → process hierarchy." },
+    { id: "process_mapping",  label: "Process Mapping",            appType: "artifact",     icon: "Layers",   description: "End-to-end value chain — visually shape the map in natural language." },
     { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "list-builder", icon: "Activity", description: "Activities and the cost drivers that scale them." },
   ]},
   { name: "Cost Allocation & Cost-to-Serve", tasks: [
@@ -118,6 +118,55 @@ const TASK_PREVIEWS = {
         }
       }
     ]
+  },
+  process_mapping: {
+    artifact: {
+      type: "process_map",
+      title: "Mereon Assessment Group — End-to-End Process Map",
+      subtitle: "Top-level value chain · click any activity for detail · ask AI ZBO to reshape",
+      steps: [
+        { name: "Item Development",  color: "#3b82f6", activities: [
+          { name: "Item Authoring",        tags: ["Manual"] },
+          { name: "AI-Assisted Drafting",  tags: ["AI"] },
+          { name: "Psychometric Review",   tags: ["Manual"] },
+          { name: "Content QA",            tags: ["Manual"] },
+        ]},
+        { name: "Form Assembly",     color: "#6366f1", activities: [
+          { name: "Form Blueprint",        tags: ["Manual"] },
+          { name: "Item Selection",        tags: ["Manual"] },
+          { name: "Exposure Control",      tags: ["Automated"] },
+          { name: "Form Publish",          tags: ["Automated"] },
+        ]},
+        { name: "Test Delivery",     color: "#8b5cf6", activities: [
+          { name: "Registration",          tags: ["Automated"] },
+          { name: "Scheduling",            tags: ["Automated"] },
+          { name: "Proctoring",            tags: ["Vendor"] },
+          { name: "Test Administration",   tags: ["Vendor"] },
+        ]},
+        { name: "Scoring",           color: "#a855f7", activities: [
+          { name: "AI Scoring",            tags: ["AI"] },
+          { name: "Human Rater Scoring",   tags: ["Manual"] },
+          { name: "Drift Monitoring",      tags: ["Automated"] },
+          { name: "Score Validation",      tags: ["Manual"] },
+        ]},
+        { name: "Score Reporting",   color: "#d946ef", activities: [
+          { name: "Score Generation",      tags: ["Automated"] },
+          { name: "Report Templating",     tags: ["Automated"] },
+          { name: "AI-Narrated Insights",  tags: ["AI"] },
+          { name: "Score Release",         tags: ["Automated"] },
+        ]},
+        { name: "Customer & Renewals", color: "#ec4899", activities: [
+          { name: "Test-Taker Support",    tags: ["Manual"] },
+          { name: "Institutional Support", tags: ["Manual"] },
+          { name: "Renewal Management",    tags: ["Manual"] },
+          { name: "B2B Account Mgmt.",     tags: ["Manual"] },
+        ]},
+      ],
+      chatLog: [
+        { role: "user",      text: "Highlight every activity where AI is the dominant lever today and where it could be tomorrow." },
+        { role: "assistant", text: "Today AI is the dominant lever in 3 activities: **AI-Assisted Drafting**, **AI Scoring**, and **AI-Narrated Insights**. Untapped opportunities sit in **Content QA**, **Item Selection**, **Drift Monitoring**, and **Test-Taker Support** — moving these to AI / automation lifts AI Automation Rate from 34% → 58% and structurally cuts cost-per-test by ~$5.10. Want me to add a 'next-gen' overlay to the map showing recommended target states?" },
+      ]
+    }
   },
   cost_to_serve: {
     artifact: {
@@ -322,7 +371,8 @@ function ChatPreview({ task }) {
   );
 }
 
-// Artifact preview — focused report view.
+// Artifact preview — focused report view. Dispatches to a specialized
+// component when the artifact has a recognized `type`.
 function ArtifactPreview({ task }) {
   const artifact = TASK_PREVIEWS[task.id]?.artifact || {
     title: task.label,
@@ -332,10 +382,134 @@ function ArtifactPreview({ task }) {
       { heading: "What goes here", body: "Sections, tables, charts, and call-outs that summarize the finding. Each artifact is regenerable from its source data." },
     ],
   };
+  if (artifact.type === "process_map") {
+    return (
+      <div className="h-full overflow-y-auto bg-white scrollbar-thin">
+        <div className="px-8 py-8">
+          <ProcessMapArtifact map={artifact} />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="h-full overflow-y-auto bg-white scrollbar-thin">
       <div className="max-w-[900px] mx-auto px-8 py-8">
         <ArtifactBlock artifact={artifact} />
+      </div>
+    </div>
+  );
+}
+
+// Visually-enriched, conversationally-shapeable artifact: chevron-based
+// process map with sub-activity cards, tag legend, and a natural-language
+// pane to ask AI ZBO to reshape it.
+const PROCESS_MAP_TAG_STYLES = {
+  AI:        "bg-blue-50 text-blue-700 border-blue-100",
+  Automated: "bg-purple-50 text-purple-700 border-purple-100",
+  Manual:    "bg-amber-50 text-amber-700 border-amber-100",
+  Vendor:    "bg-emerald-50 text-emerald-700 border-emerald-100",
+};
+
+function ProcessMapArtifact({ map }) {
+  const [draft, setDraft] = React.useState("");
+  const [log, setLog] = React.useState(map.chatLog || []);
+  const submit = () => {
+    if (!draft.trim()) return;
+    setLog([...log, { role: "user", text: draft.trim() }, { role: "assistant", text: "Got it — reshaping the map. (Demo: edits are applied conceptually; in production this would update the artifact in place.)" }]);
+    setDraft("");
+  };
+
+  const cols = map.steps.length;
+  const colCls = cols === 6 ? "grid-cols-6" : cols === 5 ? "grid-cols-5" : "grid-cols-4";
+
+  return (
+    <div>
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">{map.title}</h2>
+          <p className="text-xs text-gray-500 mt-1">{map.subtitle}</p>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap text-[11px]">
+          <span className="text-gray-500">Legend:</span>
+          {Object.keys(PROCESS_MAP_TAG_STYLES).map(t => (
+            <span key={t} className={`inline-flex items-center px-2 py-0.5 rounded border font-medium ${PROCESS_MAP_TAG_STYLES[t]}`}>{t}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Chevron flow */}
+      <div className="flex items-stretch mb-6 -ml-2">
+        {map.steps.map((step, i) => {
+          const isFirst = i === 0;
+          const isLast = i === map.steps.length - 1;
+          const clip = isFirst
+            ? "polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%)"
+            : isLast
+              ? "polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%)"
+              : "polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%)";
+          return (
+            <div key={i} className="flex-1 -ml-3 first:ml-0">
+              <div
+                className="h-12 px-5 text-white text-[13px] font-semibold flex items-center justify-center text-center leading-tight shadow-sm"
+                style={{ clipPath: clip, background: step.color }}
+              >
+                {step.name}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Sub-activity columns */}
+      <div className={`grid ${colCls} gap-3 mb-8`}>
+        {map.steps.map((step, i) => (
+          <div key={i} className="space-y-2">
+            {step.activities.map((a, ai) => (
+              <div
+                key={ai}
+                className="bg-white border border-gray-200 rounded-md px-2.5 py-2 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer"
+                style={{ borderTopWidth: 2, borderTopColor: step.color }}
+              >
+                <div className="text-xs font-medium text-gray-800 leading-snug">{a.name}</div>
+                {a.tags && a.tags.length > 0 && (
+                  <div className="flex gap-1 flex-wrap mt-1.5">
+                    {a.tags.map(t => (
+                      <span key={t} className={`text-[9px] px-1.5 py-0.5 rounded border font-medium ${PROCESS_MAP_TAG_STYLES[t] || "bg-gray-50 text-gray-600 border-gray-200"}`}>{t}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Natural-language shaping pane */}
+      <div className="border-t border-gray-200 pt-5">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">AI</span>
+          <span className="text-sm font-semibold text-gray-900">Shape this map with AI ZBO</span>
+        </div>
+        <div className="space-y-2 mb-3">
+          {log.map((m, i) => (
+            <div key={i} className={m.role === "user"
+              ? "ml-auto bg-blue-600 text-white text-xs px-3 py-2 rounded-lg max-w-[80%]"
+              : "bg-gray-50 border border-gray-200 text-xs text-gray-700 px-3 py-2 rounded-lg max-w-[90%] leading-relaxed"
+            } dangerouslySetInnerHTML={{ __html: m.text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") }} />
+          ))}
+        </div>
+        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+          <span className="text-gray-300">{getIcon("Sparkles", { size: 14 })}</span>
+          <input
+            value={draft}
+            onChange={e => setDraft(e.target.value)}
+            onKeyDown={e => { if (e.key === "Enter") submit(); }}
+            className="flex-1 bg-transparent text-sm outline-none placeholder-gray-400"
+            placeholder="e.g. Highlight target-state AI lanes, or collapse Test Delivery into a single bar…"
+          />
+          <button onClick={submit} className="p-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700">{getIcon("Send", { size: 12 })}</button>
+        </div>
       </div>
     </div>
   );
