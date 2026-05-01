@@ -30,16 +30,16 @@ function App() {
     setTimeout(() => {
       let response = "";
       const lower = text.toLowerCase();
-      if (lower.includes("scoring") || lower.includes("sla") || lower.includes("backlog")) {
-        response = "Here's the read on the constructed-response scoring queue:\n\n**Where the pain is:**\n- Linguara Speaking & Writing — 5.4-day backlog (SLA: 2.0)\n- GradPath Analytical Writing — 4.1-day backlog\n- WorkLingua Corporate — 3.8-day backlog\n\n**Root cause:** Active rater pool is down 22% YoY, while corporate-window volume is up 14%. AI scoring has only been turned on for a narrow set of item types.\n\n**My recommendation:** Move to a 70% AI / 30% human-review mix on Reading and Listening immediately, then ramp to constructed-response over 60 days. Clears the backlog inside a week and structurally drops cost per response from $1.85 → $1.20. Want me to model the rollout?";
-      } else if (lower.includes("vendor") || lower.includes("proctor") || lower.includes("delivery")) {
-        response = "I've analyzed Test Delivery vendor spend. The shape of the cost line:\n\n**1. Concentration risk** — 64% of online proctoring volume sits with ProctorOne, who just announced +18% MoM rate movement\n**2. Surcharge creep** — new $0.42/test infra surcharge effective May 1\n**3. Available alternatives** — ExamGuard and SecureProctor have bid 9–12% below current rates on equivalent SLAs\n\nA 2-vendor split plus an internal AI-proctoring lane absorbing 25–30% of volume would cut delivery unit cost from $11.20 → $8.40 per test.\n\n**Projected impact:** ~$6.2M annualized savings, ~9-month implementation. Should I open the simulation?";
+      if (lower.includes("consult") || lower.includes("outside") || lower.includes("advisory")) {
+        response = "Here's the shape of the $150M Consulting & Outside Services line:\n\n**Concentration:**\n- Corporate HR — ~$24M (analyst, advisory, SOP-driven content)\n- IT-adjacent — ~$25M (InfoSec ~$7M, SAP/Digital ~$7M, App Ops ~$6M)\n- Global Commercial — ~$8M\n- Tax — ~$5M\n- Global Marketing — ~$4.5M\n\n**Why it's the cleanest take-out:** This is contracted work the function couldn't or wouldn't staff internally — and most of it is exactly the kind of analyst, advisory, and content work an in-house AI agent pool delivers at fractional unit cost.\n\n**Recommendation:** Stand up an in-house AI agent pool focused first on HR + IT-advisory scopes; ~55% of these scopes look immediately replaceable. ~$55M run-rate take-out and indirect-labor capacity freed for higher-leverage work. Want me to size the pilot?";
+      } else if (lower.includes("region") || lower.includes("india") || lower.includes("variance") || lower.includes("benchmark")) {
+        response = "The 9-region SG&A spread is the biggest unexplained variance in the data:\n\n**Outliers:**\n- India — 17.5% of net sales (worst)\n- Latin America — 14.2%\n- Continental EU — 12.4%\n- North America — 11.8%\n- UK — 10.2%\n- ANZ — 9.4%\n- Greater China — 7.8%\n- Southeast Asia — 5.5% (best)\n\n**Read:** That's a 3.2× spread that holds even after adjusting for scale, mix, and growth-stage investment. The lion's share sits in Admin & Executive and Legal — Marketing & Media is closer to 2.8×.\n\n**Recommendation:** Anchor SEA as the internal target operating model. Run activity-driver normalization (NDAs/prospect, vendor contracts/supplier base, FTE/coordinator workload) and converge India to ~12.0% over 18 months. Implied opportunity ~$80M. Want me to build the convergence plan?";
+      } else if (lower.includes("legal") || lower.includes("contract") || lower.includes("nda")) {
+        response = "Legal is the worked example for why activity-and-driver decomposition matters on both sides at once:\n\n**Footprint:**\n- 16 cost centers across 9 regions\n- Non-labor: ~$11M (NA ~$5.2M, UK ~$2.1M, France ~$0.8M, long-tail $10–20K)\n- Labor: ~$35–40M (paralegals, in-house counsel, regional GCs, corporate Legal leadership)\n\n**The tell:** Contract Preparation & Review is the highest-volume activity, but it shows up as only ~$0.4M of non-labor — the real cost is hidden inside paralegal and counsel labor that has never been priced per driver unit.\n\n**Apply the driver lens:** NDAs by prospect count, vendor contracts by supplier base, customer contracts by active accounts, employment agreements by hires. NA Legal runs 5–6× UK on a normalized cost-per-contract basis.\n\n**Recommendation:** Pilot AI first-pass NDA + vendor-contract review with 10% paralegal QA. Re-base cost-per-contract; reallocate paralegal capacity to higher-judgment work. Want me to size?";
       } else if (lower.includes("simulate") || lower.includes("what if") || lower.includes("scenario")) {
-        response = "Ranked by ROI on cost-out, here are the simulations I'd run:\n\n**Ranked by ROI:**\n1. AI + Human Scoring Mix — 510% ROI ($2.1M invest, $4.8M annual savings)\n2. AI-Assisted Item Generation — 420% ROI ($3.4M invest)\n3. AI-Personalized Score Reporting — 380% ROI ($900K invest)\n4. Test Delivery Vendor Consolidation — 340% ROI ($1.8M invest, $6.2M annual savings)\n\nI can run any of these with custom variables. Which one first, or shall I run all four and compare?";
-      } else if (lower.includes("compare") || lower.includes("product") || lower.includes("best") || lower.includes("worst")) {
-        response = "Here's the cost-efficacy view across product lines:\n\n**Best (Tier A):**\n- Linguara Reading & Listening — $28.40/test, 71% AI scoring share, 64 NPS\n- GradPath — $36.20/test, 58% AI scoring share, 66 NPS\n\n**Worst (Tier C):**\n- Mereon Skills Index — $58.40/test, 18% AI scoring share, 51 NPS\n- Mereon AcademicEnglish — $52.70/test, 22% AI scoring share, 55 NPS\n\nThe gap is 2.1x on cost per test, and AI scoring share is the dominant explanatory variable. Want me to deep-dive on what's holding AI adoption back in the Tier C lines?";
+        response = "Ranked by ROI on SG&A take-out, here's what I'd run:\n\n1. **Consulting In-Sourcing (HR + IT)** — 590% ROI ($8M invest, ~$55M run-rate)\n2. **Legal AI First-Pass Contract Review** — 520% ROI ($1.2M invest, ~$14M run-rate)\n3. **Marketing Workflow Consolidation** — 470% ROI ($2.4M invest, ~$50M run-rate)\n4. **Regional SG&A Convergence to SEA** — 440% ROI ($6.5M invest, ~$80M run-rate)\n\nWhich one first, or shall I run all four and stack them?";
       } else {
-        response = "I've analyzed that against the workspace data. A few things worth flagging right now:\n\n- Cost-to-Revenue is at 68.4% vs 58% target (+10.4pp gap), with revenue −6.4% YoY\n- AI Automation Rate is 34% vs 65% target — biggest single lever on cost-out\n- Northstar University System renewal ($8.4M ACV) closes May 22 and is currently flagged at-risk\n\nI can dig deeper into any area. You can also ask me to run a what-if simulation, compare product lines, or pull any specific cost-efficacy metric.";
+        response = "Here are the things I'm tracking right now:\n\n- **SG&A is at 11.2% of net sales vs 9.0% target** — about $352M of structural opportunity at full convergence\n- **Consulting & Outside Services pacing $50M over plan** — most token-replaceable spend pool in the company\n- **India runs 3.2× the SEA SG&A intensity** — $80M opportunity if India converges to 12%\n- **NA Legal runs 5–6× UK on cost-per-contract** — first-pass review is AI-replaceable in ~30 seconds\n\nI can dig deeper into any of these, run a sized simulation, or decompose any function activity-by-activity.";
       }
       setChatMessages((prev) => [...prev, { role: "assistant", content: response, timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }]);
     }, 1200);
@@ -55,11 +55,9 @@ function App() {
   // ── ROOT CAUSE ANALYSIS PROMPTS ──
   const getRCAPrompt = (alert) => {
     const rcaMap = {
-      "Item Bank Quality": `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which forms and product lines are driving the attrition–replenishment gap, 2) authoring throughput vs. psychometric review pass rates over the last 6 months, 3) likely root cause (author capacity, review bottleneck, or AI-generation pilot under-scaled), and 4) a prioritized remediation plan including AI-assisted item generation rollout with unit-cost projections.`,
-      "Customer Risk":     `Run a root cause analysis on this alert: "${alert.title}". Analyze: 1) what is driving the renewal risk — pricing vs. peer benchmark, score-release SLA, or a competitor incumbency, 2) the account's usage history, complaint signals, and stakeholder map, 3) which Mereon process levers (AI scoring mix, vendor consolidation, AI-narrated reporting) most directly close the perceived value gap, and 4) a recommended counter-bid with pricing, SLA commitments, and timing.`,
-      "Process Health":    `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which queues, item types, and product lines are driving the SLA breach risk, 2) capacity vs. volume curves over the past 90 days and whether AI offload has been ramped, 3) likely root cause (rater pool decline, volume spike, AI rollout under-scaled), and 4) a remediation plan that combines short-term human capacity moves with structural AI scoring share increases and the implied unit-cost change.`,
-      "Cost Overrun":      `Run a root cause analysis on this alert: "${alert.title}". Identify: 1) which vendors, contracts, and process areas are driving the cost overrun, 2) whether this is rate movement, volume, or scope creep, 3) which alternative sources (competing vendors, internal AI lanes, make-vs-buy) are credibly available within the contract window, and 4) a recommended action sequence: RFP timing, parallel-track AI proof of concept, and contract renegotiation levers.`,
-      "Capacity Risk":     `Run a root cause analysis on this alert: "${alert.title}". Analyze: 1) the demand vs. confirmed capacity curve for the affected window, by region and channel, 2) whether the gap is brick-and-mortar, online-proctored, or rater capacity, 3) lead times for each capacity lever (uplift, vendor overflow, internal AI proctoring), and 4) the fastest resolution path with cost, revenue protected, and any SLA exposure.`,
+      "Consulting Spend":  `Run a root cause analysis on this alert: "${alert.title}". Decompose the $150M Consulting & Outside Services pool by function, scope, and SOP-replaceability. For each major scope (HR analyst, IT advisory, Tax research, etc.) identify: 1) the underlying activity and natural driver, 2) whether the work is contracted because of capacity or because of expertise, 3) the cost-per-driver-unit benchmark vs. an in-house AI agent + human-in-the-loop pool, and 4) a sequenced in-sourcing plan with the implied indirect-labor redeployment.`,
+      "Regional Variance": `Run a root cause analysis on this alert: "${alert.title}". For the high-variance regions (notably India at 17.5% and SEA at 5.5%), normalize SG&A by activity-and-driver pairs (NDAs/prospect, vendor contracts/supplier base, FTE/coordinator workload). Identify: 1) which activity-driver cells explain the bulk of the variance after adjusting for scale, mix, and growth-stage investment, 2) the fully-loaded labor and non-labor delta in each cell, 3) which functions (Admin & Exec, Legal, Marketing) carry the most unexplained variance, and 4) a convergence path anchoring SEA as the internal target operating model.`,
+      "Legal Unit Cost":   `Run a root cause analysis on this alert: "${alert.title}". Decompose Legal cost across the 16 cost centers in 9 regions. For each contract type (NDAs, vendor, customer, employment), compute fully-loaded cost-per-contract using the natural driver. Identify: 1) why NA Legal runs 5–6× UK on a normalized basis, 2) the share of paralegal and counsel hours spent on first-pass review that is AI-replaceable in ~30 seconds, 3) the labor reallocation opportunity as AI takes first-pass review, and 4) a piloted rollout with 10% paralegal spot-check and a re-baselined cost-per-contract target.`,
     };
     return rcaMap[alert.category] || `Run a root cause analysis on: "${alert.title}". Context: ${alert.detail}`;
   };
@@ -174,20 +172,20 @@ function App() {
         </div>
       </div>
     );
-    if (id === "item_bank_coverage") return (
+    if (id === "legal_unit_cost") return (
       <div className="px-4 pb-4 space-y-1.5">
-        {[{ from: "Linguara Reading Form A", lift: "−312" }, { from: "GradPath Quant Form B", lift: "−180" }, { from: "EduCert Math Form C", lift: "+44" }].map((r, i) => (
-          <div key={i} className="flex items-center justify-between bg-emerald-50 rounded-lg px-3 py-1.5">
+        {[{ from: "NA Legal · NDAs",    lift: "$1,840" }, { from: "EU Legal · NDAs", lift: "$580" }, { from: "UK Legal · NDAs", lift: "$320" }].map((r, i) => (
+          <div key={i} className="flex items-center justify-between bg-blue-50 rounded-lg px-3 py-1.5">
             <span className="text-xs text-gray-600 truncate">{r.from}</span>
-            <span className={`text-xs font-bold ml-2 flex-shrink-0 ${r.lift.startsWith("+") ? "text-emerald-600" : "text-red-600"}`}>{r.lift}</span>
+            <span className={`text-xs font-bold ml-2 flex-shrink-0 ${r.from.startsWith("NA") ? "text-red-600" : r.from.startsWith("UK") ? "text-emerald-600" : "text-amber-600"}`}>{r.lift}</span>
           </div>
         ))}
       </div>
     );
     if (id === "vendor_spend") return <Bars vals={[90, 55, 40, 75, 30, 65, 50]} colors={["#fca5a5", "#c7d2fe", "#c7d2fe", "#fca5a5", "#c7d2fe", "#c7d2fe", "#c7d2fe"]} />;
-    if (id === "scoring_sla_tracker") return (
+    if (id === "marketing_duplication") return (
       <div className="px-4 pb-4 space-y-1.5">
-        {[{ sku: "Linguara · CR Speaking", days: "5.4d", crit: true }, { sku: "GradPath · Analytical Writing", days: "4.1d", crit: true }, { sku: "WorkLingua · CR", days: "3.8d", crit: false }].map((r, i) => (
+        {[{ sku: "NA · 12 cost centers",   days: "1.4×", crit: true }, { sku: "EU · 14 cost centers", days: "1.6×", crit: true }, { sku: "APAC · 9 cost centers", days: "1.1×", crit: false }].map((r, i) => (
           <div key={i} className="flex items-center justify-between rounded-lg px-3 py-1.5 border border-gray-100">
             <span className="text-xs font-medium text-gray-700">{r.sku}</span>
             <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${r.crit ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-600"}`}>{r.days}</span>
@@ -349,14 +347,14 @@ function App() {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
                 {getIcon("Zap", { size: 18, className: "text-white" })}
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">Good morning, Daniel. Here's where cost is running ahead of revenue.</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Good morning, Marcus. Here's where SG&amp;A is running ahead of plan.</h2>
             </div>
             <div className="ml-12 flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-gray-400">Process lens:</span>
-              {["Item Development", "Test Delivery", "Scoring Operations", "Score Reporting"].map((cat, i) => (
+              <span className="text-xs text-gray-400">SG&amp;A lens:</span>
+              {["Administrative & Executive", "Selling", "Marketing & Media", "Legal & Compliance"].map((cat, i) => (
                 <span key={i} className="text-xs font-medium px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100">{cat}</span>
               ))}
-              <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-red-50 text-red-700 border border-red-100">Revenue −6.4% YoY</span>
+              <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-red-50 text-red-700 border border-red-100">SG&amp;A 11.2% of net sales</span>
             </div>
           </div>
           <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0">
@@ -371,7 +369,7 @@ function App() {
             <div className="flex-1 flex items-center gap-3 bg-white border border-gray-200 rounded-lg px-4 py-2.5 shadow-sm focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <input
                 type="text"
-                placeholder="e.g. Where can I take cost out of Test Delivery without hurting SLA?"
+                placeholder="e.g. Decompose the $150M consulting line by function and AI-replaceability…"
                 className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder-gray-400"
                 onKeyDown={(e) => { if (e.key === "Enter" && e.target.value.trim()) { setActiveView("chat"); sendMessage(e.target.value); e.target.value = ""; } }}
               />
@@ -386,10 +384,10 @@ function App() {
           </div>
           <div className="flex gap-2 mt-3 ml-10 flex-wrap">
             {[
-              { label: "Where is cost running ahead of revenue this quarter?", icon: "BarChart3" },
-              { label: "Which initiatives close the most cost-to-revenue gap?", icon: "Target" },
-              { label: "Show AI scoring readiness across product lines", icon: "Sparkles" },
-              { label: "Vendor consolidation savings in Test Delivery", icon: "Layers" },
+              { label: "Decompose the $150M consulting line by function", icon: "BarChart3" },
+              { label: "What closes the India vs SEA SG&A gap?", icon: "Target" },
+              { label: "AI agent readiness across SG&A activities", icon: "Sparkles" },
+              { label: "Cost-per-contract by region for Legal", icon: "FileText" },
             ].map((q, i) => (
               <button key={i} onClick={() => { setActiveView("chat"); sendMessage(q.label); }} className="flex items-center gap-1.5 text-xs bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700 transition-all shadow-sm">
                 {getIcon(q.icon, { size: 12, className: "text-gray-400" })} {q.label}
@@ -415,11 +413,11 @@ function App() {
                 onChange={e => setKpiCategory(e.target.value)}
                 className="appearance-none text-xs font-semibold bg-white border border-gray-200 rounded-lg pl-3 pr-7 py-1.5 text-gray-700 hover:border-blue-300 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 cursor-pointer shadow-sm transition-all"
               >
-                <option value="all">All Processes</option>
-                <option value="Item Development">Item Development</option>
-                <option value="Test Delivery">Test Delivery</option>
-                <option value="Scoring Operations">Scoring Operations</option>
-                <option value="Score Reporting">Score Reporting</option>
+                <option value="all">All SG&amp;A</option>
+                <option value="Administrative & Executive">Administrative &amp; Executive</option>
+                <option value="Selling">Selling</option>
+                <option value="Marketing & Media">Marketing &amp; Media</option>
+                <option value="Legal & Compliance">Legal &amp; Compliance</option>
               </select>
               <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M6 9l6 6 6-6"/></svg>
@@ -479,10 +477,10 @@ function App() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-sm font-semibold text-gray-700 mr-1">Cost-Out Initiatives</span>
-          {["all", "Item Development", "Test Delivery", "Scoring Operations", "Score Reporting"].map(cat => (
+          {["all", "Administrative & Executive", "Selling", "Marketing & Media", "Legal & Compliance"].map(cat => (
             <button key={cat} onClick={() => setInitiativeCategory(cat)}
               className={`text-xs px-3 py-1 rounded-lg font-medium transition-all border ${initiativeCategory === cat ? "bg-blue-600 text-white border-blue-600 shadow-sm" : "bg-white text-gray-500 border-gray-200 hover:border-blue-300 hover:text-blue-600"}`}>
-              {cat === "all" ? "All Processes" : cat}
+              {cat === "all" ? "All SG&A" : cat}
             </button>
           ))}
         </div>
@@ -500,13 +498,13 @@ function App() {
               {getIcon("Target", { size: 18, className: "text-blue-500" })}
               <h3 className="text-base font-semibold text-gray-900">Cost Reduction Initiatives</h3>
             </div>
-            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">$18.4M committed FY26</span>
+            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">$210M committed FY26</span>
           </div>
           <div className="grid grid-cols-3 gap-3 mb-4">
             {[
-              { label: "On Track",   value: "5", sub: "of 9 active",      color: "text-emerald-600", bg: "bg-emerald-50" },
+              { label: "On Track",   value: "4", sub: "of 8 active",        color: "text-emerald-600", bg: "bg-emerald-50" },
               { label: "At Risk",    value: "3", sub: "needs intervention", color: "text-amber-600",   bg: "bg-amber-50" },
-              { label: "Off Track",  value: "1", sub: "escalate",          color: "text-red-600",     bg: "bg-red-50" },
+              { label: "Off Track",  value: "1", sub: "escalate",            color: "text-red-600",     bg: "bg-red-50" },
             ].map((s, i) => (
               <div key={i} className={`${s.bg} rounded-lg p-3 text-center`}>
                 <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
@@ -517,12 +515,12 @@ function App() {
           </div>
           <div className="space-y-2.5">
             {[
-              { cat: "Test Delivery",      name: "Vendor Consolidation (ProctorOne RFP)",    target: "$6.2M", progress: 32, status: "on",  owner: "L. Park"  },
-              { cat: "Scoring Operations", name: "AI Scoring Mix — 70/30 Constructed-Resp.", target: "$4.8M", progress: 58, status: "on",  owner: "P. Nair"  },
-              { cat: "Item Development",   name: "AI-Assisted Item Generation Rollout",      target: "$3.4M", progress: 24, status: "risk", owner: "J. Walsh" },
-              { cat: "Score Reporting",    name: "Reporting Infra Right-Sizing",             target: "$1.8M", progress: 71, status: "on",  owner: "D. Chen"  },
-              { cat: "Test Delivery",      name: "Test Center Footprint Optimization",       target: "$1.2M", progress: 12, status: "off", owner: "L. Park"  },
-              { cat: "Scoring Operations", name: "Rater Pool Productivity Program",          target: "$0.9M", progress: 44, status: "risk", owner: "P. Nair"  },
+              { cat: "Administrative & Executive", name: "Consulting In-Sourcing — HR + IT Advisory", target: "$55M", progress: 38, status: "on",   owner: "D. Chen"  },
+              { cat: "Administrative & Executive", name: "Regional SG&A Convergence to SEA Benchmark", target: "$80M", progress: 22, status: "risk", owner: "P. Nair"  },
+              { cat: "Marketing & Media",           name: "Marketing Workflow Consolidation (40+ CCs)", target: "$50M", progress: 18, status: "risk", owner: "M. Rivera" },
+              { cat: "Legal & Compliance",          name: "AI First-Pass Contract Review",              target: "$14M", progress: 64, status: "on",   owner: "J. Walsh" },
+              { cat: "Selling",                      name: "Sales Ops & Customer Onboarding Automation", target: "$11M", progress: 47, status: "on",   owner: "M. Rivera" },
+              { cat: "Administrative & Executive", name: "Application Operations Insourcing (IT)",     target: "$6M",  progress: 8,  status: "off",  owner: "D. Chen"  },
             ].filter(r => initiativeCategory === "all" || r.cat === initiativeCategory).map((r, i) => {
               const statusBar = { on: "bg-emerald-500", risk: "bg-amber-500", off: "bg-red-500" };
               const statusBadge = { on: "bg-emerald-50 text-emerald-700", risk: "bg-amber-50 text-amber-700", off: "bg-red-50 text-red-700" };
@@ -557,14 +555,15 @@ function App() {
               {getIcon("Sparkles", { size: 18, className: "text-emerald-500" })}
               <h3 className="text-base font-semibold text-gray-900">Process Automation Opportunities</h3>
             </div>
-            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">+$11.6M potential</span>
+            <span className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">+$185M potential</span>
           </div>
           <div className="space-y-2.5">
             {[
-              { cat: "Item Development",   from: "Manual item authoring",                to: "AI-assisted generation + psych. review",   lift: "−$3,100/item", volume: "8 product lines" },
-              { cat: "Scoring Operations", from: "100% human CR scoring",                to: "70% AI / 30% human-review mix",            lift: "−$0.65/resp.", volume: "1.2M responses/qtr" },
-              { cat: "Test Delivery",      from: "ProctorOne live online proctoring",     to: "Multi-vendor + internal AI proctoring",   lift: "−$2.80/test",  volume: "640K tests/qtr" },
-              { cat: "Score Reporting",    from: "Static templated score reports",        to: "AI-narrated personalized reports",        lift: "−$1.30/test",  volume: "5.3K tickets deflected/qtr" },
+              { cat: "Administrative & Executive", from: "External HR / IT consulting scopes",     to: "In-house AI agent pool",                  lift: "−$55M/yr",   volume: "$49M HR+IT pool" },
+              { cat: "Marketing & Media",           from: "Brand-manager briefs & competitive scans", to: "AI brief drafting + insight synthesis",  lift: "−$50M/yr",   volume: "40+ regional CCs" },
+              { cat: "Legal & Compliance",          from: "Manual NDA + vendor contract review",     to: "AI first-pass + 10% paralegal QA",       lift: "−$700/contract", volume: "48K contracts/yr" },
+              { cat: "Administrative & Executive", from: "Tax research advisory consulting",        to: "AI-assisted research + counsel review",   lift: "−$5M/yr",    volume: "$5M Tax pool" },
+              { cat: "Selling",                      from: "Manual customer onboarding & support",   to: "AI workflow + agent escalation",         lift: "−$11M/yr",   volume: "9 regions" },
             ].filter(s => initiativeCategory === "all" || s.cat === initiativeCategory).map((s, i) => (
               <div key={i} className="border border-gray-100 rounded-lg p-3 hover:border-blue-200 hover:shadow-sm transition-all">
                 <div className="flex items-start justify-between mb-1.5">
@@ -591,32 +590,32 @@ function App() {
           <div className="px-5 pt-5 pb-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               {getIcon("BarChart3", { size: 18, className: "text-blue-500" })}
-              <h3 className="text-base font-semibold text-gray-900">Cost Efficacy by Process</h3>
+              <h3 className="text-base font-semibold text-gray-900">Cost Efficacy by Function</h3>
             </div>
-            <span className="text-xs text-gray-400">Target: $34.00 / test</span>
+            <span className="text-xs text-gray-400">Target: 1.10× benchmark</span>
           </div>
           <div className="px-5 pb-5">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100">
-                  <th className="text-left py-2.5 font-medium text-gray-500 text-xs">Process</th>
-                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Volume / Qtr</th>
-                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Cost Efficacy</th>
-                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Cycle Time</th>
+                  <th className="text-left py-2.5 font-medium text-gray-500 text-xs">Function</th>
+                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Pool Size</th>
+                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Unit Cost vs Benchmark</th>
+                  <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Regional Variance</th>
                   <th className="text-right py-2.5 font-medium text-gray-500 text-xs">AI Auto.</th>
                   <th className="text-right py-2.5 font-medium text-gray-500 text-xs">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { cat: "Item Development",   managed: true,  volume: "8,420 items",     unitCost: "$4,250 / item",  efficacy: 0.66, cycle: "94 days",   ai: "28%", status: "warning"  },
-                  { cat: "Test Delivery",      managed: true,  volume: "640K tests",      unitCost: "$18.60 / test",   efficacy: 0.78, cycle: "—",         ai: "41%", status: "critical" },
-                  { cat: "Scoring Operations", managed: true,  volume: "1.2M responses",   unitCost: "$1.85 / resp.",   efficacy: 0.59, cycle: "4.2 days",  ai: "46%", status: "critical" },
-                  { cat: "Score Reporting",    managed: true,  volume: "640K reports",     unitCost: "$4.10 / test",    efficacy: 1.00, cycle: "<1 day",    ai: "21%", status: "good"     },
-                  { cat: "Customer Support",   managed: false, volume: "8.4K tickets",     unitCost: "$48 / ticket",    efficacy: 0.72, cycle: "1.8 days",  ai: "12%", status: "warning"  },
-                  { cat: "Item Translation",   managed: false, volume: "1,200 items",     unitCost: "$1,820 / item",  efficacy: 0.84, cycle: "32 days",   ai: "8%",  status: "warning"  },
-                  { cat: "Form Assembly",      managed: false, volume: "184 forms",       unitCost: "$22K / form",     efficacy: 0.92, cycle: "18 days",   ai: "31%", status: "good"     },
-                  { cat: "Psychometric Review",managed: false, volume: "2,140 items",     unitCost: "$640 / item",     efficacy: 0.76, cycle: "11 days",   ai: "0%",  status: "warning"  },
+                  { cat: "Administrative & Executive", managed: true,  volume: "$1,120M",  unitCost: "1.55× bench.",   efficacy: 0.71, cycle: "3.5x",   ai: "18%", status: "critical" },
+                  { cat: "Selling",                     managed: true,  volume: "$380M",    unitCost: "1.30× bench.",   efficacy: 0.85, cycle: "2.4x",   ai: "28%", status: "warning"  },
+                  { cat: "Marketing & Media",           managed: true,  volume: "$295M",    unitCost: "1.45× bench.",   efficacy: 0.76, cycle: "2.8x",   ai: "25%", status: "warning"  },
+                  { cat: "Legal & Compliance",          managed: true,  volume: "$46M",     unitCost: "2.30× bench.",   efficacy: 0.52, cycle: "4.1x",   ai: "12%", status: "critical" },
+                  { cat: "HR & People",                 managed: false, volume: "$280M",    unitCost: "1.40× bench.",   efficacy: 0.79, cycle: "2.6x",   ai: "20%", status: "warning"  },
+                  { cat: "IT & Digital",                managed: false, volume: "$310M",    unitCost: "1.65× bench.",   efficacy: 0.67, cycle: "2.9x",   ai: "32%", status: "critical" },
+                  { cat: "Finance & Tax",               managed: false, volume: "$170M",    unitCost: "1.25× bench.",   efficacy: 0.88, cycle: "1.8x",   ai: "26%", status: "good"     },
+                  { cat: "Procurement",                 managed: false, volume: "$95M",     unitCost: "1.20× bench.",   efficacy: 0.92, cycle: "1.6x",   ai: "30%", status: "good"     },
                 ].filter(r => initiativeCategory === "all" || r.cat === initiativeCategory).map((r, i) => {
                   const statusStyles = { good: "bg-emerald-50 text-emerald-700", warning: "bg-amber-50 text-amber-700", critical: "bg-red-50 text-red-700" };
                   const statusLabels = { good: "On target", warning: "Below target", critical: "Critical" };
@@ -656,14 +655,14 @@ function App() {
               {getIcon("AlertTriangle", { size: 18, className: "text-amber-500" })}
               <h3 className="text-base font-semibold text-gray-900">Process Risk Monitor</h3>
             </div>
-            <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-medium">8 active risks</span>
+            <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-medium">7 active risks</span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-4">
             {[
-              { label: "SLA Breach",         value: "3",      color: "text-red-600",   bg: "bg-red-50"   },
-              { label: "Capacity Shortfall", value: "2",      color: "text-amber-600", bg: "bg-amber-50" },
-              { label: "Cost at Risk",       value: "$5.4M",  color: "text-gray-800",  bg: "bg-gray-50"  },
-              { label: "Revenue at Risk",    value: "$2.6M",  color: "text-gray-800",  bg: "bg-gray-50"  },
+              { label: "Cost Overrun",       value: "3",       color: "text-red-600",   bg: "bg-red-50"   },
+              { label: "Variance Outliers",  value: "2",       color: "text-amber-600", bg: "bg-amber-50" },
+              { label: "Spend at Risk",      value: "$72M",    color: "text-gray-800",  bg: "bg-gray-50"  },
+              { label: "Annualized Run-Rate",value: "$1.8B",   color: "text-gray-800",  bg: "bg-gray-50"  },
             ].map((s, i) => (
               <div key={i} className={`${s.bg} rounded-lg p-3`}>
                 <div className={`text-lg font-bold ${s.color}`}>{s.value}</div>
@@ -673,11 +672,11 @@ function App() {
           </div>
           <div className="space-y-2.5">
             {[
-              { cat: "Test Delivery",      label: "APAC test center capacity — May peak",   metric: "3,840 sessions short", risk: "critical", impact: "$1.2M" },
-              { cat: "Scoring Operations", label: "CR scoring queue · 4.2-day SLA breach",  metric: "6 enterprise accts.",  risk: "critical", impact: "$320K" },
-              { cat: "Test Delivery",      label: "ProctorOne rate spike +18% MoM",         metric: "Annualized impact",   risk: "critical", impact: "$2.1M" },
-              { cat: "Item Development",   label: "Linguara form retirement risk",          metric: "1,228-item shortfall", risk: "high",     impact: "$1.4M" },
-              { cat: "Score Reporting",    label: "Reporting infra cost outpacing volume",   metric: "+14% YoY vs +2% vol", risk: "high",     impact: "$0.4M" },
+              { cat: "Administrative & Executive", label: "Consulting pacing $50M over plan",        metric: "HR $24M · IT $25M",       risk: "critical", impact: "$50M" },
+              { cat: "Administrative & Executive", label: "India SG&A 17.5% vs SEA 5.5%",            metric: "3.2× regional spread",    risk: "critical", impact: "$80M" },
+              { cat: "Legal & Compliance",          label: "NA cost-per-contract 5–6× UK",            metric: "$1,840 NA · $320 UK",     risk: "critical", impact: "$14M" },
+              { cat: "Marketing & Media",           label: "40+ regional marketing CCs duplicated",   metric: "Same workflows, no template", risk: "high", impact: "$50M" },
+              { cat: "Selling",                      label: "Sales-ops manual onboarding overhead",    metric: "9 regions, no shared SOP", risk: "high",    impact: "$11M" },
             ].filter(r => initiativeCategory === "all" || r.cat === initiativeCategory).map((r, i) => {
               const riskColors = { critical: "bg-red-100 text-red-700", high: "bg-amber-100 text-amber-700" };
               return (
@@ -710,22 +709,20 @@ function App() {
             <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium ml-1">{ALERTS.filter(a => a.priority === "critical").length} critical</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">Chief Operating Officer · Daniel Reyes</span>
+            <span className="text-xs text-gray-400">Chief Financial Officer · Marcus Hale</span>
             <button onClick={() => setActiveView("alerts")} className="text-xs text-blue-600 hover:underline font-medium">View all</button>
           </div>
         </div>
         <div className="divide-y divide-gray-50">
           {ALERTS.map((alert) => {
             const catStyles = {
-              "Item Bank Quality":{ badge: "bg-blue-100 text-blue-700",   icon: "bg-blue-100",   iconColor: "text-blue-500"   },
-              "Customer Risk":    { badge: "bg-orange-100 text-orange-700", icon: "bg-orange-100", iconColor: "text-orange-500" },
-              "Process Health":   { badge: "bg-purple-100 text-purple-700", icon: "bg-purple-100", iconColor: "text-purple-500" },
-              "Cost Overrun":     { badge: "bg-amber-100 text-amber-700",  icon: "bg-amber-100",  iconColor: "text-amber-500"  },
-              "Capacity Risk":    { badge: "bg-red-100 text-red-700",      icon: "bg-red-100",    iconColor: "text-red-500"    },
+              "Consulting Spend":  { badge: "bg-amber-100 text-amber-700",  icon: "bg-amber-100",  iconColor: "text-amber-500"  },
+              "Regional Variance": { badge: "bg-purple-100 text-purple-700", icon: "bg-purple-100", iconColor: "text-purple-500" },
+              "Legal Unit Cost":   { badge: "bg-blue-100 text-blue-700",   icon: "bg-blue-100",   iconColor: "text-blue-500"   },
             };
             const priStyles = { critical: "bg-red-100 text-red-700 border-red-200", high: "bg-amber-100 text-amber-700 border-amber-200" };
             const audienceIcons = { user: "👤", group: "👥", enterprise: "🏢" };
-            const cs = catStyles[alert.category] || catStyles["Item Bank Quality"];
+            const cs = catStyles[alert.category] || catStyles["Consulting Spend"];
             return (
               <div key={alert.id} className="px-5 py-4 hover:bg-gray-50 transition-colors">
                 <div className="flex items-start gap-4">
@@ -772,27 +769,27 @@ function App() {
         <div className="px-5 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {getIcon("Sparkles", { size: 18, className: "text-blue-500" })}
-            <h3 className="text-base font-semibold text-gray-900">AI &amp; EdTech News</h3>
+            <h3 className="text-base font-semibold text-gray-900">AI &amp; SG&amp;A Cost-Out News</h3>
           </div>
-          <span className="text-xs text-gray-400">AI in Assessment · EdTech Industry · Policy &amp; Standards · AI Cost &amp; Tooling</span>
+          <span className="text-xs text-gray-400">AI in SG&amp;A · CPG &amp; Frozen Foods · Legal &amp; Marketing-Tech · AI Cost &amp; Tooling</span>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-4 divide-x divide-gray-100">
           {[
-            { topic: "AI in Assessment", color: "text-blue-700", bg: "bg-blue-50", items: [
-              { title: "Frontier Models Hit 0.94 Agreement on CR Scoring vs Expert Raters",   time: "3h",   source: "J. Educ. Measurement", impact: "AI scoring lever" },
-              { title: "Pearson Pilots AI-Generated Items — 64% First-Pass Approval",          time: "1d",   source: "EdSurge",              impact: "Item gen lever" },
+            { topic: "AI in SG&A", color: "text-blue-700", bg: "bg-blue-50", items: [
+              { title: "AI Agents Take Over First-Pass Analyst Work in Finance &amp; HR",          time: "3h", source: "HBR",             impact: "Cost lever" },
+              { title: "Token-Replaceable Spend Pools Now ~16% of Indirect Cost Bases",            time: "1d", source: "McKinsey Digital",impact: "Cost lever" },
             ]},
-            { topic: "EdTech Industry", color: "text-emerald-700", bg: "bg-emerald-50", items: [
-              { title: "Global Test Volumes Soft −5.8% YoY as AI Reshapes Hiring Signals",     time: "4h",   source: "HolonIQ",       impact: "Revenue pressure" },
-              { title: "Duolingo English Test Hits 6,000 Institutions — 60% Below Peers",      time: "1d",   source: "TechCrunch",    impact: "Competitive risk" },
+            { topic: "CPG & Frozen Foods", color: "text-emerald-700", bg: "bg-emerald-50", items: [
+              { title: "Global Frozen Foods Volume Up 3.1% YoY · Margin Pressure Persists",        time: "4h", source: "Just-Food",       impact: "Volume tailwind" },
+              { title: "Cold-Chain Energy Costs Climb 8% on Refrigerant Regulations",              time: "1d", source: "FoodNavigator",   impact: "Cost pressure" },
             ]},
-            { topic: "Policy & Standards", color: "text-amber-700", bg: "bg-amber-50", items: [
-              { title: "EU AI Act: Education AI Scoring = High-Risk · Audit Mandate 2027",    time: "1d",   source: "EU Commission", impact: "Compliance" },
-              { title: "Coalition Publishes Fairness Standards for AI-Scored Responses",       time: "1d",   source: "AERA",          impact: "Standards" },
+            { topic: "Legal & Marketing-Tech", color: "text-amber-700", bg: "bg-amber-50", items: [
+              { title: "AI Contract Review Hits 95% Agreement With Senior Counsel on NDAs",         time: "1d", source: "Law.com",         impact: "Cost lever" },
+              { title: "CPG Brand Managers Spend ~30% of Time on AI-Replaceable Tasks",             time: "1d", source: "Forrester",       impact: "Cost lever" },
             ]},
             { topic: "AI Cost & Tooling", color: "text-purple-700", bg: "bg-purple-50", items: [
-              { title: "Anthropic Cuts Batch-Inference Pricing 50% — CR Scoring Impact",       time: "2h",   source: "Anthropic",     impact: "Cost lever" },
-              { title: "ProctorOne Raises Rates 14% + Surcharge — Two Vendors Bid Lower",      time: "1d",   source: "Inside Higher Ed", impact: "Cost pressure" },
+              { title: "Anthropic Cuts Batch-Inference Pricing 50% — Indirect Workload Impact",     time: "2h", source: "Anthropic",       impact: "Cost lever" },
+              { title: "Big-4 Advisory Rates Up 9% — In-House AI Pools Beat on Unit Cost",          time: "1d", source: "Bloomberg",       impact: "Cost pressure" },
             ]},
           ].map((section, si) => (
             <div key={si} className="p-4">
@@ -1359,8 +1356,8 @@ function App() {
           </div>
           {(() => {
             const persona = activeView === "diagnostic"
-              ? { name: "Priya Nair",   initial: "P", company: "A&M ComOps" }
-              : { name: "Daniel Reyes", initial: "D", company: "Mereon Assessment Group" };
+              ? { name: "Priya Nair",  initial: "P", company: "A&M ComOps" }
+              : { name: "Marcus Hale", initial: "M", company: "NorthStar Frozen Foods" };
             return (
               <div className="flex items-center gap-2.5 cursor-pointer">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold" style={{background:"#1e3a6e"}}>{persona.initial}</div>

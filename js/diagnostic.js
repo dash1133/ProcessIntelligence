@@ -60,58 +60,58 @@ const TASK_PREVIEWS = {
       { role: "assistant", text: "**My recommendation:** Since rows 161–223 are still unenriched in the grid, doing a full replace now would overwrite enrichment already in the dataset. The safest approach is to **wait** until all rows are enriched, then do a single clean full replace." },
     ],
     grid: {
-      title: "Cost of Sales Vendor Enrichment",
+      title: "Indirect SG&A Vendor Enrichment",
       tabs: [
-        { name: "Master",                        count: 223, active: true },
-        { name: "SAP DT — Consulting Services",    count: 7 },
-        { name: "Sensory UX — Outside Services",  count: 15 },
-        { name: "Spend by Cost Center & Cost Element", count: 82 },
-        { name: "Column Mapping",                 count: 16 },
+        { name: "Master",                                count: 412, active: true },
+        { name: "HR — Outside Advisory",                 count: 24 },
+        { name: "IT — Outside Services",                  count: 18 },
+        { name: "Legal — Outside Counsel",                count: 16 },
+        { name: "Marketing — Agency Fees",                count: 12 },
+        { name: "Column Mapping",                         count: 14 },
       ],
       columns: ["row_number", "supplier_region", "supplier_number", "supplier_name", "cost_center_code", "cost_center_desc", "functional_area"],
       rows: [
-        [1, "North America", "1017552", "Anderson Electric", "102345", "RGNL FACILITY MGT",   "Cost of Sales Other"],
-        [2, "North America", "1020565", "Marks Commercial",   "102345", "RGNL FACILITY MGT",   "Cost of Sales Other"],
-        [3, "North America", "1022479", "Tk Elevator",         "102345", "RGNL FACILITY MGT",   "Cost of Sales Other"],
-        [4, "North America", "1019199", "Federal Express",     "102492", "R & M HANGAR",        "Cost of Sales Other"],
-        [5, "North America", "1019229", "Fisher Scientific",   "103071", "SENSORY UX & ANALYTI","Cost of Sales Other"],
-        [6, "North America", "1019514", "Grand And Toy",       "102641", "SAP DT",               "Cost of Sales Other"],
+        [1, "North America", "2017552", "Greenfield Advisory",     "14001", "CORP HR ADVISORY",     "SG&A · HR"        ],
+        [2, "North America", "2020565", "Pinnacle Counsel LLP",    "14012", "NA LEGAL",              "SG&A · Legal"     ],
+        [3, "North America", "2022479", "Brightlane Media",         "14207", "GLOBAL MARKETING",      "SG&A · Marketing" ],
+        [4, "EMEA",          "2019199", "Stratus Cloud Services",   "14108", "IT — APP OPERATIONS",   "SG&A · IT"        ],
+        [5, "North America", "2019229", "Meridian Tax Partners",    "14304", "TAX ADVISORY",          "SG&A · Tax"       ],
+        [6, "North America", "2019514", "Coastline Office Services","14411", "ADMIN & FACILITIES",    "SG&A · Admin"     ],
       ],
     }
   },
   data_cleansing: {
     conversations: [
-      { name: "Mereon GL Code Analysis", active: true },
-      { name: "Cost Elements by Sub-F…" },
-      { name: "Mereon Spend by Cat…" },
-      { name: "Vendor Spend Scatter b…" },
-      { name: "R&D Spend Combo Chart" },
-      { name: "Spend Type by Function …" },
-      { name: "Conversation 1197" },
+      { name: "NA Legal — GL Code Analysis", active: true },
+      { name: "Cost Elements by Sub-Function" },
+      { name: "Consulting Spend by Function" },
+      { name: "Vendor Spend Scatter — Indirect" },
+      { name: "Marketing Stack Decomposition" },
+      { name: "Regional SG&A Variance Pull" },
+      { name: "HR Outside Services — May" },
       { name: "Conversation 1196" },
     ],
     chat: [
       { role: "assistant",
         artifact: {
-          title: "Mereon GL Code Analysis",
-          intro: "Here is the full breakdown of **Cost Center 103071 — Sensory UX & Analytics** by function and sub-function:",
+          title: "NA Legal — GL Code Analysis",
+          intro: "Here is the activity decomposition of **Cost Center 14012 — North America Legal**, mapping the ~$5.2M non-labor pool to activity and driver:",
           sections: [
             { heading: "Function Overview",
-              body: "The cost center is dominated by **Research & Development**, which accounts for the vast majority of spend. There are three functions present in this cost center:" },
+              body: "NA Legal is one of 16 Legal cost centers globally. Non-labor decomposes cleanly by activity. The headline finding is that **Contract Preparation & Review**, the highest-volume activity in the function, shows up as one of the smallest non-labor lines — meaning the real cost is sitting in paralegal and counsel labor that has never been priced per driver unit." },
             { bullets: [
-              "**Research & Development** — primary function, split across two sub-functions:",
-              "**Sensory & Consumer Testing** (~$2.10M): largest sub-function, covering external research vendors such as Sam Sensory and Consumer Research ($805K), MMR Research ($591K combined), Peryam & Kroll ($332K), and Blackstraw ($220K).",
-              "**Food Science & Innovation** (~$254K): innovation-oriented spend, primarily Lux Research ($188K) and Peryam & Kroll Research GL ($66K).",
-              "**Information Technology** — small allocation (~$4.8K) under Sensory & Consumer Testing.",
-              "**Manufacturing** — minor allocation (~$388) under Health & Safety.",
+              "**Litigation & Claims** (~$2.7M): outside counsel for active disputes, settlements, and pre-litigation diligence.",
+              "**Compliance / Investigations / Privacy** (~$1.8M): regulatory monitoring, internal investigations, privacy reviews — heavy outside-counsel and SOP-driven advisory.",
+              "**Procurement Legal Work** (~$1.2M): vendor master-agreement support, sourcing-event legal, supplier dispute escalation.",
+              "**Contract Preparation & Review** (~$0.4M): strikingly small non-labor — first-pass NDAs, vendor contracts, customer contracts handled almost entirely by paralegal labor.",
             ]},
-            { heading: "Summary Table", table: {
-              cols: ["Function", "Sub-Function", "Total Spend"],
+            { heading: "Summary Table — Non-Labor by Activity", table: {
+              cols: ["Activity", "Driver", "Non-Labor Spend"],
               rows: [
-                ["Research & Development", "Sensory & Consumer Testing", "~$2,096,282"],
-                ["Research & Development", "Food Science & Innovation",  "~$254,146"],
-                ["Information Technology", "Sensory & Consumer Testing", "$4,757"],
-                ["Manufacturing",          "Health & Safety",             "$388"],
+                ["Litigation & Claims",                   "Active matters",          "~$2,700,000"],
+                ["Compliance / Investigations / Privacy", "Audits + investigations", "~$1,800,000"],
+                ["Procurement Legal Work",                 "Sourcing events",         "~$1,200,000"],
+                ["Contract Preparation & Review",          "NDAs + contracts",        "~$400,000"],
               ]
             }},
           ]
@@ -122,82 +122,85 @@ const TASK_PREVIEWS = {
   process_mapping: {
     artifact: {
       type: "process_map",
-      title: "Mereon Assessment Group — End-to-End Process Map",
-      subtitle: "Top-level value chain · click any activity for detail · ask AI ZBO to reshape",
+      title: "NorthStar Frozen Foods — End-to-End Value Chain",
+      subtitle: "Farm-to-freezer ops with the SG&A indirect engine on top · ask AI ZBO to reshape",
       steps: [
-        { name: "Item Development",  color: "#3b82f6", activities: [
-          { name: "Item Authoring",        tags: ["Manual"] },
-          { name: "AI-Assisted Drafting",  tags: ["AI"] },
-          { name: "Psychometric Review",   tags: ["Manual"] },
-          { name: "Content QA",            tags: ["Manual"] },
+        { name: "Agronomy & Sourcing",   color: "#3b82f6", activities: [
+          { name: "Crop Forecasting",        tags: ["Manual"] },
+          { name: "Grower Network Mgmt.",     tags: ["Manual"] },
+          { name: "Procurement Contracts",    tags: ["Manual"] },
+          { name: "Inbound QA",               tags: ["Vendor"] },
         ]},
-        { name: "Form Assembly",     color: "#6366f1", activities: [
-          { name: "Form Blueprint",        tags: ["Manual"] },
-          { name: "Item Selection",        tags: ["Manual"] },
-          { name: "Exposure Control",      tags: ["Automated"] },
-          { name: "Form Publish",          tags: ["Automated"] },
+        { name: "Raw Intake & Processing", color: "#6366f1", activities: [
+          { name: "Cutting & Blanching",      tags: ["Automated"] },
+          { name: "Freezing Lines",           tags: ["Automated"] },
+          { name: "Plant Operations",         tags: ["Manual"] },
+          { name: "Quality Control",          tags: ["Manual"] },
         ]},
-        { name: "Test Delivery",     color: "#8b5cf6", activities: [
-          { name: "Registration",          tags: ["Automated"] },
-          { name: "Scheduling",            tags: ["Automated"] },
-          { name: "Proctoring",            tags: ["Vendor"] },
-          { name: "Test Administration",   tags: ["Vendor"] },
+        { name: "Packaging",              color: "#8b5cf6", activities: [
+          { name: "Pack Engineering",         tags: ["Manual"] },
+          { name: "Materials Procurement",    tags: ["Vendor"] },
+          { name: "Brand Specs & Artwork",    tags: ["Manual"] },
+          { name: "Labeling & Compliance",    tags: ["Automated"] },
         ]},
-        { name: "Scoring",           color: "#a855f7", activities: [
-          { name: "AI Scoring",            tags: ["AI"] },
-          { name: "Human Rater Scoring",   tags: ["Manual"] },
-          { name: "Drift Monitoring",      tags: ["Automated"] },
-          { name: "Score Validation",      tags: ["Manual"] },
+        { name: "Cold-Chain Warehousing", color: "#a855f7", activities: [
+          { name: "Inventory Management",     tags: ["Automated"] },
+          { name: "Cold Storage Ops",         tags: ["Vendor"] },
+          { name: "Distribution Planning",    tags: ["Manual"] },
+          { name: "Compliance & Audits",      tags: ["Manual"] },
         ]},
-        { name: "Score Reporting",   color: "#d946ef", activities: [
-          { name: "Score Generation",      tags: ["Automated"] },
-          { name: "Report Templating",     tags: ["Automated"] },
-          { name: "AI-Narrated Insights",  tags: ["AI"] },
-          { name: "Score Release",         tags: ["Automated"] },
+        { name: "Outbound Logistics",      color: "#d946ef", activities: [
+          { name: "Carrier Management",       tags: ["Vendor"] },
+          { name: "Route Optimization",       tags: ["Automated"] },
+          { name: "Customer Delivery",        tags: ["Vendor"] },
+          { name: "Returns & Reverse Logist.",tags: ["Manual"] },
         ]},
-        { name: "Customer & Renewals", color: "#ec4899", activities: [
-          { name: "Test-Taker Support",    tags: ["Manual"] },
-          { name: "Institutional Support", tags: ["Manual"] },
-          { name: "Renewal Management",    tags: ["Manual"] },
-          { name: "B2B Account Mgmt.",     tags: ["Manual"] },
+        { name: "Customer (QSR / Foodservice / Retail)", color: "#ec4899", activities: [
+          { name: "Sales & Account Mgmt.",    tags: ["Manual"] },
+          { name: "Trade Marketing",          tags: ["Manual"] },
+          { name: "Customer Contracts",       tags: ["Manual"] },
+          { name: "Demand Planning",          tags: ["Manual"] },
         ]},
       ],
       chatLog: [
-        { role: "user",      text: "Highlight every activity where AI is the dominant lever today and where it could be tomorrow." },
-        { role: "assistant", text: "Today AI is the dominant lever in 3 activities: **AI-Assisted Drafting**, **AI Scoring**, and **AI-Narrated Insights**. Untapped opportunities sit in **Content QA**, **Item Selection**, **Drift Monitoring**, and **Test-Taker Support** — moving these to AI / automation lifts AI Automation Rate from 34% → 58% and structurally cuts cost-per-test by ~$5.10. Want me to add a 'next-gen' overlay to the map showing recommended target states?" },
+        { role: "user",      text: "Where on this map is AI the dominant lever today, and where is the biggest near-term opportunity on the SG&A side?" },
+        { role: "assistant", text: "Today AI is the dominant lever in only a narrow set of activities: **Route Optimization**, **Labeling & Compliance**, and **Inventory Management** — each at the operational layer. The biggest near-term SG&A opportunities sit in activities that look operational on the chevron but actually live inside the indirect engine: **Customer Contracts** (Legal first-pass review), **Trade Marketing** (brief drafting and post-campaign synthesis), **Brand Specs & Artwork** (concept generation), and **Procurement Contracts** (NDA + vendor review). Moving these four lifts AI Automation Rate from **22% → 48%** and unlocks ~$155M in run-rate against the $1.8B SG&A base. Want me to overlay the SG&A engine on top of the chevron, with each activity mapped to its labor and non-labor pool?" },
       ]
     }
   },
   cost_to_serve: {
     artifact: {
       title: "Cost-to-Serve Analytics",
-      subtitle: "Mereon Assessment Group · Q1 FY26",
+      subtitle: "NorthStar Frozen Foods · Indirect SG&A · TTM",
       sections: [
         { heading: "Headline",
-          body: "Cost-to-serve is concentrated in three product lines (Linguara Speaking & Writing, Mereon Skills Index, and Mereon AcademicEnglish) and two regions (APAC and EMEA). Together they account for 38% of revenue but 54% of fully-allocated cost." },
-        { heading: "By Product Line", table: {
-          cols: ["Product Line", "Revenue Share", "Cost Share", "Index"],
+          body: "Cost-to-serve is unevenly distributed across regions and customer channels. India and LATAM together account for **~13% of revenue but ~21% of fully-allocated SG&A**. On the channel side, retail private-label runs at a 1.40× cost-to-serve index — driven by trade-marketing labor and customer-contract overhead." },
+        { heading: "By Region", table: {
+          cols: ["Region", "Revenue Share", "SG&A Share", "Index"],
           rows: [
-            ["Linguara — Reading & Listening",   "31%", "24%", "0.77 ✓"],
-            ["GradPath",                          "22%", "20%", "0.91 ✓"],
-            ["Linguara — Speaking & Writing",     "14%", "21%", "1.50 ✗"],
-            ["Mereon Skills Index",               "8%",  "13%", "1.63 ✗"],
-            ["Mereon AcademicEnglish",            "6%",  "11%", "1.83 ✗"],
-            ["WorkLingua — Corporate",            "12%", "8%",  "0.67 ✓"],
-            ["Other",                             "7%",  "3%",  "0.43 ✓"],
+            ["Southeast Asia",   "9%",  "4%",  "0.49 ✓"],
+            ["Greater China",    "13%", "9%",  "0.71 ✓"],
+            ["ANZ",              "6%",  "5%",  "0.85 ✓"],
+            ["United Kingdom",   "14%", "13%", "0.92 ✓"],
+            ["North America",    "34%", "36%", "1.06"],
+            ["Continental EU",   "13%", "14%", "1.10 ✗"],
+            ["South Africa",     "3%",  "4%",  "1.31 ✗"],
+            ["Latin America",    "5%",  "7%",  "1.41 ✗"],
+            ["India",            "3%",  "8%",  "2.62 ✗"],
           ]
         }},
-        { heading: "By Geography", table: {
-          cols: ["Region", "Revenue Share", "Cost Share", "Index"],
+        { heading: "By Customer Channel", table: {
+          cols: ["Channel", "Revenue Share", "SG&A Share", "Index"],
           rows: [
-            ["North America", "44%", "36%", "0.82 ✓"],
-            ["EMEA",          "26%", "30%", "1.15 ✗"],
-            ["APAC",          "22%", "28%", "1.27 ✗"],
-            ["LATAM",         "8%",  "6%",  "0.75 ✓"],
+            ["QSR (national accounts)",       "38%", "30%", "0.79 ✓"],
+            ["Foodservice (distributor)",     "26%", "24%", "0.92 ✓"],
+            ["Retail (branded)",               "22%", "26%", "1.18 ✗"],
+            ["Retail (private-label)",         "10%", "14%", "1.40 ✗"],
+            ["Direct / Other",                  "4%",  "6%",  "1.50 ✗"],
           ]
         }},
         { heading: "Recommendation",
-          body: "Three of the top cost-to-serve indices sit in product lines with the lowest AI scoring share (Linguara Speaking & Writing 38% AI, Mereon Skills Index 18%, Mereon AcademicEnglish 22%). Sequencing the AI scoring rollout into these lines and the APAC region first lifts blended cost-to-serve back inside target. See Initiative Sizing & Business Case for a quantified plan." },
+          body: "Three of the four worst-indexed cells (India, Latin America, South Africa) cluster on the same root cause: low AI automation share inside Admin & Executive and Legal, plus duplicated marketing workflows that have never been consolidated. Anchor SEA as the internal target operating model and converge the bottom three regions to a 1.10× index over 18 months. Implied opportunity: ~$95M run-rate against the SG&A base, with the bulk landing inside the $150M consulting line and the $295M marketing stack. See Initiative Sizing & Business Case for the sized plan." },
       ]
     }
   }
@@ -376,7 +379,7 @@ function ChatPreview({ task }) {
 function ArtifactPreview({ task }) {
   const artifact = TASK_PREVIEWS[task.id]?.artifact || {
     title: task.label,
-    subtitle: "Mereon Assessment Group",
+    subtitle: "NorthStar Frozen Foods",
     sections: [
       { heading: "Overview", body: `This is the **${task.label}** artifact. Artifacts are focused, shareable reports generated from the data foundation and analyses upstream.` },
       { heading: "What goes here", body: "Sections, tables, charts, and call-outs that summarize the finding. Each artifact is regenerable from its source data." },
@@ -506,7 +509,7 @@ function ProcessMapArtifact({ map }) {
             onChange={e => setDraft(e.target.value)}
             onKeyDown={e => { if (e.key === "Enter") submit(); }}
             className="flex-1 bg-transparent text-sm outline-none placeholder-gray-400"
-            placeholder="e.g. Highlight target-state AI lanes, or collapse Test Delivery into a single bar…"
+            placeholder="e.g. Overlay the SG&A indirect engine on the value chain, or highlight AI-replaceable activities…"
           />
           <button onClick={submit} className="p-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700">{getIcon("Send", { size: 12 })}</button>
         </div>
@@ -602,7 +605,7 @@ function DiagnosticView() {
           {getIcon("Home", { size: 14, className: "text-gray-400" })}
           <span className="text-gray-500">Cost optimization</span>
           <span className="text-gray-300">›</span>
-          <span className="font-semibold text-gray-900">Mereon Assessment Group</span>
+          <span className="font-semibold text-gray-900">NorthStar Frozen Foods</span>
         </div>
       </div>
 
@@ -612,16 +615,16 @@ function DiagnosticView() {
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 mb-3">
-                <h1 className="text-2xl font-bold text-gray-900">Mereon Assessment Group</h1>
+                <h1 className="text-2xl font-bold text-gray-900">NorthStar Frozen Foods</h1>
                 <span className="w-4 h-4 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center text-[10px] font-semibold">i</span>
               </div>
               <div className="flex items-center gap-x-6 gap-y-2 flex-wrap text-xs">
                 {[
-                  { icon: "Briefcase", label: "Target Company", value: "Mereon Assessment Group" },
-                  { icon: "Layers",    label: "Industry",       value: "Education" },
-                  { icon: "FileText",  label: "Sub Industry",   value: "Testing & Assessment" },
-                  { icon: "Users",     label: "Users",          value: "10" },
-                  { icon: "Clock",     label: "Last Updated",   value: "4/30/2026" },
+                  { icon: "Briefcase", label: "Target Company", value: "NorthStar Frozen Foods" },
+                  { icon: "Layers",    label: "Industry",       value: "Frozen & Prepared Foods" },
+                  { icon: "FileText",  label: "Sub Industry",   value: "Multi-Region Manufacturing" },
+                  { icon: "Users",     label: "Users",          value: "12" },
+                  { icon: "Clock",     label: "Last Updated",   value: "5/01/2026" },
                 ].map((m, i) => (
                   <div key={i} className="flex items-center gap-1.5">
                     {getIcon(m.icon, { size: 13, className: "text-gray-400" })}
@@ -632,7 +635,7 @@ function DiagnosticView() {
                 <div className="flex items-center gap-1.5">
                   {getIcon("MessageCircle", { size: 13, className: "text-gray-400" })}
                   <span className="text-gray-500">Email:</span>
-                  <span className="font-medium text-gray-800">ci+mereon_assessment@agpm.ai</span>
+                  <span className="font-medium text-gray-800">ci+northstar_frozen@agpm.ai</span>
                 </div>
               </div>
             </div>
