@@ -597,22 +597,12 @@ function DiagnosticView() {
   return (
     <div className="overflow-y-auto h-full scrollbar-thin" style={{ background: "#f5f7fa" }}>
       {/* Sub-header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between flex-wrap gap-3">
+      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-3">
         <div className="flex items-center gap-2 text-sm">
           {getIcon("Home", { size: 14, className: "text-gray-400" })}
           <span className="text-gray-500">Cost optimization</span>
           <span className="text-gray-300">›</span>
           <span className="font-semibold text-gray-900">Mereon Assessment Group</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white shadow-sm">
-            {getIcon("Shield", { size: 14, className: "text-white" })}
-            COST OPTIMIZATION
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
-            {getIcon("Package", { size: 14, className: "text-gray-500" })}
-            SUPPLY CHAIN
-          </button>
         </div>
       </div>
 
