@@ -220,194 +220,48 @@ function AppTypeBadge({ type, size = "sm" }) {
   );
 }
 
-function PreviewShell({ task, onClose, children }) {
-  return (
-    <div className="fixed inset-0 z-50 bg-gray-900/40 flex items-stretch justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[1200px] flex flex-col overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200 flex-shrink-0">
-          <div className="flex items-center gap-3 min-w-0">
-            <button onClick={onClose} className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center flex-shrink-0">
-              {getIcon("ChevronUp", { size: 14, className: "rotate-[-90deg] text-gray-600" })}
-            </button>
-            <div className="min-w-0">
-              <div className="text-sm font-semibold text-gray-900 truncate">{task.label}</div>
-              <div className="text-xs text-gray-500 truncate">{task.description}</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <AppTypeBadge type={task.appType} />
-            <button onClick={onClose} className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500">
-              {getIcon("X", { size: 14 })}
-            </button>
-          </div>
-        </div>
-        <div className="flex-1 overflow-hidden bg-gray-50">{children}</div>
-      </div>
-    </div>
-  );
-}
+// ── SHARED MARKDOWN-LITE RENDERER ──
+const renderInlineMd = (str) => (str || "").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 
-// List Builder preview — chat panel + tabular grid with tabs (matches the
-// Vendor Spend Analysis frame).
-function ListBuilderPreview({ task }) {
-  const data = TASK_PREVIEWS[task.id]?.grid;
-  const chat = TASK_PREVIEWS[task.id]?.chat || [
-    { role: "assistant", text: `This is a List Builder workspace for **${task.label}**. The chat on the left drives transformations on the grid on the right. Multiple tabs at the bottom hold related sheets (mapping tables, raw extracts, derived views).` }
-  ];
-  const grid = data || {
-    title: task.label,
-    tabs: [{ name: "Master", count: 0, active: true }],
-    columns: ["id", "name", "value", "status"],
-    rows: [["—", "—", "—", "—"]],
-  };
-
+// ── ARTIFACT BLOCK (sections / bullets / tables) ──
+function ArtifactBlock({ artifact, inline = false }) {
   return (
-    <div className="h-full flex">
-      {/* Chat panel */}
-      <div className="w-[420px] flex-shrink-0 bg-white border-r border-gray-200 flex flex-col">
-        <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold">AI</span>
-            <span className="text-sm font-semibold text-gray-900">{task.label}</span>
-          </div>
-          <button className="text-xs text-gray-400 hover:text-blue-600">View template</button>
-        </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
-          {chat.map((m, i) => (
-            <div key={i} className={`text-xs leading-relaxed ${m.role === "user" ? "ml-auto bg-blue-600 text-white px-3 py-2 rounded-lg max-w-[85%]" : "bg-gray-50 border border-gray-200 px-3 py-2 rounded-lg"}`}>
-              {m.text.split("\n").map((line, li) => (
-                <p key={li} className={li > 0 ? "mt-1" : ""} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") }} />
+    <div className={inline ? "mt-3 border border-gray-200 rounded-xl p-5 bg-white" : ""}>
+      {artifact.title && <h2 className="text-xl font-bold text-gray-900 mb-1">{artifact.title}</h2>}
+      {artifact.subtitle && <div className="text-xs text-gray-500 mb-4">{artifact.subtitle}</div>}
+      {artifact.intro && <p className="text-sm text-gray-700 mb-5" dangerouslySetInnerHTML={{ __html: renderInlineMd(artifact.intro) }} />}
+      {(artifact.sections || []).map((s, i) => (
+        <div key={i} className={i > 0 ? "mt-5" : ""}>
+          {s.heading && <h3 className="text-sm font-semibold text-gray-900 mb-2 border-t border-gray-100 pt-4">{s.heading}</h3>}
+          {s.body && <p className="text-sm text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: renderInlineMd(s.body) }} />}
+          {s.bullets && (
+            <ul className="text-sm text-gray-700 leading-relaxed space-y-1 list-disc pl-5">
+              {s.bullets.map((b, bi) => (
+                <li key={bi} dangerouslySetInnerHTML={{ __html: renderInlineMd(b) }} />
               ))}
-            </div>
-          ))}
-        </div>
-        <div className="p-3 border-t border-gray-100 flex-shrink-0">
-          <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
-            <input className="flex-1 bg-transparent text-xs outline-none" placeholder="Ask your questions / select 'Files'…" />
-            <button className="p-1 rounded bg-blue-600 text-white">{getIcon("Send", { size: 12 })}</button>
-          </div>
-        </div>
-      </div>
-
-      {/* Grid panel */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <div className="px-5 py-3 border-b border-gray-200 bg-white flex items-center justify-between flex-shrink-0">
-          <div className="text-sm font-semibold text-gray-900">{grid.title}</div>
-          <button className="text-gray-400 hover:text-blue-600">{getIcon("ArrowDownRight", { size: 14 })}</button>
-        </div>
-        <div className="flex-1 overflow-auto bg-white">
-          <table className="w-full text-xs">
-            <thead className="bg-gray-50 sticky top-0">
-              <tr className="border-b border-gray-200">
-                {grid.columns.map((c, i) => (
-                  <th key={i} className="text-left px-3 py-2 font-semibold text-gray-600 whitespace-nowrap">{c}</th>
+            </ul>
+          )}
+          {s.table && (
+            <table className="w-full text-xs mt-2 border border-gray-200 rounded">
+              <thead className="bg-gray-50">
+                <tr>{s.table.cols.map((c, ci) => <th key={ci} className="text-left px-3 py-2 font-semibold text-gray-700 border-b border-gray-200">{c}</th>)}</tr>
+              </thead>
+              <tbody>
+                {s.table.rows.map((row, ri) => (
+                  <tr key={ri} className="border-b border-gray-100 last:border-0">
+                    {row.map((cell, ci) => <td key={ci} className="px-3 py-2 text-gray-800">{cell}</td>)}
+                  </tr>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {grid.rows.map((row, ri) => (
-                <tr key={ri} className="border-b border-gray-100 bg-emerald-50/50">
-                  {row.map((cell, ci) => (
-                    <td key={ci} className="px-3 py-2 text-gray-800 whitespace-nowrap">{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          )}
         </div>
-        <div className="px-5 py-2 border-t border-gray-200 bg-white flex items-center gap-4 flex-shrink-0 overflow-x-auto">
-          {grid.tabs.map((t, i) => (
-            <button key={i} className={`text-xs whitespace-nowrap pb-1 border-b-2 ${t.active ? "border-blue-600 text-blue-700 font-semibold" : "border-transparent text-gray-500 hover:text-gray-800"}`}>
-              {t.name} <span className="text-gray-400">({t.count})</span>
-            </button>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   );
 }
 
-// Chat preview — conversation list + chat thread, may inline an artifact.
-function ChatPreview({ task }) {
-  const preview = TASK_PREVIEWS[task.id] || {};
-  const conversations = preview.conversations || [
-    { name: `${task.label} session`, active: true },
-    { name: "Earlier session" },
-  ];
-  const messages = preview.chat || [
-    { role: "assistant", text: `This is a Chat workspace for **${task.label}**. Conversations live in the left pane; the assistant produces inline artifacts on the right.` }
-  ];
-
-  return (
-    <div className="h-full flex">
-      {/* Conversation sidebar */}
-      <div className="w-[260px] flex-shrink-0 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-3 border-b border-gray-100 flex-shrink-0">
-          <div className="text-xs font-semibold text-gray-500 mb-2">Conversation</div>
-          <button className="w-full flex items-center justify-center gap-1.5 text-xs font-medium border border-gray-200 rounded-lg py-1.5 hover:border-blue-300 hover:text-blue-600">
-            {getIcon("MessageSquare", { size: 12 })} New Conversation
-          </button>
-        </div>
-        <div className="flex-1 overflow-y-auto p-2 space-y-0.5 scrollbar-thin">
-          {conversations.map((c, i) => (
-            <div key={i} className={`flex items-center justify-between px-2.5 py-2 rounded-md text-xs cursor-pointer ${c.active ? "bg-blue-50 text-blue-700 font-medium" : "text-gray-600 hover:bg-gray-50"}`}>
-              <span className="truncate">{c.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Chat / artifact area */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin">
-        <div className="px-6 py-5 max-w-[900px] mx-auto">
-          {messages.map((m, i) => (
-            <div key={i} className="flex items-start gap-3 mb-5">
-              <span className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">AI</span>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold text-gray-900 mb-1">AI ZBO</div>
-                {m.text && <p className="text-sm text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: m.text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") }} />}
-                {m.artifact && <ArtifactBlock artifact={m.artifact} inline />}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Artifact preview — focused report view. Dispatches to a specialized
-// component when the artifact has a recognized `type`.
-function ArtifactPreview({ task }) {
-  const artifact = TASK_PREVIEWS[task.id]?.artifact || {
-    title: task.label,
-    subtitle: "NorthStar Frozen Foods",
-    sections: [
-      { heading: "Overview", body: `This is the **${task.label}** artifact. Artifacts are focused, shareable reports generated from the data foundation and analyses upstream.` },
-      { heading: "What goes here", body: "Sections, tables, charts, and call-outs that summarize the finding. Each artifact is regenerable from its source data." },
-    ],
-  };
-  if (artifact.type === "process_map") {
-    return (
-      <div className="h-full overflow-y-auto bg-white scrollbar-thin">
-        <div className="px-8 py-8">
-          <ProcessMapArtifact map={artifact} />
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div className="h-full overflow-y-auto bg-white scrollbar-thin">
-      <div className="max-w-[900px] mx-auto px-8 py-8">
-        <ArtifactBlock artifact={artifact} />
-      </div>
-    </div>
-  );
-}
-
-// Visually-enriched, conversationally-shapeable artifact: chevron-based
-// process map with sub-activity cards, tag legend, and a natural-language
-// pane to ask AI ZBO to reshape it.
+// ── PROCESS MAP ARTIFACT (chevron value chain) ──
 const PROCESS_MAP_TAG_STYLES = {
   AI:        "bg-blue-50 text-blue-700 border-blue-100",
   Automated: "bg-purple-50 text-purple-700 border-purple-100",
@@ -415,17 +269,11 @@ const PROCESS_MAP_TAG_STYLES = {
   Vendor:    "bg-emerald-50 text-emerald-700 border-emerald-100",
 };
 
-function ProcessMapArtifact({ map }) {
-  const [draft, setDraft] = React.useState("");
-  const [log, setLog] = React.useState(map.chatLog || []);
-  const submit = () => {
-    if (!draft.trim()) return;
-    setLog([...log, { role: "user", text: draft.trim() }, { role: "assistant", text: "Got it — reshaping the map. (Demo: edits are applied conceptually; in production this would update the artifact in place.)" }]);
-    setDraft("");
-  };
-
+// `embedded` skips the internal NL pane — use it when the artifact is rendered
+// next to an external chat panel (the standard workspace layout).
+function ProcessMapArtifact({ map, embedded = false }) {
   const cols = map.steps.length;
-  const colCls = cols === 6 ? "grid-cols-6" : cols === 5 ? "grid-cols-5" : "grid-cols-4";
+  const colCls = cols >= 6 ? "grid-cols-6" : cols === 5 ? "grid-cols-5" : "grid-cols-4";
 
   return (
     <div>
@@ -433,7 +281,7 @@ function ProcessMapArtifact({ map }) {
       <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
         <div>
           <h2 className="text-xl font-bold text-gray-900">{map.title}</h2>
-          <p className="text-xs text-gray-500 mt-1">{map.subtitle}</p>
+          {map.subtitle && <p className="text-xs text-gray-500 mt-1">{map.subtitle}</p>}
         </div>
         <div className="flex items-center gap-2 flex-wrap text-[11px]">
           <span className="text-gray-500">Legend:</span>
@@ -467,7 +315,7 @@ function ProcessMapArtifact({ map }) {
       </div>
 
       {/* Sub-activity columns */}
-      <div className={`grid ${colCls} gap-3 mb-8`}>
+      <div className={`grid ${colCls} gap-3 mb-2`}>
         {map.steps.map((step, i) => (
           <div key={i} className="space-y-2">
             {step.activities.map((a, ai) => (
@@ -490,81 +338,194 @@ function ProcessMapArtifact({ map }) {
         ))}
       </div>
 
-      {/* Natural-language shaping pane */}
-      <div className="border-t border-gray-200 pt-5">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">AI</span>
-          <span className="text-sm font-semibold text-gray-900">Shape this map with AI ZBO</span>
+      {/* Inline NL pane is skipped when embedded — the workspace's left panel
+          already provides the chat. Kept for any standalone usage. */}
+      {!embedded && (
+        <div className="border-t border-gray-200 pt-5 mt-6 text-xs text-gray-400 italic">
+          Open in workspace to shape this map with AI ZBO.
         </div>
-        <div className="space-y-2 mb-3">
-          {log.map((m, i) => (
-            <div key={i} className={m.role === "user"
-              ? "ml-auto bg-blue-600 text-white text-xs px-3 py-2 rounded-lg max-w-[80%]"
-              : "bg-gray-50 border border-gray-200 text-xs text-gray-700 px-3 py-2 rounded-lg max-w-[90%] leading-relaxed"
-            } dangerouslySetInnerHTML={{ __html: m.text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") }} />
-          ))}
+      )}
+    </div>
+  );
+}
+
+// ── AI ZBO CHAT PANEL (universal left side of every task workspace) ──
+function AIChatPanel({ task }) {
+  // Pull seed messages from the task's preview content. Process maps store
+  // their seeded exchanges under `chatLog` on the artifact; chat-type previews
+  // store them under `chat`. List Builder previews also use `chat`.
+  const preview = TASK_PREVIEWS[task.id] || {};
+  const seedFromMap = preview.artifact?.chatLog;
+  const seedFromChat = preview.chat;
+  const seed = (seedFromMap || seedFromChat || [
+    { role: "assistant", text: `This is the **${task.label}** workspace. I can shape the ${task.appType === "list-builder" ? "grid" : task.appType === "artifact" ? "artifact" : "output"} on the right via natural language. Ask a question or give an instruction to start.` }
+  ]).map(m => m.text || (m.artifact ? { artifactRef: m.artifact.title } : null) ? m : { ...m, text: m.text || (m.artifact ? `Drafted **${m.artifact.title}** in the workspace on the right.` : "") });
+
+  const [log, setLog] = React.useState(seed);
+  const [draft, setDraft] = React.useState("");
+  const endRef = React.useRef(null);
+  React.useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [log]);
+
+  const submit = () => {
+    const t = draft.trim();
+    if (!t) return;
+    setLog((cur) => [
+      ...cur,
+      { role: "user", text: t },
+      { role: "assistant", text: "Got it — I've reflected the change in the workspace on the right. (Demo: edits applied conceptually; in production this is a live transformation.)" },
+    ]);
+    setDraft("");
+  };
+
+  return (
+    <div className="w-[380px] flex-shrink-0 bg-white border-r border-gray-200 flex flex-col">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2 flex-shrink-0">
+        <span className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">AI</span>
+        <div className="min-w-0 flex-1">
+          <div className="text-sm font-semibold text-gray-900 truncate">AI ZBO</div>
+          <div className="text-[10px] text-gray-500 truncate">Shaping {task.label}</div>
         </div>
-        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+        <AppTypeBadge type={task.appType} />
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
+        {log.map((m, i) => (
+          <div
+            key={i}
+            className={m.role === "user"
+              ? "ml-auto bg-blue-600 text-white text-xs px-3 py-2 rounded-lg max-w-[85%] leading-relaxed"
+              : "bg-gray-50 border border-gray-200 text-xs text-gray-700 px-3 py-2 rounded-lg leading-relaxed"
+            }
+            dangerouslySetInnerHTML={{ __html: renderInlineMd(m.text).split("\n").join("<br/>") }}
+          />
+        ))}
+        <div ref={endRef} />
+      </div>
+      <div className="p-3 border-t border-gray-100 flex-shrink-0">
+        <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus-within:bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
           <span className="text-gray-300">{getIcon("Sparkles", { size: 14 })}</span>
           <input
             value={draft}
-            onChange={e => setDraft(e.target.value)}
-            onKeyDown={e => { if (e.key === "Enter") submit(); }}
-            className="flex-1 bg-transparent text-sm outline-none placeholder-gray-400"
-            placeholder="e.g. Overlay the SG&A indirect engine on the value chain, or highlight AI-replaceable activities…"
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") submit(); }}
+            className="flex-1 bg-transparent text-xs outline-none placeholder-gray-400"
+            placeholder="Ask AI ZBO to shape the workspace…"
           />
-          <button onClick={submit} className="p-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700">{getIcon("Send", { size: 12 })}</button>
+          <button onClick={submit} className="p-1 rounded bg-blue-600 text-white hover:bg-blue-700">{getIcon("Send", { size: 12 })}</button>
         </div>
       </div>
     </div>
   );
 }
 
-function ArtifactBlock({ artifact, inline = false }) {
+// ── RIGHT-PANEL CONTENT (one component per app type) ──
+
+// List Builder right panel: tabular grid + tabs.
+function GridContent({ task }) {
+  const grid = TASK_PREVIEWS[task.id]?.grid || {
+    title: task.label,
+    tabs: [{ name: "Master", count: 0, active: true }],
+    columns: ["id", "name", "value", "status"],
+    rows: [["—", "—", "—", "—"]],
+  };
   return (
-    <div className={inline ? "mt-3 border border-gray-200 rounded-xl p-5 bg-white" : ""}>
-      {artifact.title && <h2 className="text-xl font-bold text-gray-900 mb-1">{artifact.title}</h2>}
-      {artifact.subtitle && <div className="text-xs text-gray-500 mb-4">{artifact.subtitle}</div>}
-      {artifact.intro && <p className="text-sm text-gray-700 mb-5" dangerouslySetInnerHTML={{ __html: artifact.intro.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") }} />}
-      {(artifact.sections || []).map((s, i) => (
-        <div key={i} className={i > 0 ? "mt-5" : ""}>
-          {s.heading && <h3 className="text-sm font-semibold text-gray-900 mb-2 border-t border-gray-100 pt-4">{s.heading}</h3>}
-          {s.body && <p className="text-sm text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: s.body.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") }} />}
-          {s.bullets && (
-            <ul className="text-sm text-gray-700 leading-relaxed space-y-1 list-disc pl-5">
-              {s.bullets.map((b, bi) => (
-                <li key={bi} dangerouslySetInnerHTML={{ __html: b.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>") }} />
+    <div className="flex-1 flex flex-col min-w-0 bg-white">
+      <div className="px-5 py-3 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+        <div className="text-sm font-semibold text-gray-900">{grid.title}</div>
+        <button className="text-gray-400 hover:text-blue-600">{getIcon("ArrowDownRight", { size: 14 })}</button>
+      </div>
+      <div className="flex-1 overflow-auto">
+        <table className="w-full text-xs">
+          <thead className="bg-gray-50 sticky top-0">
+            <tr className="border-b border-gray-200">
+              {grid.columns.map((c, i) => (
+                <th key={i} className="text-left px-3 py-2 font-semibold text-gray-600 whitespace-nowrap">{c}</th>
               ))}
-            </ul>
-          )}
-          {s.table && (
-            <table className="w-full text-xs mt-2 border border-gray-200 rounded">
-              <thead className="bg-gray-50">
-                <tr>{s.table.cols.map((c, ci) => <th key={ci} className="text-left px-3 py-2 font-semibold text-gray-700 border-b border-gray-200">{c}</th>)}</tr>
-              </thead>
-              <tbody>
-                {s.table.rows.map((row, ri) => (
-                  <tr key={ri} className="border-b border-gray-100 last:border-0">
-                    {row.map((cell, ci) => <td key={ci} className="px-3 py-2 text-gray-800">{cell}</td>)}
-                  </tr>
+            </tr>
+          </thead>
+          <tbody>
+            {grid.rows.map((row, ri) => (
+              <tr key={ri} className="border-b border-gray-100 bg-emerald-50/50">
+                {row.map((cell, ci) => (
+                  <td key={ci} className="px-3 py-2 text-gray-800 whitespace-nowrap">{cell}</td>
                 ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="px-5 py-2 border-t border-gray-200 flex items-center gap-4 flex-shrink-0 overflow-x-auto">
+        {grid.tabs.map((t, i) => (
+          <button key={i} className={`text-xs whitespace-nowrap pb-1 border-b-2 ${t.active ? "border-blue-600 text-blue-700 font-semibold" : "border-transparent text-gray-500 hover:text-gray-800"}`}>
+            {t.name} <span className="text-gray-400">({t.count})</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
-function TaskPreview({ task, onClose }) {
-  if (!task) return null;
+// Artifact right panel: dispatches to ProcessMapArtifact for visual artifacts,
+// falls back to ArtifactBlock for sectioned reports.
+function ArtifactContent({ task }) {
+  const artifact = TASK_PREVIEWS[task.id]?.artifact || {
+    title: task.label,
+    subtitle: "NorthStar Frozen Foods",
+    sections: [
+      { heading: "Overview", body: `This is the **${task.label}** artifact. Artifacts are focused, shareable reports generated from the data foundation and analyses upstream.` },
+      { heading: "What goes here", body: "Sections, tables, charts, and call-outs that summarize the finding. Each artifact is regenerable from its source data." },
+    ],
+  };
+  if (artifact.type === "process_map") {
+    return (
+      <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+        <div className="p-6"><ProcessMapArtifact map={artifact} embedded /></div>
+      </div>
+    );
+  }
   return (
-    <PreviewShell task={task} onClose={onClose}>
-      {task.appType === "list-builder" && <ListBuilderPreview task={task} />}
-      {task.appType === "chat" && <ChatPreview task={task} />}
-      {task.appType === "artifact" && <ArtifactPreview task={task} />}
-    </PreviewShell>
+    <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+      <div className="max-w-[900px] mx-auto px-8 py-8">
+        <ArtifactBlock artifact={artifact} />
+      </div>
+    </div>
+  );
+}
+
+// Chat right panel: surfaces the most-recent inline artifact produced in the
+// conversation (which lives on the left). When no artifact is present, shows
+// a friendly placeholder.
+function ChatArtifactContent({ task }) {
+  const messages = TASK_PREVIEWS[task.id]?.chat || [];
+  const latestArtifact = [...messages].reverse().find((m) => m.artifact)?.artifact;
+  if (latestArtifact) {
+    return (
+      <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+        <div className="max-w-[900px] mx-auto px-8 py-8">
+          <ArtifactBlock artifact={latestArtifact} />
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="flex-1 flex items-center justify-center bg-white text-sm text-gray-400 px-8 text-center">
+      Output artifacts will render here. Ask AI ZBO a question on the left to begin.
+    </div>
+  );
+}
+
+function ContentPanel({ task }) {
+  if (task.appType === "list-builder") return <GridContent task={task} />;
+  if (task.appType === "chat")          return <ChatArtifactContent task={task} />;
+  return <ArtifactContent task={task} />;
+}
+
+// ── TASK WORKSPACE — chat (left) + content (right), no modal ──
+function TaskWorkspace({ task }) {
+  return (
+    <div className="flex-1 flex h-full overflow-hidden">
+      <AIChatPanel task={task} />
+      <ContentPanel task={task} />
+    </div>
   );
 }
 
@@ -573,9 +534,9 @@ function TaskPreview({ task, onClose }) {
 function TaskTile({ task, onOpen }) {
   return (
     <div
-      onDoubleClick={() => onOpen(task)}
+      onClick={() => onOpen(task)}
       className="flex items-center justify-between gap-2 bg-white border border-blue-100 rounded-lg px-3 py-2.5 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer"
-      title="Double-click to open preview"
+      title="Open workspace"
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">
         <span className="flex-shrink-0 w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center border border-blue-100">
@@ -600,17 +561,36 @@ function DiagnosticView() {
   const [openTask, setOpenTask] = React.useState(null);
 
   return (
-    <div className="overflow-y-auto h-full scrollbar-thin" style={{ background: "#f5f7fa" }}>
-      {/* Sub-header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-3">
-        <div className="flex items-center gap-2 text-sm">
-          {getIcon("Home", { size: 14, className: "text-gray-400" })}
-          <span className="text-gray-500">Cost optimization</span>
-          <span className="text-gray-300">›</span>
-          <span className="font-semibold text-gray-900">NorthStar Frozen Foods</span>
-        </div>
+    <div className="flex flex-col h-full" style={{ background: "#f5f7fa" }}>
+      {/* Static breadcrumb header — always visible, updates with the open task. */}
+      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-2 text-sm flex-shrink-0">
+        {getIcon("Home", { size: 14, className: "text-gray-400" })}
+        <span className="text-gray-500">Cost optimization</span>
+        <span className="text-gray-300">›</span>
+        <button
+          onClick={() => setOpenTask(null)}
+          className={openTask ? "text-gray-500 hover:text-blue-600 transition-colors" : "font-semibold text-gray-900 cursor-default"}
+        >
+          NorthStar Frozen Foods
+        </button>
+        {openTask && (
+          <>
+            <span className="text-gray-300">›</span>
+            <span className="font-semibold text-gray-900 truncate">{openTask.label}</span>
+            <span className="ml-1 flex-shrink-0"><AppTypeBadge type={openTask.appType} /></span>
+          </>
+        )}
       </div>
 
+      {/* Body — task list when no task is open, full workspace when one is. */}
+      {openTask ? <TaskWorkspace task={openTask} /> : <DiagnosticHome onOpenTask={setOpenTask} />}
+    </div>
+  );
+}
+
+function DiagnosticHome({ onOpenTask }) {
+  return (
+    <div className="overflow-y-auto flex-1 scrollbar-thin">
       <div className="p-6">
         {/* Client info card */}
         <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-6">
@@ -670,7 +650,7 @@ function DiagnosticView() {
           <AppTypeBadge type="chat" />
           <AppTypeBadge type="list-builder" />
           <AppTypeBadge type="artifact" />
-          <span className="text-gray-400">· double-click any task to preview</span>
+          <span className="text-gray-400">· click any task to open its workspace</span>
         </div>
 
         {/* Task groupings */}
@@ -682,14 +662,12 @@ function DiagnosticView() {
                 <span className="text-xs text-blue-600 font-medium">{g.tasks.length} task{g.tasks.length === 1 ? "" : "s"}</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                {g.tasks.map((t) => <TaskTile key={t.id} task={t} onOpen={setOpenTask} />)}
+                {g.tasks.map((t) => <TaskTile key={t.id} task={t} onOpen={onOpenTask} />)}
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      {openTask && <TaskPreview task={openTask} onClose={() => setOpenTask(null)} />}
     </div>
   );
 }
