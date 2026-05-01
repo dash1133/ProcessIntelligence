@@ -1307,37 +1307,48 @@ function App() {
       {/* Top Header */}
       <header className="bg-white border-b border-gray-200 px-5 py-2.5 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-6">
-          {/* Logo */}
+          {/* Logo — drop the actual A&M asset at assets/am-logo.png and the
+              <img> below will pick it up; the inline placeholder renders if
+              the asset is missing. */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{background:"#1e3a6e"}}>
-              <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
-                <rect x="0" y="9" width="3.5" height="7" rx="0.5" fill="white"/>
-                <rect x="5.5" y="5.5" width="3.5" height="10.5" rx="0.5" fill="white"/>
-                <rect x="11" y="2" width="3.5" height="14" rx="0.5" fill="white"/>
-                <rect x="16.5" y="0" width="3.5" height="16" rx="0.5" fill="white"/>
-              </svg>
+            <div className="flex-shrink-0 relative">
+              <img
+                src="assets/am-logo.png"
+                alt="A&M"
+                className="w-10 h-10 object-contain"
+                onError={(e) => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+              />
+              <div className="w-10 h-10 rounded-md hidden items-center justify-center" style={{ background: "#0f2c54" }}>
+                <span className="text-white text-[11px] font-bold tracking-tight leading-none">A&amp;M</span>
+              </div>
             </div>
             <div className="leading-tight">
-              <div className="text-sm font-bold text-gray-900" style={{letterSpacing:"-0.01em"}}>Margin Intelligence</div>
-              <div className="text-[10px] text-gray-400">by ComOps</div>
+              <div className="text-sm font-bold text-gray-900" style={{letterSpacing:"-0.01em"}}>AI ZBO</div>
+              <div className="text-[10px] text-gray-400 uppercase tracking-wider">by COMOPS</div>
             </div>
           </div>
           {/* Breadcrumb */}
           <button onClick={() => setActiveView("dashboard")} className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors">
             {getIcon("Home", { size: 15, className: "text-gray-400" })}
-            <span>Leave Behind</span>
+            <span>KPI Monitoring</span>
           </button>
         </div>
 
         {/* Center Tabs */}
         <div className="flex items-center gap-2">
-          <button onClick={() => setActiveView("diagnostic")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeView === "diagnostic" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+          <button onClick={() => setActiveView("diagnostic")} className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeView === "diagnostic" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
             {getIcon("Activity", { size: 15, className: activeView === "diagnostic" ? "text-white" : "text-gray-500" })}
-            Diagnostic
+            <span className="leading-tight text-left">
+              <span className="block">Diagnostic</span>
+              <span className={`block text-[9px] font-normal ${activeView === "diagnostic" ? "text-blue-100" : "text-gray-400"}`}>Internal A&amp;M</span>
+            </span>
           </button>
-          <button onClick={() => setActiveView("dashboard")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeView === "dashboard" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+          <button onClick={() => setActiveView("dashboard")} className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeView === "dashboard" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
             {getIcon("Home", { size: 15, className: activeView === "dashboard" ? "text-white" : "text-gray-500" })}
-            Leave Behind
+            <span className="leading-tight text-left">
+              <span className="block">KPI Monitoring</span>
+              <span className={`block text-[9px] font-normal ${activeView === "dashboard" ? "text-blue-100" : "text-gray-400"}`}>Client Leave Behind</span>
+            </span>
           </button>
         </div>
 
@@ -1346,14 +1357,21 @@ function App() {
           <div className="relative cursor-pointer" onClick={() => setActiveView("alerts")}>
             {getIcon("Bell", { size: 18, className: "text-gray-400 hover:text-gray-600" })}
           </div>
-          <div className="flex items-center gap-2.5 cursor-pointer">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold" style={{background:"#1e3a6e"}}>D</div>
-            <div className="text-right">
-              <div className="text-sm font-medium text-gray-900">Daniel Reyes</div>
-              <div className="text-xs text-gray-400">Chief Operating Officer · Princeton, NJ</div>
-            </div>
-            {getIcon("ChevronDown", { size: 14, className: "text-gray-400" })}
-          </div>
+          {(() => {
+            const persona = activeView === "diagnostic"
+              ? { name: "Priya Nair",   initial: "P", company: "A&M ComOps" }
+              : { name: "Daniel Reyes", initial: "D", company: "Mereon Assessment Group" };
+            return (
+              <div className="flex items-center gap-2.5 cursor-pointer">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold" style={{background:"#1e3a6e"}}>{persona.initial}</div>
+                <div className="text-right leading-tight">
+                  <div className="text-sm font-medium text-gray-900">{persona.name}</div>
+                  <div className="text-xs text-gray-400">{persona.company}</div>
+                </div>
+                {getIcon("ChevronDown", { size: 14, className: "text-gray-400" })}
+              </div>
+            );
+          })()}
         </div>
       </header>
 
