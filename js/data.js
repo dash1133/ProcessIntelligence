@@ -1,5 +1,18 @@
 // ── DATA ──
-const COMPANY = { name: "NorthStar Frozen Foods", type: "Frozen & Prepared Foods Manufacturer", tagline: "Farm-to-Freezer at Global Scale", regions: 9, plants: 38, employees: 22000, annualRevenue: "$16.0B", sgaSpend: "$1.8B", sgaIntensity: "11.2%" };
+const COMPANY = {
+  name: "NorthStar Frozen Foods",
+  type: "Frozen & Prepared Foods Manufacturer",
+  tagline: "Farm-to-Freezer at Global Scale",
+  regions: 9,                      // NA, UK, Cont. EU, LATAM, ANZ, S. Africa, India, SEA, Greater China
+  annualTonnage: "~5.0M tonnes",
+  employees: 22000,
+  annualRevenue: "$16.0B",
+  sgaSpend: "$1.8B",
+  sgaIntensity: "11.2%",           // of net sales
+  sgaLaborSpend: "~$850M",         // ~47% of SG&A — balanced indirect engine
+  sgaNonLaborSpend: "~$940M",      // ~53% of SG&A
+  regionalIntensityRange: "5.5%–17.5%",  // SEA best · India worst · 3.2× spread
+};
 
 const PROCESS_AREAS = ["Administrative & Executive", "Selling", "Marketing & Media", "Legal & Compliance"];
 
@@ -63,7 +76,7 @@ const RECENT_TASKS = [
 const ALERTS = [
   { id: 1, type: "consulting_overrun", priority: "critical", category: "Consulting Spend",
     title: "Outside Consulting Pacing $50M Over Plan",
-    detail: "Consulting & Outside Services tracking $150M YTD vs $100M plan. Concentration: Corporate HR ~$24M, IT-adjacent (InfoSec, SAP/Digital, App Ops) ~$25M, Tax ~$5M. Same scopes are largely SOP-driven analyst, advisory, and content work — high token-replaceability.",
+    detail: "Consulting & Outside Services tracking $150M YTD vs $100M plan. Concentration: Corporate HR ~$24M — roughly the fully-loaded cost of 200 HR FTEs — IT-adjacent ~$25M (InfoSec $7M, SAP/Digital $7M, App Ops $6M), Global Commercial ~$8M, Tax ~$5M, Global Marketing ~$4.5M. Same scopes are largely SOP-driven analyst, advisory, and content work, sitting alongside the ~$850M internal SG&A labor base doing closely related activities. High token-replaceability.",
     metric: "+$50M vs plan", impact: "0.3pp drag on SG&A intensity",
     action: "Stand up an in-house AI agent pool for HR analyst, IT advisory, and Tax research scopes. Cap external POs > $250K pending review. Redeploy freed indirect labor capacity to higher-leverage roles.",
     categories: ["Administrative & Executive"],
@@ -79,8 +92,8 @@ const ALERTS = [
 
   { id: 3, type: "legal_unit_cost", priority: "high", category: "Legal Unit Cost",
     title: "Cost-per-Contract: NA Legal at 5–6× UK",
-    detail: "Legal function runs across 16 cost centers in 9 regions: ~$11M non-labor + ~$35–40M labor. On a normalized cost-per-contract basis (NDAs by prospect count, vendor contracts by supplier base, customer contracts by active accounts, employment agreements by hires), NA Legal sits at 5–6× UK. Contract Preparation & Review — the highest-volume activity — shows up as only ~$0.4M of non-labor, signalling that the cost is hidden inside paralegal and counsel labor that has never been priced per driver unit.",
-    metric: "$1,840/contract NA · $320 UK", impact: "First-pass review is AI-replaceable in ~30s",
+    detail: "Legal runs across 16 cost centers in 9 regions: ~$11M non-labor (NA $5.2M, UK $2.1M, France $0.8M, country outposts $10K–$20K) + ~$35–40M labor. The non-labor decomposes by activity into Litigation & Claims ~$2.7M, Compliance/Investigations/Privacy ~$1.8M, Procurement legal ~$1.2M, and — strikingly — Contract Preparation & Review at only ~$0.4M. That last number is the tell: contract review is the highest-volume, most repeatable activity in the function, yet it shows up as one of the smallest non-labor lines because the real cost is sitting in paralegal and counsel labor that has never been priced per driver unit. Apply the driver lens (NDAs/prospect, vendor contracts/supplier base, customer contracts/account, employment agreements/hire) and NA Legal runs 5–6× UK.",
+    metric: "$1,840/contract NA · $320 UK", impact: "Reframes Legal from 'labor is what it is' to 'labor is mispriced because we never measured what it does'",
     action: "Pilot AI first-pass NDA and vendor-contract review with 10% paralegal spot-check in NA. Re-base cost-per-contract; reallocate paralegal capacity to higher-judgment work.",
     categories: ["Legal & Compliance"],
     dateGenerated: "May 1 · 7:00 AM", audience: "Legal & Procurement Leads", audienceType: "group", frequency: "Weekly", schedule: "On regional cost-per-contract variance > 3×" },
@@ -133,7 +146,7 @@ const SIMULATIONS = [
 ];
 
 const INITIAL_MESSAGES = [
-  { role: "assistant", content: "Good morning, Marcus. Overnight pass on the SG&A cost-takeout program is in. The headline holds: $1.8B SG&A is a balanced 50/50 indirect engine — ~$850M labor and ~$940M non-labor — so every meaningful line has a paired activity-and-driver story on both sides. Three things rose to the top:\n\n**1. Critical — Consulting Pacing $50M Over Plan:** Consulting & Outside Services at $150M YTD vs $100M plan. Concentration: Corporate HR ~$24M, IT-adjacent ~$25M, Tax ~$5M — almost entirely SOP-driven analyst and advisory work. This is the single most token-replaceable spend pool in the company.\n\n**2. Critical — India SG&A at 17.5% of Sales:** Worst region runs 3.2× the SEA benchmark (5.5%). Activity-level normalization shows ~$80M of unexplained delta — anchor SEA as the internal target operating model and converge India to ~12% over 18 months.\n\n**3. High — Legal Cost-per-Contract: NA at 5–6× UK:** Contract Preparation & Review is the highest-volume Legal activity but shows up as only ~$0.4M of non-labor. The real cost is hidden inside paralegal and counsel labor never priced per driver unit. First-pass review is AI-replaceable in ~30 seconds.\n\nSG&A intensity sits at **11.2% vs a 9.0% target**. The $150M consulting line, the $295M marketing stack, and the $35–40M Legal labor pool together carry the bulk of the $400M+ run-rate opportunity.\n\nWhich thread do you want to pull first?", timestamp: "8:02 AM" },
+  { role: "assistant", content: "Good morning, Marcus. Overnight pass on the SG&A cost-takeout program is in. The headline holds: $1.8B SG&A is a balanced 50/50 indirect engine — ~$850M labor and ~$940M non-labor — so every meaningful cost line has a paired activity-and-driver story on both sides. Three things rose to the top:\n\n**1. Critical — Consulting Pacing $50M Over Plan:** Consulting & Outside Services at $150M YTD vs $100M plan. Concentration: Corporate HR ~$24M (≈ the fully-loaded cost of 200 HR FTEs), IT-adjacent ~$25M (InfoSec $7M, SAP/Digital $7M, App Ops $6M), Global Commercial ~$8M, Tax ~$5M, Global Marketing ~$4.5M — almost entirely SOP-driven analyst and advisory work. The single most token-replaceable spend pool in the company.\n\n**2. Critical — India SG&A at 17.5% of Sales:** Worst region runs 3.2× the SEA benchmark (5.5%). Activity-level normalization shows ~$80M of unexplained delta — anchor SEA as the internal target operating model and converge India to ~12% over 18 months.\n\n**3. High — Legal Cost-per-Contract: NA at 5–6× UK:** Legal sits across 16 cost centers in 9 regions. Contract Preparation & Review is the highest-volume activity in the function but shows up as only ~$0.4M of non-labor — the cost is hidden inside paralegal and counsel labor that has never been priced per driver unit. First-pass review is AI-replaceable in ~30 seconds.\n\nSG&A intensity sits at **11.2% vs a 9.0% target**. The named initiatives — consulting in-sourcing, regional convergence, marketing workflow consolidation, and Legal AI review — already size to **~$210M run-rate**, and the long tail across the rest of the $1.8B SG&A base is meaningful.\n\nWhich thread do you want to pull first?", timestamp: "8:02 AM" },
 ];
 
 const WIDGET_CATALOGUE = [

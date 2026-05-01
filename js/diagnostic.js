@@ -133,9 +133,9 @@ const TASK_PREVIEWS = {
         ]},
         { name: "Raw Intake & Processing", color: "#6366f1", activities: [
           { name: "Cutting & Blanching",      tags: ["Automated"] },
+          { name: "Frying",                   tags: ["Automated"] },
           { name: "Freezing Lines",           tags: ["Automated"] },
-          { name: "Plant Operations",         tags: ["Manual"] },
-          { name: "Quality Control",          tags: ["Manual"] },
+          { name: "Plant Ops & QC",           tags: ["Manual"] },
         ]},
         { name: "Packaging",              color: "#8b5cf6", activities: [
           { name: "Pack Engineering",         tags: ["Manual"] },
@@ -157,7 +157,9 @@ const TASK_PREVIEWS = {
         ]},
         { name: "Customer (QSR / Foodservice / Retail)", color: "#ec4899", activities: [
           { name: "Sales & Account Mgmt.",    tags: ["Manual"] },
-          { name: "Trade Marketing",          tags: ["Manual"] },
+          { name: "Competitive Scans",        tags: ["Manual"] },
+          { name: "Brief Drafting",           tags: ["Manual"] },
+          { name: "Post-Campaign Synthesis",  tags: ["Manual"] },
           { name: "Customer Contracts",       tags: ["Manual"] },
           { name: "Demand Planning",          tags: ["Manual"] },
         ]},
