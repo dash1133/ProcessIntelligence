@@ -416,6 +416,16 @@ function ArtifactBlock({ artifact, inline = false }) {
 }
 
 // ── PROCESS MAP ARTIFACT (chevron value chain) ──
+// Convert a #hex to an rgba() with a given alpha — used to tint support
+// function bar cells with the chevron colour above (very faint).
+const hexToRgba = (hex, alpha) => {
+  const h = (hex || "#000000").replace("#", "");
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 // Cost intensity is t-shirt sized — $$$ / $$ / $ — and rendered in a colour
 // that tracks the "size" so the eye lands on the high-spend cells first.
 const PROCESS_MAP_COST_STYLES = {
@@ -466,6 +476,13 @@ function ProcessMapArtifact({ map, embedded = false }) {
         </div>
       </div>
 
+      {/* ── VALUE CHAIN ── */}
+      <div className="text-[10px] font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+        <span className="w-1 h-3 rounded-full bg-blue-500"></span>
+        <span className="text-blue-600">Value Chain</span>
+        <span className="text-gray-400 normal-case font-medium">— operations from farm to freezer</span>
+      </div>
+
       {/* Chevron flow */}
       <div className="flex items-stretch mb-3 -ml-2">
         {map.steps.map((step, i) => {
@@ -490,7 +507,7 @@ function ProcessMapArtifact({ map, embedded = false }) {
       </div>
 
       {/* Sub-activity grid — cost intensity + decision badge per tile */}
-      <div className={`grid ${colCls} gap-3 mb-5`}>
+      <div className={`grid ${colCls} gap-3 mb-6`}>
         {map.steps.map((step, i) => (
           <div key={i} className="space-y-2">
             {step.activities.map((a, ai) => {
@@ -520,19 +537,36 @@ function ProcessMapArtifact({ map, embedded = false }) {
         ))}
       </div>
 
-      {/* SG&A horizontal band — touches every stage of the value chain */}
+      {/* ── SUPPORT FUNCTIONS ── visually distinct: own tinted container, dashed
+          divider above, indigo accent vs the value chain's blue accent. Each
+          function is its own horizontal bar; the bar is segmented to echo the
+          chevron stages above so it visually reads as "this function spans the
+          full value chain". */}
       {map.sgaBand && map.sgaBand.length > 0 && (
-        <div className="mb-5">
-          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5">SG&amp;A · Indirect engine spans the full chain</div>
-          <div className="flex items-stretch border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-r from-blue-50/60 via-indigo-50/60 to-purple-50/60 shadow-sm">
-            {map.sgaBand.map((f, i) => (
-              <div
-                key={i}
-                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-3 border-r border-gray-200 last:border-r-0 hover:bg-white/60 transition-colors cursor-pointer"
-                title={f.name}
-              >
-                {getIcon(f.icon || "Briefcase", { size: 13, className: "text-blue-600" })}
-                <span className="text-xs font-semibold text-gray-800">{f.name}</span>
+        <div className="bg-gradient-to-b from-indigo-50/50 to-transparent border border-indigo-100 rounded-xl p-4 mb-5 mt-2 border-t-2 border-t-dashed border-t-indigo-200">
+          <div className="text-[10px] font-bold uppercase tracking-widest mb-3 flex items-center gap-2 flex-wrap">
+            <span className="w-1 h-3 rounded-full bg-indigo-500"></span>
+            <span className="text-indigo-700">Support Functions</span>
+            <span className="text-gray-500 normal-case font-medium">— SG&amp;A operates across every stage of the value chain</span>
+          </div>
+
+          <div className="space-y-1.5">
+            {map.sgaBand.map((fn, fi) => (
+              <div key={fi} className="flex items-stretch gap-3">
+                <div className="w-32 flex items-center gap-1.5 flex-shrink-0 px-1">
+                  {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
+                  <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
+                </div>
+                <div className="flex-1 flex items-stretch rounded-md overflow-hidden bg-white border border-gray-200 shadow-sm">
+                  {map.steps.map((step, si) => (
+                    <div
+                      key={si}
+                      className="flex-1 border-r border-white last:border-r-0 transition-all hover:brightness-95 cursor-pointer min-h-[28px]"
+                      style={{ background: hexToRgba(step.color, 0.16) }}
+                      title={`${fn.name} supports ${step.name}`}
+                    />
+                  ))}
+                </div>
               </div>
             ))}
           </div>
