@@ -123,50 +123,56 @@ const TASK_PREVIEWS = {
     artifact: {
       type: "process_map",
       title: "NorthStar Frozen Foods — End-to-End Value Chain",
-      subtitle: "Farm-to-freezer ops with the SG&A indirect engine on top · ask AI ZBO to reshape",
+      subtitle: "Operations chevrons · activity tiles annotated with cost intensity and decision rights · SG&A band runs underneath",
+      source: "Source: client TB + interviews, FY25–26",
+      decisionRights: [
+        { id: "function", label: "Function-led",       letter: "F", description: "Global SOP — function owns the playbook (e.g., Legal, IT, Finance)" },
+        { id: "bu",       label: "BU-led",             letter: "B", description: "P&L owner makes the call (e.g., Potato BU, Appetizers BU)" },
+        { id: "country",  label: "Country/Region-led", letter: "C", description: "Local market or plant decides (e.g., regulatory, site ops)" },
+      ],
+      sgaBand: [
+        { name: "Sales",     icon: "TrendingUp" },
+        { name: "Marketing", icon: "Sparkles" },
+        { name: "Legal",     icon: "FileText" },
+        { name: "Finance",   icon: "Calculator" },
+        { name: "HR",        icon: "Users" },
+        { name: "IT",        icon: "Activity" },
+      ],
       steps: [
         { name: "Agronomy & Sourcing",   color: "#3b82f6", activities: [
-          { name: "Crop Forecasting",        tags: ["Manual"] },
-          { name: "Grower Network Mgmt.",     tags: ["Manual"] },
-          { name: "Procurement Contracts",    tags: ["Manual"] },
-          { name: "Inbound QA",               tags: ["Vendor"] },
+          { name: "Crop Forecasting",         cost: "$$",  decision: "country" },
+          { name: "Grower Network Mgmt.",      cost: "$$",  decision: "country" },
+          { name: "Procurement Contracts",     cost: "$$$", decision: "function" },
+          { name: "Inbound QA",                cost: "$",   decision: "country" },
         ]},
         { name: "Raw Intake & Processing", color: "#6366f1", activities: [
-          { name: "Cutting & Blanching",      tags: ["Automated"] },
-          { name: "Frying",                   tags: ["Automated"] },
-          { name: "Freezing Lines",           tags: ["Automated"] },
-          { name: "Plant Ops & QC",           tags: ["Manual"] },
+          { name: "Cutting & Blanching",       cost: "$$",  decision: "bu" },
+          { name: "Frying",                    cost: "$$$", decision: "bu" },
+          { name: "Freezing Lines",            cost: "$$$", decision: "bu" },
+          { name: "Plant Ops & QC",            cost: "$$",  decision: "country" },
         ]},
         { name: "Packaging",              color: "#8b5cf6", activities: [
-          { name: "Pack Engineering",         tags: ["Manual"] },
-          { name: "Materials Procurement",    tags: ["Vendor"] },
-          { name: "Brand Specs & Artwork",    tags: ["Manual"] },
-          { name: "Labeling & Compliance",    tags: ["Automated"] },
+          { name: "Pack Engineering",          cost: "$",   decision: "function" },
+          { name: "Materials Procurement",     cost: "$$$", decision: "function" },
+          { name: "Brand Specs & Artwork",     cost: "$",   decision: "bu" },
+          { name: "Labeling & Compliance",     cost: "$",   decision: "country" },
         ]},
         { name: "Cold-Chain Warehousing", color: "#a855f7", activities: [
-          { name: "Inventory Management",     tags: ["Automated"] },
-          { name: "Cold Storage Ops",         tags: ["Vendor"] },
-          { name: "Distribution Planning",    tags: ["Manual"] },
-          { name: "Compliance & Audits",      tags: ["Manual"] },
+          { name: "Inventory Management",      cost: "$$",  decision: "function" },
+          { name: "Cold Storage Ops",          cost: "$$$", decision: "country" },
+          { name: "Distribution Planning",     cost: "$$",  decision: "function" },
+          { name: "Compliance & Audits",       cost: "$",   decision: "country" },
         ]},
         { name: "Outbound Logistics",      color: "#d946ef", activities: [
-          { name: "Carrier Management",       tags: ["Vendor"] },
-          { name: "Route Optimization",       tags: ["Automated"] },
-          { name: "Customer Delivery",        tags: ["Vendor"] },
-          { name: "Returns & Reverse Logist.",tags: ["Manual"] },
-        ]},
-        { name: "Customer (QSR / Foodservice / Retail)", color: "#ec4899", activities: [
-          { name: "Sales & Account Mgmt.",    tags: ["Manual"] },
-          { name: "Competitive Scans",        tags: ["Manual"] },
-          { name: "Brief Drafting",           tags: ["Manual"] },
-          { name: "Post-Campaign Synthesis",  tags: ["Manual"] },
-          { name: "Customer Contracts",       tags: ["Manual"] },
-          { name: "Demand Planning",          tags: ["Manual"] },
+          { name: "Carrier Management",        cost: "$$$", decision: "function" },
+          { name: "Route Optimization",        cost: "$",   decision: "function" },
+          { name: "Customer Delivery",         cost: "$$",  decision: "country" },
+          { name: "Returns & Reverse Logist.", cost: "$",   decision: "country" },
         ]},
       ],
       chatLog: [
-        { role: "user",      text: "Where on this map is AI the dominant lever today, and where is the biggest near-term opportunity on the SG&A side?" },
-        { role: "assistant", text: "Today AI is the dominant lever in only a narrow set of activities: **Route Optimization**, **Labeling & Compliance**, and **Inventory Management** — each at the operational layer. The biggest near-term SG&A opportunities sit in activities that look operational on the chevron but actually live inside the indirect engine: **Customer Contracts** (Legal first-pass review), **Trade Marketing** (brief drafting and post-campaign synthesis), **Brand Specs & Artwork** (concept generation), and **Procurement Contracts** (NDA + vendor review). Moving these four lifts AI Automation Rate from **22% → 48%** and unlocks ~$155M in run-rate against the $1.8B SG&A base. Want me to overlay the SG&A engine on top of the chevron, with each activity mapped to its labor and non-labor pool?" },
+        { role: "user",      text: "Where is the money concentrated, and which decisions are blocking the cost-takeout?" },
+        { role: "assistant", text: "Cost intensity ($$$) clusters in six activities: **Procurement Contracts**, **Frying**, **Freezing Lines**, **Materials Procurement**, **Cold Storage Ops**, and **Carrier Management** — together they carry the majority of fully-loaded operational spend. The decision-rights overlay is the unlock: four of the six sit at **F (function-led)**, where standardization and AI agents can move the needle quickly. The other two — Cold Storage Ops and Customer Delivery — sit at **C (country-led)** because energy tariffs and last-mile economics vary; those need a country-by-country playbook. Frying and Freezing are **B (BU-led)** — process choices owned by the Potato and Appetizers BUs respectively." },
       ]
     }
   },
@@ -262,37 +268,58 @@ function ArtifactBlock({ artifact, inline = false }) {
 }
 
 // ── PROCESS MAP ARTIFACT (chevron value chain) ──
-const PROCESS_MAP_TAG_STYLES = {
-  AI:        "bg-blue-50 text-blue-700 border-blue-100",
-  Automated: "bg-purple-50 text-purple-700 border-purple-100",
-  Manual:    "bg-amber-50 text-amber-700 border-amber-100",
-  Vendor:    "bg-emerald-50 text-emerald-700 border-emerald-100",
+// Cost intensity is t-shirt sized — $$$ / $$ / $ — and rendered in a colour
+// that tracks the "size" so the eye lands on the high-spend cells first.
+const PROCESS_MAP_COST_STYLES = {
+  "$$$": "text-red-600 font-bold",
+  "$$":  "text-amber-600 font-semibold",
+  "$":   "text-gray-400 font-medium",
 };
 
-// `embedded` skips the internal NL pane — use it when the artifact is rendered
+// Decision rights govern who owns the call on each activity. The badge is a
+// small letter in the top-right corner of every activity tile, colour-coded
+// for second-pass scanning.
+const PROCESS_MAP_DECISION_STYLES = {
+  function: { letter: "F", bg: "bg-blue-100",    text: "text-blue-700",    border: "border-blue-200",    label: "Function-led" },
+  bu:       { letter: "B", bg: "bg-emerald-100", text: "text-emerald-700", border: "border-emerald-200", label: "BU-led" },
+  country:  { letter: "C", bg: "bg-orange-100",  text: "text-orange-700",  border: "border-orange-200",  label: "Country/Region-led" },
+};
+
+// `embedded` skips any internal NL pane — use it when the artifact is rendered
 // next to an external chat panel (the standard workspace layout).
 function ProcessMapArtifact({ map, embedded = false }) {
   const cols = map.steps.length;
   const colCls = cols >= 6 ? "grid-cols-6" : cols === 5 ? "grid-cols-5" : "grid-cols-4";
+  const decisions = map.decisionRights || Object.keys(PROCESS_MAP_DECISION_STYLES).map(k => ({ id: k, ...PROCESS_MAP_DECISION_STYLES[k] }));
 
   return (
     <div>
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
-        <div>
+        <div className="min-w-0">
           <h2 className="text-xl font-bold text-gray-900">{map.title}</h2>
           {map.subtitle && <p className="text-xs text-gray-500 mt-1">{map.subtitle}</p>}
         </div>
-        <div className="flex items-center gap-2 flex-wrap text-[11px]">
-          <span className="text-gray-500">Legend:</span>
-          {Object.keys(PROCESS_MAP_TAG_STYLES).map(t => (
-            <span key={t} className={`inline-flex items-center px-2 py-0.5 rounded border font-medium ${PROCESS_MAP_TAG_STYLES[t]}`}>{t}</span>
-          ))}
+
+        {/* Decision Rights legend (right-aligned) */}
+        <div className="flex flex-col items-end gap-1.5">
+          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Decision Rights</div>
+          <div className="flex items-center gap-3 flex-wrap text-[11px]">
+            {decisions.map((d) => {
+              const meta = PROCESS_MAP_DECISION_STYLES[d.id] || PROCESS_MAP_DECISION_STYLES.function;
+              return (
+                <span key={d.id} className="inline-flex items-center gap-1.5" title={d.description || meta.label}>
+                  <span className={`w-5 h-5 rounded-full border ${meta.bg} ${meta.text} ${meta.border} flex items-center justify-center text-[10px] font-bold`}>{meta.letter}</span>
+                  <span className="text-gray-600">{d.label || meta.label}</span>
+                </span>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       {/* Chevron flow */}
-      <div className="flex items-stretch mb-6 -ml-2">
+      <div className="flex items-stretch mb-3 -ml-2">
         {map.steps.map((step, i) => {
           const isFirst = i === 0;
           const isLast = i === map.steps.length - 1;
@@ -314,35 +341,60 @@ function ProcessMapArtifact({ map, embedded = false }) {
         })}
       </div>
 
-      {/* Sub-activity columns */}
-      <div className={`grid ${colCls} gap-3 mb-2`}>
+      {/* Sub-activity grid — cost intensity + decision badge per tile */}
+      <div className={`grid ${colCls} gap-3 mb-5`}>
         {map.steps.map((step, i) => (
           <div key={i} className="space-y-2">
-            {step.activities.map((a, ai) => (
-              <div
-                key={ai}
-                className="bg-white border border-gray-200 rounded-md px-2.5 py-2 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer"
-                style={{ borderTopWidth: 2, borderTopColor: step.color }}
-              >
-                <div className="text-xs font-medium text-gray-800 leading-snug">{a.name}</div>
-                {a.tags && a.tags.length > 0 && (
-                  <div className="flex gap-1 flex-wrap mt-1.5">
-                    {a.tags.map(t => (
-                      <span key={t} className={`text-[9px] px-1.5 py-0.5 rounded border font-medium ${PROCESS_MAP_TAG_STYLES[t] || "bg-gray-50 text-gray-600 border-gray-200"}`}>{t}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            {step.activities.map((a, ai) => {
+              const costCls = PROCESS_MAP_COST_STYLES[a.cost] || PROCESS_MAP_COST_STYLES["$"];
+              const dMeta = PROCESS_MAP_DECISION_STYLES[a.decision] || PROCESS_MAP_DECISION_STYLES.function;
+              return (
+                <div
+                  key={ai}
+                  className="relative bg-white border border-gray-200 rounded-md px-2.5 py-2 pr-7 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer"
+                  style={{ borderTopWidth: 2, borderTopColor: step.color }}
+                >
+                  {/* Decision letter badge — top-right corner */}
+                  <span
+                    className={`absolute top-1.5 right-1.5 w-[18px] h-[18px] rounded-full border ${dMeta.bg} ${dMeta.text} ${dMeta.border} flex items-center justify-center text-[10px] font-bold leading-none`}
+                    title={dMeta.label}
+                  >
+                    {dMeta.letter}
+                  </span>
+                  <div className="text-xs font-medium text-gray-800 leading-snug">{a.name}</div>
+                  {a.cost && (
+                    <div className={`mt-1 text-sm tracking-tight leading-none ${costCls}`}>{a.cost}</div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
 
-      {/* Inline NL pane is skipped when embedded — the workspace's left panel
-          already provides the chat. Kept for any standalone usage. */}
-      {!embedded && (
-        <div className="border-t border-gray-200 pt-5 mt-6 text-xs text-gray-400 italic">
-          Open in workspace to shape this map with AI ZBO.
+      {/* SG&A horizontal band — touches every stage of the value chain */}
+      {map.sgaBand && map.sgaBand.length > 0 && (
+        <div className="mb-5">
+          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5">SG&amp;A · Indirect engine spans the full chain</div>
+          <div className="flex items-stretch border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-r from-blue-50/60 via-indigo-50/60 to-purple-50/60 shadow-sm">
+            {map.sgaBand.map((f, i) => (
+              <div
+                key={i}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-3 border-r border-gray-200 last:border-r-0 hover:bg-white/60 transition-colors cursor-pointer"
+                title={f.name}
+              >
+                {getIcon(f.icon || "Briefcase", { size: 13, className: "text-blue-600" })}
+                <span className="text-xs font-semibold text-gray-800">{f.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Footer source attribution */}
+      {map.source && (
+        <div className="text-[11px] text-gray-400 italic mt-2 border-t border-gray-100 pt-3">
+          {map.source}
         </div>
       )}
     </div>
