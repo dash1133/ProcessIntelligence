@@ -35,7 +35,7 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
   ]},
   { name: "Levers Identification", tasks: [
-    { id: "redesign_opps",   label: "Process Redesign & AI Opportunities", appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
+    { id: "redesign_opps",   label: "AI-VSM", appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
     { id: "margin_leakage",  label: "Margin Leakage Detection",            appType: "chat",     icon: "AlertTriangle", description: "AI-surfaced leakage from estimating, pricing, rework, scoping." },
     { id: "anomaly_redflag", label: "Anomaly & Red-Flag Spend",            appType: "chat",     icon: "Shield",         description: "Anomalies and red-flag spend identified with A&M experts." },
   ]},
