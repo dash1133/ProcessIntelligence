@@ -16,7 +16,7 @@ const DIAGNOSTIC_APP_TYPES = {
   "dashboard":    { label: "Dashboard",    badge: "bg-rose-50 text-rose-700 border-rose-100",       icon: "Grid" },
 };
 
-// Methodology lifecycle: Data → Taxonomy → Cost Allocation → Cost-to-Serve →
+// Methodology lifecycle: Data → Taxonomy → Cost Allocation →
 // Opportunities → Initiatives → Reporting.
 const DIAGNOSTIC_TASK_GROUPS = [
   { name: "Data Foundation", tasks: [
@@ -29,10 +29,9 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "process_mapping",  label: "Process Mapping",            appType: "artifact", icon: "Layers",   description: "End-to-end value chain — visually shape the map in natural language." },
     { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "dashboard", icon: "Activity", description: "Bottom-up discovery of activities and drivers from real records — vendor lines, HRIS, SOPs." },
   ]},
-  { name: "Cost Allocation & Cost-to-Serve", tasks: [
+  { name: "Cost Allocation", tasks: [
     { id: "cost_classification",       label: "Cost Classification",         appType: "dashboard", icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
     { id: "cost_driver",                label: "Cost Driver Analysis",        appType: "artifact",  icon: "Activity",    description: "Pick a driver. See how one unit ripples through every function — cost shadow + region comparison." },
-    { id: "cost_to_serve",              label: "Cost-to-Serve Analytics",     appType: "artifact",  icon: "BarChart3",   description: "Cost-to-serve patterns by customer, product, geography, and BU." },
     { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
   ]},
   { name: "Levers Identification", tasks: [
@@ -133,12 +132,12 @@ const TASK_PREVIEWS = {
         { id: "country",  label: "Country/Region-led", letter: "C", description: "Local market or plant decides (e.g., regulatory, site ops)" },
       ],
       sgaBand: [
-        { name: "Sales",     icon: "TrendingUp", subFns: ["Demand sensing", "Volume forecast",  "SKU prioritization", "Inventory pos.",   "Account mgmt"] },
-        { name: "Marketing", icon: "Sparkles",   subFns: ["Sourcing PR",    "Brand R&D",         "Brand specs",        "Trade promo",       "Demand gen"] },
-        { name: "Legal",     icon: "FileText",   subFns: ["Procurement legal","Plant compliance","IP / trademark",     "Regulatory",        "Customer contracts"] },
-        { name: "Finance",   icon: "Calculator", subFns: ["Cost accounting","Plant P&L",         "Pack costing",        "Inv. accounting",   "Customer billing"] },
-        { name: "HR",        icon: "Users",      subFns: ["Field workforce","Plant labor",       "Pack labor",          "DC labor",          "Logistics labor"] },
-        { name: "IT",        icon: "Activity",   subFns: ["Agronomy systems","MES / SCADA",      "Pack systems",        "WMS",               "TMS / ERP"] },
+        { name: "Sales",     spend: "$380M", icon: "TrendingUp", costIntensity: "$$",  subFns: ["Key acct development", "Prospect & pipeline", "Trade promo & deals",  "Order management",   "After-sales & service"] },
+        { name: "Marketing", spend: "$295M", icon: "Sparkles",   costIntensity: "$$",  subFns: ["Sourcing PR",          "Brand R&D",           "Brand specs",          "Trade promo",        "Demand gen"] },
+        { name: "Legal",     spend: "$46M",  icon: "FileText",   costIntensity: "$",   subFns: ["Procurement legal",    "Plant compliance",    "IP / trademark",       "Regulatory",         "Customer contracts"] },
+        { name: "Finance",   spend: "$170M", icon: "Calculator", costIntensity: "$$",  subFns: ["Cost accounting",      "Plant P&L",           "Pack costing",         "Inv. accounting",    "Customer billing"] },
+        { name: "HR",        spend: "$280M", icon: "Users",      costIntensity: "$$",  subFns: ["Field workforce",      "Plant labor",         "Pack labor",           "DC labor",           "Logistics labor"] },
+        { name: "IT",        spend: "$310M", icon: "Activity",   costIntensity: "$$$", subFns: ["Agronomy systems",     "MES / SCADA",         "Pack systems",         "WMS",                "TMS / ERP"] },
       ],
       steps: [
         { name: "Agronomy & Sourcing",   color: "#3b82f6", activities: [
@@ -770,43 +769,6 @@ const TASK_PREVIEWS = {
     }
   },
 
-  cost_to_serve: {
-    artifact: {
-      title: "Cost-to-Serve Analytics",
-      subtitle: "NorthStar Frozen Foods · Indirect SG&A · TTM",
-      sections: [
-        { heading: "Headline",
-          body: "Cost-to-serve is unevenly distributed across regions and customer channels. India and LATAM together account for **~13% of revenue but ~21% of fully-allocated SG&A**. On the channel side, retail private-label runs at a 1.40× cost-to-serve index — driven by trade-marketing labor and customer-contract overhead." },
-        { heading: "By Region", table: {
-          cols: ["Region", "Revenue Share", "SG&A Share", "Index"],
-          rows: [
-            ["Southeast Asia",   "9%",  "4%",  "0.49 ✓"],
-            ["Greater China",    "13%", "9%",  "0.71 ✓"],
-            ["ANZ",              "6%",  "5%",  "0.85 ✓"],
-            ["United Kingdom",   "14%", "13%", "0.92 ✓"],
-            ["North America",    "34%", "36%", "1.06"],
-            ["Continental EU",   "13%", "14%", "1.10 ✗"],
-            ["South Africa",     "3%",  "4%",  "1.31 ✗"],
-            ["Latin America",    "5%",  "7%",  "1.41 ✗"],
-            ["India",            "3%",  "8%",  "2.62 ✗"],
-          ]
-        }},
-        { heading: "By Customer Channel", table: {
-          cols: ["Channel", "Revenue Share", "SG&A Share", "Index"],
-          rows: [
-            ["QSR (national accounts)",       "38%", "30%", "0.79 ✓"],
-            ["Foodservice (distributor)",     "26%", "24%", "0.92 ✓"],
-            ["Retail (branded)",               "22%", "26%", "1.18 ✗"],
-            ["Retail (private-label)",         "10%", "14%", "1.40 ✗"],
-            ["Direct / Other",                  "4%",  "6%",  "1.50 ✗"],
-          ]
-        }},
-        { heading: "Recommendation",
-          body: "Three of the four worst-indexed cells (India, Latin America, South Africa) cluster on the same root cause: low AI automation share inside Admin & Executive and Legal, plus duplicated marketing workflows that have never been consolidated. Anchor SEA as the internal target operating model and converge the bottom three regions to a 1.10× index over 18 months. Implied opportunity: ~$95M run-rate against the SG&A base, with the bulk landing inside the $150M consulting line and the $295M marketing stack. See Initiative Sizing & Business Case for the sized plan." },
-      ]
-    }
-  },
-
   opportunity_prioritization: {
     chat: [
       { role: "assistant", style: "neutral",  text: "**Opportunity Prioritization** turns the diagnostic into a workplan. Cost pools become **actionable zones** — \"NA Legal contract review ($8M, discretionary, F-led)\" is a target; \"Legal\" is not. The deliverable is a shortlist of 5–10 priority zones." },
@@ -950,19 +912,32 @@ function ProcessMapArtifact({ map, embedded = false }) {
           {map.subtitle && <p className="text-xs text-gray-500 mt-1">{map.subtitle}</p>}
         </div>
 
-        {/* Decision Rights legend (right-aligned) */}
-        <div className="flex flex-col items-end gap-1.5">
-          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Decision Rights</div>
-          <div className="flex items-center gap-3 flex-wrap text-[11px]">
-            {decisions.map((d) => {
-              const meta = PROCESS_MAP_DECISION_STYLES[d.id] || PROCESS_MAP_DECISION_STYLES.function;
-              return (
-                <span key={d.id} className="inline-flex items-center gap-1.5" title={d.description || meta.label}>
-                  <span className={`w-5 h-5 rounded-full border ${meta.bg} ${meta.text} ${meta.border} flex items-center justify-center text-[10px] font-bold`}>{meta.letter}</span>
-                  <span className="text-gray-600">{d.label || meta.label}</span>
+        {/* Legend block — Decision Rights + Cost Intensity (right-aligned) */}
+        <div className="flex flex-col items-end gap-2.5">
+          <div className="flex flex-col items-end gap-1">
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Decision Rights</div>
+            <div className="flex items-center gap-3 flex-wrap text-[11px]">
+              {decisions.map((d) => {
+                const meta = PROCESS_MAP_DECISION_STYLES[d.id] || PROCESS_MAP_DECISION_STYLES.function;
+                return (
+                  <span key={d.id} className="inline-flex items-center gap-1.5" title={d.description || meta.label}>
+                    <span className={`w-5 h-5 rounded-full border ${meta.bg} ${meta.text} ${meta.border} flex items-center justify-center text-[10px] font-bold`}>{meta.letter}</span>
+                    <span className="text-gray-600">{d.label || meta.label}</span>
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Cost Intensity</div>
+            <div className="flex items-center gap-3 text-[11px]">
+              {[["$", "Low"], ["$$", "Medium"], ["$$$", "High"]].map(([sym, label]) => (
+                <span key={sym} className="inline-flex items-center gap-1">
+                  <span className="font-bold text-gray-800 tracking-tight">{sym}</span>
+                  <span className="text-gray-500">{label}</span>
                 </span>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1044,9 +1019,18 @@ function ProcessMapArtifact({ map, embedded = false }) {
           <div className="space-y-1.5">
             {map.sgaBand.map((fn, fi) => (
               <div key={fi} className="flex items-stretch gap-3">
-                <div className="w-32 flex items-center gap-1.5 flex-shrink-0 px-1">
-                  {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
-                  <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
+                {/* Function label — name + spend + cost intensity */}
+                <div className="w-40 flex-shrink-0 flex flex-col justify-center gap-0.5 px-1">
+                  <div className="flex items-center gap-1.5">
+                    {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
+                    <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
+                    {fn.costIntensity && (
+                      <span className="text-[10px] font-bold text-gray-500 tracking-tight">{fn.costIntensity}</span>
+                    )}
+                  </div>
+                  {fn.spend && (
+                    <span className="text-[11px] font-semibold text-indigo-700 pl-5">{fn.spend}</span>
+                  )}
                 </div>
                 <div className="flex-1 flex items-stretch rounded-md overflow-hidden bg-white border border-gray-200 shadow-sm">
                   {map.steps.map((step, si) => (
@@ -1129,9 +1113,19 @@ function FunctionCard({ fn, onOpen, compact = false }) {
           <h3 className="text-base font-bold text-gray-900">{fn.name} — discovery synthesis</h3>
           <p className="text-xs text-gray-500 mt-0.5">{fn.ingested}</p>
         </div>
-        {fn.lastRefreshed && (
-          <span className="text-[10px] text-gray-400 flex-shrink-0 whitespace-nowrap">last refreshed {fn.lastRefreshed}</span>
-        )}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          {fn.lastRefreshed && (
+            <span className="text-[10px] text-gray-400 whitespace-nowrap">last refreshed {fn.lastRefreshed}</span>
+          )}
+          {onOpen && !compact && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onOpen(fn); }}
+              className="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1"
+            >
+              Open list builder {getIcon("ArrowUpRight", { size: 12 })}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Stat boxes */}
@@ -1162,46 +1156,157 @@ function FunctionCard({ fn, onOpen, compact = false }) {
 // Deep dive — opens when a function card is clicked. List builder with three
 // tabs that share the discovery synthesis card on top.
 function FunctionDeepDive({ fn, onBack, mode = "spend" }) {
-  const [tab, setTab] = React.useState("combined");
-  const tabs = [
-    { id: "combined", label: "Combined" },
-    { id: "vendor",   label: "Vendor" },
-    { id: "fte",      label: "FTE" },
+  const isClass = mode === "classification";
+  const [activeTab, setActiveTab] = React.useState("master");
+  const [selectedCell, setSelectedCell] = React.useState(null);
+
+  // Vendor rows
+  const vendorRows = (fn.vendor?.rows || []).map((r, i) => ({
+    rowNum: i + 1,
+    cells: isClass
+      ? [r.number, r.name, r.costCenter, r.glCode, r.costElement, r.spend, r.activity, r.aiClass || "—", r.confirmed ? "Confirmed" : "Pending", r.statutory || "—"]
+      : [r.number, r.name, r.costCenter, r.glCode, r.costElement, r.spend, r.activity, r.conf],
+  }));
+  const vendorCols = isClass
+    ? ["Supplier #", "Vendor Name", "Cost Center", "GL Code", "Cost Element", "Spend ($)", "→ Activity", "AI Class", "Status", "Statutory"]
+    : ["Supplier #", "Vendor Name", "Cost Center", "GL Code", "Cost Element", "Spend Amount ($)", "Vendor Description"];
+
+  // HRIS rows
+  const hrisRows = (fn.fte?.rows || []).map((r, i) => ({
+    rowNum: i + 1,
+    cells: isClass
+      ? [r.id, r.role, r.jobFamily, r.costCenter, r.region, r.fte, r.loaded, r.primaryActivity, r.aiClass || "—", r.confirmed ? "Confirmed" : "Pending", r.statutory || "—"]
+      : [r.id, r.role, r.jobFamily, r.costCenter, r.region, r.fte, r.loaded, r.primaryActivity, r.conf],
+  }));
+  const hrisCols = isClass
+    ? ["Employee ID", "Role", "Job Family", "Cost Center", "Region", "FTE", "Loaded $", "→ Primary Activity", "AI Class", "Status", "Statutory"]
+    : ["Employee ID", "Role", "Job Family", "Cost Center", "Region", "FTE", "Loaded $", "→ Primary Activity", "Conf"];
+
+  // Activity rows
+  const activityRows = (fn.combined?.activities || []).map((a, i) => ({
+    rowNum: i + 1,
+    cells: isClass
+      ? [a.name, a.subFn, a.spend || `${a.labor} + ${a.nonLabor}`, a.aiClass || "—", a.confirmed ? "Confirmed" : "Pending", a.reason || "—", a.statutory || "—"]
+      : [a.name, a.subFn, a.labor, a.nonLabor, a.driver, a.volume, a.unitCost, a.conf],
+  }));
+  const activityCols = isClass
+    ? ["Activity", "Sub-fn", "Spend", "AI Class", "Status", "Reason", "Statutory"]
+    : ["Activity", "Sub-fn", "Labor $", "Non-labor $", "Driver", "Volume", "Unit $", "Conf"];
+
+  // Extract total counts from footer strings ("6 of 84 vendors shown" → "84")
+  const vendorTotal  = (fn.vendor?.footer || "").match(/of (\d+)/)?.[1] || vendorRows.length;
+  const hrisTotal    = (fn.fte?.footer    || "").match(/of (\d+)/)?.[1] || hrisRows.length;
+  const activityStat = (fn.stats || []).find(s => s.label === "Activities found");
+  const activityTotal = activityStat ? activityStat.value : activityRows.length;
+
+  const sheetTabs = [
+    { id: "master",     label: "Master",              count: vendorTotal,    rows: vendorRows,   cols: vendorCols   },
+    { id: "hris",       label: "HRIS Records",         count: hrisTotal,      rows: hrisRows,     cols: hrisCols     },
+    { id: "activities", label: "Activities",            count: activityTotal,  rows: activityRows, cols: activityCols },
+    { id: "spend-cc",   label: "Spend by Cost Center", count: "—",            rows: [],           cols: []           },
+    { id: "col-map",    label: "Column Mapping",        count: "16",           rows: [],           cols: []           },
   ];
 
+  const currentTab = sheetTabs.find(t => t.id === activeTab) || sheetTabs[0];
+  const rows = currentTab.rows || [];
+  const cols = currentTab.cols || vendorCols;
+
   return (
-    <div className="flex-1 flex flex-col min-w-0 bg-gray-50">
-      {/* Sub-header: back + function name + tab switcher */}
-      <div className="px-5 py-3 bg-white border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+    <div className="flex-1 flex flex-col min-w-0 bg-white">
+      {/* Top bar */}
+      <div className="px-5 py-2.5 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3 min-w-0">
-          <button onClick={onBack} className="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors">
-            {getIcon("ChevronUp", { size: 12, className: "rotate-[-90deg]" })} Back to functions
+          <button onClick={onBack} className="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors flex-shrink-0">
+            {getIcon("ChevronUp", { size: 12, className: "rotate-[-90deg]" })} Back
           </button>
           <span className="text-gray-300">|</span>
-          <div className="text-sm font-semibold text-gray-900 truncate">{fn.name}</div>
+          <div className="text-sm font-semibold text-gray-900 truncate">
+            {fn.name} — {isClass ? "Cost Classification" : "Vendor Enrichment"}
+          </div>
         </div>
-        <div className="flex items-center gap-1 flex-shrink-0">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`text-xs px-3 py-1.5 rounded-md font-medium transition-colors ${tab === t.id ? "bg-blue-600 text-white shadow-sm" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
-            >
-              {t.label}
+        <button className="text-gray-400 hover:text-blue-600 transition-colors">
+          {getIcon("ArrowDownRight", { size: 14 })}
+        </button>
+      </div>
+
+      {/* Formula bar */}
+      <div className="px-3 py-1.5 border-b border-gray-200 flex items-center gap-2 bg-gray-50 flex-shrink-0">
+        <div className="w-14 border border-gray-300 rounded px-2 py-0.5 text-xs text-gray-600 font-mono bg-white text-center select-none">--</div>
+        <span className="text-gray-300 select-none text-sm">|</span>
+        <span className="text-xs text-gray-500 font-mono select-none">fx</span>
+        <div className="flex-1 border border-gray-300 rounded px-3 py-0.5 text-xs bg-white leading-5 truncate select-none text-gray-400">
+          {selectedCell !== null ? String(selectedCell) : "Select a cell to see its value"}
+        </div>
+        <button className="text-gray-400 hover:text-gray-600 transition-colors">{getIcon("ChevronDown", { size: 13 })}</button>
+        <button onClick={() => setSelectedCell(null)} className="text-gray-400 hover:text-gray-600 transition-colors">{getIcon("X", { size: 13 })}</button>
+      </div>
+
+      {/* Grid */}
+      <div className="flex-1 overflow-auto scrollbar-thin">
+        {rows.length > 0 ? (
+          <table className="w-full text-xs border-collapse">
+            <thead className="sticky top-0 z-10">
+              <tr className="border-b border-gray-200 bg-gray-100">
+                <th className="w-8 px-2 py-2 border-r border-gray-200 font-normal text-gray-400 text-center" />
+                {cols.map((col, i) => (
+                  <th key={i} className="text-left px-3 py-2 font-semibold text-gray-600 border-r border-gray-100 whitespace-nowrap">
+                    {col}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, ri) => (
+                <tr key={ri} className="border-b border-gray-100 hover:bg-blue-50/20 transition-colors">
+                  <td className="w-8 px-2 py-2 text-right text-[10px] text-gray-400 border-r border-gray-200 bg-gray-50 select-none">
+                    {row.rowNum}
+                  </td>
+                  {row.cells.map((cell, ci) => (
+                    <td
+                      key={ci}
+                      onClick={() => setSelectedCell(cell)}
+                      className={`px-3 py-2 border-r border-gray-100 whitespace-nowrap cursor-default transition-colors ${
+                        selectedCell === cell ? "bg-blue-50 text-blue-900" : "text-gray-800"
+                      }`}
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="px-4 py-12 text-center text-xs text-gray-400 italic">
+            No records loaded for this view yet.
+          </div>
+        )}
+      </div>
+
+      {/* Footer: sheet nav arrows + tabs */}
+      <div className="border-t border-gray-200 flex items-stretch flex-shrink-0 bg-gray-50 min-h-[34px]">
+        <div className="flex items-center gap-0 px-1.5 border-r border-gray-200">
+          {["◄◄", "◄", "►", "►►"].map((arrow, i) => (
+            <button key={i} className="w-6 h-6 flex items-center justify-center text-[11px] text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded transition-colors">
+              {arrow}
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Tab content */}
-      <div className="flex-1 overflow-auto scrollbar-thin">
-        <div className="p-5">
-          {/* Discovery synthesis card always pinned on top — same card for every tab */}
-          <FunctionCard fn={fn} compact />
-
-          {tab === "combined" && <FunctionCombinedTab fn={fn} mode={mode} />}
-          {tab === "vendor"   && <FunctionVendorTab   fn={fn} mode={mode} />}
-          {tab === "fte"      && <FunctionFteTab      fn={fn} mode={mode} />}
+        <div className="flex items-stretch overflow-x-auto flex-1 scrollbar-thin">
+          {sheetTabs.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id)}
+              className={`flex-shrink-0 text-xs px-4 border-r border-gray-200 transition-colors whitespace-nowrap flex items-center gap-1 ${
+                activeTab === t.id
+                  ? "bg-white text-blue-700 font-semibold border-t-2 border-t-blue-600"
+                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+              }`}
+            >
+              {t.label}
+              <span className="text-gray-400 font-normal">({t.count})</span>
+            </button>
+          ))}
         </div>
       </div>
     </div>
@@ -1708,18 +1813,7 @@ function SgaTabContent({ sga, onOpenFn, summaryMode = "spend" }) {
         {summaryMode === "classification" ? (
           <ClassificationSummaryCard fn={active} onMore={() => onOpenFn(active)} />
         ) : (
-          (() => {
-            const h = active.highlights || { cards: [], keyTakeaways: [] };
-            return (
-              <SpendHighlightsCard
-                title={`Spend Highlights — ${active.name}`}
-                headerSubtitle={h.headerSubtitle}
-                cards={h.cards}
-                keyTakeaways={h.keyTakeaways}
-                onMore={() => onOpenFn(active)}
-              />
-            );
-          })()
+          <FunctionCard fn={active} onOpen={() => onOpenFn(active)} />
         )}
       </div>
     </div>
