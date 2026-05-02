@@ -131,12 +131,12 @@ const TASK_PREVIEWS = {
         { id: "country",  label: "Country/Region-led", letter: "C", description: "Local market or plant decides (e.g., regulatory, site ops)" },
       ],
       sgaBand: [
-        { name: "Sales",     icon: "TrendingUp" },
-        { name: "Marketing", icon: "Sparkles" },
-        { name: "Legal",     icon: "FileText" },
-        { name: "Finance",   icon: "Calculator" },
-        { name: "HR",        icon: "Users" },
-        { name: "IT",        icon: "Activity" },
+        { name: "Sales",     icon: "TrendingUp", subFns: ["Demand sensing", "Volume forecast",  "SKU prioritization", "Inventory pos.",   "Account mgmt"] },
+        { name: "Marketing", icon: "Sparkles",   subFns: ["Sourcing PR",    "Brand R&D",         "Brand specs",        "Trade promo",       "Demand gen"] },
+        { name: "Legal",     icon: "FileText",   subFns: ["Procurement legal","Plant compliance","IP / trademark",     "Regulatory",        "Customer contracts"] },
+        { name: "Finance",   icon: "Calculator", subFns: ["Cost accounting","Plant P&L",         "Pack costing",        "Inv. accounting",   "Customer billing"] },
+        { name: "HR",        icon: "Users",      subFns: ["Field workforce","Plant labor",       "Pack labor",          "DC labor",          "Logistics labor"] },
+        { name: "IT",        icon: "Activity",   subFns: ["Agronomy systems","MES / SCADA",      "Pack systems",        "WMS",               "TMS / ERP"] },
       ],
       steps: [
         { name: "Agronomy & Sourcing",   color: "#3b82f6", activities: [
@@ -145,25 +145,25 @@ const TASK_PREVIEWS = {
           { name: "Procurement Contracts",     cost: "$$$", decision: "function" },
           { name: "Inbound QA",                cost: "$",   decision: "country" },
         ]},
-        { name: "Raw Intake & Processing", color: "#6366f1", activities: [
+        { name: "Raw Intake & Processing", color: "#2563eb", activities: [
           { name: "Cutting & Blanching",       cost: "$$",  decision: "bu" },
           { name: "Frying",                    cost: "$$$", decision: "bu" },
           { name: "Freezing Lines",            cost: "$$$", decision: "bu" },
           { name: "Plant Ops & QC",            cost: "$$",  decision: "country" },
         ]},
-        { name: "Packaging",              color: "#8b5cf6", activities: [
+        { name: "Packaging",              color: "#1d4ed8", activities: [
           { name: "Pack Engineering",          cost: "$",   decision: "function" },
           { name: "Materials Procurement",     cost: "$$$", decision: "function" },
           { name: "Brand Specs & Artwork",     cost: "$",   decision: "bu" },
           { name: "Labeling & Compliance",     cost: "$",   decision: "country" },
         ]},
-        { name: "Cold-Chain Warehousing", color: "#a855f7", activities: [
+        { name: "Cold-Chain Warehousing", color: "#1e40af", activities: [
           { name: "Inventory Management",      cost: "$$",  decision: "function" },
           { name: "Cold Storage Ops",          cost: "$$$", decision: "country" },
           { name: "Distribution Planning",     cost: "$$",  decision: "function" },
           { name: "Compliance & Audits",       cost: "$",   decision: "country" },
         ]},
-        { name: "Outbound Logistics",      color: "#d946ef", activities: [
+        { name: "Outbound Logistics",      color: "#1e3a8a", activities: [
           { name: "Carrier Management",        cost: "$$$", decision: "function" },
           { name: "Route Optimization",        cost: "$",   decision: "function" },
           { name: "Customer Delivery",         cost: "$$",  decision: "country" },
@@ -196,10 +196,10 @@ const TASK_PREVIEWS = {
       // Mini chevron strip carries the process-map context into this view.
       chevronStrip: [
         { name: "Agronomy",      color: "#3b82f6" },
-        { name: "Processing",     color: "#6366f1" },
-        { name: "Packaging",      color: "#8b5cf6" },
-        { name: "Cold-Chain",     color: "#a855f7" },
-        { name: "Outbound",       color: "#d946ef" },
+        { name: "Processing",     color: "#2563eb" },
+        { name: "Packaging",      color: "#1d4ed8" },
+        { name: "Cold-Chain",     color: "#1e40af" },
+        { name: "Outbound",       color: "#1e3a8a" },
       ],
       functions: [
         { id: "legal", name: "Legal", lastRefreshed: "4 min ago", confidence: "high",
@@ -426,12 +426,13 @@ const hexToRgba = (hex, alpha) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-// Cost intensity is t-shirt sized — $$$ / $$ / $ — and rendered in a colour
-// that tracks the "size" so the eye lands on the high-spend cells first.
+// Cost intensity is t-shirt sized — $$$ / $$ / $. Glyph stays black for a
+// clean read; weight differentiates intensity so the eye still lands on $$$
+// first (bold), then $$ (semibold), then $ (normal).
 const PROCESS_MAP_COST_STYLES = {
-  "$$$": "text-red-600 font-bold",
-  "$$":  "text-amber-600 font-semibold",
-  "$":   "text-gray-400 font-medium",
+  "$$$": "text-gray-900 font-bold",
+  "$$":  "text-gray-900 font-semibold",
+  "$":   "text-gray-900 font-normal",
 };
 
 // Decision rights govern who owns the call on each activity. The badge is a
@@ -561,10 +562,14 @@ function ProcessMapArtifact({ map, embedded = false }) {
                   {map.steps.map((step, si) => (
                     <div
                       key={si}
-                      className="flex-1 border-r border-white last:border-r-0 transition-all hover:brightness-95 cursor-pointer min-h-[28px]"
+                      className="flex-1 border-r border-white last:border-r-0 transition-all hover:brightness-95 cursor-pointer min-h-[28px] flex items-center justify-center px-2 py-1.5"
                       style={{ background: hexToRgba(step.color, 0.16) }}
-                      title={`${fn.name} supports ${step.name}`}
-                    />
+                      title={`${fn.name} — ${step.name}`}
+                    >
+                      <span className="text-[10px] text-gray-700 font-medium leading-tight text-center truncate" title={fn.subFns?.[si] || ""}>
+                        {fn.subFns?.[si] || ""}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -1164,33 +1169,16 @@ function TaskTile({ task, onOpen }) {
 
 // ── MAIN VIEW ──
 
-function DiagnosticView() {
-  const [openTask, setOpenTask] = React.useState(null);
-
+// DiagnosticView accepts openTask + setOpenTask from App so the top-header
+// breadcrumb (which lives outside this component) can read and clear them.
+// The inner sub-header breadcrumb has been removed — the top header is now
+// the single source of truth for navigation context.
+function DiagnosticView({ openTask, setOpenTask }) {
   return (
     <div className="flex flex-col h-full" style={{ background: "#f5f7fa" }}>
-      {/* Static breadcrumb header — always visible, updates with the open task. */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-2 text-sm flex-shrink-0">
-        {getIcon("Home", { size: 14, className: "text-gray-400" })}
-        <span className="text-gray-500">Cost optimization</span>
-        <span className="text-gray-300">›</span>
-        <button
-          onClick={() => setOpenTask(null)}
-          className={openTask ? "text-gray-500 hover:text-blue-600 transition-colors" : "font-semibold text-gray-900 cursor-default"}
-        >
-          NorthStar Frozen Foods
-        </button>
-        {openTask && (
-          <>
-            <span className="text-gray-300">›</span>
-            <span className="font-semibold text-gray-900 truncate">{openTask.label}</span>
-            <span className="ml-1 flex-shrink-0"><AppTypeBadge type={openTask.appType} /></span>
-          </>
-        )}
-      </div>
-
-      {/* Body — task list when no task is open, full workspace when one is. */}
-      {openTask ? <TaskWorkspace task={openTask} /> : <DiagnosticHome onOpenTask={setOpenTask} />}
+      {openTask
+        ? <TaskWorkspace task={openTask} />
+        : <DiagnosticHome onOpenTask={setOpenTask} />}
     </div>
   );
 }
