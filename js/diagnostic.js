@@ -132,12 +132,12 @@ const TASK_PREVIEWS = {
         { id: "country",  label: "Country/Region-led", letter: "C", description: "Local market or plant decides (e.g., regulatory, site ops)" },
       ],
       sgaBand: [
-        { name: "Sales",     spend: "$380M", icon: "TrendingUp", costIntensity: "$$",  subFns: ["Key acct development", "Prospect & pipeline", "Trade promo & deals",  "Order management",   "After-sales & service"] },
-        { name: "Marketing", spend: "$295M", icon: "Sparkles",   costIntensity: "$$",  subFns: ["Sourcing PR",          "Brand R&D",           "Brand specs",          "Trade promo",        "Demand gen"] },
-        { name: "Legal",     spend: "$46M",  icon: "FileText",   costIntensity: "$",   subFns: ["Procurement legal",    "Plant compliance",    "IP / trademark",       "Regulatory",         "Customer contracts"] },
-        { name: "Finance",   spend: "$170M", icon: "Calculator", costIntensity: "$$",  subFns: ["Cost accounting",      "Plant P&L",           "Pack costing",         "Inv. accounting",    "Customer billing"] },
-        { name: "HR",        spend: "$280M", icon: "Users",      costIntensity: "$$",  subFns: ["Field workforce",      "Plant labor",         "Pack labor",           "DC labor",           "Logistics labor"] },
-        { name: "IT",        spend: "$310M", icon: "Activity",   costIntensity: "$$$", subFns: ["Agronomy systems",     "MES / SCADA",         "Pack systems",         "WMS",                "TMS / ERP"] },
+        { name: "Sales",     icon: "TrendingUp", costIntensity: "$$",  subFns: ["Key acct development", "Prospect & pipeline", "Trade promo & deals",  "Order management",   "After-sales & service"] },
+        { name: "Marketing", icon: "Sparkles",   costIntensity: "$$",  subFns: ["Sourcing PR",          "Brand R&D",           "Brand specs",          "Trade promo",        "Demand gen"] },
+        { name: "Legal",     icon: "FileText",   costIntensity: "$",   subFns: ["Procurement legal",    "Plant compliance",    "IP / trademark",       "Regulatory",         "Customer contracts"] },
+        { name: "Finance",   icon: "Calculator", costIntensity: "$$",  subFns: ["Cost accounting",      "Plant P&L",           "Pack costing",         "Inv. accounting",    "Customer billing"] },
+        { name: "HR",        icon: "Users",      costIntensity: "$$",  subFns: ["Field workforce",      "Plant labor",         "Pack labor",           "DC labor",           "Logistics labor"] },
+        { name: "IT",        icon: "Activity",   costIntensity: "$$$", subFns: ["Agronomy systems",     "MES / SCADA",         "Pack systems",         "WMS",                "TMS / ERP"] },
       ],
       steps: [
         { name: "Agronomy & Sourcing",   color: "#3b82f6", activities: [
@@ -1019,17 +1019,12 @@ function ProcessMapArtifact({ map, embedded = false }) {
           <div className="space-y-1.5">
             {map.sgaBand.map((fn, fi) => (
               <div key={fi} className="flex items-stretch gap-3">
-                {/* Function label — name + spend + cost intensity */}
-                <div className="w-40 flex-shrink-0 flex flex-col justify-center gap-0.5 px-1">
-                  <div className="flex items-center gap-1.5">
-                    {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
-                    <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
-                    {fn.costIntensity && (
-                      <span className="text-[10px] font-bold text-gray-500 tracking-tight">{fn.costIntensity}</span>
-                    )}
-                  </div>
-                  {fn.spend && (
-                    <span className="text-[11px] font-semibold text-indigo-700 pl-5">{fn.spend}</span>
+                {/* Function label — name + cost intensity */}
+                <div className="w-36 flex-shrink-0 flex items-center gap-1.5 px-1">
+                  {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
+                  <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
+                  {fn.costIntensity && (
+                    <span className="text-[10px] font-bold text-gray-500 tracking-tight">{fn.costIntensity}</span>
                   )}
                 </div>
                 <div className="flex-1 flex items-stretch rounded-md overflow-hidden bg-white border border-gray-200 shadow-sm">
