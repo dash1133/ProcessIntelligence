@@ -30,9 +30,9 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "dashboard", icon: "Activity", description: "Bottom-up discovery of activities and drivers from real records — vendor lines, HRIS, SOPs." },
   ]},
   { name: "Cost Allocation & Cost-to-Serve", tasks: [
-    { id: "cost_allocation", label: "Cost Allocation by Activity", appType: "list-builder", icon: "Calculator",  description: "Labor and non-labor costs allocated to processes and activities." },
-    { id: "vendor_spend",    label: "Vendor Spend Analysis",        appType: "list-builder", icon: "DollarSign", description: "Vendor-level spend decomposition and enrichment." },
-    { id: "cost_to_serve",   label: "Cost-to-Serve Analytics",      appType: "artifact",     icon: "BarChart3",   description: "Cost-to-serve patterns by customer, product, geography, and BU." },
+    { id: "cost_classification", label: "Cost Classification",     appType: "dashboard",     icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
+    { id: "vendor_spend",        label: "Vendor Spend Analysis",    appType: "list-builder", icon: "DollarSign", description: "Vendor-level spend decomposition and enrichment." },
+    { id: "cost_to_serve",       label: "Cost-to-Serve Analytics",  appType: "artifact",     icon: "BarChart3",   description: "Cost-to-serve patterns by customer, product, geography, and BU." },
   ]},
   { name: "Opportunity Identification", tasks: [
     { id: "redesign_opps",   label: "Process Redesign & AI Opportunities", appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
@@ -451,6 +451,256 @@ const TASK_PREVIEWS = {
     }
   },
 
+  cost_classification: {
+    chat: [
+      { role: "assistant", style: "neutral",  text: "**Cost Classification** sorts every line item into one of three buckets: **Non-discretionary** (required to operate or comply), **Discretionary** (could cut, defer, or scale), and **Strategic** (discretionary tied to growth or competitive priority). AI ZBO suggests the bucket from SOPs + vendor descriptions + activity context, **but the consultant signs off**. Every row carries an AI suggestion + confirmed status + reason field — without the reason, the classification doesn't survive a CFO meeting." },
+      { role: "assistant", style: "finding",  text: "**Legal mix:** Non-discretionary **$23.7M (51%)** — Customer contracts, Litigation, Compliance. Discretionary **$18.5M (40%)** — Vendor contracts, NDAs, Procurement legal. Strategic **$4.0M (9%)** — Trademark renewals." },
+      { role: "assistant", style: "variance", text: "**Statutory auto-flags** — 3 items carry an explicit regulatory citation: **Customer contracts (SOX)** and **Compliance & investigations (GDPR · Food Safety)**. These auto-classify as Non-discretionary with the citation in the reason field — not as a judgment call." },
+      { role: "assistant", style: "question", text: "The **discretionary pool is the cost-takeout pool**. Vendor contract review at $8.6M is the cleanest wedge — AI first-pass review removes ~40% of paralegal hours. **78% of Legal items are confirmed by Priya** today; the 22% pending sign-off includes the strategic Trademark line. Want to walk those?" },
+    ],
+    suggestions: [
+      { label: "Show items pending sign-off" },
+      { label: "Open Vendor contract review — biggest discretionary line" },
+      { label: "List the statutory auto-flags" },
+    ],
+    artifact: {
+      type: "dashboard",
+      summaryMode: "classification",
+      title: "Cost Classification — Non-discretionary · Discretionary · Strategic",
+      subtitle: "AI-suggested classification on every line · consultant sign-off + reason field on every row · statutory items auto-flagged with regulatory citation",
+      source: "Source: GL + SOPs + vendor descriptions · last refreshed 4 min ago",
+      tabs: [
+        { id: "agronomy",   label: "Agronomy",   color: "#3b82f6" },
+        { id: "processing", label: "Processing", color: "#2563eb" },
+        { id: "packaging",  label: "Packaging",  color: "#1d4ed8" },
+        { id: "coldchain",  label: "Cold-Chain", color: "#1e40af" },
+        { id: "outbound",   label: "Outbound",   color: "#1e3a8a" },
+        { id: "sga",        label: "SG&A",       color: "#6366f1", default: true },
+      ],
+      sga: { functions: [
+        { id: "legal", name: "Legal", lastRefreshed: "4 min ago",
+          totalSpendNum: 46.2,
+          railSummary: "$46.2M · 14 activities · 78% confirmed",
+          ingested: "1,247 vendor lines · 312 HRIS records · 84 SOPs · 16 cost centers",
+          stats: [
+            { label: "Total spend",          value: "$46.2M", sub: "labor $35.1M · non-labor $11.1M" },
+            { label: "FTE equivalent",       value: "312",     sub: "across 9 regions" },
+            { label: "Activities found",     value: "14",      sub: "3 flagged low confidence" },
+            { label: "Drivers inferred",     value: "9",       sub: "prospects, vendors, SKUs…" },
+            { label: "Regional cost variance", value: "5.2x",  sub: "NA vs UK, per contract" },
+          ],
+          synthesis: "Non-discretionary anchors at 51% — Customer contracts, Litigation, Compliance are SOX/GDPR-protected. Discretionary at 40% is the cost-takeout pool.",
+          classification: {
+            mix: [
+              { id: "non-disc",  label: "Non-discretionary", spend: "$23.7M", pct: 51, count: 5, color: "#dc2626", desc: "Required to operate or comply" },
+              { id: "disc",      label: "Discretionary",      spend: "$18.5M", pct: 40, count: 7, color: "#f59e0b", desc: "Could cut, defer, or scale" },
+              { id: "strategic", label: "Strategic",           spend: "$4.0M",  pct: 9,  count: 2, color: "#10b981", desc: "Tied to growth — protect, don't cut" },
+            ],
+            confirmedRate: 78,
+            pendingCount: 22,
+            statutoryCount: 3,
+            // Sub-function totals (in $M) split across the 3 classifications.
+            bySubFn: [
+              { name: "Contracts",   nonDisc: 6.2, disc: 10.0, strategic: 0   },
+              { name: "Disputes",    nonDisc: 7.9, disc: 0,    strategic: 0   },
+              { name: "Compliance",  nonDisc: 5.6, disc: 0,    strategic: 0   },
+              { name: "Procurement", nonDisc: 0,   disc: 3.5,  strategic: 0   },
+              { name: "IP",          nonDisc: 0,   disc: 0,    strategic: 2.0 },
+              { name: "All Other",   nonDisc: 4.0, disc: 5.0,  strategic: 2.0 },
+            ],
+            keyTakeaways: [
+              "**Non-discretionary $23.7M (51%)** — Customer contracts, Litigation, Compliance are SOX/GDPR-protected. Cannot cut without breaking the law.",
+              "**Discretionary $18.5M (40%)** is the cost-takeout pool — Vendor contract review and NDA execution are AI-replaceable today.",
+              "**Strategic $4.0M (9%)** sits in IP / Trademark — protect, don't cut. Cutting these has long-term brand consequences.",
+            ],
+          },
+          combined: {
+            footer: "7 of 14 activities shown · AI-suggested fields are highlighted · click any row to see vendors and roles · consultant must confirm + add a reason for the classification to land",
+            activities: [
+              { name: "Vendor contract review",        subFn: "Contracts",   spend: "$8.6M", aiClass: "discretionary",    confirmed: true,  reason: "Volume-driven; AI first-pass review removes ~40% of paralegal hours" },
+              { name: "Customer contract review",      subFn: "Contracts",   spend: "$6.2M", aiClass: "non-discretionary", confirmed: true,  reason: "Required for revenue capture; SOX-flagged for material contracts", statutory: "SOX" },
+              { name: "NDA execution",                  subFn: "Contracts",   spend: "$1.4M", aiClass: "discretionary",    confirmed: true,  reason: "Tied to prospect volume; AI-automatable end-to-end" },
+              { name: "Litigation & claims",            subFn: "Disputes",    spend: "$7.9M", aiClass: "non-discretionary", confirmed: true,  reason: "Active matters; cannot defer or scale down" },
+              { name: "Compliance & investigations",    subFn: "Compliance",  spend: "$5.6M", aiClass: "non-discretionary", confirmed: true,  reason: "GDPR + food-safety filings — auto-flagged statutory", statutory: "GDPR · Food Safety" },
+              { name: "Trademark renewals",             subFn: "IP",          spend: "$2.0M", aiClass: "strategic",         confirmed: false, reason: "Brand portfolio protection — strategic to growth markets" },
+              { name: "Procurement legal support",     subFn: "Procurement", spend: "$3.5M", aiClass: "discretionary",    confirmed: true,  reason: "RFP-driven; AI-assistable on master agreements" },
+            ],
+          },
+          vendor: {
+            footer: "6 of 84 vendors shown · AI-suggested classification + linked activity are visually called out · consultant sign-off captured against each row",
+            rows: [
+              { number: "2018821", name: "Pinnacle Counsel LLP",        costCenter: "14012 — NA Legal · Litigation", glCode: "626100", costElement: "Outside Counsel",       spend: "$5.2M", activity: "Litigation & claims",       aiClass: "non-discretionary", confirmed: true,  reason: "Active matters",                       conf: "High" },
+              { number: "2018824", name: "Bridgewater Legal Partners",  costCenter: "14048 — UK Legal · Disputes",   glCode: "626100", costElement: "Outside Counsel",       spend: "$2.1M", activity: "Litigation & claims",       aiClass: "non-discretionary", confirmed: true,  reason: "Active matters",                       conf: "High" },
+              { number: "2018830", name: "Apex Trademark Services",     costCenter: "14080 — Global Legal · IP",     glCode: "626120", costElement: "IP Services",            spend: "$1.1M", activity: "Trademark renewals",        aiClass: "strategic",          confirmed: false, reason: "Growth-tied — protect",                conf: "Med"  },
+              { number: "2018841", name: "ContractFlow SaaS",           costCenter: "14012 — NA Legal · Contracts",  glCode: "626300", costElement: "Software Licenses",      spend: "$0.4M", activity: "Vendor contract review",    aiClass: "discretionary",      confirmed: true,  reason: "Tooling — defer-able",                  conf: "High" },
+              { number: "2018852", name: "RegulaWatch Compliance",      costCenter: "14025 — NA Legal · Compliance", glCode: "626140", costElement: "Compliance Advisory",    spend: "$0.8M", activity: "Compliance & investigations",aiClass: "non-discretionary", confirmed: true,  reason: "GDPR + food-safety advisory",          statutory: "GDPR · Food Safety", conf: "High" },
+              { number: "2018863", name: "Sourcewell Procurement Legal",costCenter: "14012 — NA Legal · Procurement",glCode: "626100", costElement: "Outside Counsel",       spend: "$0.6M", activity: "Procurement legal support", aiClass: "discretionary",      confirmed: true,  reason: "RFP-driven advisory",                  conf: "High" },
+            ],
+          },
+          fte: {
+            footer: "6 of 312 HRIS records shown · AI-suggested classification + reason captured per role · consultant sign-off pending where italicised",
+            rows: [
+              { id: "EMP-04812", role: "Senior Counsel",     jobFamily: "Legal · Counsel",    costCenter: "14012 — NA Legal · Contracts",  region: "NA",     fte: "1.0", loaded: "$410K", primaryActivity: "Vendor contract review",       aiClass: "discretionary",    confirmed: true,  reason: "Volume-driven; AI-assistable",   conf: "High" },
+              { id: "EMP-04901", role: "Paralegal II",        jobFamily: "Legal · Paralegal",  costCenter: "14012 — NA Legal · Contracts",  region: "NA",     fte: "1.0", loaded: "$145K", primaryActivity: "Vendor contract review",       aiClass: "discretionary",    confirmed: true,  reason: "First-pass review pool",         conf: "High" },
+              { id: "EMP-05122", role: "Senior Counsel",     jobFamily: "Legal · Counsel",    costCenter: "14048 — UK Legal · Contracts",  region: "UK",     fte: "1.0", loaded: "$295K", primaryActivity: "Customer contract review",     aiClass: "non-discretionary",confirmed: true,  reason: "SOX-material contracts",         statutory: "SOX", conf: "High" },
+              { id: "EMP-05308", role: "Compliance Manager", jobFamily: "Legal · Compliance", costCenter: "14025 — NA Legal · Compliance", region: "NA",     fte: "1.0", loaded: "$215K", primaryActivity: "Compliance & investigations",  aiClass: "non-discretionary",confirmed: true,  reason: "GDPR + food-safety scope",       statutory: "GDPR · Food Safety", conf: "High" },
+              { id: "EMP-05412", role: "IP Specialist",       jobFamily: "Legal · IP",         costCenter: "14080 — Global Legal · IP",     region: "Global", fte: "0.5", loaded: "$185K", primaryActivity: "Trademark renewals",           aiClass: "strategic",         confirmed: false, reason: "Growth-tied — sign-off pending", conf: "Med"  },
+              { id: "EMP-05521", role: "Procurement Counsel",jobFamily: "Legal · Counsel",    costCenter: "14012 — NA Legal · Procurement",region: "NA",     fte: "1.0", loaded: "$235K", primaryActivity: "Procurement legal support",    aiClass: "discretionary",    confirmed: true,  reason: "RFP-driven",                     conf: "High" },
+            ],
+          },
+        },
+
+        { id: "marketing", name: "Marketing & Media", lastRefreshed: "12 min ago",
+          totalSpendNum: 295,
+          railSummary: "$295M · 820 FTE · 42 activities · 64% confirmed",
+          synthesis: "Discretionary dominates — media buying, agency fees, brand spend above minimum. The $50M consolidation opportunity is entirely inside the discretionary pool.",
+          classification: {
+            mix: [
+              { id: "non-disc",  label: "Non-discretionary", spend: "$30M",  pct: 10, count: 3,  color: "#dc2626" },
+              { id: "disc",      label: "Discretionary",      spend: "$240M", pct: 81, count: 32, color: "#f59e0b" },
+              { id: "strategic", label: "Strategic",           spend: "$25M",  pct: 9,  count: 7,  color: "#10b981" },
+            ],
+            confirmedRate: 64, pendingCount: 36, statutoryCount: 1,
+            bySubFn: [
+              { name: "Media",   nonDisc: 0,  disc: 116, strategic: 0  },
+              { name: "Trade",   nonDisc: 0,  disc: 58,  strategic: 0  },
+              { name: "Brand",   nonDisc: 0,  disc: 18,  strategic: 5  },
+              { name: "Insights",nonDisc: 0,  disc: 12,  strategic: 8  },
+              { name: "Compliance / Labelling", nonDisc: 30, disc: 0, strategic: 0 },
+              { name: "All Other", nonDisc: 0, disc: 36, strategic: 12 },
+            ],
+            keyTakeaways: [
+              "**Discretionary $240M (81%)** — entire media + trade + brand stack. Agency fees and brand creative are the cleanest cuts.",
+              "**Strategic $25M (9%)** — new market entry and capability builds. Cutting these compresses growth runway.",
+              "Compliance / Labelling (~$30M) auto-flags as Non-discretionary — packaging compliance is statutory.",
+            ],
+          },
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+
+        { id: "hr", name: "HR", lastRefreshed: "8 min ago",
+          totalSpendNum: 280,
+          railSummary: "$280M · 510 FTE · 28 activities · 81% confirmed",
+          synthesis: "Payroll, benefits admin, and statutory employment compliance are non-discretionary. The $24M outside HR consulting is fully discretionary — clean cost-takeout target.",
+          classification: {
+            mix: [
+              { id: "non-disc",  label: "Non-discretionary", spend: "$120M", pct: 43, count: 9,  color: "#dc2626" },
+              { id: "disc",      label: "Discretionary",      spend: "$130M", pct: 46, count: 16, color: "#f59e0b" },
+              { id: "strategic", label: "Strategic",           spend: "$30M",  pct: 11, count: 3,  color: "#10b981" },
+            ],
+            confirmedRate: 81, pendingCount: 19, statutoryCount: 2,
+            bySubFn: [
+              { name: "Payroll & Benefits Admin", nonDisc: 72, disc: 0,   strategic: 0 },
+              { name: "Talent Acquisition",       nonDisc: 0,  disc: 58,  strategic: 0 },
+              { name: "Outside HR Consulting",    nonDisc: 0,  disc: 24,  strategic: 0 },
+              { name: "Learning & Development",    nonDisc: 0,  disc: 26,  strategic: 10 },
+              { name: "Employment Compliance",    nonDisc: 48, disc: 0,   strategic: 0 },
+              { name: "Capability Builds",         nonDisc: 0,  disc: 22,  strategic: 20 },
+            ],
+            keyTakeaways: [
+              "**$24M outside HR consulting** is fully discretionary — token-replaceable analyst work running alongside an internal HR team.",
+              "Payroll + Employment compliance ($120M) is **statutorily protected** — automation lifts efficiency but the spend stays.",
+              "Capability builds are tagged **Strategic** — cutting these compresses leadership pipeline.",
+            ],
+          },
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+
+        { id: "it", name: "IT", lastRefreshed: "16 min ago",
+          totalSpendNum: 310,
+          railSummary: "$310M · 620 FTE · 38 activities · 71% confirmed",
+          synthesis: "Core infra and SOX/GDPR-mandated InfoSec are non-discretionary. Outside consulting ($25M) and digital transformation ($35M strategic) are the discretionary + protected halves.",
+          classification: {
+            mix: [
+              { id: "non-disc",  label: "Non-discretionary", spend: "$180M", pct: 58, count: 14, color: "#dc2626" },
+              { id: "disc",      label: "Discretionary",      spend: "$95M",  pct: 31, count: 17, color: "#f59e0b" },
+              { id: "strategic", label: "Strategic",           spend: "$35M",  pct: 11, count: 7,  color: "#10b981" },
+            ],
+            confirmedRate: 71, pendingCount: 29, statutoryCount: 4,
+            bySubFn: [
+              { name: "Core Infra & ERP",   nonDisc: 84, disc: 0,   strategic: 0  },
+              { name: "Information Security", nonDisc: 35, disc: 7,   strategic: 0  },
+              { name: "Application Operations", nonDisc: 38, disc: 6,   strategic: 0  },
+              { name: "Outside Consulting",   nonDisc: 0,  disc: 25,  strategic: 0  },
+              { name: "Digital Transformation",nonDisc: 0,  disc: 12,  strategic: 35 },
+              { name: "All Other",             nonDisc: 23, disc: 45,  strategic: 0  },
+            ],
+            keyTakeaways: [
+              "**SOX-mandated InfoSec + ERP** anchors the non-discretionary base — automation lifts efficiency, not spend.",
+              "**$25M outside consulting** is fully discretionary — InfoSec, SAP/Digital, App Ops are all in-sourceable to AI agents.",
+              "**Digital Transformation $35M** sits **Strategic** — capability build for the next platform.",
+            ],
+          },
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+
+        { id: "finance", name: "Finance", lastRefreshed: "9 min ago",
+          totalSpendNum: 170,
+          railSummary: "$170M · 460 FTE · 24 activities · 86% confirmed",
+          synthesis: "Statutory audit, tax filings, and close are non-discretionary. Tax advisory ($5M) and external benchmarking are the small discretionary pool.",
+          classification: {
+            mix: [
+              { id: "non-disc",  label: "Non-discretionary", spend: "$100M", pct: 59, count: 12, color: "#dc2626" },
+              { id: "disc",      label: "Discretionary",      spend: "$50M",  pct: 29, count: 9,  color: "#f59e0b" },
+              { id: "strategic", label: "Strategic",           spend: "$20M",  pct: 12, count: 3,  color: "#10b981" },
+            ],
+            confirmedRate: 86, pendingCount: 14, statutoryCount: 5,
+            bySubFn: [
+              { name: "Close & Reporting",    nonDisc: 52, disc: 0,  strategic: 0  },
+              { name: "Tax",                   nonDisc: 23, disc: 5,  strategic: 0  },
+              { name: "Treasury",              nonDisc: 22, disc: 0,  strategic: 0  },
+              { name: "FP&A",                  nonDisc: 0,  disc: 28, strategic: 10 },
+              { name: "Audit & Controls",      nonDisc: 18, disc: 0,  strategic: 0  },
+              { name: "M&A Capability",        nonDisc: 0,  disc: 4,  strategic: 8  },
+            ],
+            keyTakeaways: [
+              "**Statutory audit + close + tax filings** = $100M anchored as Non-discretionary. SOX coverage on every line.",
+              "**FP&A modernization** carries Strategic spend ($10M) — AI-assisted forecasting capability build.",
+              "Tax advisory ($5M) is the only meaningful Discretionary line — token-replaceable.",
+            ],
+          },
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+
+        { id: "selling", name: "Selling", lastRefreshed: "11 min ago",
+          totalSpendNum: 380,
+          railSummary: "$380M · 1,080 FTE · 22 activities · 73% confirmed",
+          synthesis: "Field sales coverage and customer service are non-discretionary at minimum. Account mgmt above minimum and T&E are the discretionary pool.",
+          classification: {
+            mix: [
+              { id: "non-disc",  label: "Non-discretionary", spend: "$240M", pct: 63, count: 12, color: "#dc2626" },
+              { id: "disc",      label: "Discretionary",      spend: "$120M", pct: 32, count: 8,  color: "#f59e0b" },
+              { id: "strategic", label: "Strategic",           spend: "$20M",  pct: 5,  count: 2,  color: "#10b981" },
+            ],
+            confirmedRate: 73, pendingCount: 27, statutoryCount: 0,
+            bySubFn: [
+              { name: "Field Sales (min coverage)", nonDisc: 152, disc: 30,  strategic: 0  },
+              { name: "Account Management",         nonDisc: 0,   disc: 94,  strategic: 0  },
+              { name: "Customer Service",            nonDisc: 36,  disc: 0,   strategic: 0  },
+              { name: "Sales Operations",            nonDisc: 28,  disc: 20,  strategic: 0  },
+              { name: "Trade Funds Admin",           nonDisc: 14,  disc: 0,   strategic: 0  },
+              { name: "New Market Entry",            nonDisc: 10,  disc: 0,   strategic: 20 },
+            ],
+            keyTakeaways: [
+              "**Field sales minimum coverage** ($152M) is Non-discretionary — go-to-market floor.",
+              "**Account Management $94M** is fully Discretionary — coverage modelling can compress this 15–20%.",
+              "**$20M Strategic** is new-market entry investment — protect.",
+            ],
+          },
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+      ]},
+
+      valueChain: {
+        agronomy:   { headline: "Agronomy & Sourcing — discovery in progress", note: "Procurement Contracts is largely Non-discretionary (commodity hedging and crop contracts) — classification pull lands next refresh." },
+        processing: { headline: "Raw Intake & Processing — discovery in progress", note: "Plant operating cost is split: minimum-spec running is Non-discretionary; line-extension capacity is Discretionary." },
+        packaging:  { headline: "Packaging — discovery in progress", note: "Materials Procurement and Labeling are largely Non-discretionary; brand creative and pack engineering above minimum are Discretionary." },
+        coldchain:  { headline: "Cold-Chain Warehousing — discovery in progress", note: "Cold storage minimum capacity is Non-discretionary; over-build and 3PL premium services are Discretionary." },
+        outbound:   { headline: "Outbound Logistics — discovery in progress", note: "Carrier minimum is Non-discretionary; premium service tiers and consulting fees on routing are Discretionary." },
+      },
+    }
+  },
+
   cost_to_serve: {
     artifact: {
       title: "Cost-to-Serve Analytics",
@@ -798,7 +1048,7 @@ function FunctionCard({ fn, onOpen, compact = false }) {
 
 // Deep dive — opens when a function card is clicked. List builder with three
 // tabs that share the discovery synthesis card on top.
-function FunctionDeepDive({ fn, onBack }) {
+function FunctionDeepDive({ fn, onBack, mode = "spend" }) {
   const [tab, setTab] = React.useState("combined");
   const tabs = [
     { id: "combined", label: "Combined" },
@@ -836,61 +1086,125 @@ function FunctionDeepDive({ fn, onBack }) {
           {/* Discovery synthesis card always pinned on top — same card for every tab */}
           <FunctionCard fn={fn} compact />
 
-          {tab === "combined" && <FunctionCombinedTab fn={fn} />}
-          {tab === "vendor"   && <FunctionVendorTab   fn={fn} />}
-          {tab === "fte"      && <FunctionFteTab      fn={fn} />}
+          {tab === "combined" && <FunctionCombinedTab fn={fn} mode={mode} />}
+          {tab === "vendor"   && <FunctionVendorTab   fn={fn} mode={mode} />}
+          {tab === "fte"      && <FunctionFteTab      fn={fn} mode={mode} />}
         </div>
       </div>
     </div>
   );
 }
 
-function FunctionCombinedTab({ fn }) {
+// Small visual helpers used in the classification list views — sparkles +
+// tint signal "this column was AI-enriched"; classification badge colours
+// the row by Non-discretionary / Discretionary / Strategic.
+function AiHeader({ children }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-blue-600">
+      {getIcon("Sparkles", { size: 9 })} {children}
+    </span>
+  );
+}
+function ClassificationBadge({ value }) {
+  const meta = CLASSIFICATION_STYLES[value] || { tone: "bg-gray-50 text-gray-600 border-gray-200", label: value };
+  return <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded border font-medium ${meta.tone}`}>{meta.label}</span>;
+}
+function ConfirmedPill({ confirmed }) {
+  return confirmed
+    ? <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700">{getIcon("CheckCircle", { size: 11 })} Confirmed</span>
+    : <span className="inline-flex items-center gap-1 text-[10px] text-amber-700 italic">{getIcon("Clock", { size: 11 })} Pending</span>;
+}
+function StatutoryChip({ value }) {
+  if (!value) return <span className="text-gray-300">—</span>;
+  return (
+    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded border bg-red-50 text-red-700 border-red-200">
+      {getIcon("Shield", { size: 10 })} {value}
+    </span>
+  );
+}
+
+function FunctionCombinedTab({ fn, mode = "spend" }) {
   const data = fn.combined || { activities: [] };
+  const isClass = mode === "classification";
+  // AI-enriched columns get a subtle blue tint header so the row reads as
+  // "this is what the AI proposed" — the rest stays neutral.
+  const aiTint = "bg-blue-50/60";
   return (
     <div className="mt-4 bg-white border border-gray-200 rounded-xl overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-        <div className="text-sm font-semibold text-gray-900">Activity grid</div>
-        <div className="flex items-center gap-1">
-          {["Grid", "Bubble", "Driver flow"].map((v, i) => (
-            <button key={v} className={`text-[11px] px-2 py-1 rounded-md ${i === 0 ? "bg-gray-100 text-gray-900 font-semibold" : "text-gray-500 hover:bg-gray-50"}`}>{v}</button>
-          ))}
-        </div>
+        <div className="text-sm font-semibold text-gray-900">{isClass ? "Activity-level classification" : "Activity grid"}</div>
+        {isClass ? (
+          <div className="text-[11px] text-blue-600 inline-flex items-center gap-1">
+            {getIcon("Sparkles", { size: 11 })} AI-suggested fields are tinted; reason field carries the consultant's rationale
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            {["Grid", "Bubble", "Driver flow"].map((v, i) => (
+              <button key={v} className={`text-[11px] px-2 py-1 rounded-md ${i === 0 ? "bg-gray-100 text-gray-900 font-semibold" : "text-gray-500 hover:bg-gray-50"}`}>{v}</button>
+            ))}
+          </div>
+        )}
       </div>
       {data.activities.length > 0 ? (
         <table className="w-full text-xs">
           <thead className="bg-gray-50">
-            <tr className="border-b border-gray-200 text-[10px] text-gray-500 uppercase">
-              <th className="text-left  px-3 py-2 font-medium">Activity</th>
-              <th className="text-left  px-3 py-2 font-medium">Sub-fn</th>
-              <th className="text-right px-3 py-2 font-medium">Labor $</th>
-              <th className="text-right px-3 py-2 font-medium">Non-labor $</th>
-              <th className="text-left  px-3 py-2 font-medium">Driver</th>
-              <th className="text-right px-3 py-2 font-medium">Volume</th>
-              <th className="text-right px-3 py-2 font-medium">Unit $</th>
-              <th className="text-center px-3 py-2 font-medium">Conf</th>
-            </tr>
+            {isClass ? (
+              <tr className="border-b border-gray-200 text-[10px] text-gray-500 uppercase">
+                <th className="text-left  px-3 py-2 font-medium">Activity</th>
+                <th className="text-left  px-3 py-2 font-medium">Sub-fn</th>
+                <th className="text-right px-3 py-2 font-medium">Spend</th>
+                <th className={`text-left px-3 py-2 font-medium ${aiTint}`}><AiHeader>AI Class</AiHeader></th>
+                <th className="text-left  px-3 py-2 font-medium">Status</th>
+                <th className={`text-left px-3 py-2 font-medium ${aiTint}`}><AiHeader>Reason</AiHeader></th>
+                <th className="text-left  px-3 py-2 font-medium">Statutory</th>
+              </tr>
+            ) : (
+              <tr className="border-b border-gray-200 text-[10px] text-gray-500 uppercase">
+                <th className="text-left  px-3 py-2 font-medium">Activity</th>
+                <th className="text-left  px-3 py-2 font-medium">Sub-fn</th>
+                <th className="text-right px-3 py-2 font-medium">Labor $</th>
+                <th className="text-right px-3 py-2 font-medium">Non-labor $</th>
+                <th className="text-left  px-3 py-2 font-medium">Driver</th>
+                <th className="text-right px-3 py-2 font-medium">Volume</th>
+                <th className="text-right px-3 py-2 font-medium">Unit $</th>
+                <th className="text-center px-3 py-2 font-medium">Conf</th>
+              </tr>
+            )}
           </thead>
           <tbody>
             {data.activities.map((a, i) => (
               <tr key={i} className="border-b border-gray-100 hover:bg-blue-50/30 cursor-pointer">
                 <td className="px-3 py-2.5 font-medium text-gray-900">{a.name}</td>
                 <td className="px-3 py-2.5 text-gray-700">{a.subFn}</td>
-                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.labor}</td>
-                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.nonLabor}</td>
-                <td className="px-3 py-2.5 text-gray-700">{a.driver}{a.lowConf ? "*" : ""}</td>
-                <td className="px-3 py-2.5 text-right text-gray-800">{a.volume}</td>
-                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.unitCost}</td>
-                <td className="px-3 py-2.5 text-center">
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[a.conf] || CONFIDENCE_STYLES.Med}`}>{a.conf}</span>
-                </td>
+                {isClass ? (
+                  <>
+                    <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.spend}</td>
+                    <td className={`px-3 py-2.5 ${aiTint}`}><ClassificationBadge value={a.aiClass} /></td>
+                    <td className="px-3 py-2.5"><ConfirmedPill confirmed={a.confirmed} /></td>
+                    <td className={`px-3 py-2.5 text-gray-700 ${aiTint}`}><span className="block max-w-[260px] leading-snug" title={a.reason}>{a.reason || <span className="text-amber-700 italic">Reason required</span>}</span></td>
+                    <td className="px-3 py-2.5"><StatutoryChip value={a.statutory} /></td>
+                  </>
+                ) : (
+                  <>
+                    <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.labor}</td>
+                    <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.nonLabor}</td>
+                    <td className="px-3 py-2.5 text-gray-700">{a.driver}{a.lowConf ? "*" : ""}</td>
+                    <td className="px-3 py-2.5 text-right text-gray-800">{a.volume}</td>
+                    <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.unitCost}</td>
+                    <td className="px-3 py-2.5 text-center">
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[a.conf] || CONFIDENCE_STYLES.Med}`}>{a.conf}</span>
+                    </td>
+                  </>
+                )}
               </tr>
             ))}
           </tbody>
         </table>
       ) : (
         <div className="px-4 py-10 text-center text-xs text-gray-400">
-          Activity grid not yet populated for this function. Ask AI ZBO on the left to run discovery.
+          {isClass
+            ? `No classifications yet for ${fn.name}. Ask AI ZBO on the left to run a first pass; consultant signs off.`
+            : `Activity grid not yet populated for this function. Ask AI ZBO on the left to run discovery.`}
         </div>
       )}
       {data.footer && (
@@ -900,13 +1214,17 @@ function FunctionCombinedTab({ fn }) {
   );
 }
 
-function FunctionVendorTab({ fn }) {
+function FunctionVendorTab({ fn, mode = "spend" }) {
   const data = fn.vendor || { rows: [] };
+  const isClass = mode === "classification";
+  const aiTint = "bg-blue-50/60";
   return (
     <div className="mt-4 bg-white border border-gray-200 rounded-xl overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
         <div className="text-sm font-semibold text-gray-900">Vendor enrichment → activity assignment</div>
-        <div className="text-[11px] text-gray-500">Cost Center · GL Code · Cost Element are the enrichment fields driving the AI's classification</div>
+        <div className="text-[11px] text-blue-600 inline-flex items-center gap-1">
+          {getIcon("Sparkles", { size: 11 })} AI-suggested fields tinted · Cost Center · GL Code · Cost Element drive the inference
+        </div>
       </div>
       {data.rows.length > 0 ? (
         <table className="w-full text-xs">
@@ -918,8 +1236,11 @@ function FunctionVendorTab({ fn }) {
               <th className="text-left  px-3 py-2 font-medium">GL Code</th>
               <th className="text-left  px-3 py-2 font-medium">Cost Element</th>
               <th className="text-right px-3 py-2 font-medium">Spend</th>
-              <th className="text-left  px-3 py-2 font-medium">→ Activity</th>
-              <th className="text-center px-3 py-2 font-medium">Conf</th>
+              <th className={`text-left px-3 py-2 font-medium ${aiTint}`}><AiHeader>→ Activity</AiHeader></th>
+              {isClass && <th className={`text-left px-3 py-2 font-medium ${aiTint}`}><AiHeader>AI Class</AiHeader></th>}
+              {isClass && <th className="text-left px-3 py-2 font-medium">Status</th>}
+              {isClass && <th className="text-left px-3 py-2 font-medium">Statutory</th>}
+              {!isClass && <th className="text-center px-3 py-2 font-medium">Conf</th>}
             </tr>
           </thead>
           <tbody>
@@ -931,10 +1252,15 @@ function FunctionVendorTab({ fn }) {
                 <td className="px-3 py-2.5 text-gray-500 font-mono">{r.glCode || "—"}</td>
                 <td className="px-3 py-2.5 text-gray-700">{r.costElement || r.classification || "—"}</td>
                 <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{r.spend}</td>
-                <td className="px-3 py-2.5 text-blue-700 font-medium">{r.activity}</td>
-                <td className="px-3 py-2.5 text-center">
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[r.conf] || CONFIDENCE_STYLES.Med}`}>{r.conf}</span>
-                </td>
+                <td className={`px-3 py-2.5 text-blue-700 font-medium ${aiTint}`}>{r.activity}</td>
+                {isClass && <td className={`px-3 py-2.5 ${aiTint}`}><ClassificationBadge value={r.aiClass} /></td>}
+                {isClass && <td className="px-3 py-2.5"><ConfirmedPill confirmed={r.confirmed} /></td>}
+                {isClass && <td className="px-3 py-2.5"><StatutoryChip value={r.statutory} /></td>}
+                {!isClass && (
+                  <td className="px-3 py-2.5 text-center">
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[r.conf] || CONFIDENCE_STYLES.Med}`}>{r.conf}</span>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -951,13 +1277,17 @@ function FunctionVendorTab({ fn }) {
   );
 }
 
-function FunctionFteTab({ fn }) {
+function FunctionFteTab({ fn, mode = "spend" }) {
   const data = fn.fte || { rows: [] };
+  const isClass = mode === "classification";
+  const aiTint = "bg-blue-50/60";
   return (
     <div className="mt-4 bg-white border border-gray-200 rounded-xl overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
         <div className="text-sm font-semibold text-gray-900">HRIS census → activity estimate</div>
-        <div className="text-[11px] text-gray-500">Job Family + Cost Center are the enrichment fields driving the AI's primary-activity inference</div>
+        <div className="text-[11px] text-blue-600 inline-flex items-center gap-1">
+          {getIcon("Sparkles", { size: 11 })} AI-suggested fields tinted · Job Family + Cost Center drive the inference
+        </div>
       </div>
       {data.rows.length > 0 ? (
         <table className="w-full text-xs">
@@ -970,8 +1300,11 @@ function FunctionFteTab({ fn }) {
               <th className="text-left  px-3 py-2 font-medium">Region</th>
               <th className="text-right px-3 py-2 font-medium">FTE</th>
               <th className="text-right px-3 py-2 font-medium">Loaded $</th>
-              <th className="text-left  px-3 py-2 font-medium">→ Primary Activity</th>
-              <th className="text-center px-3 py-2 font-medium">Conf</th>
+              <th className={`text-left px-3 py-2 font-medium ${aiTint}`}><AiHeader>→ Primary Activity</AiHeader></th>
+              {isClass && <th className={`text-left px-3 py-2 font-medium ${aiTint}`}><AiHeader>AI Class</AiHeader></th>}
+              {isClass && <th className="text-left px-3 py-2 font-medium">Status</th>}
+              {isClass && <th className="text-left px-3 py-2 font-medium">Statutory</th>}
+              {!isClass && <th className="text-center px-3 py-2 font-medium">Conf</th>}
             </tr>
           </thead>
           <tbody>
@@ -984,10 +1317,15 @@ function FunctionFteTab({ fn }) {
                 <td className="px-3 py-2.5 text-gray-700">{r.region}</td>
                 <td className="px-3 py-2.5 text-right text-gray-800">{r.fte}</td>
                 <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{r.loaded}</td>
-                <td className="px-3 py-2.5 text-blue-700 font-medium">{r.primaryActivity}</td>
-                <td className="px-3 py-2.5 text-center">
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[r.conf] || CONFIDENCE_STYLES.Med}`}>{r.conf}</span>
-                </td>
+                <td className={`px-3 py-2.5 text-blue-700 font-medium ${aiTint}`}>{r.primaryActivity}</td>
+                {isClass && <td className={`px-3 py-2.5 ${aiTint}`}><ClassificationBadge value={r.aiClass} /></td>}
+                {isClass && <td className="px-3 py-2.5"><ConfirmedPill confirmed={r.confirmed} /></td>}
+                {isClass && <td className="px-3 py-2.5"><StatutoryChip value={r.statutory} /></td>}
+                {!isClass && (
+                  <td className="px-3 py-2.5 text-center">
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[r.conf] || CONFIDENCE_STYLES.Med}`}>{r.conf}</span>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -1101,6 +1439,101 @@ function SpendHighlightsCard({ title, headerSubtitle, cards = [], keyTakeaways =
   );
 }
 
+// Classification mix → CSS class for the small dot before the label.
+const CLASSIFICATION_STYLES = {
+  "non-discretionary": { dot: "#dc2626", label: "Non-discretionary", tone: "bg-red-50 text-red-700 border-red-200" },
+  "discretionary":     { dot: "#f59e0b", label: "Discretionary",     tone: "bg-amber-50 text-amber-700 border-amber-200" },
+  "strategic":         { dot: "#10b981", label: "Strategic",          tone: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+};
+
+// Classification summary card. Three large mix tiles, a per-sub-function
+// stacked bar, a status row (% confirmed · statutory auto-flags), and key
+// takeaways. Renders inside SgaTabContent when summaryMode === "classification".
+function ClassificationSummaryCard({ fn, onMore }) {
+  const c = fn.classification || { mix: [], bySubFn: [], keyTakeaways: [] };
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <h3 className="text-base font-bold text-gray-900">Cost Classification — {fn.name}</h3>
+        {onMore && (
+          <button onClick={onMore} className="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1 flex-shrink-0">
+            Open list builder {getIcon("ArrowUpRight", { size: 12 })}
+          </button>
+        )}
+      </div>
+      <div className="border-b-2 border-blue-500 w-full mb-4" />
+
+      {/* Mix tiles — three big classification cards */}
+      <div className="grid grid-cols-3 gap-3 mb-5">
+        {c.mix.map((m, i) => (
+          <div key={i} className="bg-white border-2 rounded-lg p-3" style={{ borderColor: m.color }}>
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: m.color }} />
+              <div className="text-[10px] font-semibold text-gray-600 uppercase tracking-wide truncate">{m.label}</div>
+            </div>
+            <div className="text-2xl font-bold text-gray-900 leading-none">{m.spend}</div>
+            <div className="text-[11px] text-gray-500 mt-1">{m.pct}% · {m.count} item{m.count === 1 ? "" : "s"}</div>
+            {m.desc && <div className="text-[10px] text-gray-400 mt-1.5 leading-tight">{m.desc}</div>}
+          </div>
+        ))}
+      </div>
+
+      {/* Stacked bar by sub-function */}
+      {c.bySubFn && c.bySubFn.length > 0 && (
+        <div className="mb-5">
+          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Mix by sub-function</div>
+          <div className="space-y-1.5">
+            {c.bySubFn.map((sf, i) => {
+              const total = (sf.nonDisc || 0) + (sf.disc || 0) + (sf.strategic || 0);
+              if (total === 0) return null;
+              return (
+                <div key={i} className="flex items-center gap-2">
+                  <div className="w-32 text-xs text-gray-700 truncate flex-shrink-0" title={sf.name}>{sf.name}</div>
+                  <div className="flex-1 flex h-5 rounded overflow-hidden border border-gray-200 bg-gray-100">
+                    {sf.nonDisc  > 0 && <div style={{ width: `${(sf.nonDisc  / total) * 100}%`, background: c.mix[0]?.color || "#dc2626" }} title={`Non-discretionary $${sf.nonDisc.toFixed(1)}M`} />}
+                    {sf.disc     > 0 && <div style={{ width: `${(sf.disc     / total) * 100}%`, background: c.mix[1]?.color || "#f59e0b" }} title={`Discretionary $${sf.disc.toFixed(1)}M`} />}
+                    {sf.strategic> 0 && <div style={{ width: `${(sf.strategic/ total) * 100}%`, background: c.mix[2]?.color || "#10b981" }} title={`Strategic $${sf.strategic.toFixed(1)}M`} />}
+                  </div>
+                  <div className="w-14 text-right text-xs text-gray-700 flex-shrink-0 font-medium">${total.toFixed(1)}M</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Status row */}
+      <div className="flex items-center gap-3 mb-4 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs flex-wrap">
+        <span className="text-gray-700">
+          <span className="font-semibold text-emerald-700">{c.confirmedRate}%</span> human-confirmed
+        </span>
+        <span className="text-gray-300">·</span>
+        <span className="text-gray-700">
+          <span className="font-semibold text-amber-700">{c.pendingCount ?? (100 - (c.confirmedRate || 0))}%</span> pending sign-off
+        </span>
+        <span className="text-gray-300">·</span>
+        <span className="inline-flex items-center gap-1 text-gray-700">
+          <span className="font-semibold text-red-700">{c.statutoryCount || 0}</span> statutory auto-flag{(c.statutoryCount || 0) === 1 ? "" : "s"}
+        </span>
+        <span className="ml-auto inline-flex items-center gap-1 text-[11px] text-blue-600">
+          {getIcon("Sparkles", { size: 11 })} AI suggestions on every row
+        </span>
+      </div>
+
+      {c.keyTakeaways && c.keyTakeaways.length > 0 && (
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+          <div className="text-sm font-semibold text-gray-900 mb-2">Key Takeaways</div>
+          <ul className="text-xs text-gray-700 space-y-1.5 list-disc pl-4">
+            {c.keyTakeaways.map((t, i) => (
+              <li key={i} dangerouslySetInnerHTML={{ __html: renderInlineMd(t) }} />
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function DashboardTabBar({ tabs, active, onSelect }) {
   return (
     <div className="flex items-center gap-1 border-b border-gray-200 mb-5 overflow-x-auto scrollbar-thin">
@@ -1125,16 +1558,14 @@ function DashboardTabBar({ tabs, active, onSelect }) {
   );
 }
 
-function SgaTabContent({ sga, onOpenFn }) {
-  // Sort the rail by total spend (largest first). Legal sits inside A&E so it
-  // shows up below the headline pools — but the user explicitly wanted Legal
-  // active on entry, so we anchor on it.
+function SgaTabContent({ sga, onOpenFn, summaryMode = "spend" }) {
+  // Sort the rail by total spend (largest first). Legal is the marquee on
+  // entry across both Activity & Driver Mapping and Cost Classification.
   const sorted = [...(sga.functions || [])].sort((a, b) => (b.totalSpendNum || 0) - (a.totalSpendNum || 0));
-  const [activeId, setActiveId] = React.useState("legal"); // Legal is the marquee
+  const [activeId, setActiveId] = React.useState("legal");
   const active = sga.functions.find(f => f.id === activeId) || sorted[0];
 
   if (!active) return null;
-  const h = active.highlights || { cards: [], keyTakeaways: [] };
 
   return (
     <div className="flex gap-4">
@@ -1159,15 +1590,24 @@ function SgaTabContent({ sga, onOpenFn }) {
         })}
       </div>
 
-      {/* Right detail — Spend Highlights card */}
+      {/* Right detail — card switches on summaryMode */}
       <div className="flex-1 min-w-0">
-        <SpendHighlightsCard
-          title={`Spend Highlights — ${active.name}`}
-          headerSubtitle={h.headerSubtitle}
-          cards={h.cards}
-          keyTakeaways={h.keyTakeaways}
-          onMore={() => onOpenFn(active)}
-        />
+        {summaryMode === "classification" ? (
+          <ClassificationSummaryCard fn={active} onMore={() => onOpenFn(active)} />
+        ) : (
+          (() => {
+            const h = active.highlights || { cards: [], keyTakeaways: [] };
+            return (
+              <SpendHighlightsCard
+                title={`Spend Highlights — ${active.name}`}
+                headerSubtitle={h.headerSubtitle}
+                cards={h.cards}
+                keyTakeaways={h.keyTakeaways}
+                onMore={() => onOpenFn(active)}
+              />
+            );
+          })()
+        )}
       </div>
     </div>
   );
@@ -1200,15 +1640,13 @@ function ValueChainTabContent({ stage }) {
 }
 
 function DashboardArtifact({ data }) {
-  // If the user clicked into a function (e.g., Legal), open the list-builder
-  // deep-dive in place — same workspace, full pane, with Combined / Vendor /
-  // FTE tabs. Returning to the dashboard restores the tab state.
   const [openFn, setOpenFn] = React.useState(null);
   const defaultTab = (data.tabs || []).find((t) => t.default)?.id || (data.tabs && data.tabs[0]?.id) || "sga";
   const [activeTab, setActiveTab] = React.useState(defaultTab);
+  const summaryMode = data.summaryMode || "spend";
 
   if (openFn) {
-    return <FunctionDeepDive fn={openFn} onBack={() => setOpenFn(null)} />;
+    return <FunctionDeepDive fn={openFn} onBack={() => setOpenFn(null)} mode={summaryMode} />;
   }
 
   return (
@@ -1222,7 +1660,7 @@ function DashboardArtifact({ data }) {
         <DashboardTabBar tabs={data.tabs || []} active={activeTab} onSelect={setActiveTab} />
 
         {activeTab === "sga"
-          ? <SgaTabContent sga={data.sga || { functions: [] }} onOpenFn={setOpenFn} />
+          ? <SgaTabContent sga={data.sga || { functions: [] }} onOpenFn={setOpenFn} summaryMode={summaryMode} />
           : <ValueChainTabContent stage={(data.valueChain || {})[activeTab]} />}
 
         {data.source && (
