@@ -811,6 +811,392 @@ const TASK_PREVIEWS = {
         { id: "d3", reason: "Low confidence — needs enrichment", category: "AI flagged amber; consultant not signed-off", spend: "$62M",  count: 22, color: "#f59e0b" },
       ],
     }
+  },
+
+  // ── AI-VSM ──
+  // Picks up where Opportunity Prioritization left off: the priority zones
+  // become the priority processes here. For each process we map the value
+  // stream (sub-processes), score AI suitability per criterion (Harvey balls),
+  // type the intervention (Auto / Aug / Exc / N/S), and walk the activity
+  // deep-dive that ties each AI lever to an EBITDA lever and labor pool.
+  redesign_opps: {
+    chat: [
+      { role: "assistant", style: "neutral", text: "**AI-VSM** decomposes each priority zone into its value stream and asks one question per sub-process: *what's the AI lever?* Inputs are the 5–10 zones from Opportunity Prioritization — outputs are typed interventions (**Auto · Aug · Exc · N/S**) with named AI inputs, AI outputs, and human roles in the future state." },
+      { role: "assistant", style: "finding", text: "**Suitability scored on 5 criteria** — margin impact · volume & repetition · data availability · error tolerance · adoption readiness. A composite score plus a disqualifier flag (broken upstream data or fragmented ownership) gates each row." },
+      { role: "assistant", style: "variance", text: "**Six processes are loaded.** Customer onboarding (Selling · $11M · ranks #7 in the shortlist) is open by default — 10 activities across 5 sub-processes; **3 Auto · 4 Aug · 2 Exc · 1 N/S**. The intervention design tab and the activity deep dive carry the same data into named AI inputs/outputs and the EBITDA lever each row sits under." },
+      { role: "assistant", style: "question", text: "Want to walk the customer onboarding stream, switch to the NA Legal contract review (5.2× variance, all-Auto-Aug), or filter to a specific intervention type?" },
+    ],
+    suggestions: [
+      { label: "Open NA Legal contract review" },
+      { label: "Show only Auto interventions" },
+      { label: "Walk the activity deep dive" },
+    ],
+    artifact: {
+      type: "ai_vsm",
+      title: "AI-VSM — Where AI takes the value back",
+      subtitle: "From the priority zones in Opportunity Prioritization, decompose each value stream and identify AI levers · interventions are typed Auto · Aug · Exc · N/S",
+      source: "Source: Opportunity Prioritization · Activity & Driver Mapping · last refreshed 6 min ago",
+      interventionKey: [
+        { id: "auto", short: "Auto", label: "Full automation",  color: "#10b981", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200" },
+        { id: "aug",  short: "Aug",  label: "AI augmentation",  color: "#3b82f6", bg: "bg-blue-50",     text: "text-blue-700",     border: "border-blue-200" },
+        { id: "exc",  short: "Exc",  label: "Exception handle", color: "#f97316", bg: "bg-orange-50",   text: "text-orange-700",   border: "border-orange-200" },
+        { id: "ns",   short: "N/S",  label: "Not suitable",     color: "#9ca3af", bg: "bg-gray-100",    text: "text-gray-600",     border: "border-gray-200" },
+      ],
+      processes: [
+        // ── #7 Customer onboarding & order management (z7 in prioritization) ──
+        {
+          id: "z7",
+          rank: 7,
+          name: "Customer onboarding & order management",
+          function: "Selling · Finance",
+          costIntensity: "$$",
+          poolSize: "$11M",
+          variance: "2.4×",
+          ebitdaLever: "Selling efficiency",
+          verdictCounts: { auto: 3, aug: 4, exc: 2, ns: 1 },
+          metrics: [
+            { label: "Total cycle time",   value: "14.5 days", tone: "warn" },
+            { label: "Value-add time",      value: "3.2 days",  tone: "good" },
+            { label: "Waste ratio",          value: "78%",        tone: "bad"  },
+            { label: "Volume / month",       value: "~40 accounts" },
+            { label: "FTEs involved",        value: "6 (Sales, Fin, Ops)" },
+          ],
+          painPoints: [
+            { name: "Manual data re-entry",       severity: "High",        tone: "bad"  },
+            { name: "Credit approval lag",         severity: "Avg 4 days",  tone: "warn" },
+            { name: "Contract version conflicts",  severity: "Frequent",    tone: "warn" },
+            { name: "ERP setup errors",             severity: "−18% accts", tone: "bad"  },
+            { name: "First-order delay rate",       severity: "32%",         tone: "warn" },
+          ],
+          variations: [
+            { name: "Standard accounts",       share: "−60%" },
+            { name: "Credit-hold required",     share: "−25%" },
+            { name: "Custom contract terms",    share: "−15%" },
+            { name: "Multi-site setup",         share: "−20%" },
+            { name: "EDI integration req.",     share: "−30%" },
+          ],
+          subProcesses: [
+            { id: "intake",   name: "Application intake", cycle: 1.5, value: 0.3, waste: 80,
+              verdict: "auto", score: 12, scoreOf: 15,
+              ai: { margin: 88, volume: 95, data: 82, error: 90, adoption: 80 },
+              intervention: {
+                type: "Full automation",
+                aiInput:  "Inbound intake form (PDF / email) + customer master record",
+                aiOutput: "Validated CRM record · missing-field flags · duplicate alerts",
+                humanRole: "Sales rep approves only flagged exceptions (≤ 5% of intakes).",
+                exception: "Ambiguous customer match → routed to AE for confirmation.",
+              } },
+            { id: "credit",   name: "Credit & risk", cycle: 4.0, value: 0.8, waste: 80,
+              verdict: "aug", score: 11, scoreOf: 15,
+              ai: { margin: 82, volume: 88, data: 78, error: 50, adoption: 72 },
+              intervention: {
+                type: "AI augmentation",
+                aiInput:  "Credit bureau + 24-mo payment history + segment risk model",
+                aiOutput: "Risk score · recommended limit · draft credit memo",
+                humanRole: "Credit analyst signs off; AI auto-approves below $250K limit.",
+                exception: "Multi-entity / sovereign exposure → credit committee.",
+              } },
+            { id: "contract", name: "Contract setup", cycle: 3.0, value: 0.7, waste: 77,
+              verdict: "aug", score: 10, scoreOf: 15,
+              ai: { margin: 78, volume: 80, data: 70, error: 45, adoption: 70 },
+              intervention: {
+                type: "AI augmentation",
+                aiInput:  "Standard MSA template + customer redlines + clause library",
+                aiOutput: "First-pass redline · clause-deviation log · risk summary",
+                humanRole: "Counsel reviews only flagged deviations from the playbook.",
+                exception: "Non-standard liability or IP terms → counsel-led negotiation.",
+              } },
+            { id: "erp",      name: "ERP & system setup", cycle: 4.0, value: 1.4, waste: 65,
+              verdict: "auto", score: 13, scoreOf: 15,
+              ai: { margin: 92, volume: 90, data: 90, error: 85, adoption: 78 },
+              intervention: {
+                type: "Full automation",
+                aiInput:  "Approved CRM record · pricing schedule · tax + EDI metadata",
+                aiOutput: "ERP customer + ship-to + EDI partner records (transactional)",
+                humanRole: "Master-data team spot-checks 10% of automated postings.",
+                exception: "EDI integration handshake failure → IT integration team.",
+              } },
+            { id: "first",    name: "First order enable", cycle: 2.0, value: 1.0, waste: 50,
+              verdict: "exc", score: 8, scoreOf: 15,
+              ai: { margin: 60, volume: 65, data: 55, error: 30, adoption: 60 },
+              intervention: {
+                type: "Exception handle",
+                aiInput:  "First-order PO · live inventory · ship route + carrier ETA",
+                aiOutput: "Exception triage memo · recommended substitution · escalation path",
+                humanRole: "Ops lead handles edge cases; AI does triage + memo.",
+                exception: "Allocation shortfall or lane outage → ops + planning huddle.",
+              } },
+          ],
+          activities: [
+            { name: "Intake form parsing",          subProcess: "Application intake",    cycleTime: "0.4d", waste: 85, volume: "~40/mo", painPoint: "Manual transcription",          owner: "Human",   verdict: "auto", score: 12, intervention: "AI extracts fields → CRM API · spot-check on amber rows.", lever: "Indirect labor", laborPool: "$0.6M", effort: "Low",   impact: "High" },
+            { name: "Duplicate-account check",       subProcess: "Application intake",    cycleTime: "0.2d", waste: 80, volume: "~40/mo", painPoint: "Master-data fragmentation",     owner: "System",  verdict: "auto", score: 13, intervention: "AI similarity match against customer master.",          lever: "Master data",     laborPool: "$0.2M", effort: "Low",   impact: "Med"  },
+            { name: "Credit memo drafting",          subProcess: "Credit & risk",         cycleTime: "1.5d", waste: 70, volume: "~40/mo", painPoint: "Repetitive boilerplate",        owner: "Human",   verdict: "aug",  score: 11, intervention: "AI drafts memo from bureau + history; analyst reviews.", lever: "Working capital", laborPool: "$1.4M", effort: "Med",   impact: "High" },
+            { name: "Risk-rule scoring",              subProcess: "Credit & risk",         cycleTime: "0.5d", waste: 50, volume: "~40/mo", painPoint: "Inconsistent risk thresholds",  owner: "Hybrid",  verdict: "aug",  score: 11, intervention: "AI applies segment risk model; analyst confirms.",       lever: "Working capital", laborPool: "$0.5M", effort: "Low",   impact: "Med"  },
+            { name: "MSA redline first pass",        subProcess: "Contract setup",        cycleTime: "1.2d", waste: 75, volume: "~12/mo", painPoint: "Repeat clause negotiation",     owner: "Human",   verdict: "aug",  score: 10, intervention: "AI flags deviations vs library; counsel signs off.",     lever: "Legal labor",     laborPool: "$0.9M", effort: "Med",   impact: "High" },
+            { name: "Clause approval routing",        subProcess: "Contract setup",        cycleTime: "0.8d", waste: 70, volume: "~12/mo", painPoint: "Approval chain drift",          owner: "Human",   verdict: "aug",  score: 10, intervention: "AI routes by policy; reminders on idle approvals.",       lever: "Cycle time",       laborPool: "$0.3M", effort: "Low",   impact: "Med"  },
+            { name: "ERP customer creation",          subProcess: "ERP & system setup",    cycleTime: "0.6d", waste: 60, volume: "~40/mo", painPoint: "Master-data entry errors",      owner: "Hybrid",  verdict: "auto", score: 13, intervention: "AI fills ERP from approved CRM record · audit log.",      lever: "Indirect labor",   laborPool: "$1.1M", effort: "Low",   impact: "High" },
+            { name: "EDI partner provisioning",       subProcess: "ERP & system setup",    cycleTime: "1.2d", waste: 55, volume: "~12/mo", painPoint: "Manual handshake config",       owner: "System",  verdict: "exc",  score: 9,  intervention: "AI proposes config; IT confirms handshake.",              lever: "Order capture",    laborPool: "$0.4M", effort: "Med",   impact: "Med"  },
+            { name: "First-order exception triage",   subProcess: "First order enable",    cycleTime: "0.5d", waste: 45, volume: "~12/mo", painPoint: "Inventory / ship conflicts",    owner: "Human",   verdict: "exc",  score: 8,  intervention: "AI triages; ops handles edge cases.",                     lever: "Operations",        laborPool: "$0.6M", effort: "Med",   impact: "Med"  },
+            { name: "Strategic-account exception",    subProcess: "First order enable",    cycleTime: "0.8d", waste: 30, volume: "~3/mo",  painPoint: "Bespoke onboarding asks",       owner: "Human",   verdict: "ns",   score: 5,  intervention: "Out of scope — relationship-led; AI ingests notes only.", lever: "Relationship",      laborPool: "$0.3M", effort: "High",  impact: "Low"  },
+          ],
+        },
+
+        // ── #8 NA Legal first-pass contract review (z8) ──
+        {
+          id: "z8",
+          rank: 8,
+          name: "First-pass contract review — NA Legal",
+          function: "Legal & Compliance",
+          costIntensity: "$$",
+          poolSize: "$8M",
+          variance: "5.2×",
+          ebitdaLever: "Legal labor pricing",
+          verdictCounts: { auto: 3, aug: 4, exc: 1, ns: 0 },
+          metrics: [
+            { label: "Total cycle time",   value: "8.1 days",   tone: "warn" },
+            { label: "Value-add time",      value: "1.6 days",   tone: "good" },
+            { label: "Waste ratio",          value: "80%",         tone: "bad"  },
+            { label: "Volume / month",       value: "~4,000",      sub: "NDAs + vendor + customer" },
+            { label: "FTEs involved",        value: "22 (paralegal + counsel)" },
+          ],
+          painPoints: [
+            { name: "Repeat NDA boilerplate",      severity: "High",       tone: "bad"  },
+            { name: "Vendor MSA queue depth",       severity: "12-day lag", tone: "warn" },
+            { name: "Counsel time on low-risk",     severity: "62%",         tone: "bad"  },
+            { name: "Clause library out of date",   severity: "Q-old",       tone: "warn" },
+          ],
+          variations: [
+            { name: "NDA / mutual",                share: "+40%" },
+            { name: "Vendor MSA",                   share: "+30%" },
+            { name: "Customer contract",            share: "+15%" },
+            { name: "Employment agreement",         share: "+10%" },
+            { name: "Non-standard / regulated",     share: "+5%"  },
+          ],
+          subProcesses: [
+            { id: "intake",  name: "Contract intake",       cycle: 0.5, value: 0.1, waste: 80,
+              verdict: "auto", score: 13, scoreOf: 15,
+              ai: { margin: 88, volume: 95, data: 90, error: 92, adoption: 85 },
+              intervention: { type: "Full automation", aiInput: "Inbound contract (email / portal) + metadata", aiOutput: "Routed queue · contract type · counterparty match", humanRole: "Paralegal touches < 5%.", exception: "Unmatched counterparty → AE." } },
+            { id: "triage",  name: "Risk triage",            cycle: 1.0, value: 0.2, waste: 80,
+              verdict: "aug", score: 11, scoreOf: 15,
+              ai: { margin: 80, volume: 85, data: 80, error: 60, adoption: 75 },
+              intervention: { type: "AI augmentation", aiInput: "Contract text + risk model (jurisdiction, dollar value, regulated flags)", aiOutput: "Risk tier (1-3) · escalation reasons", humanRole: "Counsel approves Tier 3 routing only.", exception: "Litigation-tied clauses → litigation lead." } },
+            { id: "redline", name: "First-pass redline",     cycle: 3.5, value: 0.6, waste: 83,
+              verdict: "aug", score: 12, scoreOf: 15,
+              ai: { margin: 88, volume: 92, data: 80, error: 55, adoption: 78 },
+              intervention: { type: "AI augmentation", aiInput: "Counterparty redlines + clause library + playbook", aiOutput: "Marked-up contract · deviation log · suggested fallbacks", humanRole: "Paralegal validates ~20% sample; counsel reviews Tier 2-3.", exception: "IP / liability deviations → counsel-led." } },
+            { id: "approve", name: "Approval routing",       cycle: 1.6, value: 0.4, waste: 75,
+              verdict: "auto", score: 12, scoreOf: 15,
+              ai: { margin: 78, volume: 88, data: 85, error: 80, adoption: 80 },
+              intervention: { type: "Full automation", aiInput: "Risk tier + signature matrix + jurisdiction", aiOutput: "Routed approval chain + reminders", humanRole: "Approvers click through.", exception: "Off-policy approver → ops review." } },
+            { id: "execute", name: "Execution & filing",     cycle: 1.5, value: 0.3, waste: 80,
+              verdict: "exc", score: 9,  scoreOf: 15,
+              ai: { margin: 65, volume: 70, data: 60, error: 35, adoption: 60 },
+              intervention: { type: "Exception handle", aiInput: "Signed contract + obligations extract", aiOutput: "CLM record + obligation calendar", humanRole: "Paralegal handles non-standard filings.", exception: "Regulated jurisdictions → local counsel." } },
+          ],
+          activities: [
+            { name: "NDA classification",          subProcess: "Contract intake",   cycleTime: "0.1d", waste: 85, volume: "~2,200/mo", painPoint: "Manual triage",         owner: "Human",  verdict: "auto", score: 13, intervention: "AI classifies and routes inbound NDAs.", lever: "Legal labor", laborPool: "$0.7M", effort: "Low", impact: "High" },
+            { name: "Counterparty match",           subProcess: "Contract intake",   cycleTime: "0.2d", waste: 75, volume: "~4,000/mo", painPoint: "Master-data drift",     owner: "System", verdict: "auto", score: 12, intervention: "AI matches to vendor master.",            lever: "Master data", laborPool: "$0.2M", effort: "Low", impact: "Med"  },
+            { name: "Risk-tier scoring",            subProcess: "Risk triage",        cycleTime: "0.4d", waste: 70, volume: "~4,000/mo", painPoint: "Inconsistent triage",  owner: "Hybrid", verdict: "aug",  score: 11, intervention: "Risk model + counsel signs off Tier 3.",  lever: "Legal labor", laborPool: "$0.6M", effort: "Med", impact: "High" },
+            { name: "Vendor MSA redline",            subProcess: "First-pass redline", cycleTime: "1.2d", waste: 80, volume: "~1,200/mo", painPoint: "Repeat clauses",       owner: "Human",  verdict: "aug",  score: 12, intervention: "AI redlines vs playbook; paralegal validates.", lever: "Legal labor", laborPool: "$1.6M", effort: "Med", impact: "High" },
+            { name: "Customer contract redline",     subProcess: "First-pass redline", cycleTime: "1.6d", waste: 85, volume: "~600/mo",   painPoint: "Negotiation drift",    owner: "Human",  verdict: "aug",  score: 12, intervention: "AI flags deviations + suggested fallbacks.", lever: "Legal labor", laborPool: "$1.1M", effort: "Med", impact: "High" },
+            { name: "Clause-library refresh",        subProcess: "First-pass redline", cycleTime: "0.4d", waste: 60, volume: "~ongoing",   painPoint: "Out-of-date library",  owner: "Hybrid", verdict: "aug",  score: 10, intervention: "AI surfaces deviation patterns → library updates.", lever: "Knowledge ops", laborPool: "$0.2M", effort: "Med", impact: "Med"  },
+            { name: "Approval routing",              subProcess: "Approval routing",   cycleTime: "0.6d", waste: 70, volume: "~4,000/mo", painPoint: "Approval drift",        owner: "Hybrid", verdict: "auto", score: 12, intervention: "AI routes by signature matrix.",          lever: "Cycle time",   laborPool: "$0.3M", effort: "Low", impact: "Med"  },
+            { name: "Obligations extract",           subProcess: "Execution & filing", cycleTime: "0.5d", waste: 70, volume: "~4,000/mo", painPoint: "Manual entry",          owner: "Human",  verdict: "exc",  score: 9,  intervention: "AI extracts; paralegal reviews regulated filings.", lever: "Compliance", laborPool: "$0.4M", effort: "Med", impact: "Med"  },
+          ],
+        },
+
+        // ── #4 IT advisory in-sourcing (z4) — light data ──
+        {
+          id: "z4",
+          rank: 4,
+          name: "IT advisory — InfoSec · SAP · App Ops",
+          function: "IT",
+          costIntensity: "$$$",
+          poolSize: "$25M",
+          variance: "2.1×",
+          ebitdaLever: "Outside services",
+          verdictCounts: { auto: 2, aug: 2, exc: 1, ns: 0 },
+          metrics: [
+            { label: "Total cycle time",  value: "11.0 days",  tone: "warn" },
+            { label: "Value-add time",     value: "3.0 days",    tone: "good" },
+            { label: "Waste ratio",         value: "73%",          tone: "bad"  },
+            { label: "Volume / month",      value: "~150 advisory tickets" },
+            { label: "FTEs involved",       value: "12 (vendor) + 8 (internal)" },
+          ],
+          painPoints: [
+            { name: "SOP-driven advisory",    severity: "High",  tone: "bad"  },
+            { name: "Vendor PO sprawl",        severity: "$25M",   tone: "bad"  },
+            { name: "Slow internal escalation", severity: "Med",  tone: "warn" },
+          ],
+          variations: [
+            { name: "InfoSec advisory",   share: "$7M" },
+            { name: "SAP / Digital",       share: "$7M" },
+            { name: "App Ops",             share: "$6M" },
+            { name: "Cloud / FinOps",      share: "$3M" },
+            { name: "Other",               share: "$2M" },
+          ],
+          subProcesses: [
+            { id: "intake",  name: "Ticket intake",         cycle: 0.5, value: 0.2, waste: 60, verdict: "auto", score: 13, scoreOf: 15, ai: { margin: 88, volume: 92, data: 88, error: 90, adoption: 80 },
+              intervention: { type: "Full automation", aiInput: "Service request + system context", aiOutput: "Routed ticket + suggested SOP", humanRole: "Spot-check 5%.", exception: "P1 incident → on-call." } },
+            { id: "triage",  name: "Triage & SOP match",    cycle: 1.0, value: 0.3, waste: 70, verdict: "aug",  score: 11, scoreOf: 15, ai: { margin: 80, volume: 85, data: 75, error: 60, adoption: 70 },
+              intervention: { type: "AI augmentation", aiInput: "Ticket + SOP library", aiOutput: "Matched SOP + likelihood score", humanRole: "Engineer confirms when < 80%.", exception: "Novel issue → senior engineer." } },
+            { id: "advisory", name: "Advisory drafting",     cycle: 5.0, value: 1.5, waste: 70, verdict: "aug",  score: 12, scoreOf: 15, ai: { margin: 88, volume: 80, data: 78, error: 55, adoption: 72 },
+              intervention: { type: "AI augmentation", aiInput: "Ticket + SOP + system metadata + risk model", aiOutput: "Draft advisory + recommended actions", humanRole: "Engineer signs off.", exception: "Cross-system change → architecture review." } },
+            { id: "deploy",   name: "Change deployment",     cycle: 3.0, value: 0.8, waste: 73, verdict: "exc",  score: 9,  scoreOf: 15, ai: { margin: 65, volume: 70, data: 60, error: 35, adoption: 60 },
+              intervention: { type: "Exception handle", aiInput: "Approved change + rollout plan", aiOutput: "Deployment runbook + monitoring hooks", humanRole: "SRE handles change.", exception: "Production rollback → incident commander." } },
+            { id: "review",   name: "Post-change review",    cycle: 1.5, value: 0.2, waste: 87, verdict: "auto", score: 12, scoreOf: 15, ai: { margin: 78, volume: 85, data: 82, error: 80, adoption: 78 },
+              intervention: { type: "Full automation", aiInput: "Change + monitoring + ticket trail", aiOutput: "Post-change report + SOP delta", humanRole: "Engineer approves SOP delta.", exception: "Repeat incidents → root-cause review." } },
+          ],
+          activities: [
+            { name: "Ticket routing",         subProcess: "Ticket intake",      cycleTime: "0.3d", waste: 60, volume: "~150/mo", painPoint: "Manual routing",     owner: "Human",  verdict: "auto", score: 13, intervention: "AI routes by intent + system.",       lever: "Outside services", laborPool: "$0.5M", effort: "Low",  impact: "High" },
+            { name: "SOP matching",            subProcess: "Triage & SOP match",  cycleTime: "0.6d", waste: 70, volume: "~150/mo", painPoint: "Stale SOPs",          owner: "Hybrid", verdict: "aug",  score: 11, intervention: "AI matches SOP; engineer confirms.",   lever: "Outside services", laborPool: "$1.6M", effort: "Med",  impact: "High" },
+            { name: "Advisory draft",           subProcess: "Advisory drafting",   cycleTime: "2.0d", waste: 70, volume: "~150/mo", painPoint: "Vendor markup",       owner: "Human",  verdict: "aug",  score: 12, intervention: "AI drafts advisory; in-source from vendor.", lever: "Outside services", laborPool: "$8.0M", effort: "Med",  impact: "High" },
+            { name: "Change deployment",        subProcess: "Change deployment",   cycleTime: "1.5d", waste: 73, volume: "~80/mo",   painPoint: "Coordination",         owner: "Human",  verdict: "exc",  score: 9,  intervention: "AI generates runbook; SRE deploys.",   lever: "Operations",        laborPool: "$1.4M", effort: "Med",  impact: "Med"  },
+            { name: "Post-change report",       subProcess: "Post-change review",  cycleTime: "0.5d", waste: 87, volume: "~80/mo",   painPoint: "Manual reports",      owner: "Hybrid", verdict: "auto", score: 12, intervention: "AI assembles report from trail.",      lever: "Indirect labor",     laborPool: "$0.6M", effort: "Low",  impact: "Med"  },
+          ],
+        },
+
+        // ── #5 HR advisory in-sourcing (z5) — light data ──
+        {
+          id: "z5",
+          rank: 5,
+          name: "HR advisory — policy · benefits · employee questions",
+          function: "HR",
+          costIntensity: "$$$",
+          poolSize: "$24M",
+          variance: "1.8×",
+          ebitdaLever: "Outside services",
+          verdictCounts: { auto: 3, aug: 1, exc: 1, ns: 0 },
+          metrics: [
+            { label: "Total cycle time",  value: "5.5 days",  tone: "warn" },
+            { label: "Value-add time",     value: "1.4 days",   tone: "good" },
+            { label: "Waste ratio",         value: "75%",         tone: "bad"  },
+            { label: "Volume / month",      value: "~3,200 cases" },
+            { label: "FTEs involved",       value: "≈ 200 FTE-equivalent (vendor)" },
+          ],
+          painPoints: [
+            { name: "Repetitive policy lookups", severity: "High", tone: "bad" },
+            { name: "Outside vendor markup",      severity: "$24M", tone: "bad" },
+            { name: "Inconsistent answers",        severity: "Med",  tone: "warn" },
+          ],
+          variations: [
+            { name: "Benefits questions",      share: "+40%" },
+            { name: "Policy lookups",          share: "+30%" },
+            { name: "Compensation queries",    share: "+15%" },
+            { name: "Leave / time off",         share: "+10%" },
+            { name: "Manager escalations",      share: "+5%"  },
+          ],
+          subProcesses: [
+            { id: "intake",   name: "Question intake",     cycle: 0.2, value: 0.1, waste: 50, verdict: "auto", score: 13, scoreOf: 15, ai: { margin: 88, volume: 95, data: 90, error: 92, adoption: 85 }, intervention: { type: "Full automation", aiInput: "Question text + employee context", aiOutput: "Routed case + intent label", humanRole: "Spot-check.", exception: "Hostile / sensitive → HRBP." } },
+            { id: "answer",   name: "First-pass answer",   cycle: 1.5, value: 0.4, waste: 73, verdict: "auto", score: 12, scoreOf: 15, ai: { margin: 90, volume: 92, data: 88, error: 70, adoption: 80 }, intervention: { type: "Full automation", aiInput: "Policy library + benefits + location", aiOutput: "Drafted answer + sources", humanRole: "Sample audit weekly.", exception: "Policy gap → HRBP." } },
+            { id: "verify",   name: "Verification & send", cycle: 1.0, value: 0.4, waste: 60, verdict: "aug",  score: 11, scoreOf: 15, ai: { margin: 80, volume: 85, data: 78, error: 65, adoption: 75 }, intervention: { type: "AI augmentation", aiInput: "Drafted answer + employee record", aiOutput: "Verified answer + tone check", humanRole: "Coordinator approves.", exception: "Sensitive case → HRBP." } },
+            { id: "escalate", name: "Escalation handling", cycle: 1.8, value: 0.4, waste: 78, verdict: "exc",  score: 8,  scoreOf: 15, ai: { margin: 60, volume: 65, data: 55, error: 30, adoption: 60 }, intervention: { type: "Exception handle", aiInput: "Case context + history", aiOutput: "Triage memo for HRBP", humanRole: "HRBP handles.", exception: "ER / legal → labor counsel." } },
+            { id: "close",    name: "Close & SOP update",  cycle: 1.0, value: 0.1, waste: 90, verdict: "auto", score: 12, scoreOf: 15, ai: { margin: 78, volume: 88, data: 82, error: 80, adoption: 80 }, intervention: { type: "Full automation", aiInput: "Resolved case + answer + tags", aiOutput: "Case close + SOP delta proposal", humanRole: "HRBP signs SOP delta.", exception: "Trend → policy review." } },
+          ],
+          activities: [
+            { name: "Question routing",       subProcess: "Question intake",     cycleTime: "0.1d", waste: 50, volume: "~3,200/mo", painPoint: "Manual triage",      owner: "Human",  verdict: "auto", score: 13, intervention: "AI routes by intent.",                lever: "Outside services", laborPool: "$0.4M", effort: "Low", impact: "High" },
+            { name: "Policy answer draft",     subProcess: "First-pass answer",   cycleTime: "0.6d", waste: 73, volume: "~3,200/mo", painPoint: "Vendor markup",      owner: "Human",  verdict: "auto", score: 12, intervention: "AI drafts from policy library.",       lever: "Outside services", laborPool: "$15.0M", effort: "Med", impact: "High" },
+            { name: "Coordinator verification", subProcess: "Verification & send", cycleTime: "0.4d", waste: 60, volume: "~3,200/mo", painPoint: "Sample audit",       owner: "Hybrid", verdict: "aug",  score: 11, intervention: "AI verifies tone + accuracy.",          lever: "Indirect labor",    laborPool: "$2.0M",  effort: "Low", impact: "Med"  },
+            { name: "Manager escalation",       subProcess: "Escalation handling", cycleTime: "0.6d", waste: 70, volume: "~160/mo",   painPoint: "Sensitive cases",    owner: "Human",  verdict: "exc",  score: 8,  intervention: "AI triages; HRBP handles.",            lever: "Risk",              laborPool: "$0.8M",  effort: "Med", impact: "Med"  },
+            { name: "SOP delta proposal",        subProcess: "Close & SOP update",  cycleTime: "0.2d", waste: 90, volume: "~ongoing",   painPoint: "Stale SOP",         owner: "Hybrid", verdict: "auto", score: 12, intervention: "AI proposes SOP updates from patterns.", lever: "Knowledge ops",     laborPool: "$0.3M",  effort: "Low", impact: "Med"  },
+          ],
+        },
+
+        // ── #2 Marketing brief & media buying (z2) — light data ──
+        {
+          id: "z2",
+          rank: 2,
+          name: "Marketing brief & media buying workflow",
+          function: "Marketing & Media",
+          costIntensity: "$$$",
+          poolSize: "$50M",
+          variance: "2.8×",
+          ebitdaLever: "Marketing efficiency",
+          verdictCounts: { auto: 1, aug: 3, exc: 1, ns: 0 },
+          metrics: [
+            { label: "Total cycle time",  value: "21 days", tone: "warn" },
+            { label: "Value-add time",     value: "5.2 days", tone: "good" },
+            { label: "Waste ratio",         value: "75%",       tone: "bad"  },
+            { label: "Volume / month",      value: "~120 briefs · 40 buys" },
+            { label: "FTEs involved",       value: "180 brand managers" },
+          ],
+          painPoints: [
+            { name: "40+ duplicated cost centers", severity: "High",   tone: "bad"  },
+            { name: "Agency-fee compression",      severity: "$50M",   tone: "bad"  },
+            { name: "Brief drafting time",          severity: "5d avg", tone: "warn" },
+            { name: "Post-campaign synthesis lag", severity: "14d",    tone: "warn" },
+          ],
+          variations: [
+            { name: "Always-on digital",      share: "+45%" },
+            { name: "Major campaign launch",  share: "+25%" },
+            { name: "Trade promotion",         share: "+15%" },
+            { name: "Sponsorship",             share: "+10%" },
+            { name: "Local activation",        share: "+5%"  },
+          ],
+          subProcesses: [
+            { id: "scan",     name: "Competitive scan",     cycle: 4.0, value: 1.0, waste: 75, verdict: "aug",  score: 11, scoreOf: 15, ai: { margin: 80, volume: 80, data: 75, error: 65, adoption: 70 }, intervention: { type: "AI augmentation", aiInput: "Market signals + share data + creative library", aiOutput: "Competitive memo + opportunity map", humanRole: "Brand manager approves.", exception: "New market entry → strategy lead." } },
+            { id: "brief",    name: "Brief drafting",       cycle: 5.0, value: 1.2, waste: 76, verdict: "aug",  score: 12, scoreOf: 15, ai: { margin: 88, volume: 92, data: 80, error: 60, adoption: 75 }, intervention: { type: "AI augmentation", aiInput: "Strategy + brand guidelines + competitive memo", aiOutput: "Brief draft + KPI framework", humanRole: "Brand manager refines.", exception: "Brand-defining work → CMO." } },
+            { id: "media",    name: "Media planning",       cycle: 4.5, value: 1.4, waste: 69, verdict: "aug",  score: 11, scoreOf: 15, ai: { margin: 80, volume: 78, data: 72, error: 50, adoption: 68 }, intervention: { type: "AI augmentation", aiInput: "Brief + media stack + audience model", aiOutput: "Media plan + flight schedule", humanRole: "Brand + agency partner approve.", exception: "Sponsorship → custom plan." } },
+            { id: "buy",      name: "Buy execution",         cycle: 4.0, value: 0.8, waste: 80, verdict: "exc",  score: 9,  scoreOf: 15, ai: { margin: 65, volume: 70, data: 65, error: 35, adoption: 60 }, intervention: { type: "Exception handle", aiInput: "Approved plan + rate cards", aiOutput: "Buy orders + invoice match", humanRole: "Agency + finance handle.", exception: "Premium inventory → manual." } },
+            { id: "synth",    name: "Post-campaign synthesis", cycle: 3.5, value: 0.8, waste: 77, verdict: "auto", score: 12, scoreOf: 15, ai: { margin: 88, volume: 90, data: 85, error: 80, adoption: 75 }, intervention: { type: "Full automation", aiInput: "Campaign data + KPIs + creative", aiOutput: "Synthesis report + learnings", humanRole: "Brand approves.", exception: "Strategic learning → portfolio review." } },
+          ],
+          activities: [
+            { name: "Competitive scan",      subProcess: "Competitive scan",     cycleTime: "1.5d", waste: 75, volume: "~120/mo", painPoint: "Manual desk research", owner: "Human",  verdict: "aug",  score: 11, intervention: "AI synthesizes market signals.",          lever: "Brand labor",         laborPool: "$2.4M", effort: "Med", impact: "High" },
+            { name: "Brief drafting",         subProcess: "Brief drafting",        cycleTime: "2.0d", waste: 76, volume: "~120/mo", painPoint: "Repeat structure",    owner: "Human",  verdict: "aug",  score: 12, intervention: "AI drafts; brand refines.",                lever: "Brand labor",         laborPool: "$3.2M", effort: "Med", impact: "High" },
+            { name: "Audience modeling",       subProcess: "Media planning",        cycleTime: "1.0d", waste: 60, volume: "~120/mo", painPoint: "Disconnected data",   owner: "Hybrid", verdict: "aug",  score: 11, intervention: "AI builds audience model.",                lever: "Media efficiency",    laborPool: "$1.8M", effort: "Med", impact: "High" },
+            { name: "Buy execution",           subProcess: "Buy execution",          cycleTime: "1.5d", waste: 80, volume: "~40/mo",   painPoint: "Premium inventory",   owner: "Human",  verdict: "exc",  score: 9,  intervention: "AI checks plan; agency executes.",         lever: "Media efficiency",    laborPool: "$1.0M", effort: "Med", impact: "Med"  },
+            { name: "Post-campaign report",     subProcess: "Post-campaign synthesis", cycleTime: "1.5d", waste: 77, volume: "~120/mo", painPoint: "Manual synthesis",    owner: "Human",  verdict: "auto", score: 12, intervention: "AI assembles synthesis report.",           lever: "Brand labor",         laborPool: "$2.8M", effort: "Low", impact: "High" },
+          ],
+        },
+
+        // ── #9 Tax research advisory (z9) — light data ──
+        {
+          id: "z9",
+          rank: 9,
+          name: "Tax research advisory — first-pass",
+          function: "Finance · Tax",
+          costIntensity: "$",
+          poolSize: "$5M",
+          variance: "1.7×",
+          ebitdaLever: "Outside services",
+          verdictCounts: { auto: 2, aug: 2, exc: 1, ns: 0 },
+          metrics: [
+            { label: "Total cycle time",  value: "9.0 days", tone: "warn" },
+            { label: "Value-add time",     value: "2.1 days", tone: "good" },
+            { label: "Waste ratio",         value: "77%",       tone: "bad"  },
+            { label: "Volume / month",      value: "~85 inquiries" },
+            { label: "FTEs involved",       value: "Outside vendor + 4 internal" },
+          ],
+          painPoints: [
+            { name: "SOP-driven research",       severity: "High",  tone: "bad"  },
+            { name: "Outside vendor markup",      severity: "$5M",   tone: "bad"  },
+            { name: "Counsel review queue",       severity: "Med",   tone: "warn" },
+          ],
+          variations: [
+            { name: "Indirect tax",         share: "+35%" },
+            { name: "Transfer pricing",      share: "+25%" },
+            { name: "Income tax",            share: "+20%" },
+            { name: "Customs / duties",      share: "+15%" },
+            { name: "Other",                 share: "+5%"  },
+          ],
+          subProcesses: [
+            { id: "intake",  name: "Inquiry intake",        cycle: 0.5, value: 0.1, waste: 80, verdict: "auto", score: 12, scoreOf: 15, ai: { margin: 85, volume: 90, data: 85, error: 88, adoption: 80 }, intervention: { type: "Full automation", aiInput: "Question + entity + jurisdiction", aiOutput: "Routed case + tax-area label", humanRole: "Spot-check.", exception: "Litigation tied → counsel." } },
+            { id: "research", name: "Research drafting",     cycle: 4.0, value: 1.0, waste: 75, verdict: "aug",  score: 12, scoreOf: 15, ai: { margin: 90, volume: 80, data: 78, error: 60, adoption: 70 }, intervention: { type: "AI augmentation", aiInput: "Tax code + rulings + entity facts", aiOutput: "Draft research memo with citations", humanRole: "Counsel signs off.", exception: "Cross-border restructure → senior counsel." } },
+            { id: "memo",     name: "Memo finalization",     cycle: 2.0, value: 0.6, waste: 70, verdict: "aug",  score: 11, scoreOf: 15, ai: { margin: 80, volume: 78, data: 75, error: 55, adoption: 70 }, intervention: { type: "AI augmentation", aiInput: "Draft memo + counsel comments", aiOutput: "Polished memo + risk callouts", humanRole: "Counsel finalizes.", exception: "Material exposure → CFO review." } },
+            { id: "filing",   name: "Filing / advice issue", cycle: 2.0, value: 0.3, waste: 85, verdict: "exc",  score: 8,  scoreOf: 15, ai: { margin: 60, volume: 70, data: 55, error: 30, adoption: 60 }, intervention: { type: "Exception handle", aiInput: "Final memo + filing requirements", aiOutput: "Draft filing + checklist", humanRole: "Tax ops files.", exception: "Regulated jurisdiction → local counsel." } },
+            { id: "archive",  name: "Archive & SOP update",  cycle: 0.5, value: 0.1, waste: 80, verdict: "auto", score: 11, scoreOf: 15, ai: { margin: 75, volume: 85, data: 80, error: 78, adoption: 75 }, intervention: { type: "Full automation", aiInput: "Memo + outcome", aiOutput: "Archive + SOP delta", humanRole: "Tax counsel signs SOP delta.", exception: "New ruling → policy review." } },
+          ],
+          activities: [
+            { name: "Inquiry routing",      subProcess: "Inquiry intake",        cycleTime: "0.3d", waste: 80, volume: "~85/mo", painPoint: "Manual triage",     owner: "Human",  verdict: "auto", score: 12, intervention: "AI routes by tax area + entity.",  lever: "Outside services", laborPool: "$0.2M", effort: "Low", impact: "Med"  },
+            { name: "Tax research draft",    subProcess: "Research drafting",     cycleTime: "1.5d", waste: 75, volume: "~85/mo", painPoint: "Vendor markup",     owner: "Human",  verdict: "aug",  score: 12, intervention: "AI drafts; counsel signs off.",     lever: "Outside services", laborPool: "$3.6M", effort: "Med", impact: "High" },
+            { name: "Memo polish",            subProcess: "Memo finalization",     cycleTime: "0.8d", waste: 70, volume: "~85/mo", painPoint: "Repeat edits",      owner: "Hybrid", verdict: "aug",  score: 11, intervention: "AI applies counsel comments.",       lever: "Tax labor",        laborPool: "$0.5M", effort: "Low", impact: "Med"  },
+            { name: "Filing draft",           subProcess: "Filing / advice issue",  cycleTime: "0.8d", waste: 85, volume: "~50/mo", painPoint: "Manual prep",        owner: "Human",  verdict: "exc",  score: 8,  intervention: "AI prepares filing checklist.",      lever: "Compliance",        laborPool: "$0.3M", effort: "Med", impact: "Med"  },
+            { name: "Archive update",         subProcess: "Archive & SOP update",  cycleTime: "0.2d", waste: 80, volume: "~85/mo", painPoint: "Stale archive",     owner: "System", verdict: "auto", score: 11, intervention: "AI archives + tags rulings.",         lever: "Knowledge ops",     laborPool: "$0.1M", effort: "Low", impact: "Low"  },
+          ],
+        },
+      ],
+    }
   }
 };
 
@@ -2553,6 +2939,510 @@ function GridContent({ task }) {
   );
 }
 
+// ── AI-VSM ARTIFACT ──
+// Picks up where Opportunity Prioritization left off. Each priority zone
+// becomes a process here; each process decomposes into sub-processes (the
+// VSM swim lane), which decompose into activities (the deep dive). A Harvey
+// ball per AI-suitability criterion shows the score, and an intervention
+// type (Auto / Aug / Exc / N/S) is the lever.
+
+// Map verdict id → meta (color, label, classes). Single source of truth so
+// the rail, the flow, the scoring table, and the activity grid all read the
+// same thing.
+const VERDICT_META = {
+  auto: { short: "Auto", label: "Full automation",  color: "#10b981", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200", flowFill: "#10b981", flowSoft: "#d1fae5" },
+  aug:  { short: "Aug",  label: "AI augmentation",  color: "#3b82f6", bg: "bg-blue-50",     text: "text-blue-700",     border: "border-blue-200",     flowFill: "#3b82f6", flowSoft: "#dbeafe" },
+  exc:  { short: "Exc",  label: "Exception handle", color: "#f97316", bg: "bg-orange-50",   text: "text-orange-700",   border: "border-orange-200",   flowFill: "#f97316", flowSoft: "#ffedd5" },
+  ns:   { short: "N/S",  label: "Not suitable",     color: "#9ca3af", bg: "bg-gray-100",    text: "text-gray-600",     border: "border-gray-200",     flowFill: "#9ca3af", flowSoft: "#f3f4f6" },
+};
+
+// Harvey ball — arc-fill SVG with the score value rendered in the center.
+// Color binds to score band so the eye picks up high/low at a glance:
+//   ≥80 emerald · 50–79 blue · 20–49 amber · <20 red
+function HarveyBall({ score = 0, size = 30, label }) {
+  const r = (size - 5) / 2;
+  const c = 2 * Math.PI * r;
+  const offset = c - (Math.max(0, Math.min(100, score)) / 100) * c;
+  const color = score >= 80 ? "#10b981" : score >= 50 ? "#3b82f6" : score >= 20 ? "#f59e0b" : "#ef4444";
+  const cx = size / 2;
+  return (
+    <div className="relative inline-block" style={{ width: size, height: size }} title={label ? `${label} · ${score}` : String(score)}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle cx={cx} cy={cx} r={r} fill="white" stroke="#e5e7eb" strokeWidth={2.5} />
+        <circle
+          cx={cx} cy={cx} r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth={2.5}
+          strokeDasharray={c}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${cx} ${cx})`}
+        />
+      </svg>
+      <div
+        className="absolute inset-0 flex items-center justify-center font-bold tabular-nums"
+        style={{ color, fontSize: size <= 24 ? 9 : 10 }}
+      >
+        {score}
+      </div>
+    </div>
+  );
+}
+
+function VerdictPill({ verdict, size = "sm" }) {
+  const m = VERDICT_META[verdict] || VERDICT_META.ns;
+  const cls = size === "xs"
+    ? "text-[10px] px-1.5 py-0.5"
+    : "text-[11px] px-2 py-0.5";
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-md border font-semibold ${m.bg} ${m.text} ${m.border} ${cls}`}>{m.short}</span>
+  );
+}
+
+function VerdictCountStrip({ counts }) {
+  return (
+    <div className="flex items-center gap-1.5 flex-wrap">
+      {Object.entries(VERDICT_META).map(([k, m]) => {
+        const n = counts?.[k] ?? 0;
+        if (n === 0) return null;
+        return (
+          <span key={k} className={`inline-flex items-center gap-1 text-[11px] font-semibold rounded-md border px-1.5 py-0.5 ${m.bg} ${m.text} ${m.border}`}>
+            <span className="tabular-nums">{n}</span> {m.short}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+function AiVsmRail({ processes, activeId, onSelect }) {
+  return (
+    <div className="w-[200px] flex-shrink-0 border-r border-gray-200 bg-gray-50/50 overflow-y-auto scrollbar-thin">
+      <div className="px-3 py-3 border-b border-gray-200">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Priority Processes</div>
+        <div className="text-[10px] text-gray-400 mt-0.5">From Opportunity Prioritization</div>
+      </div>
+      <div className="py-1">
+        {processes.map((p) => {
+          const isActive = p.id === activeId;
+          return (
+            <button
+              key={p.id}
+              onClick={() => onSelect(p.id)}
+              className={`w-full text-left px-3 py-2.5 border-l-[3px] transition-colors ${
+                isActive
+                  ? "bg-blue-50 border-blue-600"
+                  : "border-transparent hover:bg-gray-100"
+              }`}
+            >
+              <div className="flex items-baseline gap-1.5">
+                <span className={`text-[10px] font-bold tabular-nums flex-shrink-0 ${isActive ? "text-blue-600" : "text-gray-400"}`}>#{p.rank}</span>
+                <div className={`text-[12px] font-semibold leading-snug ${isActive ? "text-blue-900" : "text-gray-800"}`}>
+                  {p.name}
+                </div>
+              </div>
+              <div className="text-[10px] text-gray-500 mt-0.5 flex items-center gap-1.5">
+                <span className="truncate">{p.function}</span>
+                <span className="text-gray-300">·</span>
+                <span className="font-bold tracking-tight text-gray-700">{p.costIntensity}</span>
+              </div>
+              <div className="mt-1.5">
+                <VerdictCountStrip counts={p.verdictCounts} />
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      <div className="px-3 py-3 border-t border-gray-200 mt-1">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Intervention key</div>
+        <div className="space-y-1.5">
+          {Object.entries(VERDICT_META).map(([k, m]) => (
+            <div key={k} className="flex items-center gap-2">
+              <span className={`inline-flex w-7 justify-center items-center rounded border text-[10px] font-bold ${m.bg} ${m.text} ${m.border}`}>{m.short}</span>
+              <span className="text-[10px] text-gray-600">{m.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const TONE_TINTS = {
+  bad:  "text-red-600",
+  warn: "text-amber-600",
+  good: "text-emerald-600",
+};
+
+function ProcessMetricsCard({ metrics }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg p-3.5">
+      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2.5">Process Metrics</div>
+      <div className="space-y-1.5">
+        {metrics.map((m, i) => (
+          <div key={i} className="flex items-baseline justify-between gap-2 text-[11px]">
+            <span className="text-gray-600 leading-tight">{m.label}</span>
+            <span className={`font-semibold tabular-nums ${TONE_TINTS[m.tone] || "text-gray-900"}`}>{m.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PainPointsCard({ painPoints }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg p-3.5">
+      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2.5">Pain Points</div>
+      <div className="space-y-1.5">
+        {painPoints.map((p, i) => (
+          <div key={i} className="flex items-baseline justify-between gap-2 text-[11px]">
+            <span className="text-gray-700 leading-tight">{p.name}</span>
+            <span className={`font-semibold ${TONE_TINTS[p.tone] || "text-gray-900"}`}>{p.severity}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProcessVariationsCard({ variations }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg p-3.5">
+      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2.5">Process Variations</div>
+      <div className="space-y-1.5">
+        {variations.map((v, i) => (
+          <div key={i} className="flex items-baseline justify-between gap-2 text-[11px]">
+            <span className="text-gray-700 leading-tight">{v.name}</span>
+            <span className="font-semibold text-gray-900 tabular-nums">{v.share}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Sub-process flow: each sub-process is a column with a stacked bar
+// showing cycle time (light) with value-add time (dark) overlaid, plus
+// the waste % under the bar. Color is the verdict's flow tint so the
+// scoring story carries into the swim lane.
+function SubProcessFlow({ subProcesses }) {
+  const maxCycle = Math.max(...subProcesses.map((s) => s.cycle), 1);
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg p-4">
+      <div className="flex items-baseline justify-between mb-3">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Sub-process flow — cycle time vs value time</div>
+        <div className="text-[10px] text-gray-400 italic">cycle (d) / value (d) · waste %</div>
+      </div>
+      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${subProcesses.length}, minmax(0, 1fr))` }}>
+        {subProcesses.map((sp) => {
+          const m = VERDICT_META[sp.verdict] || VERDICT_META.ns;
+          const cyclePct = (sp.cycle / maxCycle) * 100;
+          const valuePctOfBar = (sp.value / sp.cycle) * 100;
+          return (
+            <div key={sp.id} className="flex flex-col">
+              <div className="text-[11px] font-semibold text-gray-800 leading-tight mb-1.5 min-h-[28px]">{sp.name}</div>
+              <div className="relative h-14 bg-gray-50 border border-gray-100 rounded overflow-hidden">
+                <div
+                  className="absolute bottom-0 left-0 right-0"
+                  style={{ height: `${cyclePct}%`, background: m.flowSoft }}
+                />
+                <div
+                  className="absolute bottom-0 left-0 right-0"
+                  style={{ height: `${cyclePct * valuePctOfBar / 100}%`, background: m.flowFill }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-gray-800 tabular-nums">
+                  {sp.cycle}d / {sp.value}d
+                </div>
+              </div>
+              <div className="text-[10px] text-gray-500 mt-1 text-center">
+                <span className={sp.waste >= 75 ? "text-red-600 font-semibold" : sp.waste >= 60 ? "text-amber-600 font-semibold" : "text-emerald-700 font-semibold"}>{sp.waste}%</span> waste
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100 text-[10px] text-gray-500">
+        <span className="inline-flex items-center gap-1.5"><span className="w-3 h-2 rounded-sm bg-blue-200"></span>Cycle time bar</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-3 h-2 rounded-sm bg-blue-500"></span>Value-add fill</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-3 h-2 rounded-sm bg-red-300"></span>High waste</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-3 h-2 rounded-sm bg-emerald-300"></span>Lower waste</span>
+      </div>
+    </div>
+  );
+}
+
+// AI suitability scoring — sub-process rows × five scoring criteria with a
+// Harvey ball per cell, then a composite score and verdict pill. Mirrors the
+// reference image; numbers in the centre of each ball read at a glance.
+const AI_SCORING_CRITERIA = [
+  { id: "margin",   label: "Margin impact" },
+  { id: "volume",   label: "Volume & repetition" },
+  { id: "data",     label: "Data availability" },
+  { id: "error",    label: "Error tolerance" },
+  { id: "adoption", label: "Adoption readiness" },
+];
+
+function AiSuitabilityTable({ subProcesses }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <div className="px-4 pt-3.5 pb-2 flex items-baseline justify-between">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500">AI suitability — sub-process scoring</div>
+        <div className="text-[10px] text-gray-400 italic">Harvey ball score 0–100 per criterion · composite is /15</div>
+      </div>
+      <table className="w-full text-xs">
+        <thead className="bg-gray-50 border-y border-gray-200">
+          <tr className="text-[10px] uppercase text-gray-500">
+            <th className="text-left px-3 py-2 font-semibold w-[34%]">Sub-process</th>
+            {AI_SCORING_CRITERIA.map((c) => (
+              <th key={c.id} className="px-1 py-2 font-semibold text-center">
+                <span className="block leading-tight">{c.label}</span>
+              </th>
+            ))}
+            <th className="px-2 py-2 font-semibold text-center">Score</th>
+            <th className="px-2 py-2 font-semibold text-center">Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          {subProcesses.map((sp) => (
+            <tr key={sp.id} className="border-b border-gray-100 last:border-0 hover:bg-blue-50/20 transition-colors">
+              <td className="px-3 py-2.5">
+                <div className="text-[12px] font-semibold text-gray-900">{sp.name}</div>
+                <div className="text-[10px] text-gray-500 mt-0.5 tabular-nums">{sp.cycle}d cycle · {sp.waste}% waste</div>
+              </td>
+              {AI_SCORING_CRITERIA.map((c) => (
+                <td key={c.id} className="px-1 py-2 text-center">
+                  <HarveyBall score={sp.ai?.[c.id] ?? 0} size={26} label={c.label} />
+                </td>
+              ))}
+              <td className="px-2 py-2 text-center">
+                <span className="inline-block min-w-[34px] text-[11px] font-bold tabular-nums px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-100">
+                  {sp.score}
+                </span>
+              </td>
+              <td className="px-2 py-2 text-center">
+                <VerdictPill verdict={sp.verdict} size="xs" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function InterventionDesignPanel({ subProcesses }) {
+  return (
+    <div className="space-y-3">
+      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 flex items-center gap-2">
+        Intervention design — what does the AI consume and produce
+        <span className="text-gray-400 normal-case font-medium">· future-state human role + exception path per sub-process</span>
+      </div>
+      {subProcesses.map((sp) => {
+        const m = VERDICT_META[sp.verdict] || VERDICT_META.ns;
+        return (
+          <div key={sp.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <div className="px-4 py-2.5 flex items-baseline gap-3 border-b border-gray-100" style={{ background: m.flowSoft + "80" }}>
+              <div className="text-[12px] font-bold text-gray-900 flex-1 truncate">{sp.name}</div>
+              <span className="text-[10px] text-gray-500 tabular-nums whitespace-nowrap">{sp.cycle}d cycle · {sp.waste}% waste</span>
+              <VerdictPill verdict={sp.verdict} size="xs" />
+              <span className="text-[10px] font-semibold text-gray-700 whitespace-nowrap">{sp.intervention.type}</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 px-4 py-3">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-blue-600 mb-1">AI input</div>
+                <div className="text-[11px] text-gray-800 leading-snug">{sp.intervention.aiInput}</div>
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-blue-600 mb-1">AI output</div>
+                <div className="text-[11px] text-gray-800 leading-snug">{sp.intervention.aiOutput}</div>
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 mb-1">Human role (future state)</div>
+                <div className="text-[11px] text-gray-800 leading-snug">{sp.intervention.humanRole}</div>
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-orange-600 mb-1">Exception path</div>
+                <div className="text-[11px] text-gray-800 leading-snug">{sp.intervention.exception}</div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+const EFFORT_IMPACT_TONE = {
+  Low:  "bg-emerald-50 text-emerald-700 border-emerald-200",
+  Med:  "bg-amber-50 text-amber-700 border-amber-200",
+  High: "bg-red-50 text-red-700 border-red-200",
+};
+
+const OWNER_TONE = {
+  Human:  "bg-amber-50 text-amber-700 border-amber-200",
+  System: "bg-blue-50 text-blue-700 border-blue-200",
+  Hybrid: "bg-purple-50 text-purple-700 border-purple-200",
+};
+
+function ActivityDeepDive({ activities, ebitdaLever }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-gray-100 flex items-baseline justify-between flex-wrap gap-2">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Activity deep dive — AI lever & value linkage</div>
+        <div className="text-[10px] text-gray-500">EBITDA lever: <span className="font-semibold text-gray-700">{ebitdaLever}</span></div>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs">
+          <thead className="bg-gray-50">
+            <tr className="text-[10px] uppercase text-gray-500 border-b border-gray-200">
+              <th className="text-left  px-3 py-2 font-semibold">Activity</th>
+              <th className="text-left  px-3 py-2 font-semibold">Sub-process</th>
+              <th className="text-right px-3 py-2 font-semibold">Cycle</th>
+              <th className="text-right px-3 py-2 font-semibold">Waste</th>
+              <th className="text-right px-3 py-2 font-semibold">Volume</th>
+              <th className="text-left  px-3 py-2 font-semibold">Pain point</th>
+              <th className="text-center px-3 py-2 font-semibold">Owner</th>
+              <th className="text-center px-3 py-2 font-semibold">Verdict</th>
+              <th className="text-center px-3 py-2 font-semibold">Score</th>
+              <th className="text-left  px-3 py-2 font-semibold bg-blue-50/60">{getIcon("Sparkles", { size: 9, className: "inline-block text-blue-600 mr-1" })}AI intervention</th>
+              <th className="text-left  px-3 py-2 font-semibold">EBITDA lever</th>
+              <th className="text-right px-3 py-2 font-semibold">Labor pool</th>
+              <th className="text-center px-3 py-2 font-semibold">Effort</th>
+              <th className="text-center px-3 py-2 font-semibold">Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            {activities.map((a, i) => (
+              <tr key={i} className="border-b border-gray-100 last:border-0 hover:bg-blue-50/20">
+                <td className="px-3 py-2 font-semibold text-gray-900">{a.name}</td>
+                <td className="px-3 py-2 text-gray-700">{a.subProcess}</td>
+                <td className="px-3 py-2 text-right tabular-nums text-gray-800">{a.cycleTime}</td>
+                <td className="px-3 py-2 text-right tabular-nums">
+                  <span className={a.waste >= 75 ? "text-red-600 font-semibold" : a.waste >= 60 ? "text-amber-600 font-semibold" : "text-emerald-700 font-semibold"}>{a.waste}%</span>
+                </td>
+                <td className="px-3 py-2 text-right tabular-nums text-gray-700">{a.volume}</td>
+                <td className="px-3 py-2 text-gray-700 max-w-[180px] truncate" title={a.painPoint}>{a.painPoint}</td>
+                <td className="px-3 py-2 text-center">
+                  <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded border font-medium ${OWNER_TONE[a.owner] || "bg-gray-50 text-gray-600 border-gray-200"}`}>{a.owner}</span>
+                </td>
+                <td className="px-3 py-2 text-center"><VerdictPill verdict={a.verdict} size="xs" /></td>
+                <td className="px-3 py-2 text-center">
+                  <span className="inline-block min-w-[28px] text-[10px] font-bold tabular-nums px-1 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-100">{a.score}</span>
+                </td>
+                <td className="px-3 py-2 text-gray-800 bg-blue-50/30 max-w-[260px]"><span className="leading-snug block">{a.intervention}</span></td>
+                <td className="px-3 py-2 text-gray-700">{a.lever}</td>
+                <td className="px-3 py-2 text-right tabular-nums font-semibold text-gray-900">{a.laborPool}</td>
+                <td className="px-3 py-2 text-center">
+                  <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded border font-medium ${EFFORT_IMPACT_TONE[a.effort] || ""}`}>{a.effort}</span>
+                </td>
+                <td className="px-3 py-2 text-center">
+                  <span className={`inline-block text-[10px] px-1.5 py-0.5 rounded border font-medium ${EFFORT_IMPACT_TONE[a.impact] || ""}`}>{a.impact}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function AiVsmArtifact({ data }) {
+  const [activeId, setActiveId] = React.useState(data.processes[0]?.id);
+  const [tab, setTab] = React.useState("vsm");
+  const active = data.processes.find((p) => p.id === activeId) || data.processes[0];
+
+  const TABS = [
+    { id: "vsm",      label: "VSM + AI suitability" },
+    { id: "design",   label: "Intervention design" },
+    { id: "activity", label: "Activity deep dive" },
+  ];
+
+  return (
+    <div className="flex-1 overflow-hidden bg-white flex flex-col">
+      {/* Top header — title + source */}
+      <div className="px-5 py-3 border-b border-gray-200 flex items-start justify-between gap-3 flex-wrap">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-lg font-bold text-gray-900 truncate">{data.title}</h2>
+          {data.subtitle && <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">{data.subtitle}</p>}
+        </div>
+        {data.source && <div className="text-[10px] text-gray-400 italic whitespace-nowrap">{data.source}</div>}
+      </div>
+
+      <div className="flex-1 flex min-h-0">
+        {/* Left rail */}
+        <AiVsmRail processes={data.processes} activeId={activeId} onSelect={setActiveId} />
+
+        {/* Main content */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          {/* Process header */}
+          <div className="px-5 pt-4 pb-2 border-b border-gray-100 flex items-start justify-between gap-3 flex-wrap">
+            <div className="min-w-0">
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <span className="text-[10px] font-bold tabular-nums text-blue-600">PRIORITY #{active.rank}</span>
+                <span className="text-gray-300">·</span>
+                <span className="text-[11px] font-semibold text-gray-700">{active.poolSize} pool</span>
+                <span className="text-gray-300">·</span>
+                <span className="text-[11px] text-gray-600">variance {active.variance}</span>
+                <span className="text-gray-300">·</span>
+                <span className="text-[11px] text-gray-600">EBITDA lever: <span className="font-semibold text-gray-800">{active.ebitdaLever}</span></span>
+              </div>
+              <h3 className="text-base font-bold text-gray-900 leading-tight mt-1">{active.name}</h3>
+              <div className="text-[11px] text-gray-500">{active.function} · cost intensity <span className="font-bold tracking-tight text-gray-800">{active.costIntensity}</span></div>
+            </div>
+            <VerdictCountStrip counts={active.verdictCounts} />
+          </div>
+
+          {/* Tab bar */}
+          <div className="px-5 border-b border-gray-200 flex items-center gap-1">
+            {TABS.map((t) => {
+              const isActive = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`text-[12px] px-3 py-2 border-b-2 transition-colors -mb-px ${
+                    isActive
+                      ? "border-blue-600 text-blue-700 font-semibold"
+                      : "border-transparent text-gray-500 hover:text-gray-800"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Tab content */}
+          <div className="flex-1 overflow-y-auto scrollbar-thin">
+            <div className="p-4 space-y-4">
+              {tab === "vsm" && (
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                    <ProcessMetricsCard metrics={active.metrics} />
+                    <PainPointsCard painPoints={active.painPoints} />
+                    <ProcessVariationsCard variations={active.variations} />
+                  </div>
+                  <SubProcessFlow subProcesses={active.subProcesses} />
+                  <AiSuitabilityTable subProcesses={active.subProcesses} />
+                </>
+              )}
+              {tab === "design" && (
+                <InterventionDesignPanel subProcesses={active.subProcesses} />
+              )}
+              {tab === "activity" && (
+                <ActivityDeepDive activities={active.activities} ebitdaLever={active.ebitdaLever} />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Artifact right panel: dispatches to ProcessMapArtifact for visual artifacts,
 // falls back to ArtifactBlock for sectioned reports.
 function ArtifactContent({ task }) {
@@ -2586,6 +3476,9 @@ function ArtifactContent({ task }) {
   }
   if (artifact.type === "cost_driver") {
     return <CostDriverArtifact data={artifact} />;
+  }
+  if (artifact.type === "ai_vsm") {
+    return <AiVsmArtifact data={artifact} />;
   }
   return (
     <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
