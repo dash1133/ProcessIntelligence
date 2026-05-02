@@ -16,7 +16,7 @@ const DIAGNOSTIC_APP_TYPES = {
   "dashboard":    { label: "Dashboard",    badge: "bg-rose-50 text-rose-700 border-rose-100",       icon: "Grid" },
 };
 
-// Methodology lifecycle: Data → Taxonomy → Cost Allocation → Cost-to-Serve →
+// Methodology lifecycle: Data → Taxonomy → Cost Allocation →
 // Opportunities → Initiatives → Reporting.
 const DIAGNOSTIC_TASK_GROUPS = [
   { name: "Data Foundation", tasks: [
@@ -29,10 +29,9 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "process_mapping",  label: "Process Mapping",            appType: "artifact", icon: "Layers",   description: "End-to-end value chain — visually shape the map in natural language." },
     { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "dashboard", icon: "Activity", description: "Bottom-up discovery of activities and drivers from real records — vendor lines, HRIS, SOPs." },
   ]},
-  { name: "Cost Allocation & Cost-to-Serve", tasks: [
+  { name: "Cost Allocation", tasks: [
     { id: "cost_classification",       label: "Cost Classification",         appType: "dashboard", icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
     { id: "cost_driver",                label: "Cost Driver Analysis",        appType: "artifact",  icon: "Activity",    description: "Pick a driver. See how one unit ripples through every function — cost shadow + region comparison." },
-    { id: "cost_to_serve",              label: "Cost-to-Serve Analytics",     appType: "artifact",  icon: "BarChart3",   description: "Cost-to-serve patterns by customer, product, geography, and BU." },
     { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
   ]},
   { name: "Levers Identification", tasks: [
@@ -767,43 +766,6 @@ const TASK_PREVIEWS = {
         ],
         recoverable: "If every region moved to UK's cost shape, fully-loaded SMB cost would drop **~38%** across the **1,840-account base** — an indicative **$2.3M annualised recoverable** on this driver alone.",
       }
-    }
-  },
-
-  cost_to_serve: {
-    artifact: {
-      title: "Cost-to-Serve Analytics",
-      subtitle: "NorthStar Frozen Foods · Indirect SG&A · TTM",
-      sections: [
-        { heading: "Headline",
-          body: "Cost-to-serve is unevenly distributed across regions and customer channels. India and LATAM together account for **~13% of revenue but ~21% of fully-allocated SG&A**. On the channel side, retail private-label runs at a 1.40× cost-to-serve index — driven by trade-marketing labor and customer-contract overhead." },
-        { heading: "By Region", table: {
-          cols: ["Region", "Revenue Share", "SG&A Share", "Index"],
-          rows: [
-            ["Southeast Asia",   "9%",  "4%",  "0.49 ✓"],
-            ["Greater China",    "13%", "9%",  "0.71 ✓"],
-            ["ANZ",              "6%",  "5%",  "0.85 ✓"],
-            ["United Kingdom",   "14%", "13%", "0.92 ✓"],
-            ["North America",    "34%", "36%", "1.06"],
-            ["Continental EU",   "13%", "14%", "1.10 ✗"],
-            ["South Africa",     "3%",  "4%",  "1.31 ✗"],
-            ["Latin America",    "5%",  "7%",  "1.41 ✗"],
-            ["India",            "3%",  "8%",  "2.62 ✗"],
-          ]
-        }},
-        { heading: "By Customer Channel", table: {
-          cols: ["Channel", "Revenue Share", "SG&A Share", "Index"],
-          rows: [
-            ["QSR (national accounts)",       "38%", "30%", "0.79 ✓"],
-            ["Foodservice (distributor)",     "26%", "24%", "0.92 ✓"],
-            ["Retail (branded)",               "22%", "26%", "1.18 ✗"],
-            ["Retail (private-label)",         "10%", "14%", "1.40 ✗"],
-            ["Direct / Other",                  "4%",  "6%",  "1.50 ✗"],
-          ]
-        }},
-        { heading: "Recommendation",
-          body: "Three of the four worst-indexed cells (India, Latin America, South Africa) cluster on the same root cause: low AI automation share inside Admin & Executive and Legal, plus duplicated marketing workflows that have never been consolidated. Anchor SEA as the internal target operating model and converge the bottom three regions to a 1.10× index over 18 months. Implied opportunity: ~$95M run-rate against the SG&A base, with the bulk landing inside the $150M consulting line and the $295M marketing stack. See Initiative Sizing & Business Case for the sized plan." },
-      ]
     }
   },
 
