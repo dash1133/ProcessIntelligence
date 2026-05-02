@@ -31,6 +31,7 @@ const DIAGNOSTIC_TASK_GROUPS = [
   ]},
   { name: "Cost Allocation & Cost-to-Serve", tasks: [
     { id: "cost_classification",       label: "Cost Classification",         appType: "dashboard", icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
+    { id: "cost_driver",                label: "Cost Driver Analysis",        appType: "artifact",  icon: "Activity",    description: "Pick a driver. See how one unit ripples through every function — cost shadow + region comparison." },
     { id: "cost_to_serve",              label: "Cost-to-Serve Analytics",     appType: "artifact",  icon: "BarChart3",   description: "Cost-to-serve patterns by customer, product, geography, and BU." },
     { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
   ]},
@@ -698,6 +699,74 @@ const TASK_PREVIEWS = {
         coldchain:  { headline: "Cold-Chain Warehousing — discovery in progress", note: "Cold storage minimum capacity is Non-discretionary; over-build and 3PL premium services are Discretionary." },
         outbound:   { headline: "Outbound Logistics — discovery in progress", note: "Carrier minimum is Non-discretionary; premium service tiers and consulting fees on routing are Discretionary." },
       },
+    }
+  },
+
+  cost_driver: {
+    chat: [
+      { role: "assistant", style: "neutral",  text: "**$4,050 / yr per SMB customer** · touches **12 functions across 38 activities**. **Sales is 34%** of the cost — the dominant driver, and the line that varies most by region." },
+      { role: "assistant", style: "finding",  text: "**Customer Service at 16%** — 3.4× what an Enterprise customer absorbs proportionally. The SMB account model carries more service overhead than the order volume justifies." },
+      { role: "assistant", style: "variance", text: "**Legal hits the SMB shadow at $185 / yr (5%)** — MSAs, NDAs, customer-contract review, AR escalation. **NA Legal alone runs 5.2× UK** on per-contract basis (echoes the Cost Classification view)." },
+      { role: "assistant", style: "question", text: "**India at 1.76× global** — Sales reps + manual collections drive the gap. **UK at $2,800 is the lean benchmark.** If every region matched UK's shape across the **1,840-account base**, that's an indicative **~$2.3M annualised recoverable** on this driver alone. Want to overlay Enterprise customer?" },
+    ],
+    suggestions: [
+      { label: "Overlay Enterprise customer" },
+      { label: "Why is India 1.76×?" },
+      { label: "Show activities behind Sales" },
+    ],
+    artifact: {
+      type: "cost_driver",
+      title: "How does one SMB customer ripple through the company?",
+      subtitle: "Pick a driver. Pick a region. See every function it touches and how the cost shape changes.",
+      badge: "illustrative · 218 activities · 9 drivers · $1.79B SG&A allocated",
+      drivers: [
+        { id: "smb",        label: "SMB customer",        active: true },
+        { id: "enterprise", label: "Enterprise customer" },
+        { id: "qsr",        label: "QSR customer" },
+        { id: "newsku",     label: "New SKU" },
+        { id: "litigation", label: "Litigation matter" },
+        { id: "newplant",   label: "New plant" },
+        { id: "newemp",     label: "New employee" },
+        { id: "newvendor",  label: "New vendor" },
+        { id: "promo",      label: "Promotional event" },
+      ],
+      driversMore: 12,
+      activeDriver: {
+        id: "smb",
+        label: "SMB customer",
+        unit: "per year",
+        globalAvg: 4050,
+        globalAvgLabel: "$4,050",
+        summary: { functions: 12, activities: 38, costCenters: 62, vendors: 14, accounts: 1840 },
+        // Treemap data — function name, value ($/yr per customer), pct, color
+        functions: [
+          { name: "Sales",            value: 1380, pct: 34, color: "#1e3a8a" },
+          { name: "Customer Service", value: 640,  pct: 16, color: "#1d4ed8" },
+          { name: "Logistics",        value: 400,  pct: 10, color: "#2563eb" },
+          { name: "Finance",          value: 380,  pct: 9,  color: "#3b82f6" },
+          { name: "Marketing",        value: 290,  pct: 7,  color: "#10b981" },
+          { name: "Trade Marketing",   value: 250,  pct: 6,  color: "#f59e0b" },
+          { name: "Legal",             value: 185,  pct: 5,  color: "#8b5cf6" },
+          { name: "Supply Planning",   value: 180,  pct: 4,  color: "#06b6d4" },
+          { name: "IT",                value: 130,  pct: 3,  color: "#ef4444" },
+          { name: "HR",                value: 90,   pct: 2,  color: "#ec4899" },
+          { name: "Tax",               value: 75,   pct: 2,  color: "#14b8a6" },
+          { name: "Compliance",        value: 50,   pct: 1,  color: "#a855f7" },
+        ],
+        regions: [
+          { id: "all",   label: "All regions", value: 4050, multiplier: "1.00×", isCurrent: true },
+          { id: "na",    label: "NA",          value: 4180, multiplier: "1.03×" },
+          { id: "uk",    label: "UK",          value: 2800, multiplier: "0.69×", isBenchmark: true },
+          { id: "ceu",   label: "CEU",         value: 3420, multiplier: "0.84×" },
+          { id: "latam", label: "LatAm",       value: 4910, multiplier: "1.21×" },
+          { id: "anz",   label: "ANZ",         value: 3140, multiplier: "0.78×" },
+          { id: "saf",   label: "SAF",         value: 3140, multiplier: "0.78×" },
+          { id: "india", label: "India",       value: 7100, multiplier: "1.76×" },
+          { id: "sea",   label: "SEAsia",      value: 3820, multiplier: "0.94×" },
+          { id: "china", label: "China",       value: 3820, multiplier: "0.94×" },
+        ],
+        recoverable: "If every region moved to UK's cost shape, fully-loaded SMB cost would drop **~38%** across the **1,840-account base** — an indicative **$2.3M annualised recoverable** on this driver alone.",
+      }
     }
   },
 
@@ -1949,6 +2018,287 @@ function PrioritizationArtifact({ data }) {
   );
 }
 
+// ── COST DRIVER ARTIFACT (cost shadow per driver) ──
+// "How does one X ripple through the company?" — pick a driver, see every
+// function it touches, see how the cost shape changes by region. The user
+// interacts with the chips/filters; the underlying data is read-only.
+
+function CostDriverChips({ chips, active, onSelect, more = 0 }) {
+  return (
+    <div className="flex flex-wrap gap-2 mb-4">
+      {chips.map((c) => {
+        const isActive = active === c.id;
+        return (
+          <button
+            key={c.id}
+            onClick={() => onSelect && onSelect(c.id)}
+            className={`text-xs px-3 py-1.5 rounded-md font-medium transition-colors ${
+              isActive
+                ? "bg-blue-600 text-white shadow-sm"
+                : "bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100"
+            }`}
+          >
+            {c.label}
+          </button>
+        );
+      })}
+      {more > 0 && <span className="text-xs text-gray-500 px-2 py-1.5">+{more} more</span>}
+    </div>
+  );
+}
+
+function CostDriverRegionRow({ regions, active, onSelect }) {
+  return (
+    <div className="flex items-center gap-3 flex-wrap mb-4">
+      <span className="text-[11px] text-gray-500 font-medium">Region:</span>
+      <div className="flex flex-wrap gap-1">
+        {regions.map((r) => {
+          const isActive = active === r.id;
+          return (
+            <button
+              key={r.id}
+              onClick={() => onSelect && onSelect(r.id)}
+              className={`text-xs px-2.5 py-1 rounded-md transition-colors ${
+                isActive
+                  ? "bg-blue-600 text-white font-semibold"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              {r.label}
+            </button>
+          );
+        })}
+      </div>
+      <span className="text-[10px] text-gray-400 italic ml-1">click to refilter</span>
+    </div>
+  );
+}
+
+function CostDriverStatBox({ driver, active }) {
+  const value = active.value;
+  const sub = active.id === "all" ? "global avg · /year" : `${active.label} · /year`;
+  return (
+    <div className="bg-blue-700 text-white rounded-lg p-4 h-full flex flex-col">
+      <div className="text-[10px] uppercase tracking-widest opacity-80 mb-1">1 {driver.label.toUpperCase()} · {active.label.toUpperCase()}</div>
+      <div className="text-3xl font-bold leading-none mt-2">${value.toLocaleString()}</div>
+      <div className="text-[11px] opacity-80 mt-1">{sub}</div>
+      <div className="border-t border-white/20 mt-4 pt-3 space-y-1.5 text-xs">
+        <div className="flex items-center justify-between"><span className="opacity-80">Functions</span><span className="font-semibold">{driver.summary.functions}</span></div>
+        <div className="flex items-center justify-between"><span className="opacity-80">Activities</span><span className="font-semibold">{driver.summary.activities}</span></div>
+        <div className="flex items-center justify-between"><span className="opacity-80">Cost centers</span><span className="font-semibold">{driver.summary.costCenters}</span></div>
+        <div className="flex items-center justify-between"><span className="opacity-80">Vendors</span><span className="font-semibold">{driver.summary.vendors}</span></div>
+      </div>
+    </div>
+  );
+}
+
+// Treemap — Sales takes a full-height left tile; everything else stacks in
+// a two-row right panel sized proportionally to value within each row.
+function CostDriverTreemap({ functions, highlight }) {
+  if (!functions || functions.length === 0) return null;
+  const sorted = [...functions].sort((a, b) => b.value - a.value);
+  const big = sorted[0];
+  const rest = sorted.slice(1);
+  const restTotal = rest.reduce((s, f) => s + f.value, 0);
+  const rowATopN = 3;
+  const rowA = rest.slice(0, rowATopN);
+  const rowB = rest.slice(rowATopN);
+  const rowATotal = rowA.reduce((s, f) => s + f.value, 0);
+  const rowBTotal = restTotal - rowATotal;
+
+  const Tile = ({ f, dense }) => {
+    const isHi = highlight && highlight === f.name;
+    return (
+      <div
+        className="text-white rounded flex flex-col justify-between p-2 transition-all"
+        style={{
+          flex: f.value,
+          background: f.color,
+          outline: isHi ? "2px solid #fbbf24" : "none",
+        }}
+        title={`${f.name} · $${f.value.toLocaleString()} · ${f.pct}%`}
+      >
+        <div className={`${dense ? "text-[10px]" : "text-[11px]"} font-medium opacity-90 leading-tight truncate`}>{f.name}</div>
+        <div className="leading-tight">
+          <div className={`${dense ? "text-xs" : "text-sm"} font-bold`}>${f.value.toLocaleString()}</div>
+          {f.pct >= 4 && <div className="text-[10px] opacity-80">{f.pct}%</div>}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex h-72 gap-1">
+      {/* Big left tile */}
+      <div className="flex" style={{ flex: big.value }}>
+        <Tile f={big} />
+      </div>
+      {/* Right side — two rows */}
+      <div className="flex flex-col gap-1" style={{ flex: restTotal }}>
+        <div className="flex gap-1" style={{ flex: rowATotal }}>
+          {rowA.map((f) => <Tile key={f.name} f={f} />)}
+        </div>
+        <div className="flex gap-1" style={{ flex: rowBTotal }}>
+          {rowB.map((f) => <Tile key={f.name} f={f} dense />)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CostDriverFunctionsLegend({ functions }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-[11px] text-gray-600">
+      <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Functions</span>
+      {functions.map((f) => (
+        <span key={f.name} className="inline-flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-sm" style={{ background: f.color }} />
+          <span>{f.name}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function CostDriverByRegionBars({ regions, activeId, onSelect }) {
+  const max = Math.max(...regions.map((r) => r.value));
+  return (
+    <div className="flex items-end gap-2 h-44 px-2 pt-3 pb-1">
+      {regions.map((r) => {
+        const h = (r.value / max) * 100;
+        const isActive = r.id === activeId;
+        const isBenchmark = r.isBenchmark;
+        const fill = isBenchmark ? "#10b981" : isActive ? "#1d4ed8" : "#3b82f6";
+        return (
+          <button
+            key={r.id}
+            onClick={() => onSelect && onSelect(r.id)}
+            className="flex-1 flex flex-col items-center justify-end h-full group"
+            title={`${r.label} · $${r.value.toLocaleString()} · ${r.multiplier}`}
+          >
+            <div className="text-[10px] font-semibold text-gray-700 mb-1">${r.value.toLocaleString()}</div>
+            <div className="text-[9px] text-gray-400 mb-0.5">{r.multiplier}</div>
+            <div
+              className="w-full rounded-t transition-all"
+              style={{
+                height: `${h}%`,
+                background: fill,
+                opacity: isActive ? 1 : 0.85,
+              }}
+            />
+            <div className={`text-[10px] mt-1.5 ${isActive ? "text-blue-700 font-semibold" : "text-gray-500"}`}>
+              {r.label}{r.isBenchmark ? " · benchmark" : ""}
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function CostDriverRecoverable({ text }) {
+  return (
+    <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-3 mt-2 text-sm text-blue-900 flex items-start gap-2">
+      <span className="text-blue-500 flex-shrink-0 mt-0.5">{getIcon("Sparkles", { size: 13 })}</span>
+      <span dangerouslySetInnerHTML={{ __html: renderInlineMd(text) }} />
+    </div>
+  );
+}
+
+function CostDriverArtifact({ data }) {
+  const initialDriver = data.drivers.find((d) => d.active)?.id || data.drivers[0].id;
+  const [driverId, setDriverId] = React.useState(initialDriver);
+  const [view, setView] = React.useState("Treemap");
+  const [regionId, setRegionId] = React.useState("all");
+  const driver = data.activeDriver; // Only one driver is fully populated in the seed.
+  const region = (driver.regions || []).find((r) => r.id === regionId) || driver.regions[0];
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+      <div className="p-6">
+        {/* Top header: title + meta badge */}
+        <div className="flex items-start justify-between gap-4 mb-2 flex-wrap">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">
+              How does <span className="text-blue-600">one {driver.label}</span> ripple through the company?
+            </h2>
+            <p className="text-xs text-gray-500 mt-1">{data.subtitle}</p>
+          </div>
+          <div className="text-[11px] text-gray-400 italic">{data.badge}</div>
+        </div>
+
+        {/* Driver chips */}
+        <CostDriverChips chips={data.drivers} active={driverId} onSelect={setDriverId} more={data.driversMore || 0} />
+
+        {/* Cost shadow main panel */}
+        <div className="bg-white border border-gray-200 rounded-xl p-5 mb-4">
+          <div className="flex items-start justify-between mb-3 flex-wrap gap-3">
+            <div>
+              <div className="text-base font-bold text-gray-900">Cost shadow · per {driver.label} · per year</div>
+              <div className="text-[11px] text-gray-500">tile area = share of fully-loaded cost · tile color = function</div>
+            </div>
+            <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-md p-0.5">
+              {["Treemap", "Anatomy", "Sankey"].map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setView(v)}
+                  className={`text-xs px-2.5 py-1 rounded transition-colors ${view === v ? "bg-white text-gray-900 font-semibold shadow-sm" : "text-gray-500 hover:text-gray-800"}`}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Region row */}
+          <CostDriverRegionRow regions={driver.regions} active={regionId} onSelect={setRegionId} />
+
+          {/* Two-column: stat box + treemap */}
+          <div className="flex gap-4">
+            <div className="w-56 flex-shrink-0">
+              <CostDriverStatBox driver={driver} active={region} />
+            </div>
+            <div className="flex-1 min-w-0">
+              {view === "Treemap" ? (
+                <>
+                  <CostDriverTreemap functions={driver.functions} />
+                  <CostDriverFunctionsLegend functions={driver.functions} />
+                </>
+              ) : (
+                <div className="bg-gray-50 border border-dashed border-gray-200 rounded-lg h-72 flex items-center justify-center text-xs text-gray-400 px-6 text-center">
+                  {view} view not yet wired up — Treemap above carries the same data.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* By-region panel */}
+        <div className="bg-white border border-gray-200 rounded-xl p-5">
+          <div className="flex items-start justify-between mb-2 flex-wrap gap-3">
+            <div>
+              <div className="text-base font-bold text-gray-900">Same {driver.label} · cost by region</div>
+              <div className="text-[11px] text-gray-500">2.5× spread · UK is the internal benchmark · click any bar to refilter the treemap</div>
+            </div>
+            <div className="text-right">
+              <div className="text-[10px] text-gray-400 uppercase tracking-wider">currently viewing</div>
+              <div className="text-sm font-semibold text-blue-600">{region.label}</div>
+            </div>
+          </div>
+
+          <CostDriverByRegionBars regions={driver.regions} activeId={regionId} onSelect={setRegionId} />
+
+          {driver.recoverable && <CostDriverRecoverable text={driver.recoverable} />}
+        </div>
+
+        {data.source && (
+          <div className="text-[11px] text-gray-400 italic mt-4 border-t border-gray-100 pt-3">{data.source}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Style → background mapping for the styled "What I noticed" messages.
 // Each style hits a different visual register so multiple discoveries can
 // stack without blending together.
@@ -2144,6 +2494,9 @@ function ArtifactContent({ task }) {
   }
   if (artifact.type === "prioritization") {
     return <PrioritizationArtifact data={artifact} />;
+  }
+  if (artifact.type === "cost_driver") {
+    return <CostDriverArtifact data={artifact} />;
   }
   return (
     <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
