@@ -25,8 +25,8 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "drl_management", label: "DRL Management",                  appType: "list-builder", icon: "Grid",                description: "Data Reference Library — curated lists used in mappings and validations." },
   ]},
   { name: "Process & Activity Taxonomy", tasks: [
-    { id: "process_mapping",  label: "Process Mapping",            appType: "artifact",     icon: "Layers",   description: "End-to-end value chain — visually shape the map in natural language." },
-    { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "list-builder", icon: "Activity", description: "Activities and the cost drivers that scale them." },
+    { id: "process_mapping",  label: "Process Mapping",            appType: "artifact", icon: "Layers",   description: "End-to-end value chain — visually shape the map in natural language." },
+    { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "artifact", icon: "Activity", description: "Bottom-up discovery of activities and drivers from real records — vendor lines, HRIS, SOPs." },
   ]},
   { name: "Cost Allocation & Cost-to-Serve", tasks: [
     { id: "cost_allocation", label: "Cost Allocation by Activity", appType: "list-builder", icon: "Calculator",  description: "Labor and non-labor costs allocated to processes and activities." },
@@ -176,6 +176,154 @@ const TASK_PREVIEWS = {
       ]
     }
   },
+  activity_mapping: {
+    chat: [
+      { role: "assistant", style: "neutral",  text: "**Discovered 218 activities across 11 functions.** Driver coverage is strong on Legal, Finance, IT, HR — sparser on Marketing." },
+      { role: "assistant", style: "finding",  text: "**A&E ($1.12B), Selling ($380M), Marketing ($295M)** are the three SG&A pools — same as the client's reporting." },
+      { role: "assistant", style: "variance", text: "**Largest variance:** India runs A&E at 3.1× SEA on cost-per-employee. Worth opening first." },
+      { role: "assistant", style: "question", text: "**Marketing**: 14 activities flagged amber — sparse SOPs, drivers inferred from media-buy patterns. Want to enrich?" },
+    ],
+    suggestions: [
+      { label: "Open Legal — biggest variance" },
+      { label: "Compare A&E across regions" },
+      { label: "Show low-confidence drivers" },
+    ],
+    artifact: {
+      type: "function_discovery",
+      title: "Activity & Driver Mapping — Bottom-up Discovery",
+      subtitle: "Activities and drivers generated from real records (vendor lines, HRIS, SOPs) — never imposed from a pre-baked taxonomy",
+      source: "Source: vendor master + HRIS + GL · last refreshed 4 min ago",
+      // Mini chevron strip carries the process-map context into this view.
+      chevronStrip: [
+        { name: "Agronomy",      color: "#3b82f6" },
+        { name: "Processing",     color: "#6366f1" },
+        { name: "Packaging",      color: "#8b5cf6" },
+        { name: "Cold-Chain",     color: "#a855f7" },
+        { name: "Outbound",       color: "#d946ef" },
+      ],
+      functions: [
+        { id: "legal", name: "Legal", lastRefreshed: "4 min ago", confidence: "high",
+          ingested: "1,247 vendor lines · 312 HRIS records · 84 SOPs · 16 cost centers",
+          stats: [
+            { label: "Total spend",          value: "$46.2M", sub: "labor $35.1M · non-labor $11.1M" },
+            { label: "FTE equivalent",       value: "312",     sub: "across 9 regions" },
+            { label: "Activities found",     value: "14",      sub: "3 flagged low confidence" },
+            { label: "Drivers inferred",     value: "9",       sub: "prospects, vendors, SKUs…" },
+            { label: "Regional cost variance", value: "5.2x",  sub: "NA vs UK, per contract" },
+          ],
+          synthesis: "78% of activity volume is contract-related. Contract review sits in labor, not non-labor — the driver lens reveals where the cost actually lives.",
+          combined: {
+            footer: "7 of 14 activities shown · click any row to see vendors and roles that rolled up · *low-confidence driver, see chat",
+            activities: [
+              { name: "Vendor contract review",        subFn: "Contracts",   labor: "$8.4M", nonLabor: "$0.2M", driver: "Vendors",        volume: "3,120",  unitCost: "$2,756",  conf: "High" },
+              { name: "Customer contract review",      subFn: "Contracts",   labor: "$6.1M", nonLabor: "$0.1M", driver: "Active accts",   volume: "1,840",  unitCost: "$3,370",  conf: "High" },
+              { name: "NDA execution",                  subFn: "Contracts",   labor: "$1.4M", nonLabor: "$0.0M", driver: "Prospects",      volume: "412",    unitCost: "$3,398",  conf: "High" },
+              { name: "Litigation & claims",            subFn: "Disputes",    labor: "$5.2M", nonLabor: "$2.7M", driver: "Open matters",   volume: "87",     unitCost: "$90,805", conf: "High" },
+              { name: "Compliance & investigations",    subFn: "Compliance",  labor: "$3.8M", nonLabor: "$1.8M", driver: "Headcount",      volume: "22,000", unitCost: "$254",    conf: "High" },
+              { name: "Trademark renewals",             subFn: "IP",          labor: "$0.9M", nonLabor: "$1.1M", driver: "SKU count",     volume: "2,400",  unitCost: "$833",    conf: "Low",  lowConf: true },
+              { name: "Procurement legal support",     subFn: "Procurement", labor: "$2.3M", nonLabor: "$1.2M", driver: "RFPs",            volume: "186",    unitCost: "$18,817", conf: "Med" },
+            ],
+          },
+          vendor: {
+            footer: "6 of 84 vendors shown · click any vendor to see the underlying GL lines · activity assignment is AI-inferred from invoice descriptions and SOWs",
+            rows: [
+              { number: "2018821", name: "Pinnacle Counsel LLP",      region: "NA",     spend: "$5.2M", classification: "Outside counsel — Litigation",      activity: "Litigation & claims",     conf: "High" },
+              { number: "2018824", name: "Bridgewater Legal Partners", region: "EU",    spend: "$2.1M", classification: "Outside counsel — Disputes",         activity: "Litigation & claims",     conf: "High" },
+              { number: "2018830", name: "Apex Trademark Services",    region: "Global", spend: "$1.1M", classification: "IP / Trademark renewals",            activity: "Trademark renewals",      conf: "Med" },
+              { number: "2018841", name: "ContractFlow SaaS",          region: "Global", spend: "$0.4M", classification: "Contract lifecycle SaaS",            activity: "Vendor contract review",  conf: "High" },
+              { number: "2018852", name: "RegulaWatch Compliance",     region: "NA",     spend: "$0.8M", classification: "Compliance / Privacy advisory",      activity: "Compliance & investigations", conf: "High" },
+              { number: "2018863", name: "Sourcewell Procurement Legal", region: "NA",  spend: "$0.6M", classification: "Procurement / RFP legal advisory",   activity: "Procurement legal support", conf: "High" },
+            ],
+          },
+          fte: {
+            footer: "6 of 312 HRIS records shown · activity assignment is AI-inferred from role title, cost center, and team SOPs",
+            rows: [
+              { id: "EMP-04812", role: "Senior Counsel",        region: "NA",     fte: "1.0", loaded: "$410K", primaryActivity: "Vendor contract review",      conf: "High" },
+              { id: "EMP-04901", role: "Paralegal II",           region: "NA",     fte: "1.0", loaded: "$145K", primaryActivity: "Vendor contract review",      conf: "High" },
+              { id: "EMP-05122", role: "Senior Counsel",        region: "UK",     fte: "1.0", loaded: "$295K", primaryActivity: "Customer contract review",    conf: "High" },
+              { id: "EMP-05308", role: "Compliance Manager",    region: "NA",     fte: "1.0", loaded: "$215K", primaryActivity: "Compliance & investigations", conf: "High" },
+              { id: "EMP-05412", role: "IP Specialist",          region: "Global", fte: "0.5", loaded: "$185K", primaryActivity: "Trademark renewals",          conf: "Med"  },
+              { id: "EMP-05521", role: "Procurement Counsel",    region: "NA",     fte: "1.0", loaded: "$235K", primaryActivity: "Procurement legal support",   conf: "High" },
+            ],
+          },
+        },
+
+        { id: "marketing", name: "Marketing & Media", lastRefreshed: "12 min ago", confidence: "med",
+          ingested: "2,840 vendor lines · 820 HRIS records · 32 SOPs · 47 cost centers",
+          stats: [
+            { label: "Total spend",          value: "$295M", sub: "labor $145M · non-labor $150M" },
+            { label: "FTE equivalent",       value: "820",   sub: "across 9 regions" },
+            { label: "Activities found",     value: "42",    sub: "14 flagged low confidence" },
+            { label: "Drivers inferred",     value: "8",     sub: "campaigns, brands, regions…" },
+            { label: "Regional cost variance", value: "2.8x",sub: "EU vs SEA, per campaign" },
+          ],
+          synthesis: "40+ regional cost centers run duplicated workflows. Brief drafting, competitive scans, and post-campaign synthesis are AI-replaceable today.",
+          combined: { activities: [
+            { name: "Brief drafting",            subFn: "Brand",        labor: "$22M", nonLabor: "$1M",  driver: "Briefs/yr",      volume: "1,840", unitCost: "$12,500", conf: "Med", lowConf: true },
+            { name: "Competitive scans",          subFn: "Insights",     labor: "$9M",  nonLabor: "$0.4M",driver: "Brands",          volume: "32",   unitCost: "$293,750", conf: "Low", lowConf: true },
+            { name: "Post-campaign synthesis",    subFn: "Insights",     labor: "$11M", nonLabor: "$0.3M",driver: "Campaigns",       volume: "640",  unitCost: "$17,656",  conf: "Med" },
+            { name: "Media buying",                subFn: "Media",        labor: "$18M", nonLabor: "$98M", driver: "Markets",          volume: "9",    unitCost: "$12.9M",  conf: "High" },
+            { name: "Trade marketing",            subFn: "Trade",        labor: "$26M", nonLabor: "$32M", driver: "Active accounts", volume: "4,200",unitCost: "$13,810", conf: "High" },
+          ]},
+          vendor: { rows: [] },
+          fte:    { rows: [] },
+        },
+
+        { id: "hr", name: "HR", lastRefreshed: "8 min ago", confidence: "high",
+          ingested: "1,560 vendor lines · 510 HRIS records · 56 SOPs · 22 cost centers",
+          stats: [
+            { label: "Total spend",          value: "$280M", sub: "labor $190M · non-labor $90M" },
+            { label: "FTE equivalent",       value: "510",   sub: "across 9 regions" },
+            { label: "Activities found",     value: "28",    sub: "4 flagged low confidence" },
+            { label: "Drivers inferred",     value: "10",    sub: "employees, hires, training events" },
+            { label: "Regional cost variance", value: "3.2x",sub: "India vs SEA, per FTE" },
+          ],
+          synthesis: "$24M of HR consulting ≈ the fully-loaded cost of 200 HR FTEs. Token-replaceable analyst and advisory work running alongside an internal HR team.",
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+
+        { id: "it", name: "IT", lastRefreshed: "16 min ago", confidence: "high",
+          ingested: "2,180 vendor lines · 620 HRIS records · 78 SOPs · 38 cost centers",
+          stats: [
+            { label: "Total spend",          value: "$310M", sub: "labor $180M · non-labor $130M" },
+            { label: "FTE equivalent",       value: "620",   sub: "across 9 regions" },
+            { label: "Activities found",     value: "38",    sub: "5 flagged low confidence" },
+            { label: "Drivers inferred",     value: "14",    sub: "users, applications, infra units" },
+            { label: "Regional cost variance", value: "2.9x",sub: "NA vs APAC, per app" },
+          ],
+          synthesis: "InfoSec ($7M), SAP/Digital ($7M), and Application Operations ($6M) are the three largest consulting concentrations — all candidates for in-sourcing.",
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+
+        { id: "finance", name: "Finance", lastRefreshed: "9 min ago", confidence: "high",
+          ingested: "920 vendor lines · 460 HRIS records · 64 SOPs · 18 cost centers",
+          stats: [
+            { label: "Total spend",          value: "$170M", sub: "labor $115M · non-labor $55M" },
+            { label: "FTE equivalent",       value: "460",   sub: "across 9 regions" },
+            { label: "Activities found",     value: "24",    sub: "2 flagged low confidence" },
+            { label: "Drivers inferred",     value: "9",     sub: "transactions, journal entries…" },
+            { label: "Regional cost variance", value: "2.1x",sub: "across the 9-region close" },
+          ],
+          synthesis: "Close-cycle activities are highly standardized but still 2.1× variance — process consolidation and shared-service opportunity.",
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+
+        { id: "selling", name: "Selling", lastRefreshed: "11 min ago", confidence: "high",
+          ingested: "1,420 vendor lines · 1,080 HRIS records · 41 SOPs · 28 cost centers",
+          stats: [
+            { label: "Total spend",          value: "$380M", sub: "labor $230M · non-labor $150M" },
+            { label: "FTE equivalent",       value: "1,080", sub: "across 9 regions" },
+            { label: "Activities found",     value: "22",    sub: "3 flagged low confidence" },
+            { label: "Drivers inferred",     value: "8",     sub: "accounts, customers, deals" },
+            { label: "Regional cost variance", value: "2.4x",sub: "across the 9-region book" },
+          ],
+          synthesis: "Sales-ops onboarding and customer support are 70% manual across all regions — automation runway is significant.",
+          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+        },
+      ],
+    }
+  },
+
   cost_to_serve: {
     artifact: {
       title: "Cost-to-Serve Analytics",
@@ -268,6 +416,16 @@ function ArtifactBlock({ artifact, inline = false }) {
 }
 
 // ── PROCESS MAP ARTIFACT (chevron value chain) ──
+// Convert a #hex to an rgba() with a given alpha — used to tint support
+// function bar cells with the chevron colour above (very faint).
+const hexToRgba = (hex, alpha) => {
+  const h = (hex || "#000000").replace("#", "");
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 // Cost intensity is t-shirt sized — $$$ / $$ / $ — and rendered in a colour
 // that tracks the "size" so the eye lands on the high-spend cells first.
 const PROCESS_MAP_COST_STYLES = {
@@ -318,6 +476,13 @@ function ProcessMapArtifact({ map, embedded = false }) {
         </div>
       </div>
 
+      {/* ── VALUE CHAIN ── */}
+      <div className="text-[10px] font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+        <span className="w-1 h-3 rounded-full bg-blue-500"></span>
+        <span className="text-blue-600">Value Chain</span>
+        <span className="text-gray-400 normal-case font-medium">— operations from farm to freezer</span>
+      </div>
+
       {/* Chevron flow */}
       <div className="flex items-stretch mb-3 -ml-2">
         {map.steps.map((step, i) => {
@@ -342,7 +507,7 @@ function ProcessMapArtifact({ map, embedded = false }) {
       </div>
 
       {/* Sub-activity grid — cost intensity + decision badge per tile */}
-      <div className={`grid ${colCls} gap-3 mb-5`}>
+      <div className={`grid ${colCls} gap-3 mb-6`}>
         {map.steps.map((step, i) => (
           <div key={i} className="space-y-2">
             {step.activities.map((a, ai) => {
@@ -372,19 +537,36 @@ function ProcessMapArtifact({ map, embedded = false }) {
         ))}
       </div>
 
-      {/* SG&A horizontal band — touches every stage of the value chain */}
+      {/* ── SUPPORT FUNCTIONS ── visually distinct: own tinted container, dashed
+          divider above, indigo accent vs the value chain's blue accent. Each
+          function is its own horizontal bar; the bar is segmented to echo the
+          chevron stages above so it visually reads as "this function spans the
+          full value chain". */}
       {map.sgaBand && map.sgaBand.length > 0 && (
-        <div className="mb-5">
-          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5">SG&amp;A · Indirect engine spans the full chain</div>
-          <div className="flex items-stretch border border-gray-200 rounded-lg overflow-hidden bg-gradient-to-r from-blue-50/60 via-indigo-50/60 to-purple-50/60 shadow-sm">
-            {map.sgaBand.map((f, i) => (
-              <div
-                key={i}
-                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-3 border-r border-gray-200 last:border-r-0 hover:bg-white/60 transition-colors cursor-pointer"
-                title={f.name}
-              >
-                {getIcon(f.icon || "Briefcase", { size: 13, className: "text-blue-600" })}
-                <span className="text-xs font-semibold text-gray-800">{f.name}</span>
+        <div className="bg-gradient-to-b from-indigo-50/50 to-transparent border border-indigo-100 rounded-xl p-4 mb-5 mt-2 border-t-2 border-t-dashed border-t-indigo-200">
+          <div className="text-[10px] font-bold uppercase tracking-widest mb-3 flex items-center gap-2 flex-wrap">
+            <span className="w-1 h-3 rounded-full bg-indigo-500"></span>
+            <span className="text-indigo-700">Support Functions</span>
+            <span className="text-gray-500 normal-case font-medium">— SG&amp;A operates across every stage of the value chain</span>
+          </div>
+
+          <div className="space-y-1.5">
+            {map.sgaBand.map((fn, fi) => (
+              <div key={fi} className="flex items-stretch gap-3">
+                <div className="w-32 flex items-center gap-1.5 flex-shrink-0 px-1">
+                  {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
+                  <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
+                </div>
+                <div className="flex-1 flex items-stretch rounded-md overflow-hidden bg-white border border-gray-200 shadow-sm">
+                  {map.steps.map((step, si) => (
+                    <div
+                      key={si}
+                      className="flex-1 border-r border-white last:border-r-0 transition-all hover:brightness-95 cursor-pointer min-h-[28px]"
+                      style={{ background: hexToRgba(step.color, 0.16) }}
+                      title={`${fn.name} supports ${step.name}`}
+                    />
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -398,6 +580,353 @@ function ProcessMapArtifact({ map, embedded = false }) {
         </div>
       )}
     </div>
+  );
+}
+
+// ── FUNCTION DISCOVERY ARTIFACT (Activity & Driver Mapping) ──
+// Bottom-up discovery: every activity is generated from real records (vendor
+// lines, HRIS, SOPs) — never from a pre-baked taxonomy. Two view modes:
+//   1. Function discovery — process-map carry-over + grid of function cards
+//   2. Function deep dive — list builder with 3 tabs (Combined / Vendor / FTE)
+
+const CONFIDENCE_STYLES = {
+  High: "bg-emerald-50 text-emerald-700 border-emerald-100",
+  Med:  "bg-amber-50 text-amber-700 border-amber-100",
+  Low:  "bg-red-50 text-red-700 border-red-100",
+};
+
+function MiniChevronStrip({ steps }) {
+  if (!steps || steps.length === 0) return null;
+  return (
+    <div className="flex items-stretch -ml-1 mb-4">
+      {steps.map((step, i) => {
+        const isFirst = i === 0;
+        const isLast = i === steps.length - 1;
+        const clip = isFirst
+          ? "polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%)"
+          : isLast
+            ? "polygon(0 0, 100% 0, 100% 100%, 0 100%, 12px 50%)"
+            : "polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)";
+        return (
+          <div key={i} className="flex-1 -ml-2 first:ml-0">
+            <div
+              className="h-7 px-3 text-white text-[11px] font-semibold flex items-center justify-center text-center leading-tight"
+              style={{ clipPath: clip, background: step.color, opacity: 0.85 }}
+            >
+              {step.name}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function FunctionCard({ fn, onOpen, compact = false }) {
+  return (
+    <div
+      onClick={onOpen ? () => onOpen(fn) : undefined}
+      className={`bg-white border border-gray-200 rounded-xl p-5 transition-all ${onOpen ? "hover:border-blue-300 hover:shadow-md cursor-pointer" : ""}`}
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-base font-bold text-gray-900">{fn.name} — discovery synthesis</h3>
+          <p className="text-xs text-gray-500 mt-0.5">{fn.ingested}</p>
+        </div>
+        {fn.lastRefreshed && (
+          <span className="text-[10px] text-gray-400 flex-shrink-0 whitespace-nowrap">last refreshed {fn.lastRefreshed}</span>
+        )}
+      </div>
+
+      {/* Stat boxes */}
+      {fn.stats && fn.stats.length > 0 && (
+        <div className={`grid gap-2 mb-3 ${fn.stats.length === 5 ? "grid-cols-5" : fn.stats.length === 4 ? "grid-cols-4" : "grid-cols-3"}`}>
+          {fn.stats.map((s, i) => (
+            <div key={i} className="bg-amber-50/40 border border-amber-100 rounded-lg p-2.5">
+              <div className="text-[10px] text-gray-500 mb-0.5">{s.label}</div>
+              <div className="text-lg font-bold text-gray-900 leading-tight">{s.value}</div>
+              {s.sub && <div className="text-[10px] text-gray-500 mt-1 leading-tight">{s.sub}</div>}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Synthesis line */}
+      {fn.synthesis && (
+        <div className="bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+          <div className="text-xs text-blue-900 leading-relaxed">
+            <span className="font-semibold">Synthesis: </span>{fn.synthesis}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Deep dive — opens when a function card is clicked. List builder with three
+// tabs that share the discovery synthesis card on top.
+function FunctionDeepDive({ fn, onBack }) {
+  const [tab, setTab] = React.useState("combined");
+  const tabs = [
+    { id: "combined", label: "Combined" },
+    { id: "vendor",   label: "Vendor" },
+    { id: "fte",      label: "FTE" },
+  ];
+
+  return (
+    <div className="flex-1 flex flex-col min-w-0 bg-gray-50">
+      {/* Sub-header: back + function name + tab switcher */}
+      <div className="px-5 py-3 bg-white border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+        <div className="flex items-center gap-3 min-w-0">
+          <button onClick={onBack} className="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors">
+            {getIcon("ChevronUp", { size: 12, className: "rotate-[-90deg]" })} Back to functions
+          </button>
+          <span className="text-gray-300">|</span>
+          <div className="text-sm font-semibold text-gray-900 truncate">{fn.name}</div>
+        </div>
+        <div className="flex items-center gap-1 flex-shrink-0">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`text-xs px-3 py-1.5 rounded-md font-medium transition-colors ${tab === t.id ? "bg-blue-600 text-white shadow-sm" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab content */}
+      <div className="flex-1 overflow-auto scrollbar-thin">
+        <div className="p-5">
+          {/* Discovery synthesis card always pinned on top — same card for every tab */}
+          <FunctionCard fn={fn} compact />
+
+          {tab === "combined" && <FunctionCombinedTab fn={fn} />}
+          {tab === "vendor"   && <FunctionVendorTab   fn={fn} />}
+          {tab === "fte"      && <FunctionFteTab      fn={fn} />}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FunctionCombinedTab({ fn }) {
+  const data = fn.combined || { activities: [] };
+  return (
+    <div className="mt-4 bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div className="text-sm font-semibold text-gray-900">Activity grid</div>
+        <div className="flex items-center gap-1">
+          {["Grid", "Bubble", "Driver flow"].map((v, i) => (
+            <button key={v} className={`text-[11px] px-2 py-1 rounded-md ${i === 0 ? "bg-gray-100 text-gray-900 font-semibold" : "text-gray-500 hover:bg-gray-50"}`}>{v}</button>
+          ))}
+        </div>
+      </div>
+      {data.activities.length > 0 ? (
+        <table className="w-full text-xs">
+          <thead className="bg-gray-50">
+            <tr className="border-b border-gray-200 text-[10px] text-gray-500 uppercase">
+              <th className="text-left  px-3 py-2 font-medium">Activity</th>
+              <th className="text-left  px-3 py-2 font-medium">Sub-fn</th>
+              <th className="text-right px-3 py-2 font-medium">Labor $</th>
+              <th className="text-right px-3 py-2 font-medium">Non-labor $</th>
+              <th className="text-left  px-3 py-2 font-medium">Driver</th>
+              <th className="text-right px-3 py-2 font-medium">Volume</th>
+              <th className="text-right px-3 py-2 font-medium">Unit $</th>
+              <th className="text-center px-3 py-2 font-medium">Conf</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.activities.map((a, i) => (
+              <tr key={i} className="border-b border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+                <td className="px-3 py-2.5 font-medium text-gray-900">{a.name}</td>
+                <td className="px-3 py-2.5 text-gray-700">{a.subFn}</td>
+                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.labor}</td>
+                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.nonLabor}</td>
+                <td className="px-3 py-2.5 text-gray-700">{a.driver}{a.lowConf ? "*" : ""}</td>
+                <td className="px-3 py-2.5 text-right text-gray-800">{a.volume}</td>
+                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{a.unitCost}</td>
+                <td className="px-3 py-2.5 text-center">
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[a.conf] || CONFIDENCE_STYLES.Med}`}>{a.conf}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="px-4 py-10 text-center text-xs text-gray-400">
+          Activity grid not yet populated for this function. Ask AI ZBO on the left to run discovery.
+        </div>
+      )}
+      {data.footer && (
+        <div className="px-4 py-2 border-t border-gray-100 text-[11px] text-gray-500">{data.footer}</div>
+      )}
+    </div>
+  );
+}
+
+function FunctionVendorTab({ fn }) {
+  const data = fn.vendor || { rows: [] };
+  return (
+    <div className="mt-4 bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div className="text-sm font-semibold text-gray-900">Vendor enrichment → activity assignment</div>
+        <div className="text-[11px] text-gray-500">AI infers activity from invoice descriptions, SOWs, and PO line items</div>
+      </div>
+      {data.rows.length > 0 ? (
+        <table className="w-full text-xs">
+          <thead className="bg-gray-50">
+            <tr className="border-b border-gray-200 text-[10px] text-gray-500 uppercase">
+              <th className="text-left  px-3 py-2 font-medium">Vendor #</th>
+              <th className="text-left  px-3 py-2 font-medium">Vendor Name</th>
+              <th className="text-left  px-3 py-2 font-medium">Region</th>
+              <th className="text-right px-3 py-2 font-medium">Spend</th>
+              <th className="text-left  px-3 py-2 font-medium">Classification</th>
+              <th className="text-left  px-3 py-2 font-medium">→ Activity</th>
+              <th className="text-center px-3 py-2 font-medium">Conf</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.rows.map((r, i) => (
+              <tr key={i} className="border-b border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+                <td className="px-3 py-2.5 text-gray-500 font-mono">{r.number}</td>
+                <td className="px-3 py-2.5 font-medium text-gray-900">{r.name}</td>
+                <td className="px-3 py-2.5 text-gray-700">{r.region}</td>
+                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{r.spend}</td>
+                <td className="px-3 py-2.5 text-gray-700">{r.classification}</td>
+                <td className="px-3 py-2.5 text-blue-700 font-medium">{r.activity}</td>
+                <td className="px-3 py-2.5 text-center">
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[r.conf] || CONFIDENCE_STYLES.Med}`}>{r.conf}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="px-4 py-10 text-center text-xs text-gray-400">
+          Vendor records ingested but not yet enriched. Ask AI ZBO to classify the {fn.name} vendor pool.
+        </div>
+      )}
+      {data.footer && (
+        <div className="px-4 py-2 border-t border-gray-100 text-[11px] text-gray-500">{data.footer}</div>
+      )}
+    </div>
+  );
+}
+
+function FunctionFteTab({ fn }) {
+  const data = fn.fte || { rows: [] };
+  return (
+    <div className="mt-4 bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div className="text-sm font-semibold text-gray-900">HRIS census → activity estimate</div>
+        <div className="text-[11px] text-gray-500">AI infers primary activity from role title, cost center, and team SOPs</div>
+      </div>
+      {data.rows.length > 0 ? (
+        <table className="w-full text-xs">
+          <thead className="bg-gray-50">
+            <tr className="border-b border-gray-200 text-[10px] text-gray-500 uppercase">
+              <th className="text-left  px-3 py-2 font-medium">Employee ID</th>
+              <th className="text-left  px-3 py-2 font-medium">Role</th>
+              <th className="text-left  px-3 py-2 font-medium">Region</th>
+              <th className="text-right px-3 py-2 font-medium">FTE</th>
+              <th className="text-right px-3 py-2 font-medium">Loaded $</th>
+              <th className="text-left  px-3 py-2 font-medium">→ Primary Activity</th>
+              <th className="text-center px-3 py-2 font-medium">Conf</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.rows.map((r, i) => (
+              <tr key={i} className="border-b border-gray-100 hover:bg-blue-50/30 cursor-pointer">
+                <td className="px-3 py-2.5 text-gray-500 font-mono">{r.id}</td>
+                <td className="px-3 py-2.5 font-medium text-gray-900">{r.role}</td>
+                <td className="px-3 py-2.5 text-gray-700">{r.region}</td>
+                <td className="px-3 py-2.5 text-right text-gray-800">{r.fte}</td>
+                <td className="px-3 py-2.5 text-right text-gray-800 font-medium">{r.loaded}</td>
+                <td className="px-3 py-2.5 text-blue-700 font-medium">{r.primaryActivity}</td>
+                <td className="px-3 py-2.5 text-center">
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${CONFIDENCE_STYLES[r.conf] || CONFIDENCE_STYLES.Med}`}>{r.conf}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="px-4 py-10 text-center text-xs text-gray-400">
+          HRIS records ingested but not yet enriched. Ask AI ZBO to estimate activity allocation for {fn.name}.
+        </div>
+      )}
+      {data.footer && (
+        <div className="px-4 py-2 border-t border-gray-100 text-[11px] text-gray-500">{data.footer}</div>
+      )}
+    </div>
+  );
+}
+
+function FunctionDiscoveryArtifact({ data }) {
+  const [selectedFn, setSelectedFn] = React.useState(null);
+
+  if (selectedFn) {
+    // Deep dive uses the full pane; ContentPanel container already gives us flex
+    return <FunctionDeepDive fn={selectedFn} onBack={() => setSelectedFn(null)} />;
+  }
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+      <div className="p-6">
+        <div className="mb-3">
+          <h2 className="text-xl font-bold text-gray-900">{data.title}</h2>
+          {data.subtitle && <p className="text-xs text-gray-500 mt-1">{data.subtitle}</p>}
+        </div>
+
+        {/* Process map carry-over — value-chain context above the function cards */}
+        {data.chevronStrip && <MiniChevronStrip steps={data.chevronStrip} />}
+
+        {/* Function cards grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
+          {(data.functions || []).map((fn) => (
+            <FunctionCard key={fn.id} fn={fn} onOpen={setSelectedFn} />
+          ))}
+        </div>
+
+        {/* Footer source */}
+        {data.source && (
+          <div className="text-[11px] text-gray-400 italic mt-4 border-t border-gray-100 pt-3">{data.source}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Style → background mapping for the styled "What I noticed" messages.
+// Each style hits a different visual register so multiple discoveries can
+// stack without blending together.
+const CHAT_BUBBLE_STYLES = {
+  neutral:  "bg-gray-100 border border-gray-200 text-gray-800",
+  finding:  "bg-amber-50/60 border border-amber-100 text-gray-800",
+  variance: "bg-blue-50 border border-blue-100 text-blue-900",
+  question: "bg-orange-50 border border-orange-100 text-orange-900",
+  default:  "bg-gray-50 border border-gray-200 text-gray-700",
+};
+
+function ChatBubble({ message }) {
+  if (message.role === "user") {
+    return (
+      <div
+        className="ml-auto bg-blue-600 text-white text-xs px-3 py-2 rounded-lg max-w-[85%] leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: renderInlineMd(message.text || "").split("\n").join("<br/>") }}
+      />
+    );
+  }
+  const cls = CHAT_BUBBLE_STYLES[message.style] || CHAT_BUBBLE_STYLES.default;
+  return (
+    <div
+      className={`text-xs px-3 py-2 rounded-lg leading-relaxed ${cls}`}
+      dangerouslySetInnerHTML={{ __html: renderInlineMd(message.text || "").split("\n").join("<br/>") }}
+    />
   );
 }
 
@@ -418,8 +947,14 @@ function AIChatPanel({ task }) {
   const endRef = React.useRef(null);
   React.useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [log]);
 
-  const submit = () => {
-    const t = draft.trim();
+  const suggestions = preview.suggestions || preview.artifact?.suggestions || [];
+  // Show "What I noticed" header when the seeded log starts with styled
+  // discovery messages (style field present) — characteristic of the
+  // bottom-up Activity & Driver Mapping experience.
+  const hasStyledIntro = seed.length > 0 && seed.some((m) => m.style);
+
+  const submit = (text) => {
+    const t = (text ?? draft).trim();
     if (!t) return;
     setLog((cur) => [
       ...cur,
@@ -439,18 +974,33 @@ function AIChatPanel({ task }) {
         </div>
         <AppTypeBadge type={task.appType} />
       </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
-        {log.map((m, i) => (
-          <div
-            key={i}
-            className={m.role === "user"
-              ? "ml-auto bg-blue-600 text-white text-xs px-3 py-2 rounded-lg max-w-[85%] leading-relaxed"
-              : "bg-gray-50 border border-gray-200 text-xs text-gray-700 px-3 py-2 rounded-lg leading-relaxed"
-            }
-            dangerouslySetInnerHTML={{ __html: renderInlineMd(m.text).split("\n").join("<br/>") }}
-          />
-        ))}
-        <div ref={endRef} />
+      <div className="flex-1 overflow-y-auto px-4 py-4 scrollbar-thin">
+        {hasStyledIntro && (
+          <div className="text-xs font-semibold text-gray-700 mb-2">What I noticed</div>
+        )}
+        <div className="space-y-2.5">
+          {log.map((m, i) => (
+            <ChatBubble key={i} message={m} />
+          ))}
+          <div ref={endRef} />
+        </div>
+        {suggestions.length > 0 && (
+          <div className="mt-5">
+            <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Try</div>
+            <div className="space-y-1.5">
+              {suggestions.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => submit(s.label)}
+                  className="w-full flex items-center justify-between gap-2 text-xs text-left bg-white border border-gray-200 rounded-lg px-3 py-2 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                >
+                  <span className="truncate">{s.label}</span>
+                  {getIcon("ArrowUpRight", { size: 11, className: "text-gray-400 flex-shrink-0" })}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       <div className="p-3 border-t border-gray-100 flex-shrink-0">
         <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus-within:bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
@@ -462,7 +1012,7 @@ function AIChatPanel({ task }) {
             className="flex-1 bg-transparent text-xs outline-none placeholder-gray-400"
             placeholder="Ask AI ZBO to shape the workspace…"
           />
-          <button onClick={submit} className="p-1 rounded bg-blue-600 text-white hover:bg-blue-700">{getIcon("Send", { size: 12 })}</button>
+          <button onClick={() => submit()} className="p-1 rounded bg-blue-600 text-white hover:bg-blue-700">{getIcon("Send", { size: 12 })}</button>
         </div>
       </div>
     </div>
@@ -533,6 +1083,11 @@ function ArtifactContent({ task }) {
         <div className="p-6"><ProcessMapArtifact map={artifact} embedded /></div>
       </div>
     );
+  }
+  if (artifact.type === "function_discovery") {
+    // FunctionDiscoveryArtifact owns its own scroll container so that the
+    // deep-dive (list-builder) view can take over the full pane height.
+    return <FunctionDiscoveryArtifact data={artifact} />;
   }
   return (
     <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
