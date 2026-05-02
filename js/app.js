@@ -348,7 +348,7 @@ function App() {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
                 {getIcon("Zap", { size: 18, className: "text-white" })}
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">Good morning, Marcus. Here's where SG&amp;A is running ahead of plan.</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Welcome, how can we create impact today?</h2>
             </div>
             <div className="ml-12 flex items-center gap-2 flex-wrap">
               <span className="text-xs text-gray-400">SG&amp;A lens:</span>
@@ -765,57 +765,6 @@ function App() {
         </div>
       </div>
 
-      {/* Row 4: AI & EdTech News — full width, grouped by topic */}
-      <div className="bg-white rounded-xl border border-gray-200">
-        <div className="px-5 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {getIcon("Sparkles", { size: 18, className: "text-blue-500" })}
-            <h3 className="text-base font-semibold text-gray-900">AI &amp; SG&amp;A Cost-Out News</h3>
-          </div>
-          <span className="text-xs text-gray-400">AI in SG&amp;A · CPG &amp; Frozen Foods · Legal &amp; Marketing-Tech · AI Cost &amp; Tooling</span>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-4 divide-x divide-gray-100">
-          {[
-            { topic: "AI in SG&A", color: "text-blue-700", bg: "bg-blue-50", items: [
-              { title: "AI Agents Take Over First-Pass Analyst Work in Finance &amp; HR",          time: "3h", source: "HBR",             impact: "Cost lever" },
-              { title: "Token-Replaceable Spend Pools Now ~16% of Indirect Cost Bases",            time: "1d", source: "McKinsey Digital",impact: "Cost lever" },
-            ]},
-            { topic: "CPG & Frozen Foods", color: "text-emerald-700", bg: "bg-emerald-50", items: [
-              { title: "Global Frozen Foods Volume Up 3.1% YoY · Margin Pressure Persists",        time: "4h", source: "Just-Food",       impact: "Volume tailwind" },
-              { title: "Cold-Chain Energy Costs Climb 8% on Refrigerant Regulations",              time: "1d", source: "FoodNavigator",   impact: "Cost pressure" },
-            ]},
-            { topic: "Legal & Marketing-Tech", color: "text-amber-700", bg: "bg-amber-50", items: [
-              { title: "AI Contract Review Hits 95% Agreement With Senior Counsel on NDAs",         time: "1d", source: "Law.com",         impact: "Cost lever" },
-              { title: "CPG Brand Managers Spend ~30% of Time on AI-Replaceable Tasks",             time: "1d", source: "Forrester",       impact: "Cost lever" },
-            ]},
-            { topic: "AI Cost & Tooling", color: "text-purple-700", bg: "bg-purple-50", items: [
-              { title: "Anthropic Cuts Batch-Inference Pricing 50% — Indirect Workload Impact",     time: "2h", source: "Anthropic",       impact: "Cost lever" },
-              { title: "Big-4 Advisory Rates Up 9% — In-House AI Pools Beat on Unit Cost",          time: "1d", source: "Bloomberg",       impact: "Cost pressure" },
-            ]},
-          ].map((section, si) => (
-            <div key={si} className="p-4">
-              <div className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2 py-0.5 rounded-full mb-2.5 ${section.bg} ${section.color}`}>
-                {section.topic}
-              </div>
-              <div className="space-y-2.5">
-                {section.items.map((news, ni) => (
-                  <div key={ni} className="group cursor-pointer" onClick={() => { setActiveView("chat"); sendMessage("How does this affect our cost-out plan and AI roadmap? News: " + news.title); }}>
-                    <p className="text-xs text-gray-800 leading-snug group-hover:text-blue-600 transition-colors">{news.title}</p>
-                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                      <span className="text-[10px] text-gray-400">{news.source}</span>
-                      <span className="text-[10px] text-gray-300">·</span>
-                      <span className="text-[10px] text-gray-400">{news.time}</span>
-                      {news.impact && (
-                        <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${news.impact === "Cost pressure" || news.impact === "Revenue pressure" || news.impact === "Competitive risk" ? "bg-red-50 text-red-600" : news.impact === "Compliance" || news.impact === "Standards" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-600"}`}>{news.impact}</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 
@@ -1368,17 +1317,11 @@ function App() {
         <div className="flex items-center gap-2">
           <button onClick={() => setActiveView("diagnostic")} className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeView === "diagnostic" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
             {getIcon("Activity", { size: 15, className: activeView === "diagnostic" ? "text-white" : "text-gray-500" })}
-            <span className="leading-tight text-left">
-              <span className="block">Diagnostic</span>
-              <span className={`block text-[9px] font-normal ${activeView === "diagnostic" ? "text-blue-100" : "text-gray-400"}`}>Internal A&amp;M</span>
-            </span>
+            Diagnostic
           </button>
           <button onClick={() => setActiveView("dashboard")} className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeView === "dashboard" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
             {getIcon("Home", { size: 15, className: activeView === "dashboard" ? "text-white" : "text-gray-500" })}
-            <span className="leading-tight text-left">
-              <span className="block">KPI Monitoring</span>
-              <span className={`block text-[9px] font-normal ${activeView === "dashboard" ? "text-blue-100" : "text-gray-400"}`}>Client Leave Behind</span>
-            </span>
+            KPI Monitoring
           </button>
         </div>
 
