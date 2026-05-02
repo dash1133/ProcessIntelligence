@@ -1091,9 +1091,19 @@ function FunctionCard({ fn, onOpen, compact = false }) {
           <h3 className="text-base font-bold text-gray-900">{fn.name} — discovery synthesis</h3>
           <p className="text-xs text-gray-500 mt-0.5">{fn.ingested}</p>
         </div>
-        {fn.lastRefreshed && (
-          <span className="text-[10px] text-gray-400 flex-shrink-0 whitespace-nowrap">last refreshed {fn.lastRefreshed}</span>
-        )}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          {fn.lastRefreshed && (
+            <span className="text-[10px] text-gray-400 whitespace-nowrap">last refreshed {fn.lastRefreshed}</span>
+          )}
+          {onOpen && !compact && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onOpen(fn); }}
+              className="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1"
+            >
+              Open list builder {getIcon("ArrowUpRight", { size: 12 })}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Stat boxes */}
@@ -1124,46 +1134,157 @@ function FunctionCard({ fn, onOpen, compact = false }) {
 // Deep dive — opens when a function card is clicked. List builder with three
 // tabs that share the discovery synthesis card on top.
 function FunctionDeepDive({ fn, onBack, mode = "spend" }) {
-  const [tab, setTab] = React.useState("combined");
-  const tabs = [
-    { id: "combined", label: "Combined" },
-    { id: "vendor",   label: "Vendor" },
-    { id: "fte",      label: "FTE" },
+  const isClass = mode === "classification";
+  const [activeTab, setActiveTab] = React.useState("master");
+  const [selectedCell, setSelectedCell] = React.useState(null);
+
+  // Vendor rows
+  const vendorRows = (fn.vendor?.rows || []).map((r, i) => ({
+    rowNum: i + 1,
+    cells: isClass
+      ? [r.number, r.name, r.costCenter, r.glCode, r.costElement, r.spend, r.activity, r.aiClass || "—", r.confirmed ? "Confirmed" : "Pending", r.statutory || "—"]
+      : [r.number, r.name, r.costCenter, r.glCode, r.costElement, r.spend, r.activity, r.conf],
+  }));
+  const vendorCols = isClass
+    ? ["Supplier #", "Vendor Name", "Cost Center", "GL Code", "Cost Element", "Spend ($)", "→ Activity", "AI Class", "Status", "Statutory"]
+    : ["Supplier #", "Vendor Name", "Cost Center", "GL Code", "Cost Element", "Spend Amount ($)", "Vendor Description"];
+
+  // HRIS rows
+  const hrisRows = (fn.fte?.rows || []).map((r, i) => ({
+    rowNum: i + 1,
+    cells: isClass
+      ? [r.id, r.role, r.jobFamily, r.costCenter, r.region, r.fte, r.loaded, r.primaryActivity, r.aiClass || "—", r.confirmed ? "Confirmed" : "Pending", r.statutory || "—"]
+      : [r.id, r.role, r.jobFamily, r.costCenter, r.region, r.fte, r.loaded, r.primaryActivity, r.conf],
+  }));
+  const hrisCols = isClass
+    ? ["Employee ID", "Role", "Job Family", "Cost Center", "Region", "FTE", "Loaded $", "→ Primary Activity", "AI Class", "Status", "Statutory"]
+    : ["Employee ID", "Role", "Job Family", "Cost Center", "Region", "FTE", "Loaded $", "→ Primary Activity", "Conf"];
+
+  // Activity rows
+  const activityRows = (fn.combined?.activities || []).map((a, i) => ({
+    rowNum: i + 1,
+    cells: isClass
+      ? [a.name, a.subFn, a.spend || `${a.labor} + ${a.nonLabor}`, a.aiClass || "—", a.confirmed ? "Confirmed" : "Pending", a.reason || "—", a.statutory || "—"]
+      : [a.name, a.subFn, a.labor, a.nonLabor, a.driver, a.volume, a.unitCost, a.conf],
+  }));
+  const activityCols = isClass
+    ? ["Activity", "Sub-fn", "Spend", "AI Class", "Status", "Reason", "Statutory"]
+    : ["Activity", "Sub-fn", "Labor $", "Non-labor $", "Driver", "Volume", "Unit $", "Conf"];
+
+  // Extract total counts from footer strings ("6 of 84 vendors shown" → "84")
+  const vendorTotal  = (fn.vendor?.footer || "").match(/of (\d+)/)?.[1] || vendorRows.length;
+  const hrisTotal    = (fn.fte?.footer    || "").match(/of (\d+)/)?.[1] || hrisRows.length;
+  const activityStat = (fn.stats || []).find(s => s.label === "Activities found");
+  const activityTotal = activityStat ? activityStat.value : activityRows.length;
+
+  const sheetTabs = [
+    { id: "master",     label: "Master",              count: vendorTotal,    rows: vendorRows,   cols: vendorCols   },
+    { id: "hris",       label: "HRIS Records",         count: hrisTotal,      rows: hrisRows,     cols: hrisCols     },
+    { id: "activities", label: "Activities",            count: activityTotal,  rows: activityRows, cols: activityCols },
+    { id: "spend-cc",   label: "Spend by Cost Center", count: "—",            rows: [],           cols: []           },
+    { id: "col-map",    label: "Column Mapping",        count: "16",           rows: [],           cols: []           },
   ];
 
+  const currentTab = sheetTabs.find(t => t.id === activeTab) || sheetTabs[0];
+  const rows = currentTab.rows || [];
+  const cols = currentTab.cols || vendorCols;
+
   return (
-    <div className="flex-1 flex flex-col min-w-0 bg-gray-50">
-      {/* Sub-header: back + function name + tab switcher */}
-      <div className="px-5 py-3 bg-white border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+    <div className="flex-1 flex flex-col min-w-0 bg-white">
+      {/* Top bar */}
+      <div className="px-5 py-2.5 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3 min-w-0">
-          <button onClick={onBack} className="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors">
-            {getIcon("ChevronUp", { size: 12, className: "rotate-[-90deg]" })} Back to functions
+          <button onClick={onBack} className="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors flex-shrink-0">
+            {getIcon("ChevronUp", { size: 12, className: "rotate-[-90deg]" })} Back
           </button>
           <span className="text-gray-300">|</span>
-          <div className="text-sm font-semibold text-gray-900 truncate">{fn.name}</div>
+          <div className="text-sm font-semibold text-gray-900 truncate">
+            {fn.name} — {isClass ? "Cost Classification" : "Vendor Enrichment"}
+          </div>
         </div>
-        <div className="flex items-center gap-1 flex-shrink-0">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`text-xs px-3 py-1.5 rounded-md font-medium transition-colors ${tab === t.id ? "bg-blue-600 text-white shadow-sm" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
-            >
-              {t.label}
+        <button className="text-gray-400 hover:text-blue-600 transition-colors">
+          {getIcon("ArrowDownRight", { size: 14 })}
+        </button>
+      </div>
+
+      {/* Formula bar */}
+      <div className="px-3 py-1.5 border-b border-gray-200 flex items-center gap-2 bg-gray-50 flex-shrink-0">
+        <div className="w-14 border border-gray-300 rounded px-2 py-0.5 text-xs text-gray-600 font-mono bg-white text-center select-none">--</div>
+        <span className="text-gray-300 select-none text-sm">|</span>
+        <span className="text-xs text-gray-500 font-mono select-none">fx</span>
+        <div className="flex-1 border border-gray-300 rounded px-3 py-0.5 text-xs bg-white leading-5 truncate select-none text-gray-400">
+          {selectedCell !== null ? String(selectedCell) : "Select a cell to see its value"}
+        </div>
+        <button className="text-gray-400 hover:text-gray-600 transition-colors">{getIcon("ChevronDown", { size: 13 })}</button>
+        <button onClick={() => setSelectedCell(null)} className="text-gray-400 hover:text-gray-600 transition-colors">{getIcon("X", { size: 13 })}</button>
+      </div>
+
+      {/* Grid */}
+      <div className="flex-1 overflow-auto scrollbar-thin">
+        {rows.length > 0 ? (
+          <table className="w-full text-xs border-collapse">
+            <thead className="sticky top-0 z-10">
+              <tr className="border-b border-gray-200 bg-gray-100">
+                <th className="w-8 px-2 py-2 border-r border-gray-200 font-normal text-gray-400 text-center" />
+                {cols.map((col, i) => (
+                  <th key={i} className="text-left px-3 py-2 font-semibold text-gray-600 border-r border-gray-100 whitespace-nowrap">
+                    {col}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, ri) => (
+                <tr key={ri} className="border-b border-gray-100 hover:bg-blue-50/20 transition-colors">
+                  <td className="w-8 px-2 py-2 text-right text-[10px] text-gray-400 border-r border-gray-200 bg-gray-50 select-none">
+                    {row.rowNum}
+                  </td>
+                  {row.cells.map((cell, ci) => (
+                    <td
+                      key={ci}
+                      onClick={() => setSelectedCell(cell)}
+                      className={`px-3 py-2 border-r border-gray-100 whitespace-nowrap cursor-default transition-colors ${
+                        selectedCell === cell ? "bg-blue-50 text-blue-900" : "text-gray-800"
+                      }`}
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="px-4 py-12 text-center text-xs text-gray-400 italic">
+            No records loaded for this view yet.
+          </div>
+        )}
+      </div>
+
+      {/* Footer: sheet nav arrows + tabs */}
+      <div className="border-t border-gray-200 flex items-stretch flex-shrink-0 bg-gray-50 min-h-[34px]">
+        <div className="flex items-center gap-0 px-1.5 border-r border-gray-200">
+          {["◄◄", "◄", "►", "►►"].map((arrow, i) => (
+            <button key={i} className="w-6 h-6 flex items-center justify-center text-[11px] text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded transition-colors">
+              {arrow}
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Tab content */}
-      <div className="flex-1 overflow-auto scrollbar-thin">
-        <div className="p-5">
-          {/* Discovery synthesis card always pinned on top — same card for every tab */}
-          <FunctionCard fn={fn} compact />
-
-          {tab === "combined" && <FunctionCombinedTab fn={fn} mode={mode} />}
-          {tab === "vendor"   && <FunctionVendorTab   fn={fn} mode={mode} />}
-          {tab === "fte"      && <FunctionFteTab      fn={fn} mode={mode} />}
+        <div className="flex items-stretch overflow-x-auto flex-1 scrollbar-thin">
+          {sheetTabs.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(t.id)}
+              className={`flex-shrink-0 text-xs px-4 border-r border-gray-200 transition-colors whitespace-nowrap flex items-center gap-1 ${
+                activeTab === t.id
+                  ? "bg-white text-blue-700 font-semibold border-t-2 border-t-blue-600"
+                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+              }`}
+            >
+              {t.label}
+              <span className="text-gray-400 font-normal">({t.count})</span>
+            </button>
+          ))}
         </div>
       </div>
     </div>
@@ -1670,18 +1791,7 @@ function SgaTabContent({ sga, onOpenFn, summaryMode = "spend" }) {
         {summaryMode === "classification" ? (
           <ClassificationSummaryCard fn={active} onMore={() => onOpenFn(active)} />
         ) : (
-          (() => {
-            const h = active.highlights || { cards: [], keyTakeaways: [] };
-            return (
-              <SpendHighlightsCard
-                title={`Spend Highlights — ${active.name}`}
-                headerSubtitle={h.headerSubtitle}
-                cards={h.cards}
-                keyTakeaways={h.keyTakeaways}
-                onMore={() => onOpenFn(active)}
-              />
-            );
-          })()
+          <FunctionCard fn={active} onOpen={() => onOpenFn(active)} />
         )}
       </div>
     </div>
