@@ -172,17 +172,24 @@ const TASK_PREVIEWS = {
         ]},
       ],
       chatLog: [
-        { role: "user",      text: "Where is the money concentrated, and which decisions are blocking the cost-takeout?" },
-        { role: "assistant", text: "Cost intensity ($$$) clusters in six activities: **Procurement Contracts**, **Frying**, **Freezing Lines**, **Materials Procurement**, **Cold Storage Ops**, and **Carrier Management** — together they carry the majority of fully-loaded operational spend. The decision-rights overlay is the unlock: four of the six sit at **F (function-led)**, where standardization and AI agents can move the needle quickly. The other two — Cold Storage Ops and Customer Delivery — sit at **C (country-led)** because energy tariffs and last-mile economics vary; those need a country-by-country playbook. Frying and Freezing are **B (BU-led)** — process choices owned by the Potato and Appetizers BUs respectively." },
+        { role: "assistant", style: "neutral",  text: "This is the **end-to-end value chain**. Five operational stages run left to right; every activity tile shows two things — t-shirt cost intensity (**$ / $$ / $$$**) and the decision-rights badge (**F**unction · **B**U · **C**ountry). The **SG&A engine runs underneath**, with one bar per support function spanning every stage." },
+        { role: "assistant", style: "finding",  text: "**Six $$$ activities carry the bulk of operational spend** — Procurement Contracts, Frying, Freezing Lines, Materials Procurement, Cold Storage Ops, and Carrier Management — together ~80% of fully-loaded operating cost." },
+        { role: "assistant", style: "variance", text: "Of those six, **four sit at F (function-led)** — fast to standardize. **Cold Storage Ops and Customer Delivery** sit at **C (country-led)** — energy tariffs and last-mile economics need a regional playbook. **Frying and Freezing** are **B (BU-led)** — process choices owned by the Potato and Appetizers BUs." },
+        { role: "assistant", style: "question", text: "The SG&A bars expose **where each support function touches the chain**. The cleanest cost-takeout wedges sit where F-led activities meet **Legal** (Procurement Contracts, Customer Contracts) and **IT/Finance** (Inventory Management, Distribution Planning). Want to pivot to Activity & Driver Mapping for a per-function decomposition?" },
+      ],
+      suggestions: [
+        { label: "Highlight the F-led $$$ activities" },
+        { label: "Where do the SG&A bars carry the most cost?" },
+        { label: "Open Legal in Activity & Driver Mapping" },
       ]
     }
   },
   activity_mapping: {
     chat: [
-      { role: "assistant", style: "neutral",  text: "**Discovered 218 activities across 11 functions.** Driver coverage is strong on Legal, Finance, IT, HR — sparser on Marketing." },
-      { role: "assistant", style: "finding",  text: "**A&E ($1.12B), Selling ($380M), Marketing ($295M)** are the three SG&A pools — same as the client's reporting." },
-      { role: "assistant", style: "variance", text: "**Largest variance:** India runs A&E at 3.1× SEA on cost-per-employee. Worth opening first." },
-      { role: "assistant", style: "question", text: "**Marketing**: 14 activities flagged amber — sparse SOPs, drivers inferred from media-buy patterns. Want to enrich?" },
+      { role: "assistant", style: "neutral",  text: "**What activities exist?** Discovered **218 activities across 11 functions** — bottom-up from **~12,400 vendor lines**, **4,180 HRIS records**, and **355 SOPs**. No pre-baked taxonomy; the activity list is what the data actually shows." },
+      { role: "assistant", style: "finding",  text: "**Who does them?** **4,180 indirect FTEs** globally. By function: Selling **1,080** · Marketing **820** · IT **620** · HR **510** · Finance **460** · Legal **312**. The Spend Highlights card on the right breaks each function into sub-functions." },
+      { role: "assistant", style: "variance", text: "**What drives them?** **9 driver families** inferred from real records — NDAs by prospect, vendor contracts by supplier base, customer contracts by active accounts, employment agreements by hires, headcount, journal entries, applications, briefs, accounts. Driver coverage is strong on Legal, Finance, IT, HR — **Marketing has 14 activities flagged amber** with drivers inferred from media-buy patterns." },
+      { role: "assistant", style: "question", text: "**How much do they cost?** **$1.8B SG&A total**, split ~50/50: ~$850M labor / ~$940M non-labor. Three pools: A&E **$1.12B** · Selling **$380M** · Marketing **$295M**. **Largest variance:** India A&E runs **3.1× SEA** on cost-per-employee — the convergence wedge worth opening first." },
     ],
     suggestions: [
       { label: "Open Legal — biggest variance" },
