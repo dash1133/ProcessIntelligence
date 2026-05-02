@@ -3,6 +3,7 @@ const { useState, useRef, useEffect } = React;
 // ── MAIN APP ──
 function App() {
   const [activeView, setActiveView] = useState("dashboard");
+  const [openDiagnosticTask, setOpenDiagnosticTask] = useState(null);
   const [chatMessages, setChatMessages] = useState(INITIAL_MESSAGES);
   const [chatInput, setChatInput] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -1324,11 +1325,43 @@ function App() {
               <div className="text-[10px] text-gray-400 uppercase tracking-wider">by COMOPS</div>
             </div>
           </div>
-          {/* Breadcrumb */}
-          <button onClick={() => setActiveView("dashboard")} className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600 transition-colors">
-            {getIcon("Home", { size: 15, className: "text-gray-400" })}
-            <span>KPI Monitoring</span>
-          </button>
+          {/* Breadcrumb — dynamic, reflects activeView + openDiagnosticTask.
+              Last segment is current location (bold, not clickable); the rest
+              are clickable navigation links. */}
+          {(() => {
+            const segs = activeView === "diagnostic"
+              ? [
+                  { label: "Diagnostic",            onClick: () => setOpenDiagnosticTask(null) },
+                  { label: "AI ZBO",                onClick: () => setOpenDiagnosticTask(null) },
+                  { label: "NorthStar Frozen Foods", onClick: openDiagnosticTask ? () => setOpenDiagnosticTask(null) : null },
+                  ...(openDiagnosticTask ? [{ label: openDiagnosticTask.label, badge: <AppTypeBadge type={openDiagnosticTask.appType} /> }] : []),
+                ]
+              : [
+                  { label: "KPI Monitoring", onClick: null },
+                  { label: "NorthStar Frozen Foods", onClick: null },
+                ];
+            return (
+              <div className="flex items-center gap-1.5 text-sm flex-wrap">
+                {getIcon("Home", { size: 14, className: "text-gray-400" })}
+                {segs.map((s, i) => {
+                  const isLast = i === segs.length - 1;
+                  return (
+                    <React.Fragment key={i}>
+                      {i > 0 && <span className="text-gray-300">›</span>}
+                      {!isLast && s.onClick ? (
+                        <button onClick={s.onClick} className="text-gray-500 hover:text-blue-600 transition-colors">
+                          {s.label}
+                        </button>
+                      ) : (
+                        <span className={isLast ? "font-semibold text-gray-900 truncate max-w-[220px]" : "text-gray-500"}>{s.label}</span>
+                      )}
+                      {s.badge && <span className="ml-1">{s.badge}</span>}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Center Tabs */}
@@ -1406,7 +1439,7 @@ function App() {
           {activeView === "compare" && renderCompare()}
           {activeView === "simulate" && renderSimulate()}
           {activeView === "artifacts" && renderArtifacts()}
-          {activeView === "diagnostic" && <DiagnosticView />}
+          {activeView === "diagnostic" && <DiagnosticView openTask={openDiagnosticTask} setOpenTask={setOpenDiagnosticTask} />}
         </main>
       </div>
 
