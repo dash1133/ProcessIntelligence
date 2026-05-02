@@ -30,11 +30,11 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "dashboard", icon: "Activity", description: "Bottom-up discovery of activities and drivers from real records — vendor lines, HRIS, SOPs." },
   ]},
   { name: "Cost Allocation & Cost-to-Serve", tasks: [
-    { id: "cost_classification", label: "Cost Classification",     appType: "dashboard",     icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
-    { id: "vendor_spend",        label: "Vendor Spend Analysis",    appType: "list-builder", icon: "DollarSign", description: "Vendor-level spend decomposition and enrichment." },
-    { id: "cost_to_serve",       label: "Cost-to-Serve Analytics",  appType: "artifact",     icon: "BarChart3",   description: "Cost-to-serve patterns by customer, product, geography, and BU." },
+    { id: "cost_classification",       label: "Cost Classification",         appType: "dashboard", icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
+    { id: "cost_to_serve",              label: "Cost-to-Serve Analytics",     appType: "artifact",  icon: "BarChart3",   description: "Cost-to-serve patterns by customer, product, geography, and BU." },
+    { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
   ]},
-  { name: "Opportunity Identification", tasks: [
+  { name: "Levers Identification", tasks: [
     { id: "redesign_opps",   label: "Process Redesign & AI Opportunities", appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
     { id: "margin_leakage",  label: "Margin Leakage Detection",            appType: "chat",     icon: "AlertTriangle", description: "AI-surfaced leakage from estimating, pricing, rework, scoping." },
     { id: "anomaly_redflag", label: "Anomaly & Red-Flag Spend",            appType: "chat",     icon: "Shield",         description: "Anomalies and red-flag spend identified with A&M experts." },
@@ -735,6 +735,50 @@ const TASK_PREVIEWS = {
         { heading: "Recommendation",
           body: "Three of the four worst-indexed cells (India, Latin America, South Africa) cluster on the same root cause: low AI automation share inside Admin & Executive and Legal, plus duplicated marketing workflows that have never been consolidated. Anchor SEA as the internal target operating model and converge the bottom three regions to a 1.10× index over 18 months. Implied opportunity: ~$95M run-rate against the SG&A base, with the bulk landing inside the $150M consulting line and the $295M marketing stack. See Initiative Sizing & Business Case for the sized plan." },
       ]
+    }
+  },
+
+  opportunity_prioritization: {
+    chat: [
+      { role: "assistant", style: "neutral",  text: "**Opportunity Prioritization** turns the diagnostic into a workplan. Cost pools become **actionable zones** — \"NA Legal contract review ($8M, discretionary, F-led)\" is a target; \"Legal\" is not. The deliverable is a shortlist of 5–10 priority zones." },
+      { role: "assistant", style: "finding",  text: "**7 criteria** weight every zone: pool size · discretionary share · regional/BU variance · standardization gap · confidence · implementation feasibility (F-led faster than C-led) · strategic risk (warning, not a deprioritization)." },
+      { role: "assistant", style: "variance", text: "**Top 10 zones surface up to ~$240M of run-rate opportunity at the upper bound.** Anything below the 10th line is deprioritized with a reason. The view is interactive — filters re-rank by region · BU · function." },
+      { role: "assistant", style: "question", text: "**Deprioritized rollup:** $410M across 38 non-discretionary zones (statutory + ops floor) and $98M across 14 strategic zones (growth-tied). The strategic items aren't deprioritized — they carry a warning flag in the shortlist when they appear. Want to walk the top 10 or filter by region first?" },
+    ],
+    suggestions: [
+      { label: "Filter to NA only" },
+      { label: "Show F-led zones first" },
+      { label: "Why is Compliance & investigations deprioritized?" },
+    ],
+    artifact: {
+      type: "prioritization",
+      title: "Opportunity Prioritization — Where to go after the cost",
+      subtitle: "5–10 priority zones distilled from 218 activities · interact with the criteria, not the line items",
+      source: "Source: Cost Classification + Activity & Driver Mapping · last refreshed 4 min ago",
+      filters: {
+        regions:  ["All", "NA", "EU", "UK", "APAC", "LATAM"],
+        bus:      ["All", "Corporate", "Potato BU", "Appetizers BU", "Multiple"],
+        functions:["All", "Legal", "HR", "IT", "Finance", "Marketing", "Selling", "Operations", "A&E"],
+      },
+      // Top-10 priority zones. cost in $M (numeric) · variance multiplier · discretionaryShare % · owner F/B/C.
+      zones: [
+        { id: "z1",  rank: 1,  name: "India SG&A intensity convergence",          function: "A&E",       region: "APAC",   bu: "Multiple",       cost: 80.0, costLabel: "$80M",  discretionaryShare: 60,  variance: 3.1, confidence: "Med",  owner: "bu",       sizingRange: "$50M – $80M", strategicRisk: false, rationale: "India runs 3.1× SEA on cost-per-employee; convergence to 12% intensity over 18 months." },
+        { id: "z2",  rank: 2,  name: "Marketing media-stack consolidation",       function: "Marketing", region: "Global", bu: "Corporate",      cost: 50.0, costLabel: "$50M",  discretionaryShare: 95,  variance: 2.8, confidence: "Med",  owner: "function", sizingRange: "$30M – $45M", strategicRisk: false, rationale: "40+ regional cost centers running duplicated workflows; agency-fee compression + AI brief drafting." },
+        { id: "z3",  rank: 3,  name: "Account management coverage modeling",     function: "Selling",   region: "Global", bu: "Multiple",       cost: 94.0, costLabel: "$94M",  discretionaryShare: 100, variance: 2.4, confidence: "Med",  owner: "function", sizingRange: "$20M – $35M", strategicRisk: false, rationale: "Coverage varies 2.4× across regions with no shared model; 15–20% compression realistic." },
+        { id: "z4",  rank: 4,  name: "IT outside consulting in-sourcing",         function: "IT",        region: "Global", bu: "Corporate",      cost: 25.0, costLabel: "$25M",  discretionaryShare: 100, variance: 2.1, confidence: "High", owner: "function", sizingRange: "$14M – $20M", strategicRisk: false, rationale: "InfoSec ($7M) · SAP/Digital ($7M) · App Ops ($6M) — all in-sourceable to AI agents." },
+        { id: "z5",  rank: 5,  name: "Outside HR consulting in-sourcing",         function: "HR",        region: "Global", bu: "Corporate",      cost: 24.0, costLabel: "$24M",  discretionaryShare: 100, variance: 1.8, confidence: "High", owner: "function", sizingRange: "$15M – $22M", strategicRisk: false, rationale: "$24M ≈ 200 HR FTEs equivalent — token-replaceable analyst content." },
+        { id: "z6",  rank: 6,  name: "Cold-Chain energy & vendor convergence",    function: "Operations",region: "Global", bu: "Multiple",       cost: 18.0, costLabel: "$18M",  discretionaryShare: 30,  variance: 3.2, confidence: "Med",  owner: "country",  sizingRange: "$8M – $14M",  strategicRisk: false, rationale: "Country-led — energy tariff hedging + cold-storage SLA standardization." },
+        { id: "z7",  rank: 7,  name: "Sales-ops onboarding automation",            function: "Selling",   region: "Global", bu: "Multiple",       cost: 11.0, costLabel: "$11M",  discretionaryShare: 70,  variance: 2.4, confidence: "Med",  owner: "function", sizingRange: "$5M – $9M",   strategicRisk: false, rationale: "70% manual across all regions — AI workflow + agent escalation." },
+        { id: "z8",  rank: 8,  name: "NA Legal contract review",                  function: "Legal",     region: "NA",     bu: "Corporate",      cost: 8.0,  costLabel: "$8.0M", discretionaryShare: 100, variance: 5.2, confidence: "High", owner: "function", sizingRange: "$3M – $5M",   strategicRisk: false, rationale: "AI first-pass review removes ~40% of paralegal hours; NA runs 5.2× UK on per-contract basis." },
+        { id: "z9",  rank: 9,  name: "Tax outside advisory in-sourcing",          function: "Finance",   region: "Global", bu: "Corporate",      cost: 5.0,  costLabel: "$5.0M", discretionaryShare: 100, variance: 1.7, confidence: "High", owner: "function", sizingRange: "$2M – $3.5M", strategicRisk: false, rationale: "Token-replaceable research; AI agent + counsel review." },
+        { id: "z10", rank: 10, name: "Global trademark renewals",                  function: "Legal",     region: "Global", bu: "Corporate",      cost: 2.0,  costLabel: "$2.0M", discretionaryShare: 100, variance: 1.4, confidence: "Med",  owner: "function", sizingRange: "$0.5M – $1M", strategicRisk: true,  rationale: "Brand portfolio protection — strategic to growth markets. Cut with care." },
+      ],
+      // What was looked at and ruled out — with reason.
+      deprioritized: [
+        { id: "d1", reason: "Non-discretionary",                category: "Statutory + ops floor — cannot cut",       spend: "$410M", count: 38, color: "#dc2626" },
+        { id: "d2", reason: "Strategic — growth-tied",           category: "Protected; cutting compresses growth",     spend: "$98M",  count: 14, color: "#10b981" },
+        { id: "d3", reason: "Low confidence — needs enrichment", category: "AI flagged amber; consultant not signed-off", spend: "$62M",  count: 22, color: "#f59e0b" },
+      ],
     }
   }
 };
@@ -1671,6 +1715,240 @@ function DashboardArtifact({ data }) {
   );
 }
 
+// ── PRIORITIZATION ARTIFACT (Opportunity Prioritization) ──
+// Distils the diagnostic into a shortlist of priority zones. Three primitives
+// drive the page: a scatter plot (cost × variance, sized by discretionary
+// share, coloured by owner), a ranked shortlist with sizing ranges, and a
+// deprioritized rollup at the bottom with a reason category. Filters re-rank
+// the visible set without changing the underlying data.
+
+const OWNER_COLORS = {
+  function: { fill: "#3b82f6", label: "F-led",          tone: "bg-blue-50 text-blue-700 border-blue-200" },
+  bu:       { fill: "#10b981", label: "BU-led",          tone: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  country:  { fill: "#f97316", label: "Country/Region",  tone: "bg-orange-50 text-orange-700 border-orange-200" },
+};
+
+function FilterBar({ filters, options, onChange }) {
+  const dropdown = (label, key, opts) => (
+    <label className="flex items-center gap-2 text-xs">
+      <span className="text-gray-500 uppercase tracking-wider text-[10px] font-semibold">{label}</span>
+      <select
+        value={filters[key]}
+        onChange={(e) => onChange({ ...filters, [key]: e.target.value })}
+        className="bg-white border border-gray-200 rounded-md px-2 py-1 text-xs text-gray-800 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-100"
+      >
+        {opts.map((o) => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </label>
+  );
+  return (
+    <div className="flex items-center gap-3 flex-wrap mb-4 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+      <span className="text-[11px] text-gray-500">Filters</span>
+      {dropdown("Region",   "region",   options.regions)}
+      {dropdown("BU",       "bu",       options.bus)}
+      {dropdown("Function", "function", options.functions)}
+      <div className="ml-auto text-[11px] text-gray-500 italic">Filters re-rank the shortlist; underlying data does not change.</div>
+    </div>
+  );
+}
+
+// Scatter plot: cost ($M) × variance multiplier · bubble size = discretionary
+// share · bubble fill = owner type. Hover tooltip is plain title text so it
+// works without extra JS state.
+function PriorityScatter({ zones, hoverId, onHover }) {
+  const W = 560, H = 320;
+  const padL = 56, padR = 18, padT = 16, padB = 42;
+  const pw = W - padL - padR;
+  const ph = H - padT - padB;
+  const xMax = 100;        // $M axis upper bound
+  const yMin = 1, yMax = 6; // variance range
+  const xTo = (v) => padL + Math.min(v, xMax) / xMax * pw;
+  const yTo = (v) => padT + ph - (Math.min(Math.max(v, yMin), yMax) - yMin) / (yMax - yMin) * ph;
+  const rOf = (pct) => 6 + (pct / 100) * 14;
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-4">
+      <div className="flex items-start justify-between mb-2">
+        <div>
+          <div className="text-sm font-semibold text-gray-900">Cost × Variance</div>
+          <div className="text-[11px] text-gray-500">Bubble size = discretionary share · colour = owner type</div>
+        </div>
+        <div className="flex items-center gap-2 text-[11px]">
+          {Object.entries(OWNER_COLORS).map(([k, m]) => (
+            <span key={k} className="inline-flex items-center gap-1">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: m.fill }} />
+              <span className="text-gray-600">{m.label}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+      <svg width="100%" viewBox={`0 0 ${W} ${H}`} className="select-none">
+        {/* Y-axis grid + labels (variance) */}
+        {[1, 2, 3, 4, 5, 6].map((v) => (
+          <g key={v}>
+            <line x1={padL} y1={yTo(v)} x2={W - padR} y2={yTo(v)} stroke="#f3f4f6" strokeWidth="1" />
+            <text x={padL - 8} y={yTo(v) + 3} fontSize="10" textAnchor="end" fill="#9ca3af">{v}×</text>
+          </g>
+        ))}
+        {/* X-axis grid + labels (cost $M) */}
+        {[0, 20, 40, 60, 80, 100].map((v) => (
+          <g key={v}>
+            <line x1={xTo(v)} y1={padT} x2={xTo(v)} y2={H - padB} stroke="#f9fafb" strokeWidth="1" />
+            <text x={xTo(v)} y={H - padB + 14} fontSize="10" textAnchor="middle" fill="#9ca3af">${v}M</text>
+          </g>
+        ))}
+        {/* Axis titles */}
+        <text x={padL + pw / 2} y={H - 6} fontSize="10" textAnchor="middle" fill="#6b7280" fontWeight="600">Pool size ($M)</text>
+        <text x={14} y={padT + ph / 2} fontSize="10" textAnchor="middle" fill="#6b7280" fontWeight="600" transform={`rotate(-90, 14, ${padT + ph / 2})`}>Variance (×)</text>
+        {/* Bubbles */}
+        {zones.map((z) => {
+          const m = OWNER_COLORS[z.owner] || OWNER_COLORS.function;
+          const r = rOf(z.discretionaryShare);
+          const isHover = hoverId === z.id;
+          return (
+            <g
+              key={z.id}
+              onMouseEnter={() => onHover && onHover(z.id)}
+              onMouseLeave={() => onHover && onHover(null)}
+              style={{ cursor: "pointer" }}
+            >
+              <circle
+                cx={xTo(z.cost)} cy={yTo(z.variance)} r={r}
+                fill={m.fill}
+                fillOpacity={isHover ? 0.95 : 0.55}
+                stroke={z.strategicRisk ? "#dc2626" : m.fill}
+                strokeWidth={z.strategicRisk ? 2 : 1}
+              />
+              <title>{`#${z.rank} ${z.name} — ${z.costLabel} · ${z.variance}× · ${z.discretionaryShare}% disc · ${m.label}${z.strategicRisk ? " · Strategic warning" : ""}`}</title>
+              <text x={xTo(z.cost)} y={yTo(z.variance) + 3} fontSize="10" fontWeight="700" textAnchor="middle" fill="white">{z.rank}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function RankedShortlist({ zones, hoverId, onHover }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div className="text-sm font-semibold text-gray-900">Top {zones.length} priority zones</div>
+        <div className="text-[11px] text-gray-500">ranked by composite score · sized in $M</div>
+      </div>
+      {zones.length === 0 ? (
+        <div className="px-4 py-10 text-center text-xs text-gray-400">No zones match the current filter.</div>
+      ) : (
+        <div className="divide-y divide-gray-100">
+          {zones.map((z) => {
+            const m = OWNER_COLORS[z.owner] || OWNER_COLORS.function;
+            return (
+              <div
+                key={z.id}
+                onMouseEnter={() => onHover && onHover(z.id)}
+                onMouseLeave={() => onHover && onHover(null)}
+                className={`px-4 py-3 transition-colors cursor-pointer ${hoverId === z.id ? "bg-blue-50/40" : "hover:bg-gray-50"}`}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-full bg-gray-100 text-gray-700 text-xs font-bold flex items-center justify-center flex-shrink-0">{z.rank}</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-sm font-semibold text-gray-900">{z.name}</span>
+                      {z.strategicRisk && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded border bg-red-50 text-red-700 border-red-200">
+                          {getIcon("AlertTriangle", { size: 10 })} Strategic — cut with care
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap text-[11px] text-gray-500 mt-0.5">
+                      <span>{z.function}</span>
+                      <span className="text-gray-300">·</span>
+                      <span>{z.region}</span>
+                      <span className="text-gray-300">·</span>
+                      <span className={`inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded border ${m.tone}`}>{m.label}</span>
+                      <span className="text-gray-300">·</span>
+                      <span><span className="font-semibold text-gray-700">{z.variance}×</span> variance</span>
+                      <span className="text-gray-300">·</span>
+                      <span><span className="font-semibold text-gray-700">{z.discretionaryShare}%</span> disc</span>
+                    </div>
+                    <div className="text-[12px] text-gray-700 mt-1.5 leading-snug">{z.rationale}</div>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <div className="text-base font-bold text-gray-900">{z.costLabel}</div>
+                    <div className="text-[11px] text-emerald-700 font-semibold mt-0.5">→ {z.sizingRange}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DeprioritizedRollup({ items }) {
+  if (!items || items.length === 0) return null;
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden mt-4">
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div className="text-sm font-semibold text-gray-900">Deprioritized — looked at, ruled out</div>
+        <div className="text-[11px] text-gray-500">grouped by reason</div>
+      </div>
+      <div className="divide-y divide-gray-100">
+        {items.map((d) => (
+          <div key={d.id} className="px-4 py-2.5 flex items-center gap-3">
+            <span className="w-2 h-8 rounded-full flex-shrink-0" style={{ background: d.color }} />
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-semibold text-gray-900">{d.reason}</div>
+              <div className="text-[11px] text-gray-500">{d.category}</div>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <div className="text-sm font-bold text-gray-900">{d.spend}</div>
+              <div className="text-[10px] text-gray-500">{d.count} zones</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PrioritizationArtifact({ data }) {
+  const [filters, setFilters] = React.useState({ region: "All", bu: "All", function: "All" });
+  const [hoverId, setHoverId] = React.useState(null);
+
+  const visible = (data.zones || []).filter((z) =>
+    (filters.region   === "All" || z.region   === filters.region) &&
+    (filters.bu       === "All" || z.bu       === filters.bu) &&
+    (filters.function === "All" || z.function === filters.function)
+  );
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+      <div className="p-6">
+        <div className="mb-3">
+          <h2 className="text-xl font-bold text-gray-900">{data.title}</h2>
+          {data.subtitle && <p className="text-xs text-gray-500 mt-1">{data.subtitle}</p>}
+        </div>
+
+        {data.filters && <FilterBar filters={filters} options={data.filters} onChange={setFilters} />}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+          <PriorityScatter zones={visible} hoverId={hoverId} onHover={setHoverId} />
+          <RankedShortlist zones={visible} hoverId={hoverId} onHover={setHoverId} />
+        </div>
+
+        <DeprioritizedRollup items={data.deprioritized} />
+
+        {data.source && (
+          <div className="text-[11px] text-gray-400 italic mt-4 border-t border-gray-100 pt-3">{data.source}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Style → background mapping for the styled "What I noticed" messages.
 // Each style hits a different visual register so multiple discoveries can
 // stack without blending together.
@@ -1863,6 +2141,9 @@ function ArtifactContent({ task }) {
     // Dashboard owns its own scroll container; deep-dive into a function
     // list builder takes over the full pane.
     return <DashboardArtifact data={artifact} />;
+  }
+  if (artifact.type === "prioritization") {
+    return <PrioritizationArtifact data={artifact} />;
   }
   return (
     <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
