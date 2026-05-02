@@ -703,10 +703,10 @@ const TASK_PREVIEWS = {
 
   cost_driver: {
     chat: [
-      { role: "assistant", style: "neutral",  text: "**$4,050 / yr per SMB customer** · touches **12 functions across 38 activities**. **Sales is 34%** of the cost — the dominant driver, and the line that varies most by region." },
-      { role: "assistant", style: "finding",  text: "**Customer Service at 16%** — 3.4× what an Enterprise customer absorbs proportionally. The SMB account model carries more service overhead than the order volume justifies." },
-      { role: "assistant", style: "variance", text: "**Legal hits the SMB shadow at $185 / yr (5%)** — MSAs, NDAs, customer-contract review, AR escalation. **NA Legal alone runs 5.2× UK** on per-contract basis (echoes the Cost Classification view)." },
-      { role: "assistant", style: "question", text: "**India at 1.76× global** — Sales reps + manual collections drive the gap. **UK at $2,800 is the lean benchmark.** If every region matched UK's shape across the **1,840-account base**, that's an indicative **~$2.3M annualised recoverable** on this driver alone. Want to overlay Enterprise customer?" },
+      { role: "assistant", style: "neutral",  text: "**$4,050 / yr per SMB customer** · touches **12 process steps across 38 activities**. **Selling & managing the account is 34%** of the cost — the dominant step, and the one that varies most by region." },
+      { role: "assistant", style: "finding",  text: "**Handling service requests at 16%** — 3.4× what an Enterprise customer absorbs proportionally. The SMB model carries more service overhead than the order volume justifies." },
+      { role: "assistant", style: "variance", text: "**Reviewing & executing contracts hits the SMB shadow at $185 / yr (5%)** — MSAs, NDAs, customer-contract review, AR escalation. **NA runs 5.2× UK** on per-contract basis (echoes the Cost Classification view)." },
+      { role: "assistant", style: "question", text: "**India at 1.76× global** — selling overhead + manual collections drive the gap. **UK at $2,800 is the lean benchmark.** If every region matched UK's cost shape across the **1,840-account base**, that's an indicative **~$2.3M annualised recoverable** on this driver alone. Want to overlay Enterprise customer?" },
     ],
     suggestions: [
       { label: "Overlay Enterprise customer" },
@@ -737,20 +737,20 @@ const TASK_PREVIEWS = {
         globalAvg: 4050,
         globalAvgLabel: "$4,050",
         summary: { functions: 12, activities: 38, costCenters: 62, vendors: 14, accounts: 1840 },
-        // Treemap data — function name, value ($/yr per customer), pct, color
+        // Treemap data — activity name, value ($/yr per customer), pct, color
         functions: [
-          { name: "Sales",            value: 1380, pct: 34, color: "#1e3a8a" },
-          { name: "Customer Service", value: 640,  pct: 16, color: "#1d4ed8" },
-          { name: "Logistics",        value: 400,  pct: 10, color: "#2563eb" },
-          { name: "Finance",          value: 380,  pct: 9,  color: "#3b82f6" },
-          { name: "Marketing",        value: 290,  pct: 7,  color: "#10b981" },
-          { name: "Trade Marketing",   value: 250,  pct: 6,  color: "#f59e0b" },
-          { name: "Legal",             value: 185,  pct: 5,  color: "#8b5cf6" },
-          { name: "Supply Planning",   value: 180,  pct: 4,  color: "#06b6d4" },
-          { name: "IT",                value: 130,  pct: 3,  color: "#ef4444" },
-          { name: "HR",                value: 90,   pct: 2,  color: "#ec4899" },
-          { name: "Tax",               value: 75,   pct: 2,  color: "#14b8a6" },
-          { name: "Compliance",        value: 50,   pct: 1,  color: "#a855f7" },
+          { name: "Sell & manage account",      value: 1380, pct: 34, color: "#1e3a8a" },
+          { name: "Handle service requests",    value: 640,  pct: 16, color: "#1d4ed8" },
+          { name: "Fulfill & ship orders",      value: 400,  pct: 10, color: "#2563eb" },
+          { name: "Invoice & collect AR",       value: 380,  pct: 9,  color: "#3b82f6" },
+          { name: "Run campaigns & promos",     value: 290,  pct: 7,  color: "#10b981" },
+          { name: "Execute trade funds",        value: 250,  pct: 6,  color: "#f59e0b" },
+          { name: "Review & execute contracts", value: 185,  pct: 5,  color: "#8b5cf6" },
+          { name: "Forecast & plan supply",     value: 180,  pct: 4,  color: "#06b6d4" },
+          { name: "Maintain order systems",     value: 130,  pct: 3,  color: "#ef4444" },
+          { name: "Staff & support field",      value: 90,   pct: 2,  color: "#ec4899" },
+          { name: "Apply tax & file",           value: 75,   pct: 2,  color: "#14b8a6" },
+          { name: "Validate compliance",        value: 50,   pct: 1,  color: "#a855f7" },
         ],
         regions: [
           { id: "all",   label: "All regions", value: 4050, multiplier: "1.00×", isCurrent: true },
@@ -771,10 +771,10 @@ const TASK_PREVIEWS = {
 
   opportunity_prioritization: {
     chat: [
-      { role: "assistant", style: "neutral",  text: "**Opportunity Prioritization** turns the diagnostic into a workplan. Cost pools become **actionable zones** — \"NA Legal contract review ($8M, discretionary, F-led)\" is a target; \"Legal\" is not. The deliverable is a shortlist of 5–10 priority zones." },
+      { role: "assistant", style: "neutral",  text: "**Opportunity Prioritization** turns the diagnostic into a workplan. Activities become **actionable process-level zones** — \"Automate first-pass contract review — NA Legal ($8M, discretionary, F-led)\" is a target; \"Legal\" is not. The deliverable is a shortlist of 5–10 priority zones." },
       { role: "assistant", style: "finding",  text: "**7 criteria** weight every zone: pool size · discretionary share · regional/BU variance · standardization gap · confidence · implementation feasibility (F-led faster than C-led) · strategic risk (warning, not a deprioritization)." },
       { role: "assistant", style: "variance", text: "**Top 10 zones surface up to ~$240M of run-rate opportunity at the upper bound.** Anything below the 10th line is deprioritized with a reason. The view is interactive — filters re-rank by region · BU · function." },
-      { role: "assistant", style: "question", text: "**Deprioritized rollup:** $410M across 38 non-discretionary zones (statutory + ops floor) and $98M across 14 strategic zones (growth-tied). The strategic items aren't deprioritized — they carry a warning flag in the shortlist when they appear. Want to walk the top 10 or filter by region first?" },
+      { role: "assistant", style: "question", text: "**Deprioritized rollup:** $410M across 38 non-discretionary process steps (statutory + ops floor) and $98M across 14 strategic steps (growth-tied). The strategic items carry a warning flag in the shortlist. Want to walk the top 10 or filter by region first?" },
     ],
     suggestions: [
       { label: "Filter to NA only" },
@@ -793,16 +793,16 @@ const TASK_PREVIEWS = {
       },
       // Top-10 priority zones. cost in $M (numeric) · variance multiplier · discretionaryShare % · owner F/B/C.
       zones: [
-        { id: "z1",  rank: 1,  name: "India SG&A intensity convergence",          function: "A&E",       region: "APAC",   bu: "Multiple",       cost: 80.0, costLabel: "$80M",  discretionaryShare: 60,  variance: 3.1, confidence: "Med",  owner: "bu",       sizingRange: "$50M – $80M", strategicRisk: false, rationale: "India runs 3.1× SEA on cost-per-employee; convergence to 12% intensity over 18 months." },
-        { id: "z2",  rank: 2,  name: "Marketing media-stack consolidation",       function: "Marketing", region: "Global", bu: "Corporate",      cost: 50.0, costLabel: "$50M",  discretionaryShare: 95,  variance: 2.8, confidence: "Med",  owner: "function", sizingRange: "$30M – $45M", strategicRisk: false, rationale: "40+ regional cost centers running duplicated workflows; agency-fee compression + AI brief drafting." },
-        { id: "z3",  rank: 3,  name: "Account management coverage modeling",     function: "Selling",   region: "Global", bu: "Multiple",       cost: 94.0, costLabel: "$94M",  discretionaryShare: 100, variance: 2.4, confidence: "Med",  owner: "function", sizingRange: "$20M – $35M", strategicRisk: false, rationale: "Coverage varies 2.4× across regions with no shared model; 15–20% compression realistic." },
-        { id: "z4",  rank: 4,  name: "IT outside consulting in-sourcing",         function: "IT",        region: "Global", bu: "Corporate",      cost: 25.0, costLabel: "$25M",  discretionaryShare: 100, variance: 2.1, confidence: "High", owner: "function", sizingRange: "$14M – $20M", strategicRisk: false, rationale: "InfoSec ($7M) · SAP/Digital ($7M) · App Ops ($6M) — all in-sourceable to AI agents." },
-        { id: "z5",  rank: 5,  name: "Outside HR consulting in-sourcing",         function: "HR",        region: "Global", bu: "Corporate",      cost: 24.0, costLabel: "$24M",  discretionaryShare: 100, variance: 1.8, confidence: "High", owner: "function", sizingRange: "$15M – $22M", strategicRisk: false, rationale: "$24M ≈ 200 HR FTEs equivalent — token-replaceable analyst content." },
-        { id: "z6",  rank: 6,  name: "Cold-Chain energy & vendor convergence",    function: "Operations",region: "Global", bu: "Multiple",       cost: 18.0, costLabel: "$18M",  discretionaryShare: 30,  variance: 3.2, confidence: "Med",  owner: "country",  sizingRange: "$8M – $14M",  strategicRisk: false, rationale: "Country-led — energy tariff hedging + cold-storage SLA standardization." },
-        { id: "z7",  rank: 7,  name: "Sales-ops onboarding automation",            function: "Selling",   region: "Global", bu: "Multiple",       cost: 11.0, costLabel: "$11M",  discretionaryShare: 70,  variance: 2.4, confidence: "Med",  owner: "function", sizingRange: "$5M – $9M",   strategicRisk: false, rationale: "70% manual across all regions — AI workflow + agent escalation." },
-        { id: "z8",  rank: 8,  name: "NA Legal contract review",                  function: "Legal",     region: "NA",     bu: "Corporate",      cost: 8.0,  costLabel: "$8.0M", discretionaryShare: 100, variance: 5.2, confidence: "High", owner: "function", sizingRange: "$3M – $5M",   strategicRisk: false, rationale: "AI first-pass review removes ~40% of paralegal hours; NA runs 5.2× UK on per-contract basis." },
-        { id: "z9",  rank: 9,  name: "Tax outside advisory in-sourcing",          function: "Finance",   region: "Global", bu: "Corporate",      cost: 5.0,  costLabel: "$5.0M", discretionaryShare: 100, variance: 1.7, confidence: "High", owner: "function", sizingRange: "$2M – $3.5M", strategicRisk: false, rationale: "Token-replaceable research; AI agent + counsel review." },
-        { id: "z10", rank: 10, name: "Global trademark renewals",                  function: "Legal",     region: "Global", bu: "Corporate",      cost: 2.0,  costLabel: "$2.0M", discretionaryShare: 100, variance: 1.4, confidence: "Med",  owner: "function", sizingRange: "$0.5M – $1M", strategicRisk: true,  rationale: "Brand portfolio protection — strategic to growth markets. Cut with care." },
+        { id: "z1",  rank: 1,  name: "Restructure India admin & executive operating model",          function: "A&E",       region: "APAC",   bu: "Multiple",  cost: 80.0, costLabel: "$80M",  discretionaryShare: 60,  variance: 3.1, confidence: "Med",  owner: "bu",       sizingRange: "$50M – $80M", strategicRisk: false, rationale: "India runs 3.1× SEA on cost-per-employee; redesign org model and converge to SEA benchmark over 18 months." },
+        { id: "z2",  rank: 2,  name: "Consolidate duplicated marketing brief & media-buying workflows", function: "Marketing", region: "Global", bu: "Corporate", cost: 50.0, costLabel: "$50M",  discretionaryShare: 95,  variance: 2.8, confidence: "Med",  owner: "function", sizingRange: "$30M – $45M", strategicRisk: false, rationale: "40+ regional cost centers running the same briefs and media buys with no shared template — AI brief drafting + agency-fee compression." },
+        { id: "z3",  rank: 3,  name: "Redesign sales coverage model across 9 regions",               function: "Selling",   region: "Global", bu: "Multiple",  cost: 94.0, costLabel: "$94M",  discretionaryShare: 100, variance: 2.4, confidence: "Med",  owner: "function", sizingRange: "$20M – $35M", strategicRisk: false, rationale: "Account coverage varies 2.4× across regions with no shared model or rep-productivity standard; 15–20% compression realistic." },
+        { id: "z4",  rank: 4,  name: "In-source InfoSec, SAP & app-ops advisory to AI agent pool",   function: "IT",        region: "Global", bu: "Corporate", cost: 25.0, costLabel: "$25M",  discretionaryShare: 100, variance: 2.1, confidence: "High", owner: "function", sizingRange: "$14M – $20M", strategicRisk: false, rationale: "InfoSec ($7M) · SAP/Digital ($7M) · App Ops ($6M) — all SOP-driven advisory work in-sourceable to AI agents." },
+        { id: "z5",  rank: 5,  name: "Replace HR advisory SOPs with AI-assisted internal workflows", function: "HR",        region: "Global", bu: "Corporate", cost: 24.0, costLabel: "$24M",  discretionaryShare: 100, variance: 1.8, confidence: "High", owner: "function", sizingRange: "$15M – $22M", strategicRisk: false, rationale: "$24M of outside advisory ≈ 200 HR FTE equivalent — content is SOP-driven and token-replaceable with an internal AI agent." },
+        { id: "z6",  rank: 6,  name: "Standardise cold-storage SLAs & energy vendor contracts",      function: "Operations",region: "Global", bu: "Multiple",  cost: 18.0, costLabel: "$18M",  discretionaryShare: 30,  variance: 3.2, confidence: "Med",  owner: "country",  sizingRange: "$8M – $14M",  strategicRisk: false, rationale: "Country-led procurement with no cross-regional SLA floor — energy tariff hedging + cold-storage contract standardization." },
+        { id: "z7",  rank: 7,  name: "Automate customer onboarding & order management workflows",    function: "Selling",   region: "Global", bu: "Multiple",  cost: 11.0, costLabel: "$11M",  discretionaryShare: 70,  variance: 2.4, confidence: "Med",  owner: "function", sizingRange: "$5M – $9M",   strategicRisk: false, rationale: "70% of onboarding steps are manual across all 9 regions with no shared SOP — AI workflow + agent escalation." },
+        { id: "z8",  rank: 8,  name: "Automate first-pass contract review — NA Legal pool",          function: "Legal",     region: "NA",     bu: "Corporate", cost: 8.0,  costLabel: "$8.0M", discretionaryShare: 100, variance: 5.2, confidence: "High", owner: "function", sizingRange: "$3M – $5M",   strategicRisk: false, rationale: "AI first-pass NDA + vendor-contract review removes ~40% of paralegal hours; NA runs 5.2× UK per contract." },
+        { id: "z9",  rank: 9,  name: "Replace outside tax research advisory with AI agent",          function: "Finance",   region: "Global", bu: "Corporate", cost: 5.0,  costLabel: "$5.0M", discretionaryShare: 100, variance: 1.7, confidence: "High", owner: "function", sizingRange: "$2M – $3.5M", strategicRisk: false, rationale: "Tax research is SOP-driven and token-replaceable; AI agent handles first pass, counsel reviews edge cases." },
+        { id: "z10", rank: 10, name: "Centralise brand trademark monitoring & renewal filing",       function: "Legal",     region: "Global", bu: "Corporate", cost: 2.0,  costLabel: "$2.0M", discretionaryShare: 100, variance: 1.4, confidence: "Med",  owner: "function", sizingRange: "$0.5M – $1M", strategicRisk: true,  rationale: "Brand portfolio protection is strategic to growth markets — centralise filing ops but treat with care." },
       ],
       // What was looked at and ruled out — with reason.
       deprioritized: [
