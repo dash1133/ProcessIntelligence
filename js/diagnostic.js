@@ -132,12 +132,12 @@ const TASK_PREVIEWS = {
         { id: "country",  label: "Country/Region-led", letter: "C", description: "Local market or plant decides (e.g., regulatory, site ops)" },
       ],
       sgaBand: [
-        { name: "Sales",     icon: "TrendingUp", subFns: ["Demand sensing", "Volume forecast",  "SKU prioritization", "Inventory pos.",   "Account mgmt"] },
-        { name: "Marketing", icon: "Sparkles",   subFns: ["Sourcing PR",    "Brand R&D",         "Brand specs",        "Trade promo",       "Demand gen"] },
-        { name: "Legal",     icon: "FileText",   subFns: ["Procurement legal","Plant compliance","IP / trademark",     "Regulatory",        "Customer contracts"] },
-        { name: "Finance",   icon: "Calculator", subFns: ["Cost accounting","Plant P&L",         "Pack costing",        "Inv. accounting",   "Customer billing"] },
-        { name: "HR",        icon: "Users",      subFns: ["Field workforce","Plant labor",       "Pack labor",          "DC labor",          "Logistics labor"] },
-        { name: "IT",        icon: "Activity",   subFns: ["Agronomy systems","MES / SCADA",      "Pack systems",        "WMS",               "TMS / ERP"] },
+        { name: "Sales",     spend: "$380M", icon: "TrendingUp", costIntensity: "$$",  subFns: ["Key acct development", "Prospect & pipeline", "Trade promo & deals",  "Order management",   "After-sales & service"] },
+        { name: "Marketing", spend: "$295M", icon: "Sparkles",   costIntensity: "$$",  subFns: ["Sourcing PR",          "Brand R&D",           "Brand specs",          "Trade promo",        "Demand gen"] },
+        { name: "Legal",     spend: "$46M",  icon: "FileText",   costIntensity: "$",   subFns: ["Procurement legal",    "Plant compliance",    "IP / trademark",       "Regulatory",         "Customer contracts"] },
+        { name: "Finance",   spend: "$170M", icon: "Calculator", costIntensity: "$$",  subFns: ["Cost accounting",      "Plant P&L",           "Pack costing",         "Inv. accounting",    "Customer billing"] },
+        { name: "HR",        spend: "$280M", icon: "Users",      costIntensity: "$$",  subFns: ["Field workforce",      "Plant labor",         "Pack labor",           "DC labor",           "Logistics labor"] },
+        { name: "IT",        spend: "$310M", icon: "Activity",   costIntensity: "$$$", subFns: ["Agronomy systems",     "MES / SCADA",         "Pack systems",         "WMS",                "TMS / ERP"] },
       ],
       steps: [
         { name: "Agronomy & Sourcing",   color: "#3b82f6", activities: [
@@ -912,19 +912,32 @@ function ProcessMapArtifact({ map, embedded = false }) {
           {map.subtitle && <p className="text-xs text-gray-500 mt-1">{map.subtitle}</p>}
         </div>
 
-        {/* Decision Rights legend (right-aligned) */}
-        <div className="flex flex-col items-end gap-1.5">
-          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Decision Rights</div>
-          <div className="flex items-center gap-3 flex-wrap text-[11px]">
-            {decisions.map((d) => {
-              const meta = PROCESS_MAP_DECISION_STYLES[d.id] || PROCESS_MAP_DECISION_STYLES.function;
-              return (
-                <span key={d.id} className="inline-flex items-center gap-1.5" title={d.description || meta.label}>
-                  <span className={`w-5 h-5 rounded-full border ${meta.bg} ${meta.text} ${meta.border} flex items-center justify-center text-[10px] font-bold`}>{meta.letter}</span>
-                  <span className="text-gray-600">{d.label || meta.label}</span>
+        {/* Legend block — Decision Rights + Cost Intensity (right-aligned) */}
+        <div className="flex flex-col items-end gap-2.5">
+          <div className="flex flex-col items-end gap-1">
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Decision Rights</div>
+            <div className="flex items-center gap-3 flex-wrap text-[11px]">
+              {decisions.map((d) => {
+                const meta = PROCESS_MAP_DECISION_STYLES[d.id] || PROCESS_MAP_DECISION_STYLES.function;
+                return (
+                  <span key={d.id} className="inline-flex items-center gap-1.5" title={d.description || meta.label}>
+                    <span className={`w-5 h-5 rounded-full border ${meta.bg} ${meta.text} ${meta.border} flex items-center justify-center text-[10px] font-bold`}>{meta.letter}</span>
+                    <span className="text-gray-600">{d.label || meta.label}</span>
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Cost Intensity</div>
+            <div className="flex items-center gap-3 text-[11px]">
+              {[["$", "Low"], ["$$", "Medium"], ["$$$", "High"]].map(([sym, label]) => (
+                <span key={sym} className="inline-flex items-center gap-1">
+                  <span className="font-bold text-gray-800 tracking-tight">{sym}</span>
+                  <span className="text-gray-500">{label}</span>
                 </span>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1006,9 +1019,18 @@ function ProcessMapArtifact({ map, embedded = false }) {
           <div className="space-y-1.5">
             {map.sgaBand.map((fn, fi) => (
               <div key={fi} className="flex items-stretch gap-3">
-                <div className="w-32 flex items-center gap-1.5 flex-shrink-0 px-1">
-                  {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
-                  <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
+                {/* Function label — name + spend + cost intensity */}
+                <div className="w-40 flex-shrink-0 flex flex-col justify-center gap-0.5 px-1">
+                  <div className="flex items-center gap-1.5">
+                    {getIcon(fn.icon || "Briefcase", { size: 13, className: "text-indigo-600" })}
+                    <span className="text-xs font-semibold text-gray-800">{fn.name}</span>
+                    {fn.costIntensity && (
+                      <span className="text-[10px] font-bold text-gray-500 tracking-tight">{fn.costIntensity}</span>
+                    )}
+                  </div>
+                  {fn.spend && (
+                    <span className="text-[11px] font-semibold text-indigo-700 pl-5">{fn.spend}</span>
+                  )}
                 </div>
                 <div className="flex-1 flex items-stretch rounded-md overflow-hidden bg-white border border-gray-200 shadow-sm">
                   {map.steps.map((step, si) => (
