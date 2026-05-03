@@ -821,20 +821,20 @@ const TASK_PREVIEWS = {
   // deep-dive that ties each AI lever to an EBITDA lever and labor pool.
   redesign_opps: {
     chat: [
-      { role: "assistant", style: "neutral", text: "**AI-VSM** decomposes each priority zone into its value stream and asks one question per sub-process: *what's the AI lever?* Inputs are the 5–10 zones from Opportunity Prioritization — outputs are typed interventions (**Auto · Aug · Exc · N/S**) with named AI inputs, AI outputs, and human roles in the future state." },
+      { role: "assistant", style: "neutral", text: "**AI-VSM** decomposes each priority zone into its value stream and asks one question per sub-process: *what's the AI lever?* Inputs are the 5–10 zones from Opportunity Prioritization — outputs are a typed recommendation (**AI Only · AI + Reviewer · AI Enabled · N/A**) with named AI inputs, AI outputs, and human roles in the future state." },
       { role: "assistant", style: "finding", text: "**Suitability scored on 5 criteria** — margin impact · volume & repetition · data availability · error tolerance · adoption readiness. A composite score plus a disqualifier flag (broken upstream data or fragmented ownership) gates each row." },
-      { role: "assistant", style: "variance", text: "**Six processes are loaded.** Customer onboarding (Selling · $11M · ranks #7 in the shortlist) is open by default — 10 activities across 5 sub-processes; **3 Auto · 4 Aug · 2 Exc · 1 N/S**. The intervention design tab and the activity deep dive carry the same data into named AI inputs/outputs and the EBITDA lever each row sits under." },
-      { role: "assistant", style: "question", text: "Want to walk the customer onboarding stream, switch to the NA Legal contract review (5.2× variance, all-Auto-Aug), or filter to a specific intervention type?" },
+      { role: "assistant", style: "variance", text: "**Six processes are loaded.** Customer onboarding (Selling · ranks #7 in the shortlist) is open by default — 10 activities across 5 sub-processes; **3 AI Only · 4 AI + Reviewer · 2 AI Enabled · 1 N/A**. The intervention design tab and the activity deep dive carry the same data into named AI inputs/outputs and the EBITDA lever each row sits under." },
+      { role: "assistant", style: "question", text: "Want to walk the customer onboarding stream, switch to the NA Legal contract review (5.2× variance, mostly AI Only / AI + Reviewer), or filter to a specific recommendation type?" },
     ],
     suggestions: [
       { label: "Open NA Legal contract review" },
-      { label: "Show only Auto interventions" },
+      { label: "Show only AI Only interventions" },
       { label: "Walk the activity deep dive" },
     ],
     artifact: {
       type: "ai_vsm",
       title: "AI-VSM — Where AI takes the value back",
-      subtitle: "From the priority zones in Opportunity Prioritization, decompose each value stream and identify AI levers · interventions are typed Auto · Aug · Exc · N/S",
+      subtitle: "From the priority zones in Opportunity Prioritization, decompose each value stream and identify AI levers · recommendations are typed AI Only · AI + Reviewer · AI Enabled · N/A",
       source: "Source: Opportunity Prioritization · Activity & Driver Mapping · last refreshed 6 min ago",
       interventionKey: [
         { id: "auto", short: "Auto", label: "Full automation",  color: "#10b981", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200" },
@@ -2950,10 +2950,10 @@ function GridContent({ task }) {
 // the rail, the flow, the scoring table, and the activity grid all read the
 // same thing.
 const VERDICT_META = {
-  auto: { short: "Auto", label: "Full automation",  color: "#10b981", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200", flowFill: "#10b981", flowSoft: "#d1fae5" },
-  aug:  { short: "Aug",  label: "AI augmentation",  color: "#3b82f6", bg: "bg-blue-50",     text: "text-blue-700",     border: "border-blue-200",     flowFill: "#3b82f6", flowSoft: "#dbeafe" },
-  exc:  { short: "Exc",  label: "Exception handle", color: "#f97316", bg: "bg-orange-50",   text: "text-orange-700",   border: "border-orange-200",   flowFill: "#f97316", flowSoft: "#ffedd5" },
-  ns:   { short: "N/S",  label: "Not suitable",     color: "#9ca3af", bg: "bg-gray-100",    text: "text-gray-600",     border: "border-gray-200",     flowFill: "#9ca3af", flowSoft: "#f3f4f6" },
+  auto: { short: "AI Only",       label: "End-to-End AI Automation", color: "#10b981", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200", flowFill: "#10b981", flowSoft: "#d1fae5" },
+  aug:  { short: "AI + Reviewer", label: "AI Does, Staff Review",     color: "#3b82f6", bg: "bg-blue-50",     text: "text-blue-700",     border: "border-blue-200",     flowFill: "#3b82f6", flowSoft: "#dbeafe" },
+  exc:  { short: "AI Enabled",    label: "Staff Does, AI Assists",    color: "#f97316", bg: "bg-orange-50",   text: "text-orange-700",   border: "border-orange-200",   flowFill: "#f97316", flowSoft: "#ffedd5" },
+  ns:   { short: "N/A",            label: "Not Suitable",               color: "#9ca3af", bg: "bg-gray-100",    text: "text-gray-600",     border: "border-gray-200",     flowFill: "#9ca3af", flowSoft: "#f3f4f6" },
 };
 
 // Harvey ball — arc-fill SVG with the score value rendered in the center.
@@ -3042,25 +3042,21 @@ function AiVsmRail({ processes, activeId, onSelect }) {
                   {p.name}
                 </div>
               </div>
-              <div className="text-[10px] text-gray-500 mt-0.5 flex items-center gap-1.5">
-                <span className="truncate">{p.function}</span>
-                <span className="text-gray-300">·</span>
-                <span className="font-bold tracking-tight text-gray-700">{p.costIntensity}</span>
-              </div>
-              <div className="mt-1.5">
-                <VerdictCountStrip counts={p.verdictCounts} />
-              </div>
+              <div className="text-[10px] text-gray-500 mt-0.5 truncate">{p.function}</div>
             </button>
           );
         })}
       </div>
       <div className="px-3 py-3 border-t border-gray-200 mt-1">
-        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Intervention key</div>
-        <div className="space-y-1.5">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Recommendation key</div>
+        <div className="space-y-2">
           {Object.entries(VERDICT_META).map(([k, m]) => (
-            <div key={k} className="flex items-center gap-2">
-              <span className={`inline-flex w-7 justify-center items-center rounded border text-[10px] font-bold ${m.bg} ${m.text} ${m.border}`}>{m.short}</span>
-              <span className="text-[10px] text-gray-600">{m.label}</span>
+            <div key={k} className="flex items-start gap-2">
+              <span className="w-2 h-2 rounded-full mt-1 flex-shrink-0" style={{ background: m.color }} />
+              <div className="min-w-0">
+                <div className={`text-[11px] font-semibold leading-tight ${m.text}`}>{m.short}</div>
+                <div className="text-[10px] text-gray-500 leading-tight">{m.label}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -3201,7 +3197,7 @@ function AiSuitabilityTable({ subProcesses }) {
               </th>
             ))}
             <th className="px-2 py-2 font-semibold text-center">Score</th>
-            <th className="px-2 py-2 font-semibold text-center">Verdict</th>
+            <th className="px-2 py-2 font-semibold text-center">Recommend</th>
           </tr>
         </thead>
         <tbody>
@@ -3304,7 +3300,7 @@ function ActivityDeepDive({ activities, ebitdaLever }) {
               <th className="text-right px-3 py-2 font-semibold">Volume</th>
               <th className="text-left  px-3 py-2 font-semibold">Pain point</th>
               <th className="text-center px-3 py-2 font-semibold">Owner</th>
-              <th className="text-center px-3 py-2 font-semibold">Verdict</th>
+              <th className="text-center px-3 py-2 font-semibold">Recommend</th>
               <th className="text-center px-3 py-2 font-semibold">Score</th>
               <th className="text-left  px-3 py-2 font-semibold bg-blue-50/60">{getIcon("Sparkles", { size: 9, className: "inline-block text-blue-600 mr-1" })}AI intervention</th>
               <th className="text-left  px-3 py-2 font-semibold">EBITDA lever</th>
