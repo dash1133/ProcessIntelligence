@@ -215,12 +215,20 @@ const TASK_PREVIEWS = {
           totalSpendNum: 46.2,
           railSummary: "$46.2M · 312 FTE · 14 activities",
           ingested: "1,247 vendor lines · 312 HRIS records · 84 SOPs · 16 cost centers",
+          spendSplit: { labor: 35.1, nonLabor: 11.1, totalLabel: "$46.2M", laborLabel: "$35.1M", nonLaborLabel: "$11.1M" },
           stats: [
-            { label: "Total spend",          value: "$46.2M", sub: "labor $35.1M · non-labor $11.1M" },
-            { label: "FTE equivalent",       value: "312",     sub: "across 9 regions" },
-            { label: "Activities found",     value: "14",      sub: "3 flagged low confidence" },
-            { label: "Drivers inferred",     value: "9",       sub: "prospects, vendors, SKUs…" },
-            { label: "Regional cost variance", value: "5.2x",  sub: "NA vs UK, per contract" },
+            { label: "Labor spend",          value: "$35.1M", sub: "76% of total · 312 FTE", emphasis: "labor" },
+            { label: "Non-labor spend",      value: "$11.1M", sub: "24% of total · 84 vendors", emphasis: "nonLabor" },
+            { label: "Regional variance",    value: "5.2x",   sub: "NA vs UK, per contract" },
+            { label: "Activities found",     value: "14",     sub: "3 low-confidence" },
+            { label: "Drivers inferred",     value: "9",      sub: "prospects, vendors, SKUs" },
+          ],
+          discovery: [
+            { label: "Vendor records analyzed", value: "1,247", sub: "from vendor master",  icon: "Package" },
+            { label: "Vendors enriched",        value: "84",    sub: "100% AI-classified",   icon: "Sparkles" },
+            { label: "Job titles analyzed",     value: "312",   sub: "from HRIS feed",       icon: "Users" },
+            { label: "SOPs scanned",             value: "84",    sub: "policy + playbook",     icon: "FileText" },
+            { label: "Cost centers reviewed",    value: "16",    sub: "across 9 regions",     icon: "Layers" },
           ],
           synthesis: "78% of activity volume is contract-related. Contract review sits in labor, not non-labor — the driver lens reveals where the cost actually lives.",
           highlights: {
@@ -279,12 +287,20 @@ const TASK_PREVIEWS = {
           totalSpendNum: 295,
           railSummary: "$295M · 820 FTE · 42 activities",
           ingested: "2,840 vendor lines · 820 HRIS records · 32 SOPs · 47 cost centers",
+          spendSplit: { labor: 145, nonLabor: 150, totalLabel: "$295M", laborLabel: "$145M", nonLaborLabel: "$150M" },
           stats: [
-            { label: "Total spend",          value: "$295M", sub: "labor $145M · non-labor $150M" },
-            { label: "FTE equivalent",       value: "820",   sub: "across 9 regions" },
-            { label: "Activities found",     value: "42",    sub: "14 flagged low confidence" },
-            { label: "Drivers inferred",     value: "8",     sub: "campaigns, brands, regions…" },
-            { label: "Regional cost variance", value: "2.8x",sub: "EU vs SEA, per campaign" },
+            { label: "Labor spend",          value: "$145M", sub: "49% of total · 820 FTE",  emphasis: "labor" },
+            { label: "Non-labor spend",      value: "$150M", sub: "51% of total · agency + media", emphasis: "nonLabor" },
+            { label: "Regional variance",    value: "2.8x",  sub: "EU vs SEA, per campaign" },
+            { label: "Activities found",     value: "42",    sub: "14 low-confidence" },
+            { label: "Drivers inferred",     value: "8",     sub: "campaigns, brands, regions" },
+          ],
+          discovery: [
+            { label: "Vendor records analyzed", value: "2,840", sub: "agencies + media partners", icon: "Package" },
+            { label: "Vendors enriched",        value: "186",   sub: "92% AI-classified",          icon: "Sparkles" },
+            { label: "Job titles analyzed",     value: "820",   sub: "brand + insights teams",     icon: "Users" },
+            { label: "SOPs scanned",             value: "32",    sub: "brief + media playbooks",    icon: "FileText" },
+            { label: "Cost centers reviewed",    value: "47",    sub: "40+ duplicated regionally",  icon: "Layers" },
           ],
           synthesis: "40+ regional cost centers run duplicated workflows. Brief drafting, competitive scans, and post-campaign synthesis are AI-replaceable today.",
           highlights: {
@@ -302,27 +318,58 @@ const TASK_PREVIEWS = {
               "Brief drafting, competitive scans, and post-campaign synthesis are **AI-replaceable today**.",
             ]
           },
-          combined: { activities: [
-            { name: "Brief drafting",            subFn: "Brand",        labor: "$22M", nonLabor: "$1M",  driver: "Briefs/yr",      volume: "1,840", unitCost: "$12,500", conf: "Med", lowConf: true },
-            { name: "Competitive scans",          subFn: "Insights",     labor: "$9M",  nonLabor: "$0.4M",driver: "Brands",          volume: "32",   unitCost: "$293,750", conf: "Low", lowConf: true },
-            { name: "Post-campaign synthesis",    subFn: "Insights",     labor: "$11M", nonLabor: "$0.3M",driver: "Campaigns",       volume: "640",  unitCost: "$17,656",  conf: "Med" },
-            { name: "Media buying",                subFn: "Media",        labor: "$18M", nonLabor: "$98M", driver: "Markets",          volume: "9",    unitCost: "$12.9M",  conf: "High" },
-            { name: "Trade marketing",            subFn: "Trade",        labor: "$26M", nonLabor: "$32M", driver: "Active accounts", volume: "4,200",unitCost: "$13,810", conf: "High" },
-          ]},
-          vendor: { rows: [] },
-          fte:    { rows: [] },
+          combined: {
+            footer: "5 of 42 activities shown · click any row to see vendors and roles · *low-confidence driver, see chat",
+            activities: [
+              { name: "Brief drafting",            subFn: "Brand",        labor: "$22M", nonLabor: "$1M",  driver: "Briefs/yr",      volume: "1,840", unitCost: "$12,500", conf: "Med", lowConf: true },
+              { name: "Competitive scans",          subFn: "Insights",     labor: "$9M",  nonLabor: "$0.4M",driver: "Brands",          volume: "32",   unitCost: "$293,750", conf: "Low", lowConf: true },
+              { name: "Post-campaign synthesis",    subFn: "Insights",     labor: "$11M", nonLabor: "$0.3M",driver: "Campaigns",       volume: "640",  unitCost: "$17,656",  conf: "Med" },
+              { name: "Media buying",                subFn: "Media",        labor: "$18M", nonLabor: "$98M", driver: "Markets",          volume: "9",    unitCost: "$12.9M",  conf: "High" },
+              { name: "Trade marketing",            subFn: "Trade",        labor: "$26M", nonLabor: "$32M", driver: "Active accounts", volume: "4,200",unitCost: "$13,810", conf: "High" },
+            ],
+          },
+          vendor: {
+            footer: "6 of 186 vendors shown · the Cost Center, GL Code, and Cost Element are the enrichment fields AI uses to classify each vendor into an activity",
+            rows: [
+              { number: "2019305", name: "Brightlane Media",            costCenter: "14207 — Global Marketing · Media",     glCode: "624200", costElement: "Media Placement",   spend: "$42M", activity: "Media buying",            conf: "High" },
+              { number: "2019312", name: "Catalyst Creative Agency",    costCenter: "14210 — NA Brand · Creative",          glCode: "624110", costElement: "Agency Fees",       spend: "$8.6M", activity: "Brief drafting",          conf: "Med" },
+              { number: "2019319", name: "MarketLens Insights",          costCenter: "14215 — Global Insights",              glCode: "624150", costElement: "Research Services", spend: "$3.4M", activity: "Competitive scans",       conf: "Low",  lowConf: true },
+              { number: "2019327", name: "TradePulse Activation",        costCenter: "14222 — NA Trade · Activation",        glCode: "624300", costElement: "Trade Activation",  spend: "$11.2M",activity: "Trade marketing",         conf: "High" },
+              { number: "2019334", name: "ProMo Promotions Co.",         costCenter: "14228 — EU Brand · Promo",             glCode: "624310", costElement: "Promo Materials",   spend: "$5.8M", activity: "Trade marketing",         conf: "High" },
+              { number: "2019341", name: "PivotPoint Campaign Analytics",costCenter: "14215 — Global Insights",              glCode: "624160", costElement: "Analytics Services",spend: "$2.1M", activity: "Post-campaign synthesis", conf: "Med" },
+            ],
+          },
+          fte: {
+            footer: "6 of 820 HRIS records shown · Cost Center + Job Family are the enrichment fields AI uses to estimate the primary activity for each role",
+            rows: [
+              { id: "EMP-12108", role: "Brand Manager",         jobFamily: "Marketing · Brand",     costCenter: "14210 — NA Brand · Creative",   region: "NA",     fte: "1.0", loaded: "$185K", primaryActivity: "Brief drafting",          conf: "High" },
+              { id: "EMP-12244", role: "Senior Brand Strategist",jobFamily: "Marketing · Brand",    costCenter: "14228 — EU Brand · Promo",      region: "EU",     fte: "1.0", loaded: "$165K", primaryActivity: "Brief drafting",          conf: "Med"  },
+              { id: "EMP-12317", role: "Insights Analyst",       jobFamily: "Marketing · Insights",  costCenter: "14215 — Global Insights",       region: "Global", fte: "1.0", loaded: "$135K", primaryActivity: "Competitive scans",       conf: "Med"  },
+              { id: "EMP-12389", role: "Media Planning Lead",    jobFamily: "Marketing · Media",     costCenter: "14207 — Global Marketing · Media", region: "NA", fte: "1.0", loaded: "$210K", primaryActivity: "Media buying",            conf: "High" },
+              { id: "EMP-12462", role: "Trade Marketing Manager",jobFamily: "Marketing · Trade",     costCenter: "14222 — NA Trade · Activation", region: "NA",     fte: "1.0", loaded: "$155K", primaryActivity: "Trade marketing",         conf: "High" },
+              { id: "EMP-12537", role: "Campaign Coordinator",   jobFamily: "Marketing · Brand",     costCenter: "14210 — NA Brand · Creative",   region: "NA",     fte: "0.5", loaded: "$58K",  primaryActivity: "Post-campaign synthesis", conf: "Med"  },
+            ],
+          },
         },
 
         { id: "hr", name: "HR", lastRefreshed: "8 min ago", confidence: "high",
           totalSpendNum: 280,
           railSummary: "$280M · 510 FTE · 28 activities",
           ingested: "1,560 vendor lines · 510 HRIS records · 56 SOPs · 22 cost centers",
+          spendSplit: { labor: 190, nonLabor: 90, totalLabel: "$280M", laborLabel: "$190M", nonLaborLabel: "$90M" },
           stats: [
-            { label: "Total spend",          value: "$280M", sub: "labor $190M · non-labor $90M" },
-            { label: "FTE equivalent",       value: "510",   sub: "across 9 regions" },
-            { label: "Activities found",     value: "28",    sub: "4 flagged low confidence" },
-            { label: "Drivers inferred",     value: "10",    sub: "employees, hires, training events" },
-            { label: "Regional cost variance", value: "3.2x",sub: "India vs SEA, per FTE" },
+            { label: "Labor spend",          value: "$190M", sub: "68% of total · 510 FTE",  emphasis: "labor" },
+            { label: "Non-labor spend",      value: "$90M",  sub: "32% of total · advisory + tooling", emphasis: "nonLabor" },
+            { label: "Regional variance",    value: "3.2x",  sub: "India vs SEA, per FTE" },
+            { label: "Activities found",     value: "28",    sub: "4 low-confidence" },
+            { label: "Drivers inferred",     value: "10",    sub: "employees, hires, training" },
+          ],
+          discovery: [
+            { label: "Vendor records analyzed", value: "1,560", sub: "advisory + benefits",     icon: "Package" },
+            { label: "Vendors enriched",        value: "118",   sub: "96% AI-classified",        icon: "Sparkles" },
+            { label: "Job titles analyzed",     value: "510",   sub: "HR functional roles",      icon: "Users" },
+            { label: "SOPs scanned",             value: "56",    sub: "policies + playbooks",     icon: "FileText" },
+            { label: "Cost centers reviewed",    value: "22",    sub: "across 9 regions",         icon: "Layers" },
           ],
           synthesis: "$24M of HR consulting ≈ the fully-loaded cost of 200 HR FTEs. Token-replaceable analyst and advisory work running alongside an internal HR team.",
           highlights: {
@@ -341,19 +388,58 @@ const TASK_PREVIEWS = {
               "Self-service HR portals are deployed in 4 of 9 regions — expanding to 9 lifts deflection ~30%.",
             ]
           },
-          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+          combined: {
+            footer: "5 of 28 activities shown · click any row to see vendors and roles · *low-confidence driver, see chat",
+            activities: [
+              { name: "Outside HR advisory",        subFn: "Outside Consulting", labor: "$0M",  nonLabor: "$24M", driver: "SOPs",          volume: "212",    unitCost: "$113K",  conf: "High" },
+              { name: "Recruiting & screening",      subFn: "Talent Acquisition", labor: "$38M", nonLabor: "$20M", driver: "Hires",         volume: "4,200",  unitCost: "$13,810", conf: "High" },
+              { name: "Comp & benefits admin",       subFn: "Comp & Benefits",     labor: "$48M", nonLabor: "$24M", driver: "Headcount",     volume: "22,000", unitCost: "$3,272",  conf: "High" },
+              { name: "Learning delivery",            subFn: "Learning & Dev",      labor: "$22M", nonLabor: "$14M", driver: "Training events", volume: "1,800",unitCost: "$20,000", conf: "Med"  },
+              { name: "Employee services / tickets",  subFn: "Employee Services",   labor: "$32M", nonLabor: "$16M", driver: "Tickets",       volume: "62,000", unitCost: "$774",    conf: "High" },
+            ],
+          },
+          vendor: {
+            footer: "6 of 118 vendors shown · the Cost Center, GL Code, and Cost Element are the enrichment fields AI uses to classify each vendor into an activity",
+            rows: [
+              { number: "2017552", name: "Greenfield Advisory",       costCenter: "14001 — Corp HR Advisory",   glCode: "623100", costElement: "HR Consulting",      spend: "$8.2M", activity: "Outside HR advisory",     conf: "High" },
+              { number: "2017559", name: "Talentforge Recruiting",    costCenter: "14002 — NA Talent Acq.",     glCode: "623200", costElement: "Recruiting Fees",    spend: "$4.6M", activity: "Recruiting & screening",   conf: "High" },
+              { number: "2017564", name: "BenefitsFirst Brokers",      costCenter: "14005 — Global Benefits",     glCode: "623400", costElement: "Brokerage Fees",     spend: "$3.8M", activity: "Comp & benefits admin",    conf: "High" },
+              { number: "2017571", name: "LearnLoop LMS",              costCenter: "14008 — Global L&D",          glCode: "623600", costElement: "Software Licenses",  spend: "$2.1M", activity: "Learning delivery",        conf: "High" },
+              { number: "2017578", name: "PeopleScope Survey Tools",   costCenter: "14010 — HR Analytics",        glCode: "623650", costElement: "Software Licenses",  spend: "$0.9M", activity: "Outside HR advisory",     conf: "Med"  },
+              { number: "2017585", name: "ServiceDesk HR",             costCenter: "14012 — Employee Services",   glCode: "623700", costElement: "Service Platform",   spend: "$1.4M", activity: "Employee services / tickets", conf: "High" },
+            ],
+          },
+          fte: {
+            footer: "6 of 510 HRIS records shown · Cost Center + Job Family are the enrichment fields AI uses to estimate the primary activity for each role",
+            rows: [
+              { id: "EMP-08214", role: "HR Business Partner",    jobFamily: "HR · HRBP",        costCenter: "14001 — Corp HR Advisory",   region: "NA",     fte: "1.0", loaded: "$215K", primaryActivity: "Outside HR advisory",     conf: "High" },
+              { id: "EMP-08322", role: "Senior Recruiter",        jobFamily: "HR · TA",          costCenter: "14002 — NA Talent Acq.",     region: "NA",     fte: "1.0", loaded: "$155K", primaryActivity: "Recruiting & screening",   conf: "High" },
+              { id: "EMP-08471", role: "Benefits Analyst",        jobFamily: "HR · C&B",         costCenter: "14005 — Global Benefits",    region: "Global", fte: "1.0", loaded: "$125K", primaryActivity: "Comp & benefits admin",    conf: "High" },
+              { id: "EMP-08593", role: "L&D Program Manager",     jobFamily: "HR · L&D",         costCenter: "14008 — Global L&D",         region: "Global", fte: "1.0", loaded: "$165K", primaryActivity: "Learning delivery",        conf: "Med"  },
+              { id: "EMP-08715", role: "HR Operations Specialist",jobFamily: "HR · Ops",         costCenter: "14012 — Employee Services",  region: "EU",     fte: "1.0", loaded: "$95K",  primaryActivity: "Employee services / tickets", conf: "High" },
+              { id: "EMP-08824", role: "HR Generalist",            jobFamily: "HR · HRBP",        costCenter: "14014 — India HR",           region: "India",  fte: "1.0", loaded: "$72K",  primaryActivity: "Outside HR advisory",     conf: "Med"  },
+            ],
+          },
         },
 
         { id: "it", name: "IT", lastRefreshed: "16 min ago", confidence: "high",
           totalSpendNum: 310,
           railSummary: "$310M · 620 FTE · 38 activities",
           ingested: "2,180 vendor lines · 620 HRIS records · 78 SOPs · 38 cost centers",
+          spendSplit: { labor: 180, nonLabor: 130, totalLabel: "$310M", laborLabel: "$180M", nonLaborLabel: "$130M" },
           stats: [
-            { label: "Total spend",          value: "$310M", sub: "labor $180M · non-labor $130M" },
-            { label: "FTE equivalent",       value: "620",   sub: "across 9 regions" },
-            { label: "Activities found",     value: "38",    sub: "5 flagged low confidence" },
-            { label: "Drivers inferred",     value: "14",    sub: "users, applications, infra units" },
-            { label: "Regional cost variance", value: "2.9x",sub: "NA vs APAC, per app" },
+            { label: "Labor spend",          value: "$180M", sub: "58% of total · 620 FTE",  emphasis: "labor" },
+            { label: "Non-labor spend",      value: "$130M", sub: "42% of total · SaaS + infra", emphasis: "nonLabor" },
+            { label: "Regional variance",    value: "2.9x",  sub: "NA vs APAC, per app" },
+            { label: "Activities found",     value: "38",    sub: "5 low-confidence" },
+            { label: "Drivers inferred",     value: "14",    sub: "users, apps, infra units" },
+          ],
+          discovery: [
+            { label: "Vendor records analyzed", value: "2,180", sub: "SaaS + infra + advisory", icon: "Package" },
+            { label: "Vendors enriched",        value: "242",   sub: "94% AI-classified",        icon: "Sparkles" },
+            { label: "Job titles analyzed",     value: "620",   sub: "engineering + ops",        icon: "Users" },
+            { label: "SOPs scanned",             value: "78",    sub: "runbooks + procedures",    icon: "FileText" },
+            { label: "Cost centers reviewed",    value: "38",    sub: "across 9 regions",         icon: "Layers" },
           ],
           synthesis: "InfoSec ($7M), SAP/Digital ($7M), and Application Operations ($6M) are the three largest consulting concentrations — all candidates for in-sourcing.",
           highlights: {
@@ -372,19 +458,58 @@ const TASK_PREVIEWS = {
               "Endpoint security spend has scaled **2.9× NA vs APAC** — standardisation opportunity.",
             ]
           },
-          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+          combined: {
+            footer: "5 of 38 activities shown · click any row to see vendors and roles · *low-confidence driver, see chat",
+            activities: [
+              { name: "Application operations",      subFn: "App Ops",         labor: "$48M", nonLabor: "$48M", driver: "Applications",  volume: "412",    unitCost: "$233K",  conf: "High" },
+              { name: "Infrastructure & cloud ops",  subFn: "Infrastructure",  labor: "$32M", nonLabor: "$52M", driver: "Compute units", volume: "8,400",  unitCost: "$10,000", conf: "High" },
+              { name: "Information security",        subFn: "InfoSec",          labor: "$28M", nonLabor: "$14M", driver: "Endpoints",     volume: "22,000", unitCost: "$1,909",  conf: "High" },
+              { name: "SAP / ERP support",           subFn: "SAP / Digital",    labor: "$26M", nonLabor: "$12M", driver: "Modules",       volume: "18",     unitCost: "$2.1M",   conf: "High" },
+              { name: "Outside IT advisory",          subFn: "Outside Consulting", labor: "$0M",  nonLabor: "$25M", driver: "SOWs",          volume: "84",     unitCost: "$298K",   conf: "High" },
+            ],
+          },
+          vendor: {
+            footer: "6 of 242 vendors shown · the Cost Center, GL Code, and Cost Element are the enrichment fields AI uses to classify each vendor into an activity",
+            rows: [
+              { number: "2019199", name: "Stratus Cloud Services",      costCenter: "14108 — IT · App Operations",  glCode: "625100", costElement: "Cloud Services",     spend: "$28M",  activity: "Application operations",     conf: "High" },
+              { number: "2019204", name: "FortressGuard Security",      costCenter: "14112 — Global InfoSec",        glCode: "625300", costElement: "Security Tooling",   spend: "$11.4M",activity: "Information security",       conf: "High" },
+              { number: "2019211", name: "ApexSAP Consulting",          costCenter: "14116 — SAP / Digital",         glCode: "625400", costElement: "ERP Advisory",       spend: "$7.0M", activity: "SAP / ERP support",          conf: "High" },
+              { number: "2019218", name: "InfraCore Datacenter",        costCenter: "14120 — IT Infrastructure",     glCode: "625200", costElement: "Datacenter Lease",   spend: "$18.6M",activity: "Infrastructure & cloud ops", conf: "High" },
+              { number: "2019225", name: "PivotIT Advisory Group",      costCenter: "14108 — IT · App Operations",  glCode: "625500", costElement: "IT Consulting",      spend: "$6.2M", activity: "Outside IT advisory",        conf: "High" },
+              { number: "2019232", name: "Beacon Endpoint Suite",        costCenter: "14112 — Global InfoSec",        glCode: "625320", costElement: "Endpoint Tooling",   spend: "$3.4M", activity: "Information security",       conf: "High" },
+            ],
+          },
+          fte: {
+            footer: "6 of 620 HRIS records shown · Cost Center + Job Family are the enrichment fields AI uses to estimate the primary activity for each role",
+            rows: [
+              { id: "EMP-15302", role: "Senior SRE",              jobFamily: "IT · App Ops",       costCenter: "14108 — IT · App Operations",  region: "NA",     fte: "1.0", loaded: "$245K", primaryActivity: "Application operations",     conf: "High" },
+              { id: "EMP-15418", role: "Cloud Engineer",           jobFamily: "IT · Infrastructure",costCenter: "14120 — IT Infrastructure",     region: "NA",     fte: "1.0", loaded: "$215K", primaryActivity: "Infrastructure & cloud ops", conf: "High" },
+              { id: "EMP-15527", role: "Security Analyst",         jobFamily: "IT · InfoSec",       costCenter: "14112 — Global InfoSec",        region: "EU",     fte: "1.0", loaded: "$165K", primaryActivity: "Information security",       conf: "High" },
+              { id: "EMP-15644", role: "SAP Functional Consultant",jobFamily: "IT · SAP",           costCenter: "14116 — SAP / Digital",         region: "Global", fte: "1.0", loaded: "$185K", primaryActivity: "SAP / ERP support",          conf: "High" },
+              { id: "EMP-15721", role: "App Support Engineer",      jobFamily: "IT · App Ops",       costCenter: "14108 — IT · App Operations",  region: "India",  fte: "1.0", loaded: "$45K",  primaryActivity: "Application operations",     conf: "High" },
+              { id: "EMP-15839", role: "IT Project Manager",        jobFamily: "IT · PMO",           costCenter: "14122 — IT PMO",                region: "NA",     fte: "1.0", loaded: "$195K", primaryActivity: "Outside IT advisory",        conf: "Med"  },
+            ],
+          },
         },
 
         { id: "finance", name: "Finance", lastRefreshed: "9 min ago", confidence: "high",
           totalSpendNum: 170,
           railSummary: "$170M · 460 FTE · 24 activities",
           ingested: "920 vendor lines · 460 HRIS records · 64 SOPs · 18 cost centers",
+          spendSplit: { labor: 115, nonLabor: 55, totalLabel: "$170M", laborLabel: "$115M", nonLaborLabel: "$55M" },
           stats: [
-            { label: "Total spend",          value: "$170M", sub: "labor $115M · non-labor $55M" },
-            { label: "FTE equivalent",       value: "460",   sub: "across 9 regions" },
-            { label: "Activities found",     value: "24",    sub: "2 flagged low confidence" },
-            { label: "Drivers inferred",     value: "9",     sub: "transactions, journal entries…" },
-            { label: "Regional cost variance", value: "2.1x",sub: "across the 9-region close" },
+            { label: "Labor spend",          value: "$115M", sub: "68% of total · 460 FTE",  emphasis: "labor" },
+            { label: "Non-labor spend",      value: "$55M",  sub: "32% of total · audit + advisory", emphasis: "nonLabor" },
+            { label: "Regional variance",    value: "2.1x",  sub: "across 9-region close" },
+            { label: "Activities found",     value: "24",    sub: "2 low-confidence" },
+            { label: "Drivers inferred",     value: "9",     sub: "transactions, JEs, filings" },
+          ],
+          discovery: [
+            { label: "Vendor records analyzed", value: "920",   sub: "audit, tax, advisory",   icon: "Package" },
+            { label: "Vendors enriched",        value: "62",    sub: "98% AI-classified",       icon: "Sparkles" },
+            { label: "Job titles analyzed",     value: "460",   sub: "controllership + FP&A",   icon: "Users" },
+            { label: "SOPs scanned",             value: "64",    sub: "close + filing playbooks", icon: "FileText" },
+            { label: "Cost centers reviewed",    value: "18",    sub: "across 9 regions",        icon: "Layers" },
           ],
           synthesis: "Close-cycle activities are highly standardized but still 2.1× variance — process consolidation and shared-service opportunity.",
           highlights: {
@@ -403,19 +528,58 @@ const TASK_PREVIEWS = {
               "FP&A forecasting cycle ~14 days — AI-assisted forecasting can compress to 4–5 days.",
             ]
           },
-          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+          combined: {
+            footer: "5 of 24 activities shown · click any row to see vendors and roles · *low-confidence driver, see chat",
+            activities: [
+              { name: "Period close & reporting",  subFn: "Close & Reporting", labor: "$36M", nonLabor: "$16M", driver: "Journal entries", volume: "84,000", unitCost: "$619",   conf: "High" },
+              { name: "Forecasting & FP&A",         subFn: "FP&A",              labor: "$30M", nonLabor: "$8M",  driver: "Forecast cycles", volume: "108",   unitCost: "$352K",  conf: "High" },
+              { name: "Tax filings & advisory",    subFn: "Tax",               labor: "$18M", nonLabor: "$10M", driver: "Filings",          volume: "412",    unitCost: "$67,961",conf: "High" },
+              { name: "Treasury operations",       subFn: "Treasury",          labor: "$14M", nonLabor: "$8M",  driver: "Cash positions",   volume: "1,820",  unitCost: "$12,088",conf: "Med"  },
+              { name: "Audit & controls",          subFn: "Audit & Controls",  labor: "$12M", nonLabor: "$6M",  driver: "Audits",            volume: "62",     unitCost: "$290K",  conf: "High" },
+            ],
+          },
+          vendor: {
+            footer: "6 of 62 vendors shown · the Cost Center, GL Code, and Cost Element are the enrichment fields AI uses to classify each vendor into an activity",
+            rows: [
+              { number: "2019229", name: "Meridian Tax Partners",      costCenter: "14304 — Tax Advisory",         glCode: "627100", costElement: "Tax Advisory",       spend: "$5.2M", activity: "Tax filings & advisory",   conf: "High" },
+              { number: "2019234", name: "ClearAudit Group",            costCenter: "14310 — External Audit",       glCode: "627200", costElement: "Audit Fees",         spend: "$4.1M", activity: "Audit & controls",          conf: "High" },
+              { number: "2019241", name: "FinClose Software",           costCenter: "14302 — Global Close & Reporting", glCode: "627300", costElement: "Software Licenses", spend: "$2.4M", activity: "Period close & reporting",  conf: "High" },
+              { number: "2019247", name: "Cashflow Treasury Tools",     costCenter: "14306 — Global Treasury",      glCode: "627400", costElement: "Treasury Platform",  spend: "$1.6M", activity: "Treasury operations",       conf: "Med"  },
+              { number: "2019253", name: "PlanningPro FP&A Suite",      costCenter: "14308 — FP&A",                  glCode: "627350", costElement: "Software Licenses",  spend: "$2.1M", activity: "Forecasting & FP&A",        conf: "High" },
+              { number: "2019259", name: "RegulationWatch Compliance",  costCenter: "14312 — Internal Audit",        glCode: "627250", costElement: "Compliance Tools",   spend: "$0.7M", activity: "Audit & controls",          conf: "Med"  },
+            ],
+          },
+          fte: {
+            footer: "6 of 460 HRIS records shown · Cost Center + Job Family are the enrichment fields AI uses to estimate the primary activity for each role",
+            rows: [
+              { id: "EMP-22101", role: "Senior Accountant",        jobFamily: "Finance · Controllership", costCenter: "14302 — Global Close & Reporting", region: "NA",     fte: "1.0", loaded: "$135K", primaryActivity: "Period close & reporting",  conf: "High" },
+              { id: "EMP-22214", role: "FP&A Manager",              jobFamily: "Finance · FP&A",            costCenter: "14308 — FP&A",                     region: "NA",     fte: "1.0", loaded: "$185K", primaryActivity: "Forecasting & FP&A",         conf: "High" },
+              { id: "EMP-22325", role: "Tax Analyst",               jobFamily: "Finance · Tax",             costCenter: "14304 — Tax Advisory",             region: "NA",     fte: "1.0", loaded: "$125K", primaryActivity: "Tax filings & advisory",     conf: "High" },
+              { id: "EMP-22439", role: "Treasury Analyst",          jobFamily: "Finance · Treasury",        costCenter: "14306 — Global Treasury",          region: "Global", fte: "1.0", loaded: "$115K", primaryActivity: "Treasury operations",        conf: "Med"  },
+              { id: "EMP-22552", role: "Internal Auditor",           jobFamily: "Finance · Audit",           costCenter: "14312 — Internal Audit",           region: "EU",     fte: "1.0", loaded: "$105K", primaryActivity: "Audit & controls",           conf: "High" },
+              { id: "EMP-22667", role: "Accountant",                  jobFamily: "Finance · Controllership", costCenter: "14302 — Global Close & Reporting", region: "India",  fte: "1.0", loaded: "$48K",  primaryActivity: "Period close & reporting",  conf: "High" },
+            ],
+          },
         },
 
         { id: "selling", name: "Selling", lastRefreshed: "11 min ago", confidence: "high",
           totalSpendNum: 380,
           railSummary: "$380M · 1,080 FTE · 22 activities",
           ingested: "1,420 vendor lines · 1,080 HRIS records · 41 SOPs · 28 cost centers",
+          spendSplit: { labor: 230, nonLabor: 150, totalLabel: "$380M", laborLabel: "$230M", nonLaborLabel: "$150M" },
           stats: [
-            { label: "Total spend",          value: "$380M", sub: "labor $230M · non-labor $150M" },
-            { label: "FTE equivalent",       value: "1,080", sub: "across 9 regions" },
-            { label: "Activities found",     value: "22",    sub: "3 flagged low confidence" },
+            { label: "Labor spend",          value: "$230M", sub: "61% of total · 1,080 FTE", emphasis: "labor" },
+            { label: "Non-labor spend",      value: "$150M", sub: "39% of total · CRM + travel", emphasis: "nonLabor" },
+            { label: "Regional variance",    value: "2.4x",  sub: "across 9-region book" },
+            { label: "Activities found",     value: "22",    sub: "3 low-confidence" },
             { label: "Drivers inferred",     value: "8",     sub: "accounts, customers, deals" },
-            { label: "Regional cost variance", value: "2.4x",sub: "across the 9-region book" },
+          ],
+          discovery: [
+            { label: "Vendor records analyzed", value: "1,420", sub: "CRM, travel, channel",  icon: "Package" },
+            { label: "Vendors enriched",        value: "94",    sub: "97% AI-classified",      icon: "Sparkles" },
+            { label: "Job titles analyzed",     value: "1,080", sub: "field + ops + service",  icon: "Users" },
+            { label: "SOPs scanned",             value: "41",    sub: "playbooks + scripts",    icon: "FileText" },
+            { label: "Cost centers reviewed",    value: "28",    sub: "across 9 regions",       icon: "Layers" },
           ],
           synthesis: "Sales-ops onboarding and customer support are 70% manual across all regions — automation runway is significant.",
           highlights: {
@@ -434,7 +598,38 @@ const TASK_PREVIEWS = {
               "Field sales coverage varies **2.4× across regions** — coverage modelling is overdue.",
             ]
           },
-          combined: { activities: [] }, vendor: { rows: [] }, fte: { rows: [] },
+          combined: {
+            footer: "5 of 22 activities shown · click any row to see vendors and roles · *low-confidence driver, see chat",
+            activities: [
+              { name: "Field selling & coverage",   subFn: "Field Sales",        labor: "$160M", nonLabor: "$22M", driver: "Reps",            volume: "780",    unitCost: "$233K",  conf: "High" },
+              { name: "Account management",         subFn: "Account Management", labor: "$58M",  nonLabor: "$36M", driver: "Active accounts", volume: "4,200",  unitCost: "$22,381",conf: "High" },
+              { name: "Sales operations",           subFn: "Sales Operations",   labor: "$28M",  nonLabor: "$20M", driver: "Orders",          volume: "180,000",unitCost: "$267",   conf: "High" },
+              { name: "Customer service & tickets", subFn: "Customer Service",   labor: "$22M",  nonLabor: "$14M", driver: "Tickets",         volume: "126,000",unitCost: "$286",   conf: "High" },
+              { name: "Trade funds administration", subFn: "Trade Funds Admin",  labor: "$8M",   nonLabor: "$6M",  driver: "Promo events",    volume: "1,640",  unitCost: "$8,537", conf: "Med"  },
+            ],
+          },
+          vendor: {
+            footer: "6 of 94 vendors shown · the Cost Center, GL Code, and Cost Element are the enrichment fields AI uses to classify each vendor into an activity",
+            rows: [
+              { number: "2019414", name: "GoToMarket CRM Cloud",       costCenter: "14502 — Global Sales Ops",    glCode: "628100", costElement: "CRM Platform",       spend: "$8.4M", activity: "Sales operations",         conf: "High" },
+              { number: "2019421", name: "TravelEdge Corporate",        costCenter: "14506 — NA Field Sales",      glCode: "628200", costElement: "Travel & Expense",   spend: "$11.2M",activity: "Field selling & coverage", conf: "High" },
+              { number: "2019428", name: "ServiceCloud Helpdesk",       costCenter: "14512 — Customer Service",    glCode: "628300", costElement: "Service Platform",   spend: "$3.6M", activity: "Customer service & tickets", conf: "High" },
+              { number: "2019435", name: "ChannelLeverage Reseller Mgmt",costCenter: "14516 — Channel Sales",       glCode: "628400", costElement: "Channel Platform",   spend: "$2.4M", activity: "Account management",        conf: "Med"  },
+              { number: "2019442", name: "PromoTrack Trade Funds",      costCenter: "14520 — Trade Funds Admin",   glCode: "628500", costElement: "Trade Software",     spend: "$1.6M", activity: "Trade funds administration", conf: "High" },
+              { number: "2019449", name: "AccountFlow Order Mgmt",      costCenter: "14502 — Global Sales Ops",    glCode: "628150", costElement: "Order Mgmt",         spend: "$2.1M", activity: "Sales operations",          conf: "High" },
+            ],
+          },
+          fte: {
+            footer: "6 of 1,080 HRIS records shown · Cost Center + Job Family are the enrichment fields AI uses to estimate the primary activity for each role",
+            rows: [
+              { id: "EMP-31204", role: "Account Executive",        jobFamily: "Sales · Field",         costCenter: "14506 — NA Field Sales",     region: "NA",     fte: "1.0", loaded: "$215K", primaryActivity: "Field selling & coverage",   conf: "High" },
+              { id: "EMP-31318", role: "Strategic Account Manager", jobFamily: "Sales · Account Mgmt",  costCenter: "14510 — Global Account Mgmt",region: "EU",     fte: "1.0", loaded: "$185K", primaryActivity: "Account management",          conf: "High" },
+              { id: "EMP-31425", role: "Sales Operations Analyst",  jobFamily: "Sales · Ops",           costCenter: "14502 — Global Sales Ops",   region: "Global", fte: "1.0", loaded: "$125K", primaryActivity: "Sales operations",            conf: "High" },
+              { id: "EMP-31538", role: "Customer Service Lead",     jobFamily: "Sales · Service",       costCenter: "14512 — Customer Service",   region: "India",  fte: "1.0", loaded: "$58K",  primaryActivity: "Customer service & tickets", conf: "High" },
+              { id: "EMP-31647", role: "Trade Funds Coordinator",   jobFamily: "Sales · Trade",         costCenter: "14520 — Trade Funds Admin",  region: "NA",     fte: "1.0", loaded: "$95K",  primaryActivity: "Trade funds administration", conf: "Med"  },
+              { id: "EMP-31755", role: "Field Sales Rep",            jobFamily: "Sales · Field",         costCenter: "14508 — APAC Field Sales",   region: "APAC",   fte: "1.0", loaded: "$112K", primaryActivity: "Field selling & coverage",   conf: "High" },
+            ],
+          },
         },
       ]},
 
@@ -1482,6 +1677,81 @@ function MiniChevronStrip({ steps }) {
   );
 }
 
+// Tones for stat cells. Labor / non-labor get their own colour so the eye
+// reads the split immediately; the rest are neutral amber.
+const STAT_TONES = {
+  labor:    { wrap: "bg-blue-50 border-blue-200",     label: "text-blue-700",    value: "text-blue-900",    sub: "text-blue-700/70"   },
+  nonLabor: { wrap: "bg-violet-50 border-violet-200", label: "text-violet-700",  value: "text-violet-900",  sub: "text-violet-700/70" },
+  default:  { wrap: "bg-amber-50/40 border-amber-100", label: "text-gray-500",    value: "text-gray-900",    sub: "text-gray-500"      },
+};
+
+// Stacked horizontal bar showing the labor vs non-labor split for a function.
+// Numeric width comes from spendSplit.labor / spendSplit.nonLabor; the visible
+// labels come from spendSplit.laborLabel / spendSplit.nonLaborLabel.
+function SpendSplitBar({ split }) {
+  if (!split) return null;
+  const total = (split.labor || 0) + (split.nonLabor || 0);
+  if (total === 0) return null;
+  const laborPct = (split.labor / total) * 100;
+  const nonLaborPct = (split.nonLabor / total) * 100;
+  return (
+    <div className="mb-3">
+      <div className="flex items-center justify-between text-[11px] text-gray-500 mb-1.5">
+        <span className="inline-flex items-center gap-2">
+          <span className="font-semibold text-gray-700">Spend split</span>
+          <span className="text-gray-400">labor vs non-labor on the same activity stack</span>
+        </span>
+        <span className="font-semibold text-gray-700">Total {split.totalLabel}</span>
+      </div>
+      <div className="flex h-7 rounded-md overflow-hidden border border-gray-200 bg-gray-100">
+        <div
+          className="flex items-center px-2 text-[11px] font-semibold text-white"
+          style={{ width: `${laborPct}%`, background: "#2563eb" }}
+          title={`Labor ${split.laborLabel} (${laborPct.toFixed(0)}%)`}
+        >
+          {laborPct >= 14 && <span className="truncate">Labor · {split.laborLabel} · {laborPct.toFixed(0)}%</span>}
+        </div>
+        <div
+          className="flex items-center px-2 text-[11px] font-semibold text-white"
+          style={{ width: `${nonLaborPct}%`, background: "#7c3aed" }}
+          title={`Non-labor ${split.nonLaborLabel} (${nonLaborPct.toFixed(0)}%)`}
+        >
+          {nonLaborPct >= 14 && <span className="truncate">Non-labor · {split.nonLaborLabel} · {nonLaborPct.toFixed(0)}%</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Discovery panel — emphasizes that the activity / driver picture was built
+// bottom-up from real source records. Each cell carries an icon, a count, and
+// a one-line "what this is" explainer.
+function DiscoveryPanel({ items }) {
+  if (!items || items.length === 0) return null;
+  return (
+    <div className="mb-3 bg-gradient-to-br from-blue-50 via-white to-indigo-50 border border-blue-100 rounded-lg p-3">
+      <div className="flex items-center gap-1.5 mb-2">
+        {getIcon("Sparkles", { size: 12, className: "text-blue-600" })}
+        <div className="text-[10px] uppercase tracking-wider font-semibold text-blue-700">Discovery — built bottom-up from source records</div>
+      </div>
+      <div className={`grid gap-2 ${items.length >= 5 ? "grid-cols-5" : items.length === 4 ? "grid-cols-4" : "grid-cols-3"}`}>
+        {items.map((d, i) => (
+          <div key={i} className="bg-white border border-gray-200 rounded-md px-2.5 py-2 flex items-start gap-2">
+            <div className="w-7 h-7 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+              {getIcon(d.icon || "Sparkles", { size: 13 })}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[10px] text-gray-500 leading-tight truncate" title={d.label}>{d.label}</div>
+              <div className="text-base font-bold text-gray-900 leading-none mt-0.5">{d.value}</div>
+              {d.sub && <div className="text-[10px] text-gray-500 mt-0.5 leading-tight truncate" title={d.sub}>{d.sub}</div>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function FunctionCard({ fn, onOpen, compact = false }) {
   return (
     <div
@@ -1509,18 +1779,27 @@ function FunctionCard({ fn, onOpen, compact = false }) {
         </div>
       </div>
 
-      {/* Stat boxes */}
+      {/* Spend split bar — labor vs non-labor, visualized */}
+      <SpendSplitBar split={fn.spendSplit} />
+
+      {/* Stat boxes — labor + non-labor get their own colour */}
       {fn.stats && fn.stats.length > 0 && (
         <div className={`grid gap-2 mb-3 ${fn.stats.length === 5 ? "grid-cols-5" : fn.stats.length === 4 ? "grid-cols-4" : "grid-cols-3"}`}>
-          {fn.stats.map((s, i) => (
-            <div key={i} className="bg-amber-50/40 border border-amber-100 rounded-lg p-2.5">
-              <div className="text-[10px] text-gray-500 mb-0.5">{s.label}</div>
-              <div className="text-lg font-bold text-gray-900 leading-tight">{s.value}</div>
-              {s.sub && <div className="text-[10px] text-gray-500 mt-1 leading-tight">{s.sub}</div>}
-            </div>
-          ))}
+          {fn.stats.map((s, i) => {
+            const tone = STAT_TONES[s.emphasis] || STAT_TONES.default;
+            return (
+              <div key={i} className={`border rounded-lg p-2.5 ${tone.wrap}`}>
+                <div className={`text-[10px] mb-0.5 ${tone.label}`}>{s.label}</div>
+                <div className={`text-lg font-bold leading-tight ${tone.value}`}>{s.value}</div>
+                {s.sub && <div className={`text-[10px] mt-1 leading-tight ${tone.sub}`}>{s.sub}</div>}
+              </div>
+            );
+          })}
         </div>
       )}
+
+      {/* Discovery panel — vendor records analyzed, vendors enriched, etc. */}
+      <DiscoveryPanel items={fn.discovery} />
 
       {/* Synthesis line */}
       {fn.synthesis && (
