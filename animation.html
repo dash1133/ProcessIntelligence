@@ -14,12 +14,8 @@
       width: 1280px;
       height: 720px;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    /* ── Stage ── */
     #stage {
       position: relative;
       width: 1280px;
@@ -27,7 +23,7 @@
       background: #ffffff;
     }
 
-    /* ── Slide ── */
+    /* ── Slides ── */
     .slide {
       position: absolute;
       inset: 0;
@@ -42,7 +38,6 @@
     }
     .slide.active { opacity: 1; pointer-events: auto; }
 
-    /* ── Label (slide number / category) ── */
     .label {
       font-size: 11px;
       font-weight: 600;
@@ -52,11 +47,10 @@
       margin-bottom: 28px;
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+      transition: opacity 0.5s ease 0.25s, transform 0.5s ease 0.25s;
     }
     .slide.active .label { opacity: 1; transform: translateY(0); }
 
-    /* ── Headline ── */
     .headline {
       font-size: 52px;
       font-weight: 700;
@@ -66,15 +60,12 @@
       max-width: 900px;
       opacity: 0;
       transform: translateY(22px);
-      transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s;
+      transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
     }
     .slide.active .headline { opacity: 1; transform: translateY(0); }
 
-    /* ── Accent word ── */
-    .accent { color: #c8102e; }          /* A&M red */
-    .accent-navy { color: #1e3a6e; }
+    .accent { color: #c8102e; }
 
-    /* ── Sub-line ── */
     .sub {
       margin-top: 28px;
       font-size: 22px;
@@ -85,43 +76,56 @@
       line-height: 1.5;
       opacity: 0;
       transform: translateY(18px);
-      transition: opacity 0.6s ease 0.75s, transform 0.6s ease 0.75s;
+      transition: opacity 0.6s ease 0.65s, transform 0.6s ease 0.65s;
     }
     .slide.active .sub { opacity: 1; transform: translateY(0); }
 
-    /* ── Divider line ── */
     .divider {
       width: 0;
       height: 3px;
       background: #c8102e;
       margin: 32px auto 0;
       border-radius: 2px;
-      transition: width 0.7s ease 0.6s;
+      transition: width 0.7s ease 0.5s;
     }
     .slide.active .divider { width: 64px; }
 
-    /* ── Bottom brand bar ── */
+    /* ── Chrome ── */
     #brand-bar {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       height: 6px;
       background: linear-gradient(90deg, #0f1f3d 0%, #c8102e 100%);
+      z-index: 5;
     }
 
-    /* ── Slide counter ── */
+    #timeline {
+      position: absolute;
+      bottom: 6px; left: 0;
+      height: 3px;
+      background: rgba(200,16,46,0.5);
+      z-index: 6;
+      width: 0;
+      transition: none;
+    }
+
+    #logo {
+      position: absolute;
+      top: 24px; left: 48px;
+      z-index: 10;
+    }
+    #logo img { height: 52px; width: auto; display: block; }
+
     #counter {
       position: absolute;
-      bottom: 24px;
-      right: 48px;
+      bottom: 24px; right: 48px;
       font-size: 12px;
       font-weight: 500;
       color: #cbd5e1;
       letter-spacing: 0.08em;
+      z-index: 10;
     }
 
-    /* ── Progress dots ── */
     #dots {
       position: absolute;
       bottom: 22px;
@@ -129,23 +133,22 @@
       transform: translateX(-50%);
       display: flex;
       gap: 8px;
+      z-index: 10;
     }
     .dot {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: #e2e8f0;
       transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
     }
     .dot.on { background: #c8102e; transform: scale(1.3); }
 
     /* ── Controls ── */
     #controls {
       position: absolute;
-      top: 24px;
-      right: 32px;
-      display: flex;
-      gap: 10px;
+      top: 24px; right: 32px;
+      display: flex; gap: 10px;
       z-index: 10;
     }
     .btn {
@@ -162,33 +165,33 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn:hover { background: #0f1f3d; color: #fff; }
-    .btn.paused-state { color: #c8102e; }
+    .btn.active-state { background: #c8102e; color: #fff; }
 
-    /* ── A&M logo mark (top-left) ── */
-    #logo {
+    /* ── Debug overlay (toggle with D key) ── */
+    #debug {
+      display: none;
       position: absolute;
-      top: 24px;
-      left: 48px;
+      top: 80px; left: 48px;
+      background: rgba(15,31,61,0.85);
+      color: #7dd3fc;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 10px 16px;
+      border-radius: 8px;
+      z-index: 20;
+      line-height: 1.7;
     }
-    #logo img {
-      height: 52px;
-      width: auto;
-      display: block;
-    }
-
-    /* ── Timeline bar ── */
-    #timeline {
-      position: absolute;
-      bottom: 6px;
-      left: 0;
-      height: 3px;
-      background: rgba(200,16,46,0.35);
-      transition: width 0.15s linear;
-    }
+    #debug.on { display: block; }
   </style>
 </head>
 <body>
 <div id="stage">
+
+  <!-- Hidden audio — src swappable without touching anything else -->
+  <audio id="vo" preload="auto">
+    <source src="AIZBO - VO.mp3" type="audio/mpeg" />
+  </audio>
 
   <!-- Logo -->
   <div id="logo">
@@ -198,29 +201,32 @@
   <!-- Controls -->
   <div id="controls">
     <button class="btn" id="btn-prev">← Prev</button>
-    <button class="btn" id="btn-play">⏸ Pause</button>
+    <button class="btn" id="btn-play">▶ Play</button>
     <button class="btn" id="btn-next">Next →</button>
+    <button class="btn" id="btn-debug" title="Toggle debug overlay (D)">⏱ Debug</button>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       SLIDES
-  ══════════════════════════════════════════ -->
+  <!-- Debug overlay -->
+  <div id="debug">
+    <div>Time: <span id="dbg-time">0.00s</span></div>
+    <div>Slide: <span id="dbg-slide">1</span> / 9</div>
+    <div>Next cue: <span id="dbg-next">—</span></div>
+  </div>
 
-  <!-- 1 -->
+  <!-- ══ SLIDES ══ -->
+
   <div class="slide" id="s1">
     <div class="label">The New Reality</div>
     <div class="headline">AI is changing the<br><span class="accent">economics of work.</span></div>
     <div class="divider"></div>
   </div>
 
-  <!-- 2 -->
   <div class="slide" id="s2">
     <div class="label">Why It Matters Now</div>
     <div class="headline">Zero-Based Optimization<br>is more important<br><span class="accent">than ever.</span></div>
     <div class="divider"></div>
   </div>
 
-  <!-- 3 -->
   <div class="slide" id="s3">
     <div class="label">The Gap</div>
     <div class="headline">Traditional cost programs<br>miss the real opportunity.</div>
@@ -228,14 +234,12 @@
     <div class="divider"></div>
   </div>
 
-  <!-- 4 -->
   <div class="slide" id="s4">
     <div class="label">Our Approach</div>
     <div class="headline"><span class="accent">A&amp;M's AI-Enabled ZBO</span><br>takes a different approach.</div>
     <div class="divider"></div>
   </div>
 
-  <!-- 5 -->
   <div class="slide" id="s5">
     <div class="label">Step 1 — Transparency</div>
     <div class="headline">We start with transparency<br>on <span class="accent">true profitability.</span></div>
@@ -243,7 +247,6 @@
     <div class="divider"></div>
   </div>
 
-  <!-- 6 -->
   <div class="slide" id="s6">
     <div class="label">Step 2 — Clean-Sheet</div>
     <div class="headline">Next — we<br><span class="accent">clean-sheet the core.</span></div>
@@ -251,7 +254,6 @@
     <div class="divider"></div>
   </div>
 
-  <!-- 7 -->
   <div class="slide" id="s7">
     <div class="label">Step 3 — Targeted AI</div>
     <div class="headline">The goal is not<br><span class="accent">AI everywhere.</span></div>
@@ -259,15 +261,13 @@
     <div class="divider"></div>
   </div>
 
-  <!-- 8 -->
   <div class="slide" id="s8">
     <div class="label">The Outcome</div>
-    <div class="headline">This is <span class="accent">cost structure transformation</span> —<br>not just cost reduction.</div>
+    <div class="headline">This is <span class="accent">cost structure<br>transformation</span> —<br>not just cost reduction.</div>
     <div class="sub">Better transparency. Sharper KPI monitoring. Faster, more informed decision-making.</div>
     <div class="divider"></div>
   </div>
 
-  <!-- 9 -->
   <div class="slide" id="s9">
     <div class="label">The Deliverable</div>
     <div class="headline">The result — a quantified<br><span class="accent">improvement roadmap.</span></div>
@@ -275,13 +275,13 @@
     <div class="divider"></div>
   </div>
 
-  <!-- Progress dots -->
+  <!-- Dots -->
   <div id="dots"></div>
 
-  <!-- Slide counter -->
+  <!-- Counter -->
   <div id="counter">1 / 9</div>
 
-  <!-- Timeline progress -->
+  <!-- Timeline -->
   <div id="timeline"></div>
 
   <!-- Brand bar -->
@@ -290,106 +290,132 @@
 </div>
 
 <script>
-  const SLIDES = document.querySelectorAll('.slide');
-  const N = SLIDES.length;
+// ═══════════════════════════════════════════════════════════════════
+//  SLIDE CUE POINTS
+//  Each value = audio timestamp (seconds) when that slide appears.
+//  To recalibrate after a new VO: press D to open the debug overlay,
+//  play the audio, note the timestamp at each slide transition,
+//  then update the numbers below.
+// ═══════════════════════════════════════════════════════════════════
+const CUES = [
+  0.0,   // Slide 1 — AI is changing the economics of work
+  4.0,   // Slide 2 — Zero-Based Optimization
+  8.0,   // Slide 3 — Traditional cost programs miss...
+  14.5,  // Slide 4 — A&M's AI-Enabled ZBO
+  18.5,  // Slide 5 — Transparency / true profitability
+  26.0,  // Slide 6 — Clean-sheet the core
+  33.0,  // Slide 7 — Not AI everywhere
+  40.0,  // Slide 8 — Cost structure transformation
+  47.0,  // Slide 9 — Quantified improvement roadmap
+];
+// ═══════════════════════════════════════════════════════════════════
 
-  // Durations per slide in ms (tuned to voiceover pacing)
-  const DURATIONS = [3800, 3500, 5000, 4000, 6000, 5500, 6500, 5000, 7000];
+const SLIDES = document.querySelectorAll('.slide');
+const N = SLIDES.length;
+const audio = document.getElementById('vo');
+let current = 0;
 
-  let current = 0;
-  let paused = false;
-  let timer = null;
-  let elapsed = 0;
-  let tickInterval = null;
-  const TICK = 80; // ms
+// ── Dots ──
+const dotsEl = document.getElementById('dots');
+SLIDES.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  d.addEventListener('click', () => seekToSlide(i));
+  dotsEl.appendChild(d);
+});
+function getDots() { return document.querySelectorAll('.dot'); }
 
-  // Build dots
-  const dotsEl = document.getElementById('dots');
-  SLIDES.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'dot';
-    dotsEl.appendChild(d);
-  });
+// ── Activate slide (visual only, no audio seek) ──
+function activateSlide(idx) {
+  SLIDES[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  current = Math.max(0, Math.min(N - 1, idx));
+  SLIDES[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  document.getElementById('counter').textContent = (current + 1) + ' / ' + N;
+}
 
-  function getDots() { return document.querySelectorAll('.dot'); }
+// ── Seek audio to a slide's cue point ──
+function seekToSlide(idx) {
+  idx = Math.max(0, Math.min(N - 1, idx));
+  audio.currentTime = CUES[idx];
+  activateSlide(idx);
+  if (audio.paused) {
+    audio.play();
+    updatePlayBtn(true);
+  }
+}
 
-  function goTo(idx) {
-    SLIDES[current].classList.remove('active');
-    getDots()[current].classList.remove('on');
-    current = Math.max(0, Math.min(N - 1, idx));
-    SLIDES[current].classList.add('active');
-    getDots()[current].classList.add('on');
-    document.getElementById('counter').textContent = (current + 1) + ' / ' + N;
-    resetTimer();
+// ── Audio timeupdate → drive slides ──
+audio.addEventListener('timeupdate', () => {
+  const t = audio.currentTime;
+
+  // Advance slide when audio crosses next cue
+  if (current < N - 1 && t >= CUES[current + 1]) {
+    activateSlide(current + 1);
   }
 
-  function resetTimer() {
-    clearTimeout(timer);
-    clearInterval(tickInterval);
-    elapsed = 0;
-    updateTimeline(0);
-    if (!paused && current < N - 1) startTimer();
+  // Timeline bar
+  if (audio.duration) {
+    document.getElementById('timeline').style.width =
+      (t / audio.duration * 1280) + 'px';
   }
 
-  function updateTimeline(frac) {
-    document.getElementById('timeline').style.width = (frac * 1280) + 'px';
+  // Debug overlay
+  if (document.getElementById('debug').classList.contains('on')) {
+    document.getElementById('dbg-time').textContent = t.toFixed(2) + 's';
+    document.getElementById('dbg-slide').textContent = current + 1;
+    const next = CUES[current + 1];
+    document.getElementById('dbg-next').textContent =
+      next !== undefined ? next.toFixed(1) + 's' : '—';
   }
+});
 
-  function startTimer() {
-    const dur = DURATIONS[current];
-    const startTime = Date.now();
-    elapsed = 0;
+// ── Play/Pause ──
+function updatePlayBtn(playing) {
+  const btn = document.getElementById('btn-play');
+  btn.textContent = playing ? '⏸ Pause' : '▶ Play';
+  if (playing) btn.classList.add('active-state');
+  else btn.classList.remove('active-state');
+}
 
-    tickInterval = setInterval(() => {
-      if (paused) return;
-      elapsed = Date.now() - startTime;
-      updateTimeline(Math.min(elapsed / dur, 1));
-    }, TICK);
-
-    timer = setTimeout(() => {
-      clearInterval(tickInterval);
-      if (!paused && current < N - 1) goTo(current + 1);
-    }, dur);
+document.getElementById('btn-play').addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play();
+    updatePlayBtn(true);
+  } else {
+    audio.pause();
+    updatePlayBtn(false);
   }
+});
 
-  // Buttons
-  document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
-  document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
-  document.getElementById('btn-play').addEventListener('click', () => {
-    paused = !paused;
-    const btn = document.getElementById('btn-play');
-    if (paused) {
-      btn.textContent = '▶ Play';
-      btn.classList.add('paused-state');
-      clearTimeout(timer);
-      clearInterval(tickInterval);
-    } else {
-      btn.textContent = '⏸ Pause';
-      btn.classList.remove('paused-state');
-      // Resume from where we left off
-      const remaining = DURATIONS[current] - elapsed;
-      const startTime = Date.now();
-      tickInterval = setInterval(() => {
-        if (paused) return;
-        const e = elapsed + (Date.now() - startTime);
-        updateTimeline(Math.min(e / DURATIONS[current], 1));
-      }, TICK);
-      timer = setTimeout(() => {
-        clearInterval(tickInterval);
-        elapsed += remaining;
-        if (current < N - 1) goTo(current + 1);
-      }, remaining);
-    }
-  });
+audio.addEventListener('ended', () => updatePlayBtn(false));
 
-  // Keyboard nav
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
-    if (e.key === 'ArrowLeft') goTo(current - 1);
-  });
+// ── Prev / Next ──
+document.getElementById('btn-prev').addEventListener('click', () => {
+  seekToSlide(current - 1);
+});
+document.getElementById('btn-next').addEventListener('click', () => {
+  seekToSlide(current + 1);
+});
 
-  // Kick off
-  goTo(0);
+// ── Debug toggle ──
+function toggleDebug() {
+  document.getElementById('debug').classList.toggle('on');
+  document.getElementById('btn-debug').classList.toggle('active-state');
+}
+document.getElementById('btn-debug').addEventListener('click', toggleDebug);
+
+// ── Keyboard ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') seekToSlide(current + 1);
+  if (e.key === 'ArrowLeft')  seekToSlide(current - 1);
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('btn-play').click(); }
+  if (e.key === 'd' || e.key === 'D') toggleDebug();
+});
+
+// ── Init ──
+activateSlide(0);
 </script>
 </body>
 </html>
