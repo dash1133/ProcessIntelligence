@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A&M AI-Enabled ZBO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Stage ── */
+    #stage {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      background: #ffffff;
+    }
+
+    /* ── Slide ── */
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 160px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease;
+    }
+    .slide.active { opacity: 1; pointer-events: auto; }
+
+    /* ── Label (slide number / category) ── */
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+    }
+    .slide.active .label { opacity: 1; transform: translateY(0); }
+
+    /* ── Headline ── */
+    .headline {
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1.18;
+      color: #0f1f3d;
+      text-align: center;
+      max-width: 900px;
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s;
+    }
+    .slide.active .headline { opacity: 1; transform: translateY(0); }
+
+    /* ── Accent word ── */
+    .accent { color: #c8102e; }          /* A&M red */
+    .accent-navy { color: #1e3a6e; }
+
+    /* ── Sub-line ── */
+    .sub {
+      margin-top: 28px;
+      font-size: 22px;
+      font-weight: 400;
+      color: #475569;
+      text-align: center;
+      max-width: 760px;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease 0.75s, transform 0.6s ease 0.75s;
+    }
+    .slide.active .sub { opacity: 1; transform: translateY(0); }
+
+    /* ── Divider line ── */
+    .divider {
+      width: 0;
+      height: 3px;
+      background: #c8102e;
+      margin: 32px auto 0;
+      border-radius: 2px;
+      transition: width 0.7s ease 0.6s;
+    }
+    .slide.active .divider { width: 64px; }
+
+    /* ── Bottom brand bar ── */
+    #brand-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #0f1f3d 0%, #c8102e 100%);
+    }
+
+    /* ── Slide counter ── */
+    #counter {
+      position: absolute;
+      bottom: 24px;
+      right: 48px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #cbd5e1;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Progress dots ── */
+    #dots {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .dot.on { background: #c8102e; transform: scale(1.3); }
+
+    /* ── Controls ── */
+    #controls {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    .btn {
+      background: #f1f5f9;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: #0f1f3d; color: #fff; }
+    .btn.paused-state { color: #c8102e; }
+
+    /* ── A&M logo mark (top-left) ── */
+    #logo {
+      position: absolute;
+      top: 28px;
+      left: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #logo-box {
+      width: 36px;
+      height: 36px;
+      background: #0f1f3d;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #logo-box span {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    #logo-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f1f3d;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Timeline bar ── */
+    #timeline {
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      height: 3px;
+      background: rgba(200,16,46,0.35);
+      transition: width 0.15s linear;
+    }
+  </style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- Logo -->
+  <div id="logo">
+    <div id="logo-box"><span>A&M</span></div>
+    <span id="logo-name">Alvarez &amp; Marsal</span>
+  </div>
+
+  <!-- Controls -->
+  <div id="controls">
+    <button class="btn" id="btn-prev">← Prev</button>
+    <button class="btn" id="btn-play">⏸ Pause</button>
+    <button class="btn" id="btn-next">Next →</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDES
+  ══════════════════════════════════════════ -->
+
+  <!-- 1 -->
+  <div class="slide" id="s1">
+    <div class="label">The New Reality</div>
+    <div class="headline">AI is changing the<br><span class="accent">economics of work.</span></div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="slide" id="s2">
+    <div class="label">Why It Matters Now</div>
+    <div class="headline">Zero-Based Optimization<br>is more important<br><span class="accent">than ever.</span></div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="slide" id="s3">
+    <div class="label">The Gap</div>
+    <div class="headline">Traditional cost programs<br>miss the real opportunity.</div>
+    <div class="sub">They optimize the current operating model — not the work itself.</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 4 -->
+  <div class="slide" id="s4">
+    <div class="label">Our Approach</div>
+    <div class="headline"><span class="accent">A&amp;M's AI-Enabled ZBO</span><br>takes a different approach.</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="slide" id="s5">
+    <div class="label">Step 1 — Transparency</div>
+    <div class="headline">We start with transparency<br>on <span class="accent">true profitability.</span></div>
+    <div class="sub">Financial, workforce, vendor, and operational data — surfacing where cost-to-serve and complexity are leaking margin.</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="slide" id="s6">
+    <div class="label">Step 2 — Clean-Sheet</div>
+    <div class="headline">Next — we<br><span class="accent">clean-sheet the core.</span></div>
+    <div class="sub">Priority workflows mapped at the activity level. Every activity evaluated for AI suitability.</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="slide" id="s7">
+    <div class="label">Step 3 — Targeted AI</div>
+    <div class="headline">The goal is not<br><span class="accent">AI everywhere.</span></div>
+    <div class="sub">Identify where AI-enabled redesign materially shifts labor, cost, and throughput.</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 8 -->
+  <div class="slide" id="s8">
+    <div class="label">The Outcome</div>
+    <div class="headline">This is <span class="accent">cost structure transformation</span> —<br>not just cost reduction.</div>
+    <div class="sub">Better transparency. Sharper KPI monitoring. Faster, more informed decision-making.</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 9 -->
+  <div class="slide" id="s9">
+    <div class="label">The Deliverable</div>
+    <div class="headline">The result — a quantified<br><span class="accent">improvement roadmap.</span></div>
+    <div class="sub">Sized EBITDA opportunity &nbsp;·&nbsp; New operating baseline &nbsp;·&nbsp; Clear FTE recapture targets &nbsp;·&nbsp; Execution plan tied to measurable impact.</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Progress dots -->
+  <div id="dots"></div>
+
+  <!-- Slide counter -->
+  <div id="counter">1 / 9</div>
+
+  <!-- Timeline progress -->
+  <div id="timeline"></div>
+
+  <!-- Brand bar -->
+  <div id="brand-bar"></div>
+
+</div>
+
+<script>
+  const SLIDES = document.querySelectorAll('.slide');
+  const N = SLIDES.length;
+
+  // Durations per slide in ms (tuned to voiceover pacing)
+  const DURATIONS = [3800, 3500, 5000, 4000, 6000, 5500, 6500, 5000, 7000];
+
+  let current = 0;
+  let paused = false;
+  let timer = null;
+  let elapsed = 0;
+  let tickInterval = null;
+  const TICK = 80; // ms
+
+  // Build dots
+  const dotsEl = document.getElementById('dots');
+  SLIDES.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    dotsEl.appendChild(d);
+  });
+
+  function getDots() { return document.querySelectorAll('.dot'); }
+
+  function goTo(idx) {
+    SLIDES[current].classList.remove('active');
+    getDots()[current].classList.remove('on');
+    current = Math.max(0, Math.min(N - 1, idx));
+    SLIDES[current].classList.add('active');
+    getDots()[current].classList.add('on');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + N;
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearTimeout(timer);
+    clearInterval(tickInterval);
+    elapsed = 0;
+    updateTimeline(0);
+    if (!paused && current < N - 1) startTimer();
+  }
+
+  function updateTimeline(frac) {
+    document.getElementById('timeline').style.width = (frac * 1280) + 'px';
+  }
+
+  function startTimer() {
+    const dur = DURATIONS[current];
+    const startTime = Date.now();
+    elapsed = 0;
+
+    tickInterval = setInterval(() => {
+      if (paused) return;
+      elapsed = Date.now() - startTime;
+      updateTimeline(Math.min(elapsed / dur, 1));
+    }, TICK);
+
+    timer = setTimeout(() => {
+      clearInterval(tickInterval);
+      if (!paused && current < N - 1) goTo(current + 1);
+    }, dur);
+  }
+
+  // Buttons
+  document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('btn-play').addEventListener('click', () => {
+    paused = !paused;
+    const btn = document.getElementById('btn-play');
+    if (paused) {
+      btn.textContent = '▶ Play';
+      btn.classList.add('paused-state');
+      clearTimeout(timer);
+      clearInterval(tickInterval);
+    } else {
+      btn.textContent = '⏸ Pause';
+      btn.classList.remove('paused-state');
+      // Resume from where we left off
+      const remaining = DURATIONS[current] - elapsed;
+      const startTime = Date.now();
+      tickInterval = setInterval(() => {
+        if (paused) return;
+        const e = elapsed + (Date.now() - startTime);
+        updateTimeline(Math.min(e / DURATIONS[current], 1));
+      }, TICK);
+      timer = setTimeout(() => {
+        clearInterval(tickInterval);
+        elapsed += remaining;
+        if (current < N - 1) goTo(current + 1);
+      }, remaining);
+    }
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  // Kick off
+  goTo(0);
+</script>
+</body>
+</html>
