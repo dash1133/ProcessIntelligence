@@ -35,9 +35,11 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
   ]},
   { name: "Clean-sheet the Core", tasks: [
-    { id: "redesign_opps",   label: "AI-VSM", appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
-    { id: "margin_leakage",  label: "Margin Leakage Detection",            appType: "chat",     icon: "AlertTriangle", description: "AI-surfaced leakage from estimating, pricing, rework, scoping." },
-    { id: "anomaly_redflag", label: "Anomaly & Red-Flag Spend",            appType: "chat",     icon: "Shield",         description: "Anomalies and red-flag spend identified with A&M experts." },
+    { id: "redesign_opps",       label: "AI-VSM",                              appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
+    { id: "clean_sheet_om",      label: "Clean-sheet Operating Model",         appType: "artifact", icon: "Layers",        description: "Operating-model redesign per priority zone — principles, spans & layers, decision rights, governance." },
+    { id: "clean_sheet_org",     label: "Clean-sheet Org Chart",               appType: "artifact", icon: "Users",          description: "Layer-by-layer headcount redesign — current vs clean-sheet by function, with span-of-control and role mix." },
+    { id: "margin_leakage",      label: "Margin Leakage Detection",            appType: "chat",     icon: "AlertTriangle", description: "AI-surfaced leakage from estimating, pricing, rework, scoping." },
+    { id: "anomaly_redflag",     label: "Anomaly & Red-Flag Spend",            appType: "chat",     icon: "Shield",         description: "Anomalies and red-flag spend identified with A&M experts." },
   ]},
   { name: "Improvement Initiatives and Roadmap", tasks: [
     { id: "initiative_sizing", label: "Initiative Sizing & Business Case", appType: "artifact",     icon: "Calculator", description: "Quantified savings tied to productivity, cycle time, margin, scalability." },
@@ -1388,7 +1390,124 @@ const TASK_PREVIEWS = {
         },
       ],
     }
-  }
+  },
+
+  // ── CLEAN-SHEET OPERATING MODEL ──
+  // Same process taxonomy as Process Mapping / Activity & Driver Mapping
+  // (5 ops stages + SG&A). Top component summarises the redesign principles
+  // and headline shifts; the list shows current vs clean-sheet design per
+  // function — layers, span, decision rights, location, AI-augmented share.
+  clean_sheet_om: {
+    chat: [
+      { role: "assistant", style: "neutral",  text: "**Clean-sheet Operating Model** redesigns the company along the same process taxonomy used everywhere else — 5 ops stages (Agronomy → Outbound) plus 6 SG&A functions. For each, we define the **clean-sheet design** independent of today's org, then mark the delta against current state." },
+      { role: "assistant", style: "finding",  text: "**Headline shifts:** **layers compress from 9 → 6**, **span widens from 5.4 → 8.2**, **decision rights re-pointed** from country/BU to function on 7 of 11 nodes, and **42% of activities flip to AI-augmented or AI-first** in steady state." },
+      { role: "assistant", style: "variance", text: "**Biggest model shifts:** Legal goes from country-led to function-led on contract review; Marketing collapses 40+ regional cost centers into a single shared-services hub; IT advisory in-sources to an AI agent pool. Operations stages stay country/BU-led but with a standard SLA floor." },
+      { role: "assistant", style: "question", text: "Want to walk a specific function's redesign, see the governance & decision-rights map, or jump to the org-chart view to see the headcount implications?" },
+    ],
+    suggestions: [
+      { label: "Open Legal — biggest model shift" },
+      { label: "Show governance map" },
+      { label: "Jump to clean-sheet org chart" },
+    ],
+    artifact: {
+      type: "clean_sheet_om",
+      title: "Clean-sheet Operating Model — designed against the same taxonomy",
+      subtitle: "5 ops stages + 6 SG&A functions · current vs clean-sheet on layers, span, decision rights, location, AI-augmented share",
+      source: "Source: Process Mapping + Activity & Driver Mapping + Opportunity Prioritization · last refreshed 6 min ago",
+      principles: [
+        { label: "Function-led where SOP-driven", desc: "Legal · Finance · IT · HR converge to global playbooks" },
+        { label: "Country-led where local matters", desc: "Energy tariffs, regulatory, last-mile economics stay local" },
+        { label: "AI-first on volume work",          desc: "Repetitive, high-volume, error-tolerant work flips to AI" },
+        { label: "Wider spans, fewer layers",        desc: "Compress middle management; push decisions to the work" },
+      ],
+      headline: [
+        { label: "Layers",            current: "9",     future: "6",      delta: "−3",   tone: "good" },
+        { label: "Avg span of control", current: "5.4",   future: "8.2",   delta: "+2.8", tone: "good" },
+        { label: "Function-led nodes", current: "4 / 11", future: "11 / 11", delta: "+7",  tone: "good" },
+        { label: "AI-augmented activity", current: "8%",  future: "42%",   delta: "+34pp", tone: "good" },
+        { label: "Run-rate cost",       current: "$1.79B", future: "$1.55B", delta: "−$240M", tone: "good" },
+      ],
+      stages: [
+        { id: "ops",  label: "Operations (5 stages)", color: "#1d4ed8" },
+        { id: "sga",  label: "SG&A (6 functions)",     color: "#6366f1", default: true },
+      ],
+      sga: [
+        { name: "Selling",   currentLayers: 8, futureLayers: 6, currentSpan: 4.8, futureSpan: 7.5, currentOwner: "country", futureOwner: "function", currentLoc: "9 regions", futureLoc: "3 hubs + field",  aiShare: 38, design: "Coverage model unified across regions; AI for onboarding & order management; field reps focus on top accounts." },
+        { name: "Marketing", currentLayers: 7, futureLayers: 5, currentSpan: 4.2, futureSpan: 8.0, currentOwner: "bu",      futureOwner: "function", currentLoc: "40+ CCs",   futureLoc: "1 global hub",     aiShare: 55, design: "Brief drafting + media buying centralised; AI generates first-pass briefs; agency fees compressed." },
+        { name: "Legal",     currentLayers: 6, futureLayers: 4, currentSpan: 5.0, futureSpan: 9.0, currentOwner: "country", futureOwner: "function", currentLoc: "9 regions", futureLoc: "1 hub + 2 regions", aiShare: 60, design: "Contract review function-led; AI first-pass on NDA/MSA; counsel reviews flagged deviations only." },
+        { name: "Finance",   currentLayers: 9, futureLayers: 6, currentSpan: 5.4, futureSpan: 8.5, currentOwner: "bu",      futureOwner: "function", currentLoc: "9 regions", futureLoc: "2 SSC hubs",       aiShare: 48, design: "Tax research, AR collections, plant P&L moved to shared services with AI-augmented workflows." },
+        { name: "HR",        currentLayers: 8, futureLayers: 5, currentSpan: 5.6, futureSpan: 9.2, currentOwner: "country", futureOwner: "function", currentLoc: "9 regions", futureLoc: "2 SSC hubs",       aiShare: 50, design: "Advisory SOPs replaced with internal AI agent; HRBPs focus on org design and talent." },
+        { name: "IT",        currentLayers: 7, futureLayers: 4, currentSpan: 6.0, futureSpan: 10.0, currentOwner: "function", futureOwner: "function", currentLoc: "Global", futureLoc: "AI agent pool",    aiShare: 70, design: "InfoSec, SAP, App Ops in-sourced to AI agent pool; humans handle exceptions and architecture." },
+      ],
+      ops: [
+        { name: "Agronomy & Sourcing",    currentLayers: 6, futureLayers: 5, currentSpan: 5.0, futureSpan: 7.0, currentOwner: "country", futureOwner: "country",  currentLoc: "Local", futureLoc: "Local + global SLA", aiShare: 25, design: "Crop forecasting AI-augmented; procurement contracts function-led; field ops stay local." },
+        { name: "Raw Intake & Processing", currentLayers: 7, futureLayers: 6, currentSpan: 5.2, futureSpan: 7.5, currentOwner: "bu",      futureOwner: "bu",       currentLoc: "Plant",  futureLoc: "Plant + global QC",  aiShare: 30, design: "BU owns process choices; AI for QC and yield optimization; standard SLA floor across plants." },
+        { name: "Packaging",                currentLayers: 6, futureLayers: 5, currentSpan: 5.5, futureSpan: 8.0, currentOwner: "function", futureOwner: "function", currentLoc: "Global", futureLoc: "Global hub",        aiShare: 35, design: "Pack engineering centralised; AI for materials sourcing; brand specs BU-led." },
+        { name: "Cold-Chain Warehousing",   currentLayers: 7, futureLayers: 6, currentSpan: 5.0, futureSpan: 7.5, currentOwner: "country", futureOwner: "country",  currentLoc: "Local",  futureLoc: "Local + global SLA", aiShare: 28, design: "Energy contracts standardised; AI for inventory + distribution planning; cold-storage stays country-led." },
+        { name: "Outbound Logistics",        currentLayers: 6, futureLayers: 5, currentSpan: 5.8, futureSpan: 8.0, currentOwner: "function", futureOwner: "function", currentLoc: "Global", futureLoc: "Global + carrier",  aiShare: 40, design: "Carrier management function-led; AI for route optimization; last-mile country-led." },
+      ],
+    },
+  },
+
+  // ── CLEAN-SHEET ORG CHART ──
+  // Same taxonomy. Top component shows headline org-chart shifts (FTE,
+  // layers, span). The list shows layer-by-layer redesign with role mix
+  // and per-function FTE delta.
+  clean_sheet_org: {
+    chat: [
+      { role: "assistant", style: "neutral",  text: "**Clean-sheet Org Chart** translates the operating-model design into a layer-by-layer headcount map. We rebuild the org from the bottom up against the same process taxonomy and only then compare to today's structure." },
+      { role: "assistant", style: "finding",  text: "**Total indirect FTE: 4,180 → 3,140** (−1,040, **−25%**). Layers compress **9 → 6**; span improves **5.4 → 8.2**. **70% of the reduction sits in middle management** (L4–L6), where AI augmentation removes the coordination tax." },
+      { role: "assistant", style: "variance", text: "**Biggest function shifts:** **Marketing −38%** (40+ CCs collapse to one hub), **HR −34%** (advisory SOPs replaced by AI agent), **IT −31%** (InfoSec/SAP/App Ops in-sourced to AI), **Legal −24%** (paralegal pool compresses). Operations FTE largely held — productivity gains reinvested in standardisation." },
+      { role: "assistant", style: "question", text: "Want to walk a function's layer redesign, see the L4–L6 compression detail, or load the role-mix view (manager : IC ratio shifts from 1:4.4 → 1:7.2)?" },
+    ],
+    suggestions: [
+      { label: "Open Marketing — biggest reduction" },
+      { label: "Show middle-management compression" },
+      { label: "Switch to role-mix view" },
+    ],
+    artifact: {
+      type: "clean_sheet_org",
+      title: "Clean-sheet Org Chart — rebuilt from the bottom up",
+      subtitle: "Layer-by-layer redesign against the same process taxonomy · current vs clean-sheet FTE, span, role mix",
+      source: "Source: HRIS + Operating Model design · last refreshed 6 min ago",
+      headline: [
+        { label: "Total indirect FTE", current: "4,180", future: "3,140", delta: "−1,040 (−25%)", tone: "good" },
+        { label: "Layers",              current: "9",     future: "6",     delta: "−3",            tone: "good" },
+        { label: "Avg span of control", current: "5.4",   future: "8.2",   delta: "+2.8",          tone: "good" },
+        { label: "Manager : IC ratio",  current: "1 : 4.4", future: "1 : 7.2", delta: "+2.8 ICs / mgr", tone: "good" },
+        { label: "Loaded labor cost",   current: "$640M", future: "$465M", delta: "−$175M",        tone: "good" },
+      ],
+      layers: [
+        { level: "L1 — CEO",                  current: 1,    future: 1,    span: "—",     change: "—",      role: "Unchanged" },
+        { level: "L2 — C-suite & Functional Heads", current: 11,  future: 9,    span: "9.0",   change: "−2",      role: "Consolidate Marketing + Brand; merge HR + Talent." },
+        { level: "L3 — VP / Region Heads",     current: 64,   future: 42,   span: "8.4",   change: "−22 (−34%)", role: "Span widens; regional heads merge with function lead in 4 regions." },
+        { level: "L4 — Senior Director",       current: 220,  future: 145,  span: "8.2",   change: "−75 (−34%)", role: "Middle-management compression; AI removes coordination tax." },
+        { level: "L5 — Director / Sr. Manager", current: 580, future: 380,  span: "7.8",   change: "−200 (−34%)", role: "Manager-of-managers layer thins; ICs move up." },
+        { level: "L6 — Manager / Lead",         current: 980, future: 720,  span: "7.5",   change: "−260 (−27%)", role: "Span widens from 5 to 7.5; ICs more autonomous." },
+        { level: "L7 — Senior IC",              current: 1180,future: 1050, span: "—",     change: "−130 (−11%)", role: "AI augmentation; senior ICs absorb manager work." },
+        { level: "L8 — IC",                     current: 1144,future: 793,  span: "—",     change: "−351 (−31%)", role: "Volume work flips to AI; ICs focus on judgment + exceptions." },
+      ],
+      stages: [
+        { id: "ops",  label: "Operations (5 stages)", color: "#1d4ed8" },
+        { id: "sga",  label: "SG&A (6 functions)",     color: "#6366f1", default: true },
+      ],
+      sga: [
+        { name: "Selling",    current: 1080, future: 820,  delta: "−260 (−24%)", spanFrom: "5.0", spanTo: "7.8", roleMix: "60% field reps held · 40% support FTE compresses · onboarding flips to AI." },
+        { name: "Marketing",  current: 820,  future: 510,  delta: "−310 (−38%)", spanFrom: "4.2", spanTo: "8.0", roleMix: "Brief writers + media buyers compress; brand managers held; 40+ CCs collapse to 1 hub." },
+        { name: "Legal",      current: 312,  future: 238,  delta: "−74 (−24%)",  spanFrom: "5.0", spanTo: "9.0", roleMix: "Paralegals compress; counsel held; AI first-pass on NDA/MSA." },
+        { name: "Finance",    current: 460,  future: 330,  delta: "−130 (−28%)", spanFrom: "5.4", spanTo: "8.5", roleMix: "Tax research + AR moves to SSC; controllers held; plant P&L AI-augmented." },
+        { name: "HR",         current: 510,  future: 336,  delta: "−174 (−34%)", spanFrom: "5.6", spanTo: "9.2", roleMix: "HR advisory SOPs replaced by AI agent; HRBPs held for org design + talent." },
+        { name: "IT",         current: 620,  future: 428,  delta: "−192 (−31%)", spanFrom: "6.0", spanTo: "10.0",roleMix: "InfoSec / SAP / App Ops in-sourced to AI agent pool; architects + integration leads held." },
+      ],
+      ops: [
+        { name: "Agronomy & Sourcing",    current: 78,  future: 72,  delta: "−6 (−8%)",   spanFrom: "5.0", spanTo: "7.0", roleMix: "Field ops held; procurement support compresses with AI." },
+        { name: "Raw Intake & Processing", current: 92,  future: 88,  delta: "−4 (−4%)",   spanFrom: "5.2", spanTo: "7.5", roleMix: "Plant operators held; QC and yield optimization AI-augmented." },
+        { name: "Packaging",                current: 64,  future: 58,  delta: "−6 (−9%)",   spanFrom: "5.5", spanTo: "8.0", roleMix: "Pack engineering centralised; brand spec roles held BU-side." },
+        { name: "Cold-Chain Warehousing",   current: 84,  future: 76,  delta: "−8 (−10%)",  spanFrom: "5.0", spanTo: "7.5", roleMix: "Cold-storage ops held; planning + inventory roles AI-augmented." },
+        { name: "Outbound Logistics",        current: 56,  future: 48,  delta: "−8 (−14%)",  spanFrom: "5.8", spanTo: "8.0", roleMix: "Carrier management compresses; route optimization AI-led; last-mile held." },
+      ],
+    },
+  },
 };
 
 // ── PREVIEW COMPONENTS ──
@@ -3714,6 +3833,268 @@ function AiVsmArtifact({ data }) {
   );
 }
 
+// ── CLEAN-SHEET OPERATING MODEL ARTIFACT ──
+// Component on top: design principles + headline shifts. List below: the
+// process taxonomy (ops stages + SG&A) shown current vs clean-sheet on
+// layers, span, decision rights, location, and AI-augmented share.
+
+const OWNER_LABEL = { function: "Function-led", bu: "BU-led", country: "Country-led" };
+const OWNER_PILL  = {
+  function: "bg-blue-50 text-blue-700 border-blue-200",
+  bu:       "bg-amber-50 text-amber-700 border-amber-200",
+  country:  "bg-emerald-50 text-emerald-700 border-emerald-200",
+};
+
+function CleanSheetHeadlineCard({ items }) {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
+      {items.map((m, i) => (
+        <div key={i} className="border border-gray-200 rounded-lg bg-white p-3">
+          <div className="text-[11px] text-gray-500 uppercase tracking-wide">{m.label}</div>
+          <div className="mt-1 flex items-baseline gap-2">
+            <span className="text-sm text-gray-400 line-through">{m.current}</span>
+            <span className="text-base font-semibold text-gray-900">→ {m.future}</span>
+          </div>
+          <div className={`mt-1 text-[11px] font-medium ${m.tone === "good" ? "text-emerald-600" : "text-rose-600"}`}>{m.delta}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CleanSheetPrinciples({ principles }) {
+  return (
+    <div className="border border-blue-100 bg-blue-50/40 rounded-lg p-4 mb-4">
+      <div className="text-[11px] uppercase tracking-wide text-blue-700 font-semibold mb-2">Design principles</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+        {principles.map((p, i) => (
+          <div key={i} className="flex items-start gap-2 text-sm">
+            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+            <div>
+              <span className="font-semibold text-gray-900">{p.label}.</span>{" "}
+              <span className="text-gray-600">{p.desc}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CleanSheetOmTable({ rows }) {
+  return (
+    <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+      <table className="w-full text-xs">
+        <thead className="bg-gray-50 text-gray-600">
+          <tr>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Function / Stage</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Layers</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Span</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Decision rights</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Location</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">AI-augmented</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Clean-sheet design</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => {
+            const ownerChanged = r.currentOwner !== r.futureOwner;
+            return (
+              <tr key={i} className="border-b border-gray-100 last:border-0 align-top">
+                <td className="px-3 py-2 font-semibold text-gray-900">{r.name}</td>
+                <td className="px-3 py-2 text-gray-700">
+                  <span className="text-gray-400 line-through mr-1">{r.currentLayers}</span>
+                  <span className="font-semibold text-gray-900">{r.futureLayers}</span>
+                </td>
+                <td className="px-3 py-2 text-gray-700">
+                  <span className="text-gray-400 line-through mr-1">{r.currentSpan}</span>
+                  <span className="font-semibold text-gray-900">{r.futureSpan}</span>
+                </td>
+                <td className="px-3 py-2">
+                  <span className={`inline-flex items-center text-[10px] px-1.5 py-0.5 rounded border line-through opacity-60 mr-1 ${OWNER_PILL[r.currentOwner]}`}>{OWNER_LABEL[r.currentOwner]}</span>
+                  {ownerChanged && (
+                    <span className={`inline-flex items-center text-[10px] px-1.5 py-0.5 rounded border font-semibold ${OWNER_PILL[r.futureOwner]}`}>→ {OWNER_LABEL[r.futureOwner]}</span>
+                  )}
+                </td>
+                <td className="px-3 py-2 text-gray-700">
+                  <span className="text-gray-400 line-through mr-1">{r.currentLoc}</span>
+                  <span className="font-semibold text-gray-900">→ {r.futureLoc}</span>
+                </td>
+                <td className="px-3 py-2 w-[120px]">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-blue-500" style={{ width: `${r.aiShare}%` }} />
+                    </div>
+                    <span className="text-[11px] font-medium text-gray-700 w-8 text-right">{r.aiShare}%</span>
+                  </div>
+                </td>
+                <td className="px-3 py-2 text-gray-600 max-w-[360px]">{r.design}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function CleanSheetOmArtifact({ data }) {
+  const stages = data.stages || [];
+  const initial = stages.find((s) => s.default)?.id || stages[0]?.id || "sga";
+  const [activeStage, setActiveStage] = React.useState(initial);
+  const rows = activeStage === "ops" ? (data.ops || []) : (data.sga || []);
+  return (
+    <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+      <div className="p-6">
+        <div className="mb-3">
+          <h2 className="text-xl font-bold text-gray-900">{data.title}</h2>
+          {data.subtitle && <p className="text-xs text-gray-500 mt-1">{data.subtitle}</p>}
+        </div>
+
+        <CleanSheetPrinciples principles={data.principles || []} />
+        <CleanSheetHeadlineCard items={data.headline || []} />
+
+        <div className="flex gap-1 mb-3 border-b border-gray-200">
+          {stages.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setActiveStage(s.id)}
+              className={`text-xs px-3 py-1.5 -mb-px border-b-2 ${
+                activeStage === s.id
+                  ? "border-blue-600 text-blue-700 font-semibold"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+
+        <CleanSheetOmTable rows={rows} />
+
+        {data.source && (
+          <div className="text-[11px] text-gray-400 italic mt-4 border-t border-gray-100 pt-3">{data.source}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── CLEAN-SHEET ORG CHART ARTIFACT ──
+// Component on top: layer-by-layer pyramid showing FTE compression. List
+// below: function-by-function delta with span and role mix narrative.
+
+function CleanSheetOrgPyramid({ layers }) {
+  const max = Math.max(...layers.map((l) => Math.max(l.current, l.future)));
+  return (
+    <div className="border border-gray-200 rounded-lg bg-white p-4 mb-4">
+      <div className="text-[11px] uppercase tracking-wide text-gray-500 font-semibold mb-3">Layer compression — current vs clean-sheet FTE</div>
+      <div className="space-y-1.5">
+        {layers.map((l, i) => {
+          const cw = (l.current / max) * 100;
+          const fw = (l.future / max) * 100;
+          return (
+            <div key={i} className="grid grid-cols-12 gap-2 items-center text-[11px]">
+              <div className="col-span-3 text-gray-700 font-medium truncate" title={l.level}>{l.level}</div>
+              <div className="col-span-7">
+                <div className="relative h-4 bg-gray-50 rounded">
+                  <div className="absolute inset-y-0 left-0 bg-gray-300 rounded" style={{ width: `${cw}%` }} title={`Current: ${l.current}`} />
+                  <div className="absolute inset-y-0 left-0 bg-blue-500 rounded" style={{ width: `${fw}%`, height: "60%", top: "20%" }} title={`Clean-sheet: ${l.future}`} />
+                </div>
+              </div>
+              <div className="col-span-2 text-right">
+                <span className="text-gray-400 line-through mr-1">{l.current}</span>
+                <span className="font-semibold text-gray-900">{l.future}</span>
+                <span className="ml-1 text-emerald-600 text-[10px]">{l.change}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex items-center gap-4 mt-3 text-[10px] text-gray-500">
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-gray-300 rounded-sm" /> Current</span>
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-blue-500 rounded-sm" /> Clean-sheet</span>
+      </div>
+    </div>
+  );
+}
+
+function CleanSheetOrgTable({ rows }) {
+  return (
+    <div className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+      <table className="w-full text-xs">
+        <thead className="bg-gray-50 text-gray-600">
+          <tr>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Function / Stage</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Current FTE</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Clean-sheet FTE</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Δ</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Span</th>
+            <th className="text-left px-3 py-2 font-semibold border-b border-gray-200">Role mix shift</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} className="border-b border-gray-100 last:border-0 align-top">
+              <td className="px-3 py-2 font-semibold text-gray-900">{r.name}</td>
+              <td className="px-3 py-2 text-gray-500 line-through">{r.current.toLocaleString()}</td>
+              <td className="px-3 py-2 font-semibold text-gray-900">{r.future.toLocaleString()}</td>
+              <td className="px-3 py-2 text-emerald-600 font-medium">{r.delta}</td>
+              <td className="px-3 py-2 text-gray-700">
+                <span className="text-gray-400 line-through mr-1">{r.spanFrom}</span>
+                <span className="font-semibold text-gray-900">→ {r.spanTo}</span>
+              </td>
+              <td className="px-3 py-2 text-gray-600 max-w-[420px]">{r.roleMix}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function CleanSheetOrgArtifact({ data }) {
+  const stages = data.stages || [];
+  const initial = stages.find((s) => s.default)?.id || stages[0]?.id || "sga";
+  const [activeStage, setActiveStage] = React.useState(initial);
+  const rows = activeStage === "ops" ? (data.ops || []) : (data.sga || []);
+  return (
+    <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
+      <div className="p-6">
+        <div className="mb-3">
+          <h2 className="text-xl font-bold text-gray-900">{data.title}</h2>
+          {data.subtitle && <p className="text-xs text-gray-500 mt-1">{data.subtitle}</p>}
+        </div>
+
+        <CleanSheetHeadlineCard items={data.headline || []} />
+        <CleanSheetOrgPyramid layers={data.layers || []} />
+
+        <div className="flex gap-1 mb-3 border-b border-gray-200">
+          {stages.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setActiveStage(s.id)}
+              className={`text-xs px-3 py-1.5 -mb-px border-b-2 ${
+                activeStage === s.id
+                  ? "border-blue-600 text-blue-700 font-semibold"
+                  : "border-transparent text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+
+        <CleanSheetOrgTable rows={rows} />
+
+        {data.source && (
+          <div className="text-[11px] text-gray-400 italic mt-4 border-t border-gray-100 pt-3">{data.source}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Artifact right panel: dispatches to ProcessMapArtifact for visual artifacts,
 // falls back to ArtifactBlock for sectioned reports.
 function ArtifactContent({ task }) {
@@ -3750,6 +4131,12 @@ function ArtifactContent({ task }) {
   }
   if (artifact.type === "ai_vsm") {
     return <AiVsmArtifact data={artifact} />;
+  }
+  if (artifact.type === "clean_sheet_om") {
+    return <CleanSheetOmArtifact data={artifact} />;
+  }
+  if (artifact.type === "clean_sheet_org") {
+    return <CleanSheetOrgArtifact data={artifact} />;
   }
   return (
     <div className="flex-1 overflow-y-auto bg-white scrollbar-thin">
