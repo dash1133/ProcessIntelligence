@@ -7,180 +7,375 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background: #ffffff;
+      background: #fff;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      width: 1280px;
-      height: 720px;
+      width: 1280px; height: 720px;
       overflow: hidden;
     }
 
-    #stage {
-      position: relative;
-      width: 1280px;
-      height: 720px;
-      background: #ffffff;
-    }
+    /* ═══ Stage ═══ */
+    #stage { position: relative; width: 1280px; height: 720px; background: #fff; }
 
-    /* ── Slides ── */
+    /* ═══ Slide base ═══ */
     .slide {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       padding: 80px 160px;
-      opacity: 0;
-      pointer-events: none;
+      opacity: 0; pointer-events: none;
       transition: opacity 0.7s ease;
     }
     .slide.active { opacity: 1; pointer-events: auto; }
 
+    /* ═══ Text elements ═══ */
     .label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #94a3b8;
-      margin-bottom: 28px;
-      opacity: 0;
-      transform: translateY(10px);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: #94a3b8; margin-bottom: 24px;
+      opacity: 0; transform: translateY(10px);
       transition: opacity 0.5s ease 0.25s, transform 0.5s ease 0.25s;
     }
-    .slide.active .label { opacity: 1; transform: translateY(0); }
+    .slide.active .label { opacity: 1; transform: none; }
 
     .headline {
-      font-size: 52px;
-      font-weight: 700;
-      line-height: 1.18;
-      color: #0f1f3d;
-      text-align: center;
-      max-width: 900px;
-      opacity: 0;
-      transform: translateY(22px);
+      font-size: 52px; font-weight: 700; line-height: 1.18;
+      color: #0f1f3d; text-align: center; max-width: 900px;
+      opacity: 0; transform: translateY(22px);
       transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
     }
-    .slide.active .headline { opacity: 1; transform: translateY(0); }
+    .slide.active .headline { opacity: 1; transform: none; }
 
     .accent { color: #c8102e; }
 
     .sub {
-      margin-top: 28px;
-      font-size: 22px;
-      font-weight: 400;
-      color: #475569;
-      text-align: center;
-      max-width: 760px;
-      line-height: 1.5;
-      opacity: 0;
-      transform: translateY(18px);
+      margin-top: 28px; font-size: 22px; font-weight: 400;
+      color: #475569; text-align: center; max-width: 760px; line-height: 1.5;
+      opacity: 0; transform: translateY(18px);
       transition: opacity 0.6s ease 0.65s, transform 0.6s ease 0.65s;
     }
-    .slide.active .sub { opacity: 1; transform: translateY(0); }
+    .slide.active .sub { opacity: 1; transform: none; }
 
     .divider {
-      width: 0;
-      height: 3px;
-      background: #c8102e;
-      margin: 32px auto 0;
-      border-radius: 2px;
+      width: 0; height: 3px; background: #c8102e;
+      margin: 32px auto 0; border-radius: 2px;
       transition: width 0.7s ease 0.5s;
     }
     .slide.active .divider { width: 64px; }
 
-    /* ── Chrome ── */
-    #brand-bar {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 6px;
-      background: linear-gradient(90deg, #0f1f3d 0%, #c8102e 100%);
-      z-index: 5;
+    /* ═══ Split layout (slides 5-9) ═══ */
+    .slide.split {
+      flex-direction: row;
+      padding: 72px 56px 60px;
+      gap: 52px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .slide.split .slide-text {
+      flex: 0 0 320px;
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .slide.split .label    { text-align: left; }
+    .slide.split .headline { text-align: left; font-size: 42px; }
+    .slide.split .sub      { text-align: left; font-size: 16px; margin-top: 18px; max-width: 300px; }
+    .slide.split .divider  { margin: 24px 0 0; }
+    .slide-visual { flex: 1; min-width: 0; }
+
+    /* ═══ Mockup system ═══ */
+    @keyframes mkIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .mk { opacity: 0; }
+    .slide.active .mk { animation: mkIn 0.45s ease var(--d, 0s) forwards; }
+
+    /* Mockup shell */
+    .mk-shell {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      box-shadow: 0 4px 32px rgba(15,31,61,0.10);
+      overflow: hidden;
     }
 
-    #timeline {
-      position: absolute;
-      bottom: 6px; left: 0;
-      height: 3px;
-      background: rgba(200,16,46,0.5);
-      z-index: 6;
-      width: 0;
-      transition: none;
+    /* App top-bar */
+    .mk-appbar {
+      background: #0f1f3d;
+      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .mk-appbar-title { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; }
+    .mk-live {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 600; color: #34d399;
+    }
+    .mk-live-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #34d399;
     }
 
-    #logo {
-      position: absolute;
-      top: 24px; left: 48px;
-      z-index: 10;
+    /* ─── Slide 5: KPI Dashboard ─── */
+    #s5 .kpi-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+      padding: 14px;
     }
-    #logo img { height: 52px; width: auto; display: block; }
-
-    #counter {
-      position: absolute;
-      bottom: 24px; right: 48px;
-      font-size: 12px;
-      font-weight: 500;
-      color: #cbd5e1;
-      letter-spacing: 0.08em;
-      z-index: 10;
-    }
-
-    #dots {
-      position: absolute;
-      bottom: 22px;
-      left: 50%;
-      transform: translateX(-50%);
+    .kpi-c {
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      overflow: hidden; background: #fff;
       display: flex;
-      gap: 8px;
-      z-index: 10;
+    }
+    .kc-stripe { width: 5px; flex-shrink: 0; }
+    .kc-inner { padding: 12px 12px 10px; flex: 1; }
+    .kc-lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #94a3b8; margin-bottom: 6px; }
+    .kc-val { font-size: 28px; font-weight: 800; color: #0f1f3d; letter-spacing: -0.03em; line-height: 1; }
+    .kc-ch  { font-size: 11px; font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 3px; }
+    .kc-ch.bad  { color: #ef4444; }
+    .kc-ch.good { color: #10b981; }
+    .kc-bar-wrap { height: 5px; background: #f1f5f9; border-radius: 9px; margin: 10px 0 6px; overflow: hidden; }
+    .kc-bar-fill { height: 100%; border-radius: 9px; }
+    .kc-foot { display: flex; justify-content: space-between; font-size: 10px; }
+    .kc-foot span:first-child { color: #94a3b8; font-weight: 500; }
+    .kc-gap { font-weight: 700; }
+    .kc-gap.bad { color: #ef4444; }
+
+    #s5 .ds-row {
+      border-top: 1px solid #f1f5f9;
+      padding: 10px 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ds-label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+    .ds-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ds-pill {
+      font-size: 10px; font-weight: 600; color: #3b82f6;
+      background: #eff6ff; border: 1px solid #bfdbfe;
+      padding: 2px 8px; border-radius: 999px;
+    }
+
+    /* Chat prompt bar */
+    #s5 .chat-bar {
+      border-top: 1px solid #f1f5f9;
+      padding: 10px 14px;
+      display: flex; align-items: center; gap: 8px;
+      background: #f8fafc;
+    }
+    .chat-bot-icon {
+      width: 26px; height: 26px; border-radius: 7px;
+      background: linear-gradient(135deg,#3b82f6,#6366f1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 12px; color: #fff;
+    }
+    .chat-input-mock {
+      flex: 1; background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 8px; padding: 7px 12px;
+      font-size: 11px; color: #94a3b8;
+    }
+
+    /* ─── Slide 6: Activity Mapping ─── */
+    #s6 .diag-wrap {
+      display: flex; height: 430px;
+    }
+    #s6 .diag-nav {
+      width: 170px; flex-shrink: 0; border-right: 1px solid #f1f5f9;
+      background: #f8fafc; padding: 10px 0;
+    }
+    .dn-phase {
+      padding: 8px 14px; font-size: 11px; font-weight: 600; color: #94a3b8;
+      cursor: default; border-left: 2px solid transparent;
+    }
+    .dn-phase.active { color: #0f1f3d; border-left-color: #3b82f6; background: #fff; }
+    .dn-phase.done { color: #10b981; }
+    .dn-step { font-size: 9px; font-weight: 500; color: #cbd5e1; padding: 2px 14px 6px; }
+
+    #s6 .diag-content {
+      flex: 1; overflow: hidden; padding: 14px;
+    }
+    .act-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .act-title { font-size: 13px; font-weight: 700; color: #0f1f3d; }
+    .act-badge { font-size: 10px; font-weight: 600; background: #eff6ff; color: #3b82f6; padding: 2px 8px; border-radius: 999px; }
+    .act-row {
+      display: flex; align-items: stretch; gap: 8px;
+      border: 1px solid #e2e8f0; border-radius: 9px; overflow: hidden;
+      margin-bottom: 8px; background: #fff;
+    }
+    .act-fn-bar { width: 4px; flex-shrink: 0; }
+    .act-body { flex: 1; padding: 9px 10px; }
+    .act-fn-name { font-size: 11px; font-weight: 700; color: #0f1f3d; }
+    .act-fn-sub  { font-size: 10px; color: #64748b; margin-top: 2px; }
+    .act-meta { display: flex; align-items: center; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+    .act-pill {
+      font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 999px;
+    }
+    .act-pill.blue   { background: #eff6ff; color: #3b82f6; }
+    .act-pill.amber  { background: #fff7ed; color: #f97316; }
+    .act-pill.red    { background: #fef2f2; color: #ef4444; }
+    .act-pill.green  { background: #f0fdf4; color: #10b981; }
+    .act-pill.purple { background: #faf5ff; color: #a855f7; }
+    .act-count { font-size: 10px; font-weight: 600; color: #94a3b8; }
+    .act-right { padding: 9px 10px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; min-width: 90px; }
+    .act-spend { font-size: 14px; font-weight: 800; color: #0f1f3d; }
+    .act-driver { font-size: 9px; color: #94a3b8; text-align: right; }
+
+    /* ─── Slide 7: AI Suitability ─── */
+    #s7 .ai-grid {
+      padding: 14px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .ai-card {
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 12px 13px; background: #fff;
+    }
+    .ai-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+    .ai-fn { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 3px; }
+    .ai-act { font-size: 12px; font-weight: 700; color: #0f1f3d; line-height: 1.2; max-width: 180px; }
+    .ai-badge {
+      font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+    }
+    .ai-badge.ready   { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .ai-badge.partial { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+    .ai-badge.human   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .ai-score-row { display: flex; align-items: center; gap: 8px; }
+    .ai-score-bar { flex: 1; height: 5px; background: #f1f5f9; border-radius: 9px; overflow: hidden; }
+    .ai-score-fill { height: 100%; border-radius: 9px; }
+    .ai-score-pct  { font-size: 11px; font-weight: 700; width: 32px; text-align: right; }
+    .ai-footer { font-size: 10px; color: #94a3b8; margin-top: 6px; }
+
+    #s7 .ai-legend {
+      padding: 8px 14px; border-top: 1px solid #f1f5f9;
+      display: flex; gap: 14px;
+    }
+    .leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; color: #475569; }
+    .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ─── Slide 8: Simulations ─── */
+    #s8 .sim-grid {
+      padding: 14px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .sim-card {
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 13px; background: #fff; position: relative; overflow: hidden;
+    }
+    .sim-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .sim-card.c1::before { background: #3b82f6; }
+    .sim-card.c2::before { background: #6366f1; }
+    .sim-card.c3::before { background: #ef4444; }
+    .sim-card.c4::before { background: #f97316; }
+    .sim-cat { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 4px; }
+    .sim-title { font-size: 12px; font-weight: 700; color: #0f1f3d; line-height: 1.25; margin-bottom: 10px; }
+    .sim-metrics { display: flex; gap: 8px; margin-bottom: 8px; }
+    .sim-metric { flex: 1; background: #f8fafc; border-radius: 7px; padding: 7px 9px; }
+    .sim-metric-lbl { font-size: 9px; color: #94a3b8; font-weight: 500; margin-bottom: 2px; }
+    .sim-metric-val { font-size: 15px; font-weight: 800; color: #0f1f3d; line-height: 1; }
+    .sim-metric-val.green  { color: #10b981; }
+    .sim-metric-val.blue   { color: #3b82f6; }
+    .sim-roi-bar { height: 4px; background: #f1f5f9; border-radius: 9px; overflow: hidden; }
+    .sim-roi-fill { height: 100%; border-radius: 9px; }
+    .sim-c1 .sim-roi-fill { background: #3b82f6; }
+    .sim-c2 .sim-roi-fill { background: #6366f1; }
+    .sim-c3 .sim-roi-fill { background: #ef4444; }
+    .sim-c4 .sim-roi-fill { background: #f97316; }
+    .sim-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+    .sim-conf { font-size: 9px; color: #94a3b8; }
+    .sim-tl   { font-size: 9px; font-weight: 600; color: #475569; }
+
+    #s8 .sim-total {
+      border-top: 1px solid #f1f5f9;
+      padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sim-total-lbl { font-size: 11px; font-weight: 600; color: #475569; }
+    .sim-total-val { font-size: 16px; font-weight: 800; color: #10b981; }
+
+    /* ─── Slide 9: Roadmap ─── */
+    #s9 .road-metrics {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+      padding: 14px 14px 10px;
+    }
+    .road-metric {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 12px 12px 10px; text-align: center;
+    }
+    .rm-icon { font-size: 16px; margin-bottom: 5px; }
+    .rm-val  { font-size: 22px; font-weight: 800; color: #0f1f3d; letter-spacing: -0.03em; line-height: 1; }
+    .rm-lbl  { font-size: 10px; color: #64748b; font-weight: 500; margin-top: 4px; }
+    .rm-val.green  { color: #10b981; }
+    .rm-val.red    { color: #c8102e; }
+    .rm-val.blue   { color: #3b82f6; }
+    .rm-val.purple { color: #a855f7; }
+
+    #s9 .road-list {
+      padding: 0 14px 14px;
+    }
+    .road-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 0; border-bottom: 1px solid #f8fafc;
+    }
+    .road-row:last-child { border-bottom: none; }
+    .road-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: #0f1f3d; color: #fff;
+      font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .road-info { flex: 1; min-width: 0; }
+    .road-name { font-size: 11px; font-weight: 700; color: #0f1f3d; truncate: true; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .road-sub  { font-size: 10px; color: #94a3b8; margin-top: 1px; }
+    .road-bar-wrap { width: 120px; flex-shrink: 0; }
+    .road-bar-bg { height: 5px; background: #f1f5f9; border-radius: 9px; overflow: hidden; margin-bottom: 3px; }
+    .road-bar-fill { height: 100%; border-radius: 9px; }
+    .road-pct { font-size: 9px; color: #94a3b8; text-align: right; }
+    .road-target { font-size: 12px; font-weight: 800; color: #10b981; flex-shrink: 0; min-width: 44px; text-align: right; }
+    .road-status {
+      font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 999px; flex-shrink: 0;
+    }
+    .rs-on  { background: #f0fdf4; color: #16a34a; }
+    .rs-risk{ background: #fff7ed; color: #ea580c; }
+    .rs-off { background: #fef2f2; color: #dc2626; }
+
+    /* ═══ Chrome ═══ */
+    #brand-bar {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+      background: linear-gradient(90deg, #0f1f3d 0%, #c8102e 100%); z-index: 5;
+    }
+    #timeline {
+      position: absolute; bottom: 6px; left: 0; height: 3px;
+      background: rgba(200,16,46,0.5); z-index: 6; width: 0;
+    }
+    #logo { position: absolute; top: 24px; left: 48px; z-index: 10; }
+    #logo img { height: 52px; width: auto; display: block; }
+    #counter {
+      position: absolute; bottom: 24px; right: 48px;
+      font-size: 12px; font-weight: 500; color: #cbd5e1; letter-spacing: 0.08em; z-index: 10;
+    }
+    #dots {
+      position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 10;
     }
     .dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #e2e8f0;
-      transition: background 0.3s, transform 0.3s;
-      cursor: pointer;
+      width: 6px; height: 6px; border-radius: 50%; background: #e2e8f0;
+      transition: background 0.3s, transform 0.3s; cursor: pointer;
     }
     .dot.on { background: #c8102e; transform: scale(1.3); }
-
-    /* ── Controls ── */
     #controls {
-      position: absolute;
-      top: 24px; right: 32px;
-      display: flex; gap: 10px;
-      z-index: 10;
+      position: absolute; top: 24px; right: 32px;
+      display: flex; gap: 10px; z-index: 10;
     }
     .btn {
-      background: #f1f5f9;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #475569;
-      cursor: pointer;
-      font-family: inherit;
-      letter-spacing: 0.04em;
+      background: #f1f5f9; border: none; border-radius: 6px;
+      padding: 6px 14px; font-size: 12px; font-weight: 600; color: #475569;
+      cursor: pointer; font-family: inherit; letter-spacing: 0.04em;
       transition: background 0.2s, color 0.2s;
     }
     .btn:hover { background: #0f1f3d; color: #fff; }
     .btn.active-state { background: #c8102e; color: #fff; }
-
-    /* ── Debug overlay (toggle with D key) ── */
     #debug {
-      display: none;
-      position: absolute;
-      top: 80px; left: 48px;
-      background: rgba(15,31,61,0.85);
-      color: #7dd3fc;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: monospace;
-      padding: 10px 16px;
-      border-radius: 8px;
-      z-index: 20;
-      line-height: 1.7;
+      display: none; position: absolute; top: 80px; left: 48px;
+      background: rgba(15,31,61,0.85); color: #7dd3fc;
+      font-size: 13px; font-weight: 600; font-family: monospace;
+      padding: 10px 16px; border-radius: 8px; z-index: 20; line-height: 1.7;
     }
     #debug.on { display: block; }
   </style>
@@ -188,45 +383,42 @@
 <body>
 <div id="stage">
 
-  <!-- Hidden audio — src swappable without touching anything else -->
   <audio id="vo" preload="auto">
     <source src="AIZBO - VO.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- Logo -->
-  <div id="logo">
-    <img src="assets/am-logo.png" alt="Alvarez &amp; Marsal" />
-  </div>
+  <div id="logo"><img src="assets/am-logo.png" alt="Alvarez &amp; Marsal" /></div>
 
-  <!-- Controls -->
   <div id="controls">
     <button class="btn" id="btn-prev">← Prev</button>
     <button class="btn" id="btn-play">▶ Play</button>
     <button class="btn" id="btn-next">Next →</button>
-    <button class="btn" id="btn-debug" title="Toggle debug overlay (D)">⏱ Debug</button>
+    <button class="btn" id="btn-debug">⏱ Debug</button>
   </div>
 
-  <!-- Debug overlay -->
   <div id="debug">
     <div>Time: <span id="dbg-time">0.00s</span></div>
     <div>Slide: <span id="dbg-slide">1</span> / 9</div>
     <div>Next cue: <span id="dbg-next">—</span></div>
   </div>
 
-  <!-- ══ SLIDES ══ -->
+  <!-- ══════════════════════════════════════════════ SLIDES ══ -->
 
+  <!-- Slide 1 -->
   <div class="slide" id="s1">
     <div class="label">The New Reality</div>
     <div class="headline">AI is changing the<br><span class="accent">economics of work.</span></div>
     <div class="divider"></div>
   </div>
 
+  <!-- Slide 2 -->
   <div class="slide" id="s2">
     <div class="label">Why It Matters Now</div>
     <div class="headline">Zero-Based Optimization<br>is more important<br><span class="accent">than ever.</span></div>
     <div class="divider"></div>
   </div>
 
+  <!-- Slide 3 -->
   <div class="slide" id="s3">
     <div class="label">The Gap</div>
     <div class="headline">Traditional cost programs<br>miss the real opportunity.</div>
@@ -234,68 +426,483 @@
     <div class="divider"></div>
   </div>
 
+  <!-- Slide 4 -->
   <div class="slide" id="s4">
     <div class="label">Our Approach</div>
     <div class="headline"><span class="accent">A&amp;M's AI-Enabled ZBO</span><br>takes a different approach.</div>
     <div class="divider"></div>
   </div>
 
-  <div class="slide" id="s5">
-    <div class="label">Step 1 — Transparency</div>
-    <div class="headline">We start with transparency<br>on <span class="accent">true profitability.</span></div>
-    <div class="sub">Financial, workforce, vendor, and operational data — surfacing where cost-to-serve and complexity are leaking margin.</div>
-    <div class="divider"></div>
+  <!-- ─── Slide 5: Transparency ─── -->
+  <div class="slide split" id="s5">
+    <div class="slide-text">
+      <div class="label">Step 1 — Transparency</div>
+      <div class="headline">Start with<br>transparency<br>on <span class="accent">true profitability.</span></div>
+      <div class="sub">Financial, workforce, vendor, and operational data — surfacing where cost leaks margin.</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-visual">
+      <div class="mk-shell mk" style="--d:.5s">
+        <!-- App bar -->
+        <div class="mk-appbar">
+          <div class="mk-appbar-title">NorthStar Frozen Foods · SG&amp;A Intelligence</div>
+          <div class="mk-live"><div class="mk-live-dot"></div> Agent Online</div>
+        </div>
+        <!-- KPI row -->
+        <div class="kpi-row">
+          <div class="kpi-c mk" style="--d:.65s">
+            <div class="kc-stripe" style="background:#ef4444"></div>
+            <div class="kc-inner">
+              <div class="kc-lbl">SG&amp;A % of Net Sales</div>
+              <div class="kc-val">11.2%</div>
+              <div class="kc-ch bad">↑ +0.4pp vs LY</div>
+              <div class="kc-bar-wrap"><div class="kc-bar-fill" style="width:80%;background:#ef4444"></div></div>
+              <div class="kc-foot"><span>Target 9.0%</span><span class="kc-gap bad">+2.2pp</span></div>
+            </div>
+          </div>
+          <div class="kpi-c mk" style="--d:.8s">
+            <div class="kc-stripe" style="background:#f97316"></div>
+            <div class="kc-inner">
+              <div class="kc-lbl">Consulting &amp; Outside Svcs</div>
+              <div class="kc-val">$150M</div>
+              <div class="kc-ch bad">↑ +$12M YTD</div>
+              <div class="kc-bar-wrap"><div class="kc-bar-fill" style="width:67%;background:#f97316"></div></div>
+              <div class="kc-foot"><span>Target $100M</span><span class="kc-gap bad">+$50M</span></div>
+            </div>
+          </div>
+          <div class="kpi-c mk" style="--d:.95s">
+            <div class="kc-stripe" style="background:#3b82f6"></div>
+            <div class="kc-inner">
+              <div class="kc-lbl">AI Automation Rate</div>
+              <div class="kc-val">22%</div>
+              <div class="kc-ch good">↑ +4.0pp vs LY</div>
+              <div class="kc-bar-wrap"><div class="kc-bar-fill" style="width:37%;background:#3b82f6"></div></div>
+              <div class="kc-foot"><span>Target 60%</span><span class="kc-gap bad">−38pp</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- Data sources -->
+        <div class="ds-row mk" style="--d:1.1s">
+          <div class="ds-label">Ingested</div>
+          <div class="ds-pills">
+            <span class="ds-pill">GL · Trial Balance</span>
+            <span class="ds-pill">HRIS · 4,180 FTEs</span>
+            <span class="ds-pill">Vendor POs · 12.6K</span>
+            <span class="ds-pill">9 Regions</span>
+            <span class="ds-pill">SOPs · 355</span>
+          </div>
+        </div>
+        <!-- Chat bar -->
+        <div class="chat-bar mk" style="--d:1.25s">
+          <div class="chat-bot-icon">⚡</div>
+          <div class="chat-input-mock">Decompose the $150M consulting line by function and AI-replaceability…</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="slide" id="s6">
-    <div class="label">Step 2 — Clean-Sheet</div>
-    <div class="headline">Next — we<br><span class="accent">clean-sheet the core.</span></div>
-    <div class="sub">Priority workflows mapped at the activity level. Every activity evaluated for AI suitability.</div>
-    <div class="divider"></div>
+  <!-- ─── Slide 6: Clean-Sheet ─── -->
+  <div class="slide split" id="s6">
+    <div class="slide-text">
+      <div class="label">Step 2 — Clean-Sheet</div>
+      <div class="headline">We<br><span class="accent">clean-sheet<br>the core.</span></div>
+      <div class="sub">Priority workflows mapped at the activity level. Every activity evaluated for AI suitability.</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-visual">
+      <div class="mk-shell mk" style="--d:.5s">
+        <div class="mk-appbar">
+          <div class="mk-appbar-title">Diagnostic · Process &amp; Activity Taxonomy</div>
+          <div class="mk-live"><div class="mk-live-dot"></div> 218 Activities · 4,180 FTEs</div>
+        </div>
+        <div class="diag-wrap">
+          <!-- Phase nav -->
+          <div class="diag-nav mk" style="--d:.65s">
+            <div class="dn-phase done">✓ Data Foundation</div>
+            <div class="dn-step">GL · HRIS · Vendors · SOPs</div>
+            <div class="dn-phase active">→ Activity Mapping</div>
+            <div class="dn-step">218 activities found</div>
+            <div class="dn-phase" style="color:#cbd5e1">Cost Allocation</div>
+            <div class="dn-phase" style="color:#cbd5e1">Levers ID</div>
+            <div class="dn-phase" style="color:#cbd5e1">PMO Sizing</div>
+            <div class="dn-phase" style="color:#cbd5e1">Reporting</div>
+          </div>
+          <!-- Activity content -->
+          <div class="diag-content">
+            <div class="act-header">
+              <div class="act-title">Activity &amp; Driver Mapping</div>
+              <div class="act-badge">$1.8B SG&amp;A decomposed</div>
+            </div>
+            <div class="act-row mk" style="--d:.7s">
+              <div class="act-fn-bar" style="background:#ef4444"></div>
+              <div class="act-body">
+                <div class="act-fn-name">Administrative &amp; Executive</div>
+                <div class="act-fn-sub">38 activities · 1,840 cost centers</div>
+                <div class="act-meta">
+                  <span class="act-pill red">SG&amp;A 7.0% of sales</span>
+                  <span class="act-pill amber">Consulting $96M over</span>
+                </div>
+              </div>
+              <div class="act-right">
+                <div class="act-spend">$1,120M</div>
+                <div class="act-driver">Driver: FTE · POs</div>
+              </div>
+            </div>
+            <div class="act-row mk" style="--d:.85s">
+              <div class="act-fn-bar" style="background:#f97316"></div>
+              <div class="act-body">
+                <div class="act-fn-name">Marketing &amp; Media</div>
+                <div class="act-fn-sub">44 activities · 40+ regional cost centers</div>
+                <div class="act-meta">
+                  <span class="act-pill amber">1.45× benchmark</span>
+                  <span class="act-pill purple">14 drivers amber</span>
+                </div>
+              </div>
+              <div class="act-right">
+                <div class="act-spend">$295M</div>
+                <div class="act-driver">Driver: briefs · campaigns</div>
+              </div>
+            </div>
+            <div class="act-row mk" style="--d:1.0s">
+              <div class="act-fn-bar" style="background:#3b82f6"></div>
+              <div class="act-body">
+                <div class="act-fn-name">Legal &amp; Compliance</div>
+                <div class="act-fn-sub">28 activities · 16 cost centers · 9 regions</div>
+                <div class="act-meta">
+                  <span class="act-pill red">2.30× benchmark</span>
+                  <span class="act-pill blue">NA 5–6× UK unit cost</span>
+                </div>
+              </div>
+              <div class="act-right">
+                <div class="act-spend">$46M</div>
+                <div class="act-driver">Driver: contracts · NDAs</div>
+              </div>
+            </div>
+            <div class="act-row mk" style="--d:1.15s">
+              <div class="act-fn-bar" style="background:#10b981"></div>
+              <div class="act-body">
+                <div class="act-fn-name">Selling</div>
+                <div class="act-fn-sub">32 activities · 9 regions</div>
+                <div class="act-meta">
+                  <span class="act-pill green">1.30× benchmark</span>
+                  <span class="act-pill blue">AI rate 28%</span>
+                </div>
+              </div>
+              <div class="act-right">
+                <div class="act-spend">$380M</div>
+                <div class="act-driver">Driver: accounts · orders</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="slide" id="s7">
-    <div class="label">Step 3 — Targeted AI</div>
-    <div class="headline">The goal is not<br><span class="accent">AI everywhere.</span></div>
-    <div class="sub">Identify where AI-enabled redesign materially shifts labor, cost, and throughput.</div>
-    <div class="divider"></div>
+  <!-- ─── Slide 7: Not AI Everywhere ─── -->
+  <div class="slide split" id="s7">
+    <div class="slide-text">
+      <div class="label">Step 3 — Targeted AI</div>
+      <div class="headline">Not<br><span class="accent">AI everywhere.</span></div>
+      <div class="sub">Identify where AI-enabled redesign materially shifts labor, cost, and throughput.</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-visual">
+      <div class="mk-shell mk" style="--d:.5s">
+        <div class="mk-appbar">
+          <div class="mk-appbar-title">AI Agent Readiness · Activity Suitability Assessment</div>
+          <div class="mk-live"><div class="mk-live-dot"></div> 218 activities scored</div>
+        </div>
+        <div class="ai-grid">
+          <div class="ai-card mk" style="--d:.65s">
+            <div class="ai-card-top">
+              <div><div class="ai-fn">Legal</div><div class="ai-act">NDA First-Pass Review</div></div>
+              <div class="ai-badge ready">AI-Ready</div>
+            </div>
+            <div class="ai-score-row">
+              <div class="ai-score-bar"><div class="ai-score-fill" style="width:94%;background:#10b981"></div></div>
+              <div class="ai-score-pct" style="color:#10b981">94%</div>
+            </div>
+            <div class="ai-footer">SOP-driven · $700/contract take-out · 48K/yr volume</div>
+          </div>
+          <div class="ai-card mk" style="--d:.78s">
+            <div class="ai-card-top">
+              <div><div class="ai-fn">Marketing</div><div class="ai-act">Brief Drafting &amp; Competitive Scans</div></div>
+              <div class="ai-badge ready">AI-Ready</div>
+            </div>
+            <div class="ai-score-row">
+              <div class="ai-score-bar"><div class="ai-score-fill" style="width:87%;background:#10b981"></div></div>
+              <div class="ai-score-pct" style="color:#10b981">87%</div>
+            </div>
+            <div class="ai-footer">Template-driven · 40+ regional CCs · −$50M/yr</div>
+          </div>
+          <div class="ai-card mk" style="--d:.91s">
+            <div class="ai-card-top">
+              <div><div class="ai-fn">HR / Admin</div><div class="ai-act">Consulting &amp; Advisory Scopes</div></div>
+              <div class="ai-badge ready">AI-Ready</div>
+            </div>
+            <div class="ai-score-row">
+              <div class="ai-score-bar"><div class="ai-score-fill" style="width:82%;background:#10b981"></div></div>
+              <div class="ai-score-pct" style="color:#10b981">82%</div>
+            </div>
+            <div class="ai-footer">Analyst &amp; SOP work · $49M HR+IT pool · −$55M/yr</div>
+          </div>
+          <div class="ai-card mk" style="--d:1.04s">
+            <div class="ai-card-top">
+              <div><div class="ai-fn">Legal</div><div class="ai-act">Regional SG&amp;A Variance Analysis</div></div>
+              <div class="ai-badge partial">Partial</div>
+            </div>
+            <div class="ai-score-row">
+              <div class="ai-score-bar"><div class="ai-score-fill" style="width:58%;background:#f97316"></div></div>
+              <div class="ai-score-pct" style="color:#f97316">58%</div>
+            </div>
+            <div class="ai-footer">AI drafts · counsel validates · 3.2× regional spread</div>
+          </div>
+          <div class="ai-card mk" style="--d:1.17s">
+            <div class="ai-card-top">
+              <div><div class="ai-fn">Legal</div><div class="ai-act">Litigation Strategy &amp; Advocacy</div></div>
+              <div class="ai-badge human">Human-Led</div>
+            </div>
+            <div class="ai-score-row">
+              <div class="ai-score-bar"><div class="ai-score-fill" style="width:12%;background:#ef4444"></div></div>
+              <div class="ai-score-pct" style="color:#ef4444">12%</div>
+            </div>
+            <div class="ai-footer">High judgment · precedent-dependent · retain counsel</div>
+          </div>
+          <div class="ai-card mk" style="--d:1.3s">
+            <div class="ai-card-top">
+              <div><div class="ai-fn">Executive</div><div class="ai-act">Board &amp; Investor Relations</div></div>
+              <div class="ai-badge human">Human-Led</div>
+            </div>
+            <div class="ai-score-row">
+              <div class="ai-score-bar"><div class="ai-score-fill" style="width:7%;background:#ef4444"></div></div>
+              <div class="ai-score-pct" style="color:#ef4444">7%</div>
+            </div>
+            <div class="ai-footer">Relationship &amp; context-critical · retain leadership</div>
+          </div>
+        </div>
+        <div class="ai-legend mk" style="--d:1.4s">
+          <div class="leg-item"><div class="leg-dot" style="background:#10b981"></div>AI-Ready (&gt;75%)</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#f97316"></div>Partial (40–75%)</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#ef4444"></div>Human-Led (&lt;40%)</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="slide" id="s8">
-    <div class="label">The Outcome</div>
-    <div class="headline">This is <span class="accent">cost structure<br>transformation</span> —<br>not just cost reduction.</div>
-    <div class="sub">Better transparency. Sharper KPI monitoring. Faster, more informed decision-making.</div>
-    <div class="divider"></div>
+  <!-- ─── Slide 8: Transformation ─── -->
+  <div class="slide split" id="s8">
+    <div class="slide-text">
+      <div class="label">The Outcome</div>
+      <div class="headline">Cost structure<br><span class="accent">transformation</span> —<br>not just reduction.</div>
+      <div class="sub">Better transparency. Sharper KPI monitoring. Faster, more informed decisions.</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-visual">
+      <div class="mk-shell mk" style="--d:.5s">
+        <div class="mk-appbar">
+          <div class="mk-appbar-title">Simulations · AI-Enabled Cost Redesign</div>
+          <div class="mk-live"><div class="mk-live-dot"></div> 4 initiatives · $210M opportunity</div>
+        </div>
+        <div class="sim-grid">
+          <div class="sim-card c1 mk" style="--d:.65s">
+            <div class="sim-cat">Administrative &amp; Executive</div>
+            <div class="sim-title">Consulting In-Sourcing — HR + IT Advisory</div>
+            <div class="sim-metrics">
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">ROI</div>
+                <div class="sim-metric-val green">590%</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Run-rate saving</div>
+                <div class="sim-metric-val green">$55M</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Investment</div>
+                <div class="sim-metric-val blue">$8.0M</div>
+              </div>
+            </div>
+            <div class="sim-roi-bar sim-c1"><div class="sim-roi-fill" style="width:88%"></div></div>
+            <div class="sim-footer"><span class="sim-conf">88% confidence</span><span class="sim-tl">9 months</span></div>
+          </div>
+          <div class="sim-card c2 mk" style="--d:.8s">
+            <div class="sim-cat">Cross-Region</div>
+            <div class="sim-title">Regional SG&amp;A Convergence to SEA Benchmark</div>
+            <div class="sim-metrics">
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">ROI</div>
+                <div class="sim-metric-val green">440%</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Run-rate saving</div>
+                <div class="sim-metric-val green">$80M</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Investment</div>
+                <div class="sim-metric-val blue">$6.5M</div>
+              </div>
+            </div>
+            <div class="sim-roi-bar sim-c2"><div class="sim-roi-fill" style="width:84%"></div></div>
+            <div class="sim-footer"><span class="sim-conf">84% confidence</span><span class="sim-tl">18 months</span></div>
+          </div>
+          <div class="sim-card c3 mk" style="--d:.95s">
+            <div class="sim-cat">Legal &amp; Compliance</div>
+            <div class="sim-title">AI First-Pass Contract Review</div>
+            <div class="sim-metrics">
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">ROI</div>
+                <div class="sim-metric-val green">520%</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Run-rate saving</div>
+                <div class="sim-metric-val green">$14M</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Investment</div>
+                <div class="sim-metric-val blue">$1.2M</div>
+              </div>
+            </div>
+            <div class="sim-roi-bar sim-c3"><div class="sim-roi-fill" style="width:86%"></div></div>
+            <div class="sim-footer"><span class="sim-conf">86% confidence</span><span class="sim-tl">5 months</span></div>
+          </div>
+          <div class="sim-card c4 mk" style="--d:1.1s">
+            <div class="sim-cat">Marketing &amp; Media</div>
+            <div class="sim-title">Marketing Workflow Consolidation</div>
+            <div class="sim-metrics">
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">ROI</div>
+                <div class="sim-metric-val green">470%</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Run-rate saving</div>
+                <div class="sim-metric-val green">$50M</div>
+              </div>
+              <div class="sim-metric">
+                <div class="sim-metric-lbl">Investment</div>
+                <div class="sim-metric-val blue">$2.4M</div>
+              </div>
+            </div>
+            <div class="sim-roi-bar sim-c4"><div class="sim-roi-fill" style="width:82%"></div></div>
+            <div class="sim-footer"><span class="sim-conf">82% confidence</span><span class="sim-tl">6 months</span></div>
+          </div>
+        </div>
+        <div class="sim-total mk" style="--d:1.25s">
+          <div class="sim-total-lbl">Combined run-rate opportunity · FY26</div>
+          <div class="sim-total-val">~$199M saving · $18.1M investment</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="slide" id="s9">
-    <div class="label">The Deliverable</div>
-    <div class="headline">The result — a quantified<br><span class="accent">improvement roadmap.</span></div>
-    <div class="sub">Sized EBITDA opportunity &nbsp;·&nbsp; New operating baseline &nbsp;·&nbsp; Clear FTE recapture targets &nbsp;·&nbsp; Execution plan tied to measurable impact.</div>
-    <div class="divider"></div>
+  <!-- ─── Slide 9: Roadmap ─── -->
+  <div class="slide split" id="s9">
+    <div class="slide-text">
+      <div class="label">The Deliverable</div>
+      <div class="headline">A quantified<br><span class="accent">improvement<br>roadmap.</span></div>
+      <div class="sub">Sized EBITDA · New baseline · FTE targets · Execution plan tied to impact.</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-visual">
+      <div class="mk-shell mk" style="--d:.5s">
+        <div class="mk-appbar">
+          <div class="mk-appbar-title">Cost-Out Roadmap · NorthStar Frozen Foods FY26</div>
+          <div class="mk-live"><div class="mk-live-dot"></div> $210M committed</div>
+        </div>
+        <!-- Metrics -->
+        <div class="road-metrics">
+          <div class="road-metric mk" style="--d:.6s">
+            <div class="rm-icon">💰</div>
+            <div class="rm-val green">~$210M</div>
+            <div class="rm-lbl">EBITDA Opportunity</div>
+          </div>
+          <div class="road-metric mk" style="--d:.72s">
+            <div class="rm-icon">📉</div>
+            <div class="rm-val red">9.0%</div>
+            <div class="rm-lbl">New SG&amp;A Baseline</div>
+          </div>
+          <div class="road-metric mk" style="--d:.84s">
+            <div class="rm-icon">👥</div>
+            <div class="rm-val blue">360</div>
+            <div class="rm-lbl">FTE Recapture Target</div>
+          </div>
+          <div class="road-metric mk" style="--d:.96s">
+            <div class="rm-icon">📅</div>
+            <div class="rm-val purple">18mo</div>
+            <div class="rm-lbl">Full Execution Timeline</div>
+          </div>
+        </div>
+        <!-- Initiative list -->
+        <div class="road-list">
+          <div class="road-row mk" style="--d:1.05s">
+            <div class="road-num">1</div>
+            <div class="road-info">
+              <div class="road-name">Consulting In-Sourcing — HR + IT Advisory</div>
+              <div class="road-sub">Administrative &amp; Executive · D. Chen · 9 months</div>
+            </div>
+            <div class="road-bar-wrap">
+              <div class="road-bar-bg"><div class="road-bar-fill" style="width:38%;background:#10b981"></div></div>
+              <div class="road-pct">38% complete</div>
+            </div>
+            <div class="road-target">$55M</div>
+            <div class="road-status rs-on">On Track</div>
+          </div>
+          <div class="road-row mk" style="--d:1.15s">
+            <div class="road-num">2</div>
+            <div class="road-info">
+              <div class="road-name">Regional SG&amp;A Convergence to SEA</div>
+              <div class="road-sub">Cross-Region · P. Nair · 18 months</div>
+            </div>
+            <div class="road-bar-wrap">
+              <div class="road-bar-bg"><div class="road-bar-fill" style="width:22%;background:#f59e0b"></div></div>
+              <div class="road-pct">22% complete</div>
+            </div>
+            <div class="road-target">$80M</div>
+            <div class="road-status rs-risk">At Risk</div>
+          </div>
+          <div class="road-row mk" style="--d:1.25s">
+            <div class="road-num">3</div>
+            <div class="road-info">
+              <div class="road-name">AI First-Pass Contract Review</div>
+              <div class="road-sub">Legal &amp; Compliance · J. Walsh · 5 months</div>
+            </div>
+            <div class="road-bar-wrap">
+              <div class="road-bar-bg"><div class="road-bar-fill" style="width:64%;background:#10b981"></div></div>
+              <div class="road-pct">64% complete</div>
+            </div>
+            <div class="road-target">$14M</div>
+            <div class="road-status rs-on">On Track</div>
+          </div>
+          <div class="road-row mk" style="--d:1.35s">
+            <div class="road-num">4</div>
+            <div class="road-info">
+              <div class="road-name">Marketing Workflow Consolidation</div>
+              <div class="road-sub">Marketing &amp; Media · M. Rivera · 6 months</div>
+            </div>
+            <div class="road-bar-wrap">
+              <div class="road-bar-bg"><div class="road-bar-fill" style="width:18%;background:#f59e0b"></div></div>
+              <div class="road-pct">18% complete</div>
+            </div>
+            <div class="road-target">$50M</div>
+            <div class="road-status rs-risk">At Risk</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Dots -->
+  <!-- ══ Chrome ══ -->
   <div id="dots"></div>
-
-  <!-- Counter -->
   <div id="counter">1 / 9</div>
-
-  <!-- Timeline -->
   <div id="timeline"></div>
-
-  <!-- Brand bar -->
   <div id="brand-bar"></div>
 
 </div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════════
-//  SLIDE CUE POINTS
-//  Each value = audio timestamp (seconds) when that slide appears.
-//  To recalibrate after a new VO: press D to open the debug overlay,
-//  play the audio, note the timestamp at each slide transition,
-//  then update the numbers below.
+//  SLIDE CUE POINTS  —  seconds into the audio when each slide fires
+//  Press D to open the debug overlay and note exact timestamps.
+//  Update these numbers whenever the VO file is refreshed.
 // ═══════════════════════════════════════════════════════════════════
 const CUES = [
   0.0,   // Slide 1 — AI is changing the economics of work
@@ -315,7 +922,7 @@ const N = SLIDES.length;
 const audio = document.getElementById('vo');
 let current = 0;
 
-// ── Dots ──
+// Dots
 const dotsEl = document.getElementById('dots');
 SLIDES.forEach((_, i) => {
   const d = document.createElement('div');
@@ -325,7 +932,6 @@ SLIDES.forEach((_, i) => {
 });
 function getDots() { return document.querySelectorAll('.dot'); }
 
-// ── Activate slide (visual only, no audio seek) ──
 function activateSlide(idx) {
   SLIDES[current].classList.remove('active');
   getDots()[current].classList.remove('on');
@@ -335,78 +941,47 @@ function activateSlide(idx) {
   document.getElementById('counter').textContent = (current + 1) + ' / ' + N;
 }
 
-// ── Seek audio to a slide's cue point ──
 function seekToSlide(idx) {
   idx = Math.max(0, Math.min(N - 1, idx));
   audio.currentTime = CUES[idx];
   activateSlide(idx);
-  if (audio.paused) {
-    audio.play();
-    updatePlayBtn(true);
-  }
+  if (audio.paused) { audio.play(); updatePlayBtn(true); }
 }
 
-// ── Audio timeupdate → drive slides ──
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-
-  // Advance slide when audio crosses next cue
-  if (current < N - 1 && t >= CUES[current + 1]) {
-    activateSlide(current + 1);
-  }
-
-  // Timeline bar
-  if (audio.duration) {
-    document.getElementById('timeline').style.width =
-      (t / audio.duration * 1280) + 'px';
-  }
-
-  // Debug overlay
+  if (current < N - 1 && t >= CUES[current + 1]) activateSlide(current + 1);
+  if (audio.duration)
+    document.getElementById('timeline').style.width = (t / audio.duration * 1280) + 'px';
   if (document.getElementById('debug').classList.contains('on')) {
-    document.getElementById('dbg-time').textContent = t.toFixed(2) + 's';
+    document.getElementById('dbg-time').textContent  = t.toFixed(2) + 's';
     document.getElementById('dbg-slide').textContent = current + 1;
     const next = CUES[current + 1];
-    document.getElementById('dbg-next').textContent =
-      next !== undefined ? next.toFixed(1) + 's' : '—';
+    document.getElementById('dbg-next').textContent  = next !== undefined ? next.toFixed(1) + 's' : '—';
   }
 });
 
-// ── Play/Pause ──
 function updatePlayBtn(playing) {
   const btn = document.getElementById('btn-play');
   btn.textContent = playing ? '⏸ Pause' : '▶ Play';
-  if (playing) btn.classList.add('active-state');
-  else btn.classList.remove('active-state');
+  playing ? btn.classList.add('active-state') : btn.classList.remove('active-state');
 }
 
 document.getElementById('btn-play').addEventListener('click', () => {
-  if (audio.paused) {
-    audio.play();
-    updatePlayBtn(true);
-  } else {
-    audio.pause();
-    updatePlayBtn(false);
-  }
+  if (audio.paused) { audio.play(); updatePlayBtn(true); }
+  else { audio.pause(); updatePlayBtn(false); }
 });
-
 audio.addEventListener('ended', () => updatePlayBtn(false));
 
-// ── Prev / Next ──
-document.getElementById('btn-prev').addEventListener('click', () => {
-  seekToSlide(current - 1);
-});
-document.getElementById('btn-next').addEventListener('click', () => {
-  seekToSlide(current + 1);
-});
+document.getElementById('btn-prev').addEventListener('click', () => seekToSlide(current - 1));
+document.getElementById('btn-next').addEventListener('click', () => seekToSlide(current + 1));
 
-// ── Debug toggle ──
 function toggleDebug() {
   document.getElementById('debug').classList.toggle('on');
   document.getElementById('btn-debug').classList.toggle('active-state');
 }
 document.getElementById('btn-debug').addEventListener('click', toggleDebug);
 
-// ── Keyboard ──
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') seekToSlide(current + 1);
   if (e.key === 'ArrowLeft')  seekToSlide(current - 1);
@@ -414,7 +989,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'd' || e.key === 'D') toggleDebug();
 });
 
-// ── Init ──
 activateSlide(0);
 </script>
 </body>
