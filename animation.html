@@ -454,104 +454,184 @@
     .tm-foot { font-size: 9px; color: #94a3b8; margin-top: 8px; text-align: center; }
 
     /* ─── Slide 7 NEW: Harvey Ball Sub-process Scoring ─── */
-    #s7 .hb-wrap { padding: 12px 14px; }
-    #s7 .hb-intro { font-size: 11px; color: #64748b; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
-    .hb-intro .hb-tag { font-size: 9px; font-weight: 700; color: #c8102e; background: #fef2f2; border: 1px solid #fecaca; padding: 2px 8px; border-radius: 999px; }
+    #s7 .hb-wrap { padding: 14px 18px; }
+    #s7 .hb-intro { font-size: 11px; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .hb-intro .hb-tag { font-size: 9px; font-weight: 700; color: #c8102e; background: #fef2f2; border: 1px solid #fecaca; padding: 3px 9px; border-radius: 999px; }
     #s7 .hb-table { width: 100%; border-collapse: collapse; font-size: 10px; }
     #s7 .hb-table thead th {
-      font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em;
-      padding: 6px 4px; text-align: center; border-bottom: 1px solid #e2e8f0;
+      font-size: 8.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 8px 4px 10px; text-align: center; border-bottom: 1.5px solid #e2e8f0;
+      line-height: 1.25;
     }
-    #s7 .hb-table thead th.lft { text-align: left; padding-left: 8px; }
-    #s7 .hb-table tbody td { padding: 8px 4px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-    .hb-sub-name { font-size: 10px; font-weight: 700; color: #0f1f3d; padding-left: 8px; }
-    .hb-sub-meta { font-size: 9px; color: #94a3b8; padding-left: 8px; margin-top: 1px; }
-    .hb-cell { display: flex; align-items: center; justify-content: center; }
+    #s7 .hb-table thead th.lft { text-align: left; padding-left: 6px; }
+    #s7 .hb-table tbody td { padding: 11px 4px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .hb-sub-name { font-size: 11px; font-weight: 700; color: #0f1f3d; }
+    .hb-sub-meta { font-size: 9.5px; color: #94a3b8; margin-top: 2px; }
+    .hb-cell { text-align: center; }
+    /* Conic-gradient harvey ball — clean ring with score inside */
     .hb-circle {
-      width: 28px; height: 28px; position: relative; display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      position: relative;
+      background: conic-gradient(from -90deg, var(--c, #94a3b8) calc(var(--p, 0) * 1%), #e6ebf2 0);
     }
-    .hb-circle svg { position: absolute; inset: 0; transform: rotate(-90deg); }
-    .hb-circle .hb-ring-bg { fill: none; stroke: #e2e8f0; stroke-width: 3; }
-    .hb-circle .hb-ring-fg { fill: none; stroke-width: 3; stroke-linecap: round; }
-    .hb-circle .hb-num { font-size: 9px; font-weight: 700; line-height: 1; position: relative; z-index: 1; }
-    .hb-score-pill { font-size: 11px; font-weight: 800; color: #0f1f3d; background: #fffbeb; border: 1px solid #fde68a; padding: 4px 10px; border-radius: 7px; min-width: 26px; text-align: center; display: inline-block; }
-    .hb-rec { font-size: 9px; font-weight: 700; padding: 4px 9px; border-radius: 7px; white-space: nowrap; }
+    .hb-circle::before {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .hb-num {
+      position: relative; z-index: 1;
+      font-size: 11px; font-weight: 800; line-height: 1;
+    }
+    .hb-score-pill { font-size: 13px; font-weight: 800; color: #0f1f3d; background: #fffbeb; border: 1px solid #fde68a; padding: 5px 12px; border-radius: 8px; min-width: 32px; text-align: center; display: inline-block; }
+    .hb-rec { font-size: 9.5px; font-weight: 700; padding: 5px 11px; border-radius: 8px; white-space: nowrap; display: inline-block; }
     .hb-rec.aionly  { background: #ecfdf5; color: #047857; border: 1px solid #6ee7b7; }
     .hb-rec.aiplus  { background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
     .hb-rec.aien    { background: #fff7ed; color: #c2410c; border: 1px solid #fdba74; }
 
-    /* ─── Slide 8 NEW: Outcome — sequential artifacts ─── */
-    #s8 .oc-stack { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-    .oc-card {
-      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
-      padding: 11px 13px; display: grid; grid-template-columns: 130px 1fr; gap: 14px; align-items: center;
+    /* ─── Slides 8 & 9 NEW: sequential single-artifact layers ─── */
+    .seq-stack { position: relative; min-height: 470px; }
+    .seq-layer {
+      position: absolute; inset: 0;
+      opacity: 0;
+      padding: 22px 26px;
+      display: flex; flex-direction: column;
     }
-    .oc-card.kw1 { border-left: 3px solid #3b82f6; }
-    .oc-card.kw2 { border-left: 3px solid #10b981; }
-    .oc-card.kw3 { border-left: 3px solid #c8102e; }
-    .oc-kw { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 3px; }
-    .oc-name { font-size: 13px; font-weight: 800; color: #0f1f3d; line-height: 1.2; }
-    .oc-name .oc-accent { color: #c8102e; }
-    .oc-art { display: flex; align-items: center; gap: 8px; }
-    /* Transparency artifact: pills */
-    .tp-pills { display: flex; flex-wrap: wrap; gap: 4px; }
-    .tp-pill  { font-size: 9px; font-weight: 600; color: #1d4ed8; background: #eff6ff; border: 1px solid #bfdbfe; padding: 2px 7px; border-radius: 999px; }
-    .tp-total { background: #0f1f3d; color: #fff; border-color: #0f1f3d; }
-    /* KPI sparklines */
-    .kpi-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .kpi-mc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 7px; }
-    .kpi-mc-lbl { font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
-    .kpi-mc-row { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
-    .kpi-mc-val { font-size: 13px; font-weight: 800; color: #0f1f3d; line-height: 1; }
-    .kpi-mc-spark { width: 50px; height: 16px; }
-    /* Decision card */
-    .dc-card { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 8px 10px; flex: 1; }
-    .dc-tag { font-size: 9px; font-weight: 700; color: #047857; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
-    .dc-act { font-size: 11px; font-weight: 700; color: #0f1f3d; line-height: 1.25; margin-bottom: 4px; }
-    .dc-meta { font-size: 9px; color: #475569; }
-    .dc-meta b { color: #047857; font-weight: 700; }
+    /* Slide 8 — 3 artifacts (window ~14.6s) */
+    #s8.active .seq-layer.l1 { animation: paIn 0.55s ease 0.4s forwards, paOut 0.55s ease 4.2s forwards; }
+    #s8.active .seq-layer.l2 { animation: paIn 0.55s ease 4.7s forwards, paOut 0.55s ease 9.0s forwards; }
+    #s8.active .seq-layer.l3 { animation: paIn 0.55s ease 9.5s forwards; }
+    /* Slide 9 — 4 artifacts (window ~17s) */
+    #s9.active .seq-layer.l1 { animation: paIn 0.55s ease 0.4s forwards, paOut 0.55s ease 3.8s forwards; }
+    #s9.active .seq-layer.l2 { animation: paIn 0.55s ease 4.3s forwards, paOut 0.55s ease 7.7s forwards; }
+    #s9.active .seq-layer.l3 { animation: paIn 0.55s ease 8.2s forwards, paOut 0.55s ease 11.6s forwards; }
+    #s9.active .seq-layer.l4 { animation: paIn 0.55s ease 12.1s forwards; }
 
-    /* ─── Slide 9 NEW: Roadmap — sequential artifacts ─── */
-    #s9 .rm-stack { padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .rm-card {
-      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
-      padding: 10px 13px; position: relative; overflow: hidden;
+    /* Common artifact frame */
+    .seq-step { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
+    .seq-headline { font-size: 30px; font-weight: 800; color: #0f1f3d; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 18px; }
+    .seq-headline .accent { color: #c8102e; }
+    .seq-headline .green  { color: #10b981; }
+    .seq-headline .blue   { color: #3b82f6; }
+    .seq-headline .purp   { color: #a855f7; }
+    .seq-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+    /* Artifact 8.1 — Transparency: source pills + total tile */
+    .tp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .tp-tile {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 3px;
     }
-    .rm-card.k1 { border-top: 3px solid #10b981; }
-    .rm-card.k2 { border-top: 3px solid #c8102e; }
-    .rm-card.k3 { border-top: 3px solid #3b82f6; }
-    .rm-card.k4 { border-top: 3px solid #a855f7; }
-    .rm-kw { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 4px; }
-    .rm-headline { font-size: 22px; font-weight: 800; color: #0f1f3d; line-height: 1; letter-spacing: -0.03em; margin-bottom: 6px; }
-    .rm-headline.green { color: #10b981; }
-    .rm-headline.red   { color: #c8102e; }
-    .rm-headline.blue  { color: #3b82f6; }
-    .rm-headline.purp  { color: #a855f7; }
-    .rm-detail { font-size: 10px; color: #475569; line-height: 1.35; }
-    /* Baseline before/after */
-    .rm-ba { display: flex; align-items: center; gap: 8px; }
-    .rm-ba-side { flex: 1; text-align: center; padding: 6px 4px; border-radius: 6px; }
-    .rm-ba-side.before { background: #fef2f2; }
-    .rm-ba-side.after  { background: #ecfdf5; }
-    .rm-ba-num { font-size: 16px; font-weight: 800; line-height: 1; }
-    .rm-ba-num.before { color: #c8102e; }
-    .rm-ba-num.after  { color: #10b981; }
-    .rm-ba-lbl { font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
-    .rm-ba-arrow { font-size: 14px; color: #94a3b8; }
-    /* FTE bar */
-    .rm-fte-bar { display: flex; height: 18px; border-radius: 5px; overflow: hidden; border: 1px solid #e2e8f0; }
-    .rm-fte-seg { height: 100%; display: flex; align-items: center; padding: 0 6px; font-size: 8px; font-weight: 700; color: #fff; }
-    .rm-fte-redep { background: #3b82f6; }
-    .rm-fte-rem   { background: #f1f5f9; color: #475569; }
-    /* Execution timeline */
-    .rm-tl { position: relative; height: 28px; margin-top: 2px; }
-    .rm-tl-track { position: absolute; left: 0; right: 0; top: 13px; height: 3px; background: #f1f5f9; border-radius: 9px; }
-    .rm-tl-bar { position: absolute; top: 13px; height: 3px; border-radius: 9px; }
-    .rm-tl-bar.b1 { left: 0%;  width: 38%; background: #10b981; }
-    .rm-tl-bar.b2 { left: 12%; width: 78%; background: #c8102e; }
-    .rm-tl-bar.b3 { left: 5%;  width: 32%; background: #3b82f6; }
-    .rm-tl-bar.b4 { left: 22%; width: 36%; background: #f97316; }
-    .rm-tl-mark { position: absolute; top: 0; font-size: 8px; color: #94a3b8; font-weight: 600; }
+    .tp-tile-lbl { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+    .tp-tile-val { font-size: 18px; font-weight: 800; color: #0f1f3d; line-height: 1; letter-spacing: -0.02em; }
+    .tp-tile-sub { font-size: 9.5px; color: #64748b; }
+    .tp-total {
+      margin-top: 4px;
+      background: linear-gradient(135deg, #0f1f3d, #1e3a8a); color: #fff;
+      border-radius: 10px; padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tp-total-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 0.1em; }
+    .tp-total-val { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+    .tp-total-sub { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+    /* Artifact 8.2 — KPI Monitoring: 3 large cards */
+    .kpi-row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .kpi-big {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .kpi-big.b1 { border-top: 3px solid #c8102e; }
+    .kpi-big.b2 { border-top: 3px solid #f59e0b; }
+    .kpi-big.b3 { border-top: 3px solid #10b981; }
+    .kpi-big-lbl { font-size: 9.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+    .kpi-big-val { font-size: 32px; font-weight: 800; line-height: 1; letter-spacing: -0.025em; color: #0f1f3d; }
+    .kpi-big-spark { width: 100%; height: 36px; margin-top: 2px; }
+    .kpi-big-foot { display: flex; align-items: center; justify-content: space-between; font-size: 9.5px; }
+    .kpi-big-target { color: #94a3b8; }
+    .kpi-big-delta  { font-weight: 700; }
+    .kpi-big-delta.bad { color: #c8102e; }
+    .kpi-big-delta.good{ color: #10b981; }
+
+    /* Artifact 8.3 — Decision card */
+    .dec-card {
+      background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+      border: 1.5px solid #6ee7b7; border-radius: 14px; padding: 22px 26px;
+      max-width: 540px; margin: 8px auto 0;
+    }
+    .dec-tag { display: inline-block; font-size: 10px; font-weight: 700; color: #047857; background: #dcfce7; padding: 4px 10px; border-radius: 999px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .dec-action { font-size: 18px; font-weight: 800; color: #0f1f3d; line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.015em; }
+    .dec-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .dec-metric { background: #fff; border: 1px solid #d1fae5; border-radius: 8px; padding: 8px 10px; }
+    .dec-metric-lbl { font-size: 8.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .dec-metric-val { font-size: 16px; font-weight: 800; color: #047857; line-height: 1; letter-spacing: -0.02em; }
+
+    /* Artifact 9.1 — EBITDA huge number + breakdown */
+    .ebt-hero {
+      text-align: center; margin: 8px 0 18px;
+    }
+    .ebt-num { font-size: 80px; font-weight: 800; color: #10b981; letter-spacing: -0.04em; line-height: 1; }
+    .ebt-cap { font-size: 13px; font-weight: 600; color: #475569; margin-top: 4px; }
+    .ebt-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .ebt-tile {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px;
+      text-align: center;
+    }
+    .ebt-tile.t1 { border-top: 3px solid #3b82f6; }
+    .ebt-tile.t2 { border-top: 3px solid #c8102e; }
+    .ebt-tile.t3 { border-top: 3px solid #10b981; }
+    .ebt-tile.t4 { border-top: 3px solid #f97316; }
+    .ebt-tile-val { font-size: 22px; font-weight: 800; color: #0f1f3d; line-height: 1; letter-spacing: -0.02em; }
+    .ebt-tile-name { font-size: 10px; font-weight: 600; color: #475569; margin-top: 4px; line-height: 1.25; }
+
+    /* Artifact 9.2 — Baseline before / after */
+    .bl-wrap { display: flex; align-items: center; justify-content: center; gap: 30px; padding: 24px 0; }
+    .bl-side { text-align: center; padding: 28px 36px; border-radius: 14px; }
+    .bl-side.before { background: #fef2f2; border: 2px solid #fecaca; }
+    .bl-side.after  { background: #ecfdf5; border: 2px solid #6ee7b7; }
+    .bl-num { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
+    .bl-num.before { color: #c8102e; }
+    .bl-num.after  { color: #10b981; }
+    .bl-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #475569; margin-top: 8px; }
+    .bl-arrow { font-size: 56px; color: #94a3b8; font-weight: 300; }
+    .bl-foot { text-align: center; font-size: 11px; color: #475569; margin-top: 4px; }
+    .bl-foot b { color: #c8102e; font-weight: 700; }
+
+    /* Artifact 9.3 — FTE Targets */
+    .fte-hero { text-align: center; margin: 4px 0 22px; }
+    .fte-num { font-size: 80px; font-weight: 800; color: #3b82f6; letter-spacing: -0.04em; line-height: 1; }
+    .fte-cap { font-size: 13px; font-weight: 600; color: #475569; margin-top: 4px; }
+    .fte-bar-wrap { padding: 0 24px; }
+    .fte-bar {
+      display: flex; height: 36px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;
+    }
+    .fte-seg { height: 100%; display: flex; align-items: center; padding: 0 12px; font-size: 11px; font-weight: 700; color: #fff; }
+    .fte-seg.move { background: #3b82f6; }
+    .fte-seg.keep { background: #f1f5f9; color: #475569; }
+    .fte-foot { display: flex; justify-content: space-between; font-size: 10px; color: #64748b; padding: 6px 0 0; }
+
+    /* Artifact 9.4 — Execution Plan timeline */
+    .ex-rows { display: flex; flex-direction: column; gap: 10px; }
+    .ex-row {
+      display: grid; grid-template-columns: 22px 1fr 220px 70px;
+      gap: 10px; align-items: center;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .ex-num { width: 22px; height: 22px; border-radius: 50%; background: #0f1f3d; color: #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+    .ex-info { min-width: 0; }
+    .ex-name { font-size: 11px; font-weight: 700; color: #0f1f3d; line-height: 1.2; }
+    .ex-meta { font-size: 9.5px; color: #94a3b8; margin-top: 2px; }
+    .ex-tl { position: relative; height: 18px; }
+    .ex-tl-track { position: absolute; left: 0; right: 0; top: 8px; height: 4px; background: #f1f5f9; border-radius: 9px; }
+    .ex-tl-fill  { position: absolute; top: 8px; height: 4px; border-radius: 9px; }
+    .ex-tl-mark  { position: absolute; top: -3px; font-size: 7.5px; color: #94a3b8; font-weight: 600; }
+    .ex-target { font-size: 14px; font-weight: 800; color: #10b981; text-align: right; }
   </style>
 </head>
 <body>
@@ -893,7 +973,7 @@
     </div>
   </div>
 
-  <!-- ─── Slide 8: The Outcome — three sequential artifacts ─── -->
+  <!-- ─── Slide 8: The Outcome — three sequential full-size artifacts ─── -->
   <div class="slide split" id="s8">
     <div class="slide-text">
       <div class="label">The Outcome</div>
@@ -905,69 +985,134 @@
       <div class="mk-shell mk" style="--d:.4s">
         <div class="mk-appbar">
           <div class="mk-appbar-title">Outcome · what changes for the operator</div>
-          <div class="mk-live"><div class="mk-live-dot"></div> 3 outcomes · live across the chain</div>
+          <div class="mk-live"><div class="mk-live-dot"></div> 3 outcomes</div>
         </div>
-        <div class="oc-stack">
-          <!-- KW1: Better transparency -->
-          <div class="oc-card kw1 mk" style="--d:.7s">
-            <div>
-              <div class="oc-kw">1 · Better</div>
-              <div class="oc-name">Transparency</div>
-            </div>
-            <div class="oc-art">
-              <div class="tp-pills">
-                <span class="tp-pill">GL · Trial Balance</span>
-                <span class="tp-pill">HRIS · 4,180 FTE</span>
-                <span class="tp-pill">Vendor POs · 12.6K</span>
-                <span class="tp-pill">SOPs · 355</span>
-                <span class="tp-pill">9 Regions</span>
-                <span class="tp-pill tp-total">$1.8B SG&amp;A visible · activity-level</span>
+        <div class="seq-stack">
+          <!-- ARTIFACT 1 of 3 — Better Transparency -->
+          <div class="seq-layer l1">
+            <div class="seq-step">1 of 3 · The Outcome</div>
+            <div class="seq-headline">Better <span class="accent">Transparency</span></div>
+            <div class="seq-body">
+              <div class="tp-grid">
+                <div class="tp-tile">
+                  <div class="tp-tile-lbl">GL &amp; Trial Balance</div>
+                  <div class="tp-tile-val">$1.8B</div>
+                  <div class="tp-tile-sub">classified to function · activity</div>
+                </div>
+                <div class="tp-tile">
+                  <div class="tp-tile-lbl">HRIS Census</div>
+                  <div class="tp-tile-val">4,180</div>
+                  <div class="tp-tile-sub">indirect FTE · 9 regions</div>
+                </div>
+                <div class="tp-tile">
+                  <div class="tp-tile-lbl">Vendor POs</div>
+                  <div class="tp-tile-val">12,600</div>
+                  <div class="tp-tile-sub">enriched against activity grid</div>
+                </div>
+                <div class="tp-tile">
+                  <div class="tp-tile-lbl">SOPs Scanned</div>
+                  <div class="tp-tile-val">355</div>
+                  <div class="tp-tile-sub">activity drivers inferred</div>
+                </div>
+                <div class="tp-tile">
+                  <div class="tp-tile-lbl">Activities Found</div>
+                  <div class="tp-tile-val">218</div>
+                  <div class="tp-tile-sub">across 11 SG&amp;A functions</div>
+                </div>
+                <div class="tp-tile">
+                  <div class="tp-tile-lbl">Drivers Inferred</div>
+                  <div class="tp-tile-val">9</div>
+                  <div class="tp-tile-sub">contracts, briefs, accts…</div>
+                </div>
+              </div>
+              <div class="tp-total">
+                <div>
+                  <div class="tp-total-lbl">Total Visible</div>
+                  <div class="tp-total-sub">activity-level cost shadow per customer · per region · per function</div>
+                </div>
+                <div class="tp-total-val">$1.8B</div>
               </div>
             </div>
           </div>
-          <!-- KW2: Sharper KPI monitoring -->
-          <div class="oc-card kw2 mk" style="--d:2.6s">
-            <div>
-              <div class="oc-kw">2 · Sharper</div>
-              <div class="oc-name">KPI Monitoring</div>
-            </div>
-            <div class="oc-art">
-              <div class="kpi-mini" style="flex:1">
-                <div class="kpi-mc">
-                  <div class="kpi-mc-lbl">SG&amp;A % NS</div>
-                  <div class="kpi-mc-row">
-                    <div class="kpi-mc-val" style="color:#c8102e">11.2%</div>
-                    <svg class="kpi-mc-spark" viewBox="0 0 50 16"><polyline fill="none" stroke="#c8102e" stroke-width="1.4" points="0,4 8,5 16,3 24,7 32,9 40,11 50,13"/></svg>
+
+          <!-- ARTIFACT 2 of 3 — Sharper KPI Monitoring -->
+          <div class="seq-layer l2">
+            <div class="seq-step">2 of 3 · The Outcome</div>
+            <div class="seq-headline">Sharper <span class="accent">KPI Monitoring</span></div>
+            <div class="seq-body">
+              <div class="kpi-row3">
+                <div class="kpi-big b1">
+                  <div class="kpi-big-lbl">SG&amp;A % of Net Sales</div>
+                  <div class="kpi-big-val" style="color:#c8102e">11.2%</div>
+                  <svg class="kpi-big-spark" viewBox="0 0 100 36" preserveAspectRatio="none">
+                    <polyline fill="none" stroke="#c8102e" stroke-width="2" points="0,8 14,10 28,7 42,14 56,18 70,23 84,27 100,30" />
+                    <line x1="0" y1="22" x2="100" y2="22" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" />
+                  </svg>
+                  <div class="kpi-big-foot">
+                    <span class="kpi-big-target">target 9.0%</span>
+                    <span class="kpi-big-delta bad">+2.2 pp</span>
                   </div>
                 </div>
-                <div class="kpi-mc">
-                  <div class="kpi-mc-lbl">Consulting</div>
-                  <div class="kpi-mc-row">
-                    <div class="kpi-mc-val" style="color:#f59e0b">$150M</div>
-                    <svg class="kpi-mc-spark" viewBox="0 0 50 16"><polyline fill="none" stroke="#f59e0b" stroke-width="1.4" points="0,12 8,11 16,9 24,8 32,6 40,4 50,3"/></svg>
+                <div class="kpi-big b2">
+                  <div class="kpi-big-lbl">Consulting &amp; Outside Svcs</div>
+                  <div class="kpi-big-val" style="color:#f59e0b">$150M</div>
+                  <svg class="kpi-big-spark" viewBox="0 0 100 36" preserveAspectRatio="none">
+                    <polyline fill="none" stroke="#f59e0b" stroke-width="2" points="0,28 14,26 28,22 42,18 56,14 70,11 84,7 100,5" />
+                    <line x1="0" y1="20" x2="100" y2="20" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" />
+                  </svg>
+                  <div class="kpi-big-foot">
+                    <span class="kpi-big-target">target $100M</span>
+                    <span class="kpi-big-delta bad">+$50M YTD</span>
                   </div>
                 </div>
-                <div class="kpi-mc">
-                  <div class="kpi-mc-lbl">AI Rate</div>
-                  <div class="kpi-mc-row">
-                    <div class="kpi-mc-val" style="color:#10b981">22%</div>
-                    <svg class="kpi-mc-spark" viewBox="0 0 50 16"><polyline fill="none" stroke="#10b981" stroke-width="1.4" points="0,14 8,12 16,10 24,9 32,7 40,5 50,3"/></svg>
+                <div class="kpi-big b3">
+                  <div class="kpi-big-lbl">AI Automation Rate</div>
+                  <div class="kpi-big-val" style="color:#10b981">22%</div>
+                  <svg class="kpi-big-spark" viewBox="0 0 100 36" preserveAspectRatio="none">
+                    <polyline fill="none" stroke="#10b981" stroke-width="2" points="0,32 14,30 28,26 42,22 56,18 70,14 84,10 100,6" />
+                    <line x1="0" y1="6" x2="100" y2="6" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" />
+                  </svg>
+                  <div class="kpi-big-foot">
+                    <span class="kpi-big-target">target 60%</span>
+                    <span class="kpi-big-delta good">+4 pp vs LY</span>
                   </div>
                 </div>
               </div>
+              <div style="text-align:center; font-size:11px; color:#64748b; margin-top:14px;">
+                Live KPIs refresh nightly · drift triggers an alert into the agent inbox
+              </div>
             </div>
           </div>
-          <!-- KW3: Faster, more informed decisions -->
-          <div class="oc-card kw3 mk" style="--d:5.0s">
-            <div>
-              <div class="oc-kw">3 · Faster</div>
-              <div class="oc-name"><span class="oc-accent">Decisions</span></div>
-            </div>
-            <div class="oc-art">
-              <div class="dc-card">
-                <div class="dc-tag">⚡ AI ZBO Recommendation</div>
-                <div class="dc-act">In-source HR + IT advisory · stand up internal AI agent pool</div>
-                <div class="dc-meta">88% confidence · <b>$55M</b> run-rate · $8.0M invest · 9 months · D. Chen owns</div>
+
+          <!-- ARTIFACT 3 of 3 — Faster Decisions -->
+          <div class="seq-layer l3">
+            <div class="seq-step">3 of 3 · The Outcome</div>
+            <div class="seq-headline">Faster <span class="accent">Decisions</span></div>
+            <div class="seq-body">
+              <div class="dec-card">
+                <div class="dec-tag">⚡ AI ZBO Recommendation · sized + signed off</div>
+                <div class="dec-action">In-source HR + IT advisory — stand up internal AI agent pool covering analyst, SOP and content scopes.</div>
+                <div class="dec-metrics">
+                  <div class="dec-metric">
+                    <div class="dec-metric-lbl">Run-rate</div>
+                    <div class="dec-metric-val">$55M</div>
+                  </div>
+                  <div class="dec-metric">
+                    <div class="dec-metric-lbl">Invest</div>
+                    <div class="dec-metric-val">$8.0M</div>
+                  </div>
+                  <div class="dec-metric">
+                    <div class="dec-metric-lbl">Confidence</div>
+                    <div class="dec-metric-val">88%</div>
+                  </div>
+                  <div class="dec-metric">
+                    <div class="dec-metric-lbl">Stand-up</div>
+                    <div class="dec-metric-val">9 mo</div>
+                  </div>
+                </div>
+                <div style="font-size:10.5px; color:#475569; margin-top:12px;">
+                  Owner <b style="color:#0f1f3d">D. Chen</b> · sized from a $24M HR + $25M IT advisory pool · validated against the activity grid + AI-suitability score.
+                </div>
               </div>
             </div>
           </div>
@@ -976,7 +1121,7 @@
     </div>
   </div>
 
-  <!-- ─── Slide 9: Roadmap — four sequential keyword artifacts ─── -->
+  <!-- ─── Slide 9: Roadmap — four sequential full-size artifacts ─── -->
   <div class="slide split" id="s9">
     <div class="slide-text">
       <div class="label">The Deliverable</div>
@@ -988,66 +1133,144 @@
       <div class="mk-shell mk" style="--d:.4s">
         <div class="mk-appbar">
           <div class="mk-appbar-title">Improvement Roadmap · NorthStar FY26</div>
-          <div class="mk-live"><div class="mk-live-dot"></div> $210M committed · 4 initiatives</div>
+          <div class="mk-live"><div class="mk-live-dot"></div> 4 deliverables</div>
         </div>
-        <div class="rm-stack">
-          <!-- KW1: Sized EBITDA -->
-          <div class="rm-card k1 mk" style="--d:.7s">
-            <div class="rm-kw">1 · Sized</div>
-            <div class="rm-headline green">~$210M</div>
-            <div class="rm-detail">
-              EBITDA opportunity · 4 initiatives sized bottom-up<br>
-              <b style="color:#10b981">$55M</b> consulting in-sourcing · <b style="color:#10b981">$80M</b> regional convergence · <b style="color:#10b981">$14M</b> Legal AI · <b style="color:#10b981">$50M</b> marketing
-            </div>
-          </div>
-          <!-- KW2: New baseline -->
-          <div class="rm-card k2 mk" style="--d:2.4s">
-            <div class="rm-kw">2 · New</div>
-            <div class="rm-headline">Baseline</div>
-            <div class="rm-ba" style="margin-top:6px">
-              <div class="rm-ba-side before">
-                <div class="rm-ba-num before">11.2%</div>
-                <div class="rm-ba-lbl">today</div>
+        <div class="seq-stack">
+          <!-- ARTIFACT 1 of 4 — Sized EBITDA -->
+          <div class="seq-layer l1">
+            <div class="seq-step">1 of 4 · The Deliverable</div>
+            <div class="seq-headline">Sized <span class="green">EBITDA</span></div>
+            <div class="seq-body">
+              <div class="ebt-hero">
+                <div class="ebt-num">~$210M</div>
+                <div class="ebt-cap">EBITDA opportunity · 4 initiatives sized bottom-up</div>
               </div>
-              <div class="rm-ba-arrow">→</div>
-              <div class="rm-ba-side after">
-                <div class="rm-ba-num after">9.0%</div>
-                <div class="rm-ba-lbl">FY26 target</div>
+              <div class="ebt-grid">
+                <div class="ebt-tile t1">
+                  <div class="ebt-tile-val">$55M</div>
+                  <div class="ebt-tile-name">Consulting<br>in-sourcing</div>
+                </div>
+                <div class="ebt-tile t2">
+                  <div class="ebt-tile-val">$80M</div>
+                  <div class="ebt-tile-name">Regional<br>convergence</div>
+                </div>
+                <div class="ebt-tile t3">
+                  <div class="ebt-tile-val">$14M</div>
+                  <div class="ebt-tile-name">Legal<br>AI review</div>
+                </div>
+                <div class="ebt-tile t4">
+                  <div class="ebt-tile-val">$50M</div>
+                  <div class="ebt-tile-name">Marketing<br>workflow</div>
+                </div>
               </div>
             </div>
-            <div class="rm-detail" style="margin-top:6px">SG&amp;A as % of net sales · re-baselined post programme</div>
           </div>
-          <!-- KW3: FTE targets -->
-          <div class="rm-card k3 mk" style="--d:4.1s">
-            <div class="rm-kw">3 · FTE</div>
-            <div class="rm-headline blue">Targets</div>
-            <div class="rm-detail" style="margin:6px 0 4px">
-              <b style="color:#3b82f6">360 FTE</b> redeployed · <b>~9%</b> of indirect base
+
+          <!-- ARTIFACT 2 of 4 — New Baseline -->
+          <div class="seq-layer l2">
+            <div class="seq-step">2 of 4 · The Deliverable</div>
+            <div class="seq-headline">New <span class="accent">Baseline</span></div>
+            <div class="seq-body">
+              <div class="bl-wrap">
+                <div class="bl-side before">
+                  <div class="bl-num before">11.2%</div>
+                  <div class="bl-lbl">today</div>
+                </div>
+                <div class="bl-arrow">→</div>
+                <div class="bl-side after">
+                  <div class="bl-num after">9.0%</div>
+                  <div class="bl-lbl">FY26 target</div>
+                </div>
+              </div>
+              <div class="bl-foot">SG&amp;A as % of net sales · re-baselined post programme · <b>−2.2 pp</b> structural take-down</div>
             </div>
-            <div class="rm-fte-bar">
-              <div class="rm-fte-seg rm-fte-redep" style="width:9%">360</div>
-              <div class="rm-fte-seg rm-fte-rem" style="width:91%">3,820 retained — higher-leverage work</div>
-            </div>
-            <div class="rm-detail" style="margin-top:6px;font-size:9px">Capacity moves from analyst &amp; SOP work to judgment-driven scopes</div>
           </div>
-          <!-- KW4: Execution plan -->
-          <div class="rm-card k4 mk" style="--d:5.8s">
-            <div class="rm-kw">4 · Execution</div>
-            <div class="rm-headline purp">Plan</div>
-            <div class="rm-detail" style="margin:6px 0 6px"><b>4 owners</b> · <b>5–18 months</b> per initiative · tied to impact</div>
-            <div class="rm-tl">
-              <div class="rm-tl-track"></div>
-              <div class="rm-tl-bar b1"></div>
-              <div class="rm-tl-bar b2"></div>
-              <div class="rm-tl-bar b3"></div>
-              <div class="rm-tl-bar b4"></div>
-              <div class="rm-tl-mark" style="left:0%;top:0">Now</div>
-              <div class="rm-tl-mark" style="left:46%;top:0">Q3-26</div>
-              <div class="rm-tl-mark" style="right:0;top:0">FY27</div>
-              <div class="rm-tl-mark" style="left:0%;top:18px;color:#10b981">Legal AI</div>
-              <div class="rm-tl-mark" style="left:32%;top:18px;color:#3b82f6">HR/IT</div>
-              <div class="rm-tl-mark" style="left:62%;top:18px;color:#f97316">Marketing</div>
-              <div class="rm-tl-mark" style="right:2%;top:18px;color:#c8102e">Convergence</div>
+
+          <!-- ARTIFACT 3 of 4 — FTE Targets -->
+          <div class="seq-layer l3">
+            <div class="seq-step">3 of 4 · The Deliverable</div>
+            <div class="seq-headline">FTE <span class="blue">Targets</span></div>
+            <div class="seq-body">
+              <div class="fte-hero">
+                <div class="fte-num">360</div>
+                <div class="fte-cap">indirect FTE redeployed · ~9% of the 4,180 indirect base</div>
+              </div>
+              <div class="fte-bar-wrap">
+                <div class="fte-bar">
+                  <div class="fte-seg move" style="width:9%">360 redeploy</div>
+                  <div class="fte-seg keep" style="width:91%">3,820 retained — higher-leverage work</div>
+                </div>
+                <div class="fte-foot">
+                  <span>analyst &amp; SOP work taken by AI agent pool</span>
+                  <span>capacity moves to judgment-driven scopes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ARTIFACT 4 of 4 — Execution Plan -->
+          <div class="seq-layer l4">
+            <div class="seq-step">4 of 4 · The Deliverable</div>
+            <div class="seq-headline">Execution <span class="purp">Plan</span></div>
+            <div class="seq-body">
+              <div class="ex-rows">
+                <div class="ex-row">
+                  <div class="ex-num">1</div>
+                  <div class="ex-info">
+                    <div class="ex-name">Consulting In-Sourcing — HR + IT</div>
+                    <div class="ex-meta">D. Chen · 9 months · On Track</div>
+                  </div>
+                  <div class="ex-tl">
+                    <div class="ex-tl-track"></div>
+                    <div class="ex-tl-fill" style="left:0%;width:50%;background:#3b82f6"></div>
+                    <div class="ex-tl-mark" style="left:0%">Now</div>
+                    <div class="ex-tl-mark" style="left:48%">Q3-26</div>
+                  </div>
+                  <div class="ex-target">$55M</div>
+                </div>
+                <div class="ex-row">
+                  <div class="ex-num">2</div>
+                  <div class="ex-info">
+                    <div class="ex-name">Regional SG&amp;A Convergence to SEA</div>
+                    <div class="ex-meta">P. Nair · 18 months · At Risk</div>
+                  </div>
+                  <div class="ex-tl">
+                    <div class="ex-tl-track"></div>
+                    <div class="ex-tl-fill" style="left:0%;width:100%;background:#c8102e"></div>
+                    <div class="ex-tl-mark" style="left:0%">Now</div>
+                    <div class="ex-tl-mark" style="right:0%">FY27 H1</div>
+                  </div>
+                  <div class="ex-target">$80M</div>
+                </div>
+                <div class="ex-row">
+                  <div class="ex-num">3</div>
+                  <div class="ex-info">
+                    <div class="ex-name">AI First-Pass Contract Review</div>
+                    <div class="ex-meta">J. Walsh · 5 months · On Track</div>
+                  </div>
+                  <div class="ex-tl">
+                    <div class="ex-tl-track"></div>
+                    <div class="ex-tl-fill" style="left:0%;width:28%;background:#10b981"></div>
+                    <div class="ex-tl-mark" style="left:0%">Now</div>
+                    <div class="ex-tl-mark" style="left:25%">Q2-26</div>
+                  </div>
+                  <div class="ex-target">$14M</div>
+                </div>
+                <div class="ex-row">
+                  <div class="ex-num">4</div>
+                  <div class="ex-info">
+                    <div class="ex-name">Marketing Workflow Consolidation</div>
+                    <div class="ex-meta">M. Rivera · 6 months · At Risk</div>
+                  </div>
+                  <div class="ex-tl">
+                    <div class="ex-tl-track"></div>
+                    <div class="ex-tl-fill" style="left:0%;width:34%;background:#f97316"></div>
+                    <div class="ex-tl-mark" style="left:0%">Now</div>
+                    <div class="ex-tl-mark" style="left:31%">Q2-26</div>
+                  </div>
+                  <div class="ex-target">$50M</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1166,20 +1389,13 @@ document.addEventListener('keydown', e => {
   const colorFor = (v) => v >= 75 ? "#10b981" : v >= 60 ? "#3b82f6" : v >= 40 ? "#f59e0b" : "#ef4444";
   const ball = (v) => {
     const c = colorFor(v);
-    const dash = `${v},100`;
-    return `<div class="hb-cell"><div class="hb-circle">
-      <svg viewBox="0 0 36 36" width="28" height="28">
-        <circle class="hb-ring-bg" cx="18" cy="18" r="15"></circle>
-        <circle class="hb-ring-fg" cx="18" cy="18" r="15" stroke="${c}" stroke-dasharray="${dash}" pathLength="100"></circle>
-      </svg>
-      <div class="hb-num" style="color:${c}">${v}</div>
-    </div></div>`;
+    return `<td class="hb-cell"><div class="hb-circle" style="--p:${v};--c:${c}"><div class="hb-num" style="color:${c}">${v}</div></div></td>`;
   };
   const body = document.getElementById('hb-body');
   if (!body) return;
   body.innerHTML = HB_ROWS.map((r, i) => {
     const cells = r.scores.map(ball).join('');
-    return `<tr class="mk" style="--d:${(0.75 + i * 0.13).toFixed(2)}s">
+    return `<tr class="mk" style="--d:${(0.75 + i * 0.14).toFixed(2)}s">
       <td><div class="hb-sub-name">${r.name}</div><div class="hb-sub-meta">${r.meta}</div></td>
       ${cells}
       <td class="hb-cell"><span class="hb-score-pill">${r.score}</span></td>
