@@ -16,8 +16,8 @@ const DIAGNOSTIC_APP_TYPES = {
   "dashboard":    { label: "Dashboard",    badge: "bg-rose-50 text-rose-700 border-rose-100",       icon: "Grid" },
 };
 
-// Methodology lifecycle: Data → Taxonomy → Cost Allocation →
-// Opportunities → Initiatives → Reporting.
+// Methodology lifecycle: Data → Taxonomy → Profitability →
+// Clean-sheet → Initiatives.
 const DIAGNOSTIC_TASK_GROUPS = [
   { name: "Data Foundation", tasks: [
     { id: "file_manager",   label: "File Manager",                   appType: "artifact",     icon: "Package",  badge: "2", description: "Ingest TB, GL, vendor, census, and operating data files." },
@@ -29,23 +29,19 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "process_mapping",  label: "Process Mapping",            appType: "artifact", icon: "Layers",   description: "End-to-end value chain — visually shape the map in natural language." },
     { id: "activity_mapping", label: "Activity & Driver Mapping",  appType: "dashboard", icon: "Activity", description: "Bottom-up discovery of activities and drivers from real records — vendor lines, HRIS, SOPs." },
   ]},
-  { name: "Cost Allocation", tasks: [
+  { name: "Transparency on True Profitability", tasks: [
     { id: "cost_classification",       label: "Cost Classification",         appType: "dashboard", icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
     { id: "cost_driver",                label: "Cost Driver Analysis",        appType: "artifact",  icon: "Activity",    description: "Pick a driver. See how one unit ripples through every function — cost shadow + region comparison." },
     { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
   ]},
-  { name: "Levers Identification", tasks: [
+  { name: "Clean-sheet the Core", tasks: [
     { id: "redesign_opps",   label: "AI-VSM", appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
     { id: "margin_leakage",  label: "Margin Leakage Detection",            appType: "chat",     icon: "AlertTriangle", description: "AI-surfaced leakage from estimating, pricing, rework, scoping." },
     { id: "anomaly_redflag", label: "Anomaly & Red-Flag Spend",            appType: "chat",     icon: "Shield",         description: "Anomalies and red-flag spend identified with A&M experts." },
   ]},
-  { name: "PMO & Initiative Sizing", tasks: [
+  { name: "Improvement Initiatives and Roadmap", tasks: [
     { id: "initiative_sizing", label: "Initiative Sizing & Business Case", appType: "artifact",     icon: "Calculator", description: "Quantified savings tied to productivity, cycle time, margin, scalability." },
     { id: "pmo_tracker",       label: "AI PMO Tracker",                     appType: "list-builder", icon: "Grid",        description: "Initiative pipeline with status, owner, savings, and progress." },
-  ]},
-  { name: "Cost Transparency & Reporting", tasks: [
-    { id: "cost_reporting", label: "Repeatable Cost Reporting", appType: "artifact", icon: "BarChart3",     description: "Repeatable reporting templates and dashboards." },
-    { id: "project_chat",   label: "Project Chat",               appType: "chat",     icon: "MessageSquare", description: "Free-form project conversation across all artifacts." },
   ]},
 ];
 
