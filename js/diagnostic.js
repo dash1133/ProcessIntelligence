@@ -33,13 +33,13 @@ const DIAGNOSTIC_TASK_GROUPS = [
     { id: "cost_classification",       label: "Cost Classification",         appType: "dashboard", icon: "Calculator",  description: "Every line item classified Non-discretionary / Discretionary / Strategic — AI-suggested with consultant sign-off + reason." },
     { id: "cost_driver",                label: "Cost Driver Analysis",        appType: "artifact",  icon: "Activity",    description: "Pick a driver. See how one unit ripples through every function — cost shadow + region comparison." },
     { id: "opportunity_prioritization", label: "Opportunity Prioritization",  appType: "artifact",  icon: "Target",      description: "Distil 200+ activities into a shortlist of 5–10 priority zones using cost · variance · discretionary share · owner type." },
+    { id: "margin_leakage",            label: "Margin Leakage Detection",    appType: "chat",      icon: "AlertTriangle", description: "AI-surfaced leakage from estimating, pricing, rework, scoping." },
+    { id: "anomaly_redflag",           label: "Anomaly & Red-Flag Spend",    appType: "chat",      icon: "Shield",         description: "Anomalies and red-flag spend identified with A&M experts." },
   ]},
   { name: "Clean-sheet the Core", tasks: [
     { id: "redesign_opps",       label: "AI-VSM",                              appType: "artifact", icon: "Target",        description: "Curated opportunities across redesign, automation, and AI." },
     { id: "clean_sheet_om",      label: "Clean-sheet Operating Model",         appType: "artifact", icon: "Layers",        description: "Operating-model redesign per priority zone — principles, spans & layers, decision rights, governance." },
     { id: "clean_sheet_org",     label: "Clean-sheet Org Chart",               appType: "artifact", icon: "Users",          description: "Layer-by-layer headcount redesign — current vs clean-sheet by function, with span-of-control and role mix." },
-    { id: "margin_leakage",      label: "Margin Leakage Detection",            appType: "chat",     icon: "AlertTriangle", description: "AI-surfaced leakage from estimating, pricing, rework, scoping." },
-    { id: "anomaly_redflag",     label: "Anomaly & Red-Flag Spend",            appType: "chat",     icon: "Shield",         description: "Anomalies and red-flag spend identified with A&M experts." },
   ]},
   { name: "Improvement Initiatives and Roadmap", tasks: [
     { id: "initiative_sizing", label: "Initiative Sizing & Business Case", appType: "artifact",     icon: "Calculator", description: "Quantified savings tied to productivity, cycle time, margin, scalability." },
