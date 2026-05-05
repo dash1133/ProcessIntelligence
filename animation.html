@@ -45,7 +45,7 @@
     }
     .slide.active .headline { opacity: 1; transform: none; }
 
-    .accent { color: #c8102e; }
+    .accent { color: #1d4ed8; }
 
     .sub {
       margin-top: 28px; font-size: 22px; font-weight: 400;
@@ -56,28 +56,28 @@
     .slide.active .sub { opacity: 1; transform: none; }
 
     .divider {
-      width: 0; height: 3px; background: #c8102e;
+      width: 0; height: 3px; background: #1d4ed8;
       margin: 32px auto 0; border-radius: 2px;
       transition: width 0.7s ease 0.5s;
     }
     .slide.active .divider { width: 64px; }
 
-    /* ═══ Split layout (slides 5-9) ═══ */
+    /* ═══ Split layout (slides 5-10) ═══ */
     .slide.split {
       flex-direction: row;
-      padding: 72px 56px 60px;
-      gap: 52px;
+      padding: 96px 40px 52px 56px;
+      gap: 36px;
       align-items: center;
       justify-content: flex-start;
     }
     .slide.split .slide-text {
-      flex: 0 0 320px;
+      flex: 0 0 280px;
       display: flex; flex-direction: column; align-items: flex-start;
     }
-    .slide.split .label    { text-align: left; }
-    .slide.split .headline { text-align: left; font-size: 42px; }
-    .slide.split .sub      { text-align: left; font-size: 16px; margin-top: 18px; max-width: 300px; }
-    .slide.split .divider  { margin: 24px 0 0; }
+    .slide.split .label    { text-align: left; margin-bottom: 18px; }
+    .slide.split .headline { text-align: left; font-size: 38px; line-height: 1.18; }
+    .slide.split .sub      { text-align: left; font-size: 15px; margin-top: 16px; max-width: 280px; }
+    .slide.split .divider  { margin: 22px 0 0; }
     .slide-visual { flex: 1; min-width: 0; }
 
     /* ═══ Mockup system ═══ */
@@ -302,7 +302,7 @@
     .rm-val  { font-size: 22px; font-weight: 800; color: #0f1f3d; letter-spacing: -0.03em; line-height: 1; }
     .rm-lbl  { font-size: 10px; color: #64748b; font-weight: 500; margin-top: 4px; }
     .rm-val.green  { color: #10b981; }
-    .rm-val.red    { color: #c8102e; }
+    .rm-val.red    { color: #dc2626; }
     .rm-val.blue   { color: #3b82f6; }
     .rm-val.purple { color: #a855f7; }
 
@@ -338,11 +338,11 @@
     /* ═══ Chrome ═══ */
     #brand-bar {
       position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
-      background: linear-gradient(90deg, #0f1f3d 0%, #c8102e 100%); z-index: 5;
+      background: linear-gradient(90deg, #0f1f3d 0%, #1d4ed8 100%); z-index: 5;
     }
     #timeline {
       position: absolute; bottom: 6px; left: 0; height: 3px;
-      background: rgba(200,16,46,0.5); z-index: 6; width: 0;
+      background: rgba(29,78,216,0.5); z-index: 6; width: 0;
     }
     #logo { position: absolute; top: 24px; left: 48px; z-index: 10; }
     #logo img { height: 52px; width: auto; display: block; }
@@ -358,7 +358,7 @@
       width: 6px; height: 6px; border-radius: 50%; background: #e2e8f0;
       transition: background 0.3s, transform 0.3s; cursor: pointer;
     }
-    .dot.on { background: #c8102e; transform: scale(1.3); }
+    .dot.on { background: #1d4ed8; transform: scale(1.3); }
     #controls {
       position: absolute; top: 24px; right: 32px;
       display: flex; gap: 10px; z-index: 10;
@@ -370,7 +370,7 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn:hover { background: #0f1f3d; color: #fff; }
-    .btn.active-state { background: #c8102e; color: #fff; }
+    .btn.active-state { background: #1d4ed8; color: #fff; }
     #debug {
       display: none; position: absolute; top: 80px; left: 48px;
       background: rgba(15,31,61,0.85); color: #7dd3fc;
@@ -409,7 +409,7 @@
       font-size: 9px; font-weight: 600; color: #fff; }
     .pm-zoom-tag {
       position: absolute; top: 24px; right: 18px;
-      font-size: 9px; font-weight: 700; color: #c8102e;
+      font-size: 9px; font-weight: 700; color: #1d4ed8;
       background: #fef2f2; border: 1px solid #fecaca; padding: 3px 8px; border-radius: 999px;
       opacity: 0;
     }
@@ -456,7 +456,7 @@
     /* ─── Slide 7 NEW: Harvey Ball Sub-process Scoring ─── */
     #s7 .hb-wrap { padding: 14px 18px; }
     #s7 .hb-intro { font-size: 11px; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
-    .hb-intro .hb-tag { font-size: 9px; font-weight: 700; color: #c8102e; background: #fef2f2; border: 1px solid #fecaca; padding: 3px 9px; border-radius: 999px; }
+    .hb-intro .hb-tag { font-size: 9px; font-weight: 700; color: #1d4ed8; background: #fef2f2; border: 1px solid #fecaca; padding: 3px 9px; border-radius: 999px; }
     #s7 .hb-table { width: 100%; border-collapse: collapse; font-size: 10px; }
     #s7 .hb-table thead th {
       font-size: 8.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em;
@@ -514,7 +514,7 @@
     /* Common artifact frame */
     .seq-step { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
     .seq-headline { font-size: 30px; font-weight: 800; color: #0f1f3d; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 18px; }
-    .seq-headline .accent { color: #c8102e; }
+    .seq-headline .accent { color: #1d4ed8; }
     .seq-headline .green  { color: #10b981; }
     .seq-headline .blue   { color: #3b82f6; }
     .seq-headline .purp   { color: #a855f7; }
@@ -545,7 +545,7 @@
       background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;
       display: flex; flex-direction: column; gap: 6px;
     }
-    .kpi-big.b1 { border-top: 3px solid #c8102e; }
+    .kpi-big.b1 { border-top: 3px solid #dc2626; }
     .kpi-big.b2 { border-top: 3px solid #f59e0b; }
     .kpi-big.b3 { border-top: 3px solid #10b981; }
     .kpi-big-lbl { font-size: 9.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -554,7 +554,7 @@
     .kpi-big-foot { display: flex; align-items: center; justify-content: space-between; font-size: 9.5px; }
     .kpi-big-target { color: #94a3b8; }
     .kpi-big-delta  { font-weight: 700; }
-    .kpi-big-delta.bad { color: #c8102e; }
+    .kpi-big-delta.bad { color: #dc2626; }
     .kpi-big-delta.good{ color: #10b981; }
 
     /* Artifact 8.3 — Decision card */
@@ -582,7 +582,7 @@
       text-align: center;
     }
     .ebt-tile.t1 { border-top: 3px solid #3b82f6; }
-    .ebt-tile.t2 { border-top: 3px solid #c8102e; }
+    .ebt-tile.t2 { border-top: 3px solid #dc2626; }
     .ebt-tile.t3 { border-top: 3px solid #10b981; }
     .ebt-tile.t4 { border-top: 3px solid #f97316; }
     .ebt-tile-val { font-size: 22px; font-weight: 800; color: #0f1f3d; line-height: 1; letter-spacing: -0.02em; }
@@ -594,12 +594,12 @@
     .bl-side.before { background: #fef2f2; border: 2px solid #fecaca; }
     .bl-side.after  { background: #ecfdf5; border: 2px solid #6ee7b7; }
     .bl-num { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
-    .bl-num.before { color: #c8102e; }
+    .bl-num.before { color: #dc2626; }
     .bl-num.after  { color: #10b981; }
     .bl-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #475569; margin-top: 8px; }
     .bl-arrow { font-size: 56px; color: #94a3b8; font-weight: 300; }
     .bl-foot { text-align: center; font-size: 11px; color: #475569; margin-top: 4px; }
-    .bl-foot b { color: #c8102e; font-weight: 700; }
+    .bl-foot b { color: #dc2626; font-weight: 700; }
 
     /* Artifact 9.3 — FTE Targets */
     .fte-hero { text-align: center; margin: 4px 0 22px; }
@@ -654,11 +654,11 @@
     .slide.active .fw-card { animation: mkIn 0.55s ease var(--d, 0s) forwards; }
     .fw-card::before {
       content: ""; position: absolute; left: 0; top: 12px; bottom: 12px;
-      width: 3px; background: #c8102e; border-radius: 2px;
+      width: 3px; background: #1d4ed8; border-radius: 2px;
     }
     .fw-num {
       font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
-      color: #c8102e; text-transform: uppercase; margin-bottom: 10px;
+      color: #1d4ed8; text-transform: uppercase; margin-bottom: 10px;
     }
     .fw-num-big {
       position: absolute; right: 14px; top: 12px;
@@ -675,62 +675,62 @@
       font-size: 12px; color: #475569; line-height: 1.45; font-style: italic;
     }
     .fw-arrow {
-      align-self: center; color: #c8102e; font-size: 22px;
+      align-self: center; color: #1d4ed8; font-size: 22px;
       font-weight: 300; flex-shrink: 0; padding: 0 2px;
       opacity: 0;
     }
     .slide.active .fw-arrow { animation: mkIn 0.4s ease var(--d, 0s) forwards; }
 
-    /* ═══ Framework Breadcrumb (slides 5-9) ═══ */
-    .fw-rail {
-      display: flex; align-items: center;
-      width: 100%; max-width: 320px;
-      margin-bottom: 20px;
-      opacity: 0; transform: translateY(8px);
+    /* ═══ Framework Breadcrumb — top bar next to A&M logo (slides 6-10) ═══ */
+    .fw-topbar {
+      position: absolute; top: 38px; left: 200px; right: 440px;
+      display: flex; align-items: center; gap: 14px;
+      height: 28px; z-index: 9;
+      opacity: 0; transform: translateY(-4px);
       transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
     }
-    .slide.active .fw-rail { opacity: 1; transform: none; }
+    .slide.active .fw-topbar { opacity: 1; transform: none; }
+    .fw-rail-caption {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #64748b;
+      white-space: nowrap;
+    }
+    .fw-rail {
+      display: flex; align-items: center;
+      flex: 1; max-width: 360px;
+    }
     .fw-rail-step {
-      width: 24px; height: 24px; border-radius: 50%;
-      background: #f1f5f9; color: #94a3b8;
-      font-size: 11px; font-weight: 700;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: #eef2ff; color: #6b7a99;
+      font-size: 10.5px; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; border: 1.5px solid #e2e8f0;
+      flex-shrink: 0; border: 1.5px solid #c7d2fe;
       transition: all 0.3s ease;
     }
-    .fw-rail-step.done { background: #fff; color: #10b981; border-color: #6ee7b7; }
+    .fw-rail-step.done {
+      background: #fff; color: #1e40af; border-color: #93c5fd;
+    }
     .fw-rail-step.active {
-      background: #c8102e; color: #fff; border-color: #c8102e;
-      box-shadow: 0 0 0 4px rgba(200,16,46,0.14);
+      background: #1d4ed8; color: #fff; border-color: #1d4ed8;
+      box-shadow: 0 0 0 4px rgba(29,78,216,0.16);
     }
     .fw-rail-line {
       flex: 1; height: 2px; background: #e2e8f0;
     }
-    .fw-rail-line.done { background: #6ee7b7; }
-    .fw-rail-caption {
-      font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: #94a3b8;
-      margin-bottom: 8px; opacity: 0; transform: translateY(8px);
-      transition: opacity 0.5s ease 0.05s, transform 0.5s ease 0.05s;
-    }
-    .slide.active .fw-rail-caption { opacity: 1; transform: none; }
+    .fw-rail-line.done { background: #93c5fd; }
 
     /* ═══ Slide 4b: AI-ZBO Platform Showcase ═══ */
-    #s4b { padding: 50px 60px 28px; justify-content: flex-start; }
-    #s4b .label { margin-bottom: 14px; }
-    #s4b .headline { font-size: 32px; max-width: 980px; line-height: 1.22; }
-    #s4b .sub { font-size: 16px; max-width: 820px; margin-top: 14px; }
-    #s4b .divider { margin-top: 16px; }
+    #s4b .headline { font-size: 28px; line-height: 1.22; }
+    #s4b .sub { max-width: 280px; }
 
     .plat-mock {
-      width: 100%; max-width: 1160px;
-      margin-top: 22px;
+      width: 100%;
       background: #f5f7fa;
       border: 1px solid #d8dfe8;
       border-radius: 14px;
       box-shadow: 0 8px 32px rgba(15,31,61,0.14);
       overflow: hidden;
-      opacity: 0; transform: translateY(20px) scale(0.985);
+      opacity: 0; transform: translateY(20px) scale(0.99);
       transform-origin: top center;
       transition: opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s;
     }
@@ -818,7 +818,7 @@
     .plat-section-name { font-size: 11px; font-weight: 700; color: #0f1f3d; }
     .plat-section-count { font-size: 9.5px; font-weight: 600; color: #2563eb; }
     .plat-tasks {
-      display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 6px;
+      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px;
       margin-bottom: 4px;
     }
     .plat-task {
@@ -843,7 +843,7 @@
       font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 9px;
       flex-shrink: 0; letter-spacing: 0.02em;
     }
-    .plat-task-pill.dash { background: #fee2e2; color: #c8102e; }
+    .plat-task-pill.dash { background: #fee2e2; color: #dc2626; }
     .plat-task-pill.art  { background: #dcfce7; color: #15803d; }
     .plat-task-pill.list { background: #f3e8ff; color: #7c3aed; }
     .plat-task-pill.chat { background: #dbeafe; color: #2563eb; }
@@ -932,11 +932,14 @@
   </div>
 
   <!-- ─── Slide 4b: Platform Showcase ─── -->
-  <div class="slide" id="s4b">
-    <div class="label">The Platform</div>
-    <div class="headline">Engagement-ready <span class="accent">accelerators</span> &amp; orchestrated analyses.</div>
-    <div class="sub">Configured to each client's data, taxonomy, and ZBO objectives.</div>
-    <div class="divider"></div>
+  <div class="slide split" id="s4b">
+    <div class="slide-text">
+      <div class="label">The Platform</div>
+      <div class="headline"><span class="accent">AI-ZBO platform</span><br>provides engagement-ready accelerators &amp; orchestrated analyses.</div>
+      <div class="sub">Configured to each client's data, taxonomy, and ZBO objectives.</div>
+      <div class="divider"></div>
+    </div>
+    <div class="slide-visual">
     <div class="plat-mock">
       <!-- Top nav -->
       <div class="plat-nav">
@@ -1035,11 +1038,12 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ─── Slide 5: Transparency — Process Map → Activity Mapping ─── -->
   <div class="slide split" id="s5">
-    <div class="slide-text">
+    <div class="fw-topbar">
       <div class="fw-rail-caption">AI-ZBO Framework · 1 of 4</div>
       <div class="fw-rail">
         <div class="fw-rail-step active">1</div>
@@ -1050,6 +1054,8 @@
         <div class="fw-rail-line"></div>
         <div class="fw-rail-step">4</div>
       </div>
+    </div>
+    <div class="slide-text">
       <div class="label">Transparency on True Profitability</div>
       <div class="headline">Start with<br>transparency<br>on <span class="accent">true profitability.</span></div>
       <div class="sub">From the end-to-end process map down to the activity, driver, and unit-cost layer underneath it.</div>
@@ -1080,7 +1086,7 @@
               <div class="pm-sga-row"><div class="pm-sga-fn">Marketing</div><div class="pm-sga-bar" style="background:#f59e0b;width:78%">$295M · 820 FTE</div></div>
               <div class="pm-sga-row"><div class="pm-sga-fn">HR</div><div class="pm-sga-bar" style="background:#8b5cf6;width:74%">$280M · 510 FTE</div></div>
               <div class="pm-sga-row"><div class="pm-sga-fn">Finance</div><div class="pm-sga-bar" style="background:#10b981;width:45%">$170M · 460 FTE</div></div>
-              <div class="pm-sga-row"><div class="pm-sga-fn">Legal</div><div class="pm-sga-bar" style="background:#c8102e;width:14%">$46M · 312 FTE</div></div>
+              <div class="pm-sga-row"><div class="pm-sga-fn">Legal</div><div class="pm-sga-bar" style="background:#1d4ed8;width:14%">$46M · 312 FTE</div></div>
             </div>
             <div class="pm-zoom-tag">↳ drilling into Legal · activity layer</div>
           </div>
@@ -1102,7 +1108,7 @@
                   <div class="act-badge">$46M · 14 activities · 9 drivers</div>
                 </div>
                 <div class="act-row">
-                  <div class="act-fn-bar" style="background:#c8102e"></div>
+                  <div class="act-fn-bar" style="background:#1d4ed8"></div>
                   <div class="act-body">
                     <div class="act-fn-name">Vendor contract review</div>
                     <div class="act-fn-sub">Sub-fn: Contracts · 3,120 vendors · driver = vendor count</div>
@@ -1171,7 +1177,7 @@
 
   <!-- ─── Slide 6: Clean-Sheet — Classification + Cost Shadow Treemap ─── -->
   <div class="slide split" id="s6">
-    <div class="slide-text">
+    <div class="fw-topbar">
       <div class="fw-rail-caption">AI-ZBO Framework · 2 of 4</div>
       <div class="fw-rail">
         <div class="fw-rail-step done">1</div>
@@ -1182,6 +1188,8 @@
         <div class="fw-rail-line"></div>
         <div class="fw-rail-step">4</div>
       </div>
+    </div>
+    <div class="slide-text">
       <div class="label">Clean Sheet the Core</div>
       <div class="headline">We<br><span class="accent">clean-sheet<br>the core.</span></div>
       <div class="sub">Re-baseline the cost shadow per customer. Sort every dollar by what the business must spend, what it could cut, and what it should protect.</div>
@@ -1304,7 +1312,7 @@
 
   <!-- ─── Slide 7: Not AI Everywhere — Harvey Ball Sub-process Scoring ─── -->
   <div class="slide split" id="s7">
-    <div class="slide-text">
+    <div class="fw-topbar">
       <div class="fw-rail-caption">AI-ZBO Framework · 3 of 4</div>
       <div class="fw-rail">
         <div class="fw-rail-step done">1</div>
@@ -1315,6 +1323,8 @@
         <div class="fw-rail-line"></div>
         <div class="fw-rail-step">4</div>
       </div>
+    </div>
+    <div class="slide-text">
       <div class="label">Improvement Initiatives &amp; Strategic Investments</div>
       <div class="headline">Not<br><span class="accent">AI everywhere.</span></div>
       <div class="sub">Every sub-process scored on five criteria — margin impact, volume, data, error tolerance, adoption — before any recommendation.</div>
@@ -1355,7 +1365,7 @@
 
   <!-- ─── Slide 8: The Outcome — three sequential full-size artifacts ─── -->
   <div class="slide split" id="s8">
-    <div class="slide-text">
+    <div class="fw-topbar">
       <div class="fw-rail-caption">AI-ZBO Framework · 3 of 4</div>
       <div class="fw-rail">
         <div class="fw-rail-step done">1</div>
@@ -1366,6 +1376,8 @@
         <div class="fw-rail-line"></div>
         <div class="fw-rail-step">4</div>
       </div>
+    </div>
+    <div class="slide-text">
       <div class="label">Improvement Initiatives — The Outcome</div>
       <div class="headline">Cost structure<br><span class="accent">transformation</span> —<br>not just reduction.</div>
       <div class="sub">Better transparency · sharper KPI monitoring · faster, more informed decisions.</div>
@@ -1433,9 +1445,9 @@
               <div class="kpi-row3">
                 <div class="kpi-big b1">
                   <div class="kpi-big-lbl">SG&amp;A % of Net Sales</div>
-                  <div class="kpi-big-val" style="color:#c8102e">11.2%</div>
+                  <div class="kpi-big-val" style="color:#dc2626">11.2%</div>
                   <svg class="kpi-big-spark" viewBox="0 0 100 36" preserveAspectRatio="none">
-                    <polyline fill="none" stroke="#c8102e" stroke-width="2" points="0,8 14,10 28,7 42,14 56,18 70,23 84,27 100,30" />
+                    <polyline fill="none" stroke="#dc2626" stroke-width="2" points="0,8 14,10 28,7 42,14 56,18 70,23 84,27 100,30" />
                     <line x1="0" y1="22" x2="100" y2="22" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" />
                   </svg>
                   <div class="kpi-big-foot">
@@ -1513,7 +1525,7 @@
 
   <!-- ─── Slide 9: Roadmap — four sequential full-size artifacts ─── -->
   <div class="slide split" id="s9">
-    <div class="slide-text">
+    <div class="fw-topbar">
       <div class="fw-rail-caption">AI-ZBO Framework · 4 of 4</div>
       <div class="fw-rail">
         <div class="fw-rail-step done">1</div>
@@ -1524,6 +1536,8 @@
         <div class="fw-rail-line done"></div>
         <div class="fw-rail-step active">4</div>
       </div>
+    </div>
+    <div class="slide-text">
       <div class="label">Implementation Roadmap</div>
       <div class="headline">A quantified<br><span class="accent">improvement<br>roadmap.</span></div>
       <div class="sub">Sized EBITDA · New baseline · FTE targets · Execution plan tied to impact.</div>
@@ -1636,7 +1650,7 @@
                   </div>
                   <div class="ex-tl">
                     <div class="ex-tl-track"></div>
-                    <div class="ex-tl-fill" style="left:0%;width:100%;background:#c8102e"></div>
+                    <div class="ex-tl-fill" style="left:0%;width:100%;background:#dc2626"></div>
                     <div class="ex-tl-mark" style="left:0%">Now</div>
                     <div class="ex-tl-mark" style="right:0%">FY27 H1</div>
                   </div>
