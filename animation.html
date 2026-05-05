@@ -67,7 +67,7 @@
       flex-direction: row;
       padding: 96px 40px 52px 56px;
       gap: 36px;
-      align-items: center;
+      align-items: flex-start;
       justify-content: flex-start;
     }
     .slide.split .slide-text {
@@ -847,6 +847,163 @@
     .plat-task-pill.art  { background: #dcfce7; color: #15803d; }
     .plat-task-pill.list { background: #f3e8ff; color: #7c3aed; }
     .plat-task-pill.chat { background: #dbeafe; color: #2563eb; }
+
+    /* ═══ Slide 6 (id s5): Home → click → Activity & Driver Mapping discovery ═══ */
+    #s5 .adm-stack {
+      position: relative;
+      width: 100%;
+      height: 572px;
+    }
+    #s5 .adm-layer {
+      position: absolute; inset: 0;
+      opacity: 0;
+      display: flex; align-items: flex-start; justify-content: center;
+    }
+    #s5.active .adm-layer.adm-home   { animation: paIn 0.45s ease 0.3s forwards, paOut 0.7s ease 3.0s forwards; }
+    #s5.active .adm-layer.adm-detail-layer { animation: paIn 0.55s ease 3.5s forwards; }
+
+    /* Inside Layer 1, the plat-mock is already shown via the layer fade; cancel its own transition */
+    #s5 .adm-home .plat-mock {
+      opacity: 1 !important; transform: none !important; transition: none !important;
+      box-shadow: 0 6px 24px rgba(15,31,61,0.10);
+    }
+
+    /* Cursor + click-target overlays on Layer 1 */
+    #s5 .adm-cursor {
+      position: absolute;
+      width: 24px; height: 24px;
+      top: 80px; left: 700px;
+      pointer-events: none;
+      z-index: 6; opacity: 0;
+      filter: drop-shadow(0 2px 5px rgba(15,31,61,0.4));
+    }
+    #s5.active .adm-cursor {
+      animation:
+        admCursorIn   0.25s ease 0.7s forwards,
+        admCursorMove 1.6s  cubic-bezier(0.55, 0.05, 0.4, 1) 1.0s forwards,
+        admCursorOut  0.25s ease 3.05s forwards;
+    }
+    @keyframes admCursorIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes admCursorOut { from { opacity: 1; } to { opacity: 0; } }
+    @keyframes admCursorMove {
+      0%   { transform: translate(0, 0); }
+      85%  { transform: translate(-265px, 240px); }
+      92%  { transform: translate(-265px, 240px) scale(0.78); }
+      100% { transform: translate(-265px, 240px) scale(1); }
+    }
+
+    #s5 .adm-target-chip {
+      position: absolute;
+      top: 305px; left: 50%;
+      transform: translateX(-50%);
+      width: 280px; height: 36px;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 5; opacity: 0;
+    }
+    #s5.active .adm-target-chip {
+      animation:
+        admChipIn    0.18s ease 2.6s forwards,
+        admChipPulse 0.45s ease 2.78s forwards,
+        admChipOut   0.3s  ease 3.1s forwards;
+    }
+    @keyframes admChipIn    { from { opacity: 0; box-shadow: 0 0 0 0 rgba(29,78,216,0); } to { opacity: 1; border-color: #1d4ed8; box-shadow: 0 0 0 6px rgba(29,78,216,0.20); } }
+    @keyframes admChipPulse { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } 100% { transform: translateX(-50%) scale(1); } }
+    @keyframes admChipOut   { from { opacity: 1; } to { opacity: 0; } }
+
+    /* === Activity & Driver Mapping detail screen (Layer 2) === */
+    #s5 .adm-detail {
+      width: 100%;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      box-shadow: 0 8px 28px rgba(15,31,61,0.10);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    #s5 .adm-body { padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 10px; }
+    #s5 .adm-head { }
+    #s5 .adm-title { font-size: 14px; font-weight: 800; color: #0f1f3d; letter-spacing: -0.01em; }
+    #s5 .adm-subtitle { font-size: 9.5px; color: #64748b; margin-top: 3px; line-height: 1.4; }
+
+    #s5 .adm-tabs { display: flex; gap: 2px; border-bottom: 1px solid #e2e8f0; }
+    #s5 .adm-tab { padding: 6px 12px; font-size: 10px; font-weight: 600; color: #64748b; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    #s5 .adm-tab.active { color: #1d4ed8; border-bottom-color: #1d4ed8; font-weight: 700; }
+
+    #s5 .adm-main { display: grid; grid-template-columns: 130px 1fr; gap: 10px; }
+    #s5 .adm-sidebar { display: flex; flex-direction: column; gap: 4px; }
+    #s5 .adm-fn {
+      border: 1px solid #e2e8f0; border-radius: 7px;
+      padding: 6px 8px; background: #fff;
+      font-size: 10.5px; font-weight: 700; color: #0f1f3d;
+      line-height: 1.2;
+    }
+    #s5 .adm-fn span { display: block; font-size: 8.5px; font-weight: 500; color: #94a3b8; margin-top: 2px; }
+    #s5 .adm-fn.active { color: #1d4ed8; border-color: #1d4ed8; box-shadow: 0 0 0 1.5px #1d4ed8; }
+    #s5 .adm-fn.active span { color: #1d4ed8; opacity: 0.85; }
+
+    #s5 .adm-pane { background: #fff; border: 1px solid #e2e8f0; border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    #s5 .adm-pane-head { display: flex; justify-content: space-between; align-items: baseline; }
+    #s5 .adm-pane-title { font-size: 12px; font-weight: 800; color: #0f1f3d; }
+    #s5 .adm-pane-sub { font-size: 9.5px; color: #64748b; margin-top: 1px; }
+    #s5 .adm-pane-link { font-size: 9.5px; color: #1d4ed8; font-weight: 600; }
+
+    #s5 .adm-ss-row { display: flex; align-items: baseline; gap: 8px; font-size: 9.5px; margin-bottom: 4px; }
+    #s5 .adm-ss-row b { color: #0f1f3d; font-weight: 700; }
+    #s5 .adm-ss-row .muted { color: #94a3b8; flex: 1; }
+    #s5 .adm-ss-row .total { color: #475569; font-weight: 700; }
+    #s5 .adm-ss-bar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; }
+    #s5 .adm-ss-seg { display: flex; align-items: center; padding: 0 10px; font-size: 9.5px; font-weight: 700; color: #fff; }
+    #s5 .adm-ss-seg.labor    { background: #1d4ed8; flex: 76; }
+    #s5 .adm-ss-seg.nonlabor { background: #7c3aed; flex: 24; justify-content: flex-end; }
+
+    #s5 .adm-kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+    #s5 .adm-kpi {
+      padding: 7px 8px;
+      border: 1px solid #fde68a; border-radius: 7px;
+      background: #fffbeb;
+    }
+    #s5 .adm-kpi.labor    { background: #eff6ff; border-color: #bfdbfe; }
+    #s5 .adm-kpi.nonlabor { background: #f5f3ff; border-color: #ddd6fe; }
+    #s5 .adm-kpi-lbl { font-size: 8.5px; font-weight: 600; color: #64748b; margin-bottom: 3px; line-height: 1.1; }
+    #s5 .adm-kpi-val { font-size: 17px; font-weight: 800; color: #0f1f3d; line-height: 1; letter-spacing: -0.02em; }
+    #s5 .adm-kpi.labor    .adm-kpi-val { color: #1d4ed8; }
+    #s5 .adm-kpi.nonlabor .adm-kpi-val { color: #7c3aed; }
+    #s5 .adm-kpi-sub { font-size: 8.5px; color: #94a3b8; margin-top: 4px; line-height: 1.15; }
+
+    #s5 .adm-discovery {
+      background: #f0f7ff; border: 1px solid #cfe1ff; border-radius: 8px;
+      padding: 9px 10px;
+    }
+    #s5 .adm-disc-title {
+      font-size: 9px; font-weight: 800; letter-spacing: 0.14em;
+      color: #1d4ed8; text-transform: uppercase; margin-bottom: 6px;
+    }
+    #s5 .adm-disc-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+    #s5 .adm-disc-box {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 6px;
+      padding: 6px 8px;
+      display: flex; align-items: center; gap: 7px;
+      min-width: 0;
+    }
+    #s5 .adm-disc-icon {
+      width: 22px; height: 22px; border-radius: 5px;
+      background: #eff6ff; color: #1d4ed8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; flex-shrink: 0;
+    }
+    #s5 .adm-disc-content { min-width: 0; }
+    #s5 .adm-disc-lbl { font-size: 8px; font-weight: 600; color: #64748b; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #s5 .adm-disc-val { font-size: 16px; font-weight: 800; color: #0f1f3d; line-height: 1.05; letter-spacing: -0.01em; margin: 1px 0; }
+    #s5 .adm-disc-sub { font-size: 8px; color: #94a3b8; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    #s5 .adm-synth {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px;
+      padding: 7px 10px;
+      font-size: 9.5px; color: #475569; line-height: 1.5;
+    }
+    #s5 .adm-synth b { color: #0f1f3d; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -1041,7 +1198,7 @@
     </div>
   </div>
 
-  <!-- ─── Slide 5: Transparency — Process Map → Activity Mapping ─── -->
+  <!-- ─── Slide 6 (id s5): Home → click → Activity & Driver Mapping ─── -->
   <div class="slide split" id="s5">
     <div class="fw-topbar">
       <div class="fw-rail-caption">AI-ZBO Framework · 1 of 4</div>
@@ -1057,125 +1214,245 @@
     </div>
     <div class="slide-text">
       <div class="label">Transparency on True Profitability</div>
-      <div class="headline">Start with<br>transparency<br>on <span class="accent">true profitability.</span></div>
-      <div class="sub">From the end-to-end process map down to the activity, driver, and unit-cost layer underneath it.</div>
+      <div class="headline"><span class="accent">Bottom-up</span><br>discovery from<br>real records.</div>
+      <div class="sub">Activities and drivers built from vendor lines, HRIS, and SOPs — never imposed from a pre-baked taxonomy.</div>
       <div class="divider"></div>
     </div>
     <div class="slide-visual">
-      <div class="mk-shell mk" style="--d:.25s">
-        <div class="mk-appbar">
-          <div class="mk-appbar-title">Diagnostic · Process &amp; Activity Taxonomy</div>
-          <div class="mk-live"><div class="mk-live-dot"></div> drilling in…</div>
-        </div>
-        <div class="pa-stack">
-          <!-- Phase 1: Process map -->
-          <div class="pa-layer pm-layer">
-            <div class="pm-wrap">
-              <div class="pm-title">Process Mapping — End-to-end Value Chain</div>
-              <div class="pm-sub">5 operational stages · SG&amp;A engine running underneath every stage</div>
-              <div class="pm-chevs">
-                <div class="pm-chev c1">Agronomy</div>
-                <div class="pm-chev c2">Processing</div>
-                <div class="pm-chev c3">Packaging</div>
-                <div class="pm-chev c4">Cold-Chain</div>
-                <div class="pm-chev c5">Outbound</div>
+      <div class="adm-stack">
+
+        <!-- ─ Layer 1: Diagnostic home (anchor from slide 5), with cursor click ─ -->
+        <div class="adm-layer adm-home">
+          <div class="plat-mock">
+            <div class="plat-nav">
+              <div class="plat-logo">
+                <div class="plat-logo-mark">A&amp;M</div>
+                <div class="plat-logo-text">AI ZBO<span>BY COMOPS</span></div>
               </div>
-              <div class="pm-sga-title">SG&amp;A by function · spans every stage</div>
-              <div class="pm-sga-row"><div class="pm-sga-fn">Selling</div><div class="pm-sga-bar" style="background:#3b82f6;width:100%">$380M · 1,080 FTE</div></div>
-              <div class="pm-sga-row"><div class="pm-sga-fn">IT</div><div class="pm-sga-bar" style="background:#6366f1;width:82%">$310M · 620 FTE</div></div>
-              <div class="pm-sga-row"><div class="pm-sga-fn">Marketing</div><div class="pm-sga-bar" style="background:#f59e0b;width:78%">$295M · 820 FTE</div></div>
-              <div class="pm-sga-row"><div class="pm-sga-fn">HR</div><div class="pm-sga-bar" style="background:#8b5cf6;width:74%">$280M · 510 FTE</div></div>
-              <div class="pm-sga-row"><div class="pm-sga-fn">Finance</div><div class="pm-sga-bar" style="background:#10b981;width:45%">$170M · 460 FTE</div></div>
-              <div class="pm-sga-row"><div class="pm-sga-fn">Legal</div><div class="pm-sga-bar" style="background:#1d4ed8;width:14%">$46M · 312 FTE</div></div>
+              <div class="plat-bread">Diagnostic<span class="sep">›</span>AI ZBO<span class="sep">›</span><b>NorthStar Frozen Foods</b></div>
+              <div class="plat-pills">
+                <div class="plat-pill active">⚡ Diagnostic</div>
+                <div class="plat-pill">📊 KPI Monitoring</div>
+              </div>
+              <div class="plat-avatar">P</div>
+              <div class="plat-avatar-name">Priya Nair<span>A&amp;M ComOps</span></div>
             </div>
-            <div class="pm-zoom-tag">↳ drilling into Legal · activity layer</div>
-          </div>
-          <!-- Phase 2: Activity & Driver Mapping -->
-          <div class="pa-layer am-layer">
-            <div class="diag-wrap">
-              <div class="diag-nav">
-                <div class="dn-phase done">✓ Process Map</div>
-                <div class="dn-step">5 stages · 6 SG&amp;A bars</div>
-                <div class="dn-phase active">→ Activity &amp; Driver</div>
-                <div class="dn-step">218 activities · 9 drivers</div>
-                <div class="dn-phase" style="color:#cbd5e1">Cost Classification</div>
-                <div class="dn-phase" style="color:#cbd5e1">Levers ID</div>
-                <div class="dn-phase" style="color:#cbd5e1">PMO Sizing</div>
+            <div class="plat-header">
+              <div>
+                <div class="plat-h-title">NorthStar Frozen Foods</div>
+                <div class="plat-h-meta">
+                  <div class="plat-h-meta-cell"><b>Industry:</b>Frozen &amp; Prepared Foods</div>
+                  <div class="plat-h-meta-cell"><b>Sub Industry:</b>Multi-Region Manufacturing</div>
+                  <div class="plat-h-meta-cell"><b>Users:</b>12</div>
+                  <div class="plat-h-meta-cell"><b>Last Updated:</b>5/01/2026</div>
+                </div>
               </div>
-              <div class="diag-content">
-                <div class="act-header">
-                  <div class="act-title">Activity &amp; Driver Mapping — Legal · drilled-in view</div>
-                  <div class="act-badge">$46M · 14 activities · 9 drivers</div>
+              <div class="plat-h-btn">📦 Cost Optimization Files</div>
+            </div>
+            <div class="plat-body">
+              <div class="plat-agents">Agents</div>
+              <div class="plat-agent-chip">
+                <div class="plat-agent-mark">AI</div>
+                <div class="plat-agent-name">AI ZBO</div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Data Foundation</div>
+                  <div class="plat-section-count">4 tasks</div>
                 </div>
-                <div class="act-row">
-                  <div class="act-fn-bar" style="background:#1d4ed8"></div>
-                  <div class="act-body">
-                    <div class="act-fn-name">Vendor contract review</div>
-                    <div class="act-fn-sub">Sub-fn: Contracts · 3,120 vendors · driver = vendor count</div>
-                    <div class="act-meta">
-                      <span class="act-pill red">2.30× benchmark</span>
-                      <span class="act-pill blue">NA 5–6× UK unit cost</span>
-                    </div>
-                  </div>
-                  <div class="act-right">
-                    <div class="act-spend">$8.6M</div>
-                    <div class="act-driver">$2,756 / contract</div>
-                  </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">📁</div><div class="plat-task-name">File Manager</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">✦</div><div class="plat-task-name">AI Data Cleansing</div><div class="plat-task-pill chat">Chat</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Ontology</div><div class="plat-task-pill list">List</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">DRL Management</div><div class="plat-task-pill list">List</div></div>
                 </div>
-                <div class="act-row">
-                  <div class="act-fn-bar" style="background:#f97316"></div>
-                  <div class="act-body">
-                    <div class="act-fn-name">Litigation &amp; claims</div>
-                    <div class="act-fn-sub">Sub-fn: Disputes · 87 open matters · driver = matter count</div>
-                    <div class="act-meta">
-                      <span class="act-pill amber">labor-heavy</span>
-                      <span class="act-pill blue">judgment-driven</span>
-                    </div>
-                  </div>
-                  <div class="act-right">
-                    <div class="act-spend">$7.9M</div>
-                    <div class="act-driver">$90,805 / matter</div>
-                  </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Process &amp; Activity Taxonomy</div>
+                  <div class="plat-section-count">2 tasks</div>
                 </div>
-                <div class="act-row">
-                  <div class="act-fn-bar" style="background:#3b82f6"></div>
-                  <div class="act-body">
-                    <div class="act-fn-name">Compliance &amp; investigations</div>
-                    <div class="act-fn-sub">Sub-fn: Compliance · 22K headcount · driver = headcount</div>
-                    <div class="act-meta">
-                      <span class="act-pill red">GDPR · Food Safety</span>
-                      <span class="act-pill purple">statutory</span>
-                    </div>
-                  </div>
-                  <div class="act-right">
-                    <div class="act-spend">$5.6M</div>
-                    <div class="act-driver">$254 / employee</div>
-                  </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Process Mapping</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Activity &amp; Driver Mapping</div><div class="plat-task-pill dash">Dashboard</div></div>
                 </div>
-                <div class="act-row">
-                  <div class="act-fn-bar" style="background:#10b981"></div>
-                  <div class="act-body">
-                    <div class="act-fn-name">NDA execution</div>
-                    <div class="act-fn-sub">Sub-fn: Contracts · 412 prospects · driver = prospect count</div>
-                    <div class="act-meta">
-                      <span class="act-pill green">AI-replaceable in 30s</span>
-                      <span class="act-pill blue">SOP-driven</span>
-                    </div>
-                  </div>
-                  <div class="act-right">
-                    <div class="act-spend">$1.4M</div>
-                    <div class="act-driver">$3,398 / NDA</div>
-                  </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Transparency on True Profitability</div>
+                  <div class="plat-section-count">5 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Cost Classification</div><div class="plat-task-pill dash">Dashboard</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Cost Driver Analysis</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">Opportunity Prioritization</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">⚠</div><div class="plat-task-name">Margin Leakage Detection</div><div class="plat-task-pill chat">Chat</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">⛨</div><div class="plat-task-name">Anomaly &amp; Red-Flag Spend</div><div class="plat-task-pill chat">Chat</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Clean-sheet the Core</div>
+                  <div class="plat-section-count">3 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">AI-VSM</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Clean-sheet Operating Model</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◉</div><div class="plat-task-name">Clean-sheet Org Chart</div><div class="plat-task-pill art">Artifact</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Improvement Initiatives and Roadmap</div>
+                  <div class="plat-section-count">2 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Initiative Sizing &amp; Business Case</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">AI PMO Tracker</div><div class="plat-task-pill list">List</div></div>
                 </div>
               </div>
             </div>
           </div>
+          <!-- Click highlight overlay placed roughly over the Activity & Driver Mapping chip -->
+          <div class="adm-target-chip"></div>
+          <!-- Cursor SVG -->
+          <svg class="adm-cursor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 2 L3 18 L8 14 L11 21 L14 19.5 L11 12.5 L18 12 Z" fill="#0f1f3d" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
         </div>
+
+        <!-- ─ Layer 2: Activity & Driver Mapping — Bottom-up Discovery ─ -->
+        <div class="adm-layer adm-detail-layer">
+          <div class="adm-detail">
+            <div class="mk-appbar">
+              <div class="mk-appbar-title">Diagnostic · Process &amp; Activity Taxonomy · Activity &amp; Driver Mapping</div>
+              <div class="mk-live"><div class="mk-live-dot"></div> live</div>
+            </div>
+            <div class="adm-body">
+              <div class="adm-head">
+                <div class="adm-title">Activity &amp; Driver Mapping — Bottom-up Discovery</div>
+                <div class="adm-subtitle">Activities and drivers generated from real records (vendor lines, HRIS, SOPs) — never imposed from a pre-baked taxonomy</div>
+              </div>
+              <div class="adm-tabs">
+                <div class="adm-tab">Agronomy</div>
+                <div class="adm-tab">Processing</div>
+                <div class="adm-tab">Packaging</div>
+                <div class="adm-tab">Cold-Chain</div>
+                <div class="adm-tab">Outbound</div>
+                <div class="adm-tab active">SG&amp;A</div>
+              </div>
+              <div class="adm-main">
+                <div class="adm-sidebar">
+                  <div class="adm-fn">Selling<span>$380M · 1,080 FTE · 22 activities</span></div>
+                  <div class="adm-fn">IT<span>$310M · 620 FTE · 38 activities</span></div>
+                  <div class="adm-fn">Marketing &amp; Media<span>$295M · 820 FTE · 42 activities</span></div>
+                  <div class="adm-fn">HR<span>$280M · 510 FTE · 28 activities</span></div>
+                  <div class="adm-fn">Finance<span>$170M · 460 FTE · 24 activities</span></div>
+                  <div class="adm-fn active">Legal<span>$46.2M · 312 FTE · 14 activities</span></div>
+                </div>
+                <div class="adm-pane">
+                  <div class="adm-pane-head">
+                    <div>
+                      <div class="adm-pane-title">Legal — discovery synthesis</div>
+                      <div class="adm-pane-sub">1,247 vendor lines · 312 HRIS records · 84 SOPs · 16 cost centers</div>
+                    </div>
+                    <div class="adm-pane-link">last refreshed 4 min ago · Open list builder ↗</div>
+                  </div>
+                  <div>
+                    <div class="adm-ss-row">
+                      <b>Spend split</b>
+                      <span class="muted">labor vs non-labor on the same activity stack</span>
+                      <span class="total">Total $46.2M</span>
+                    </div>
+                    <div class="adm-ss-bar">
+                      <div class="adm-ss-seg labor">Labor · $35.1M · 76%</div>
+                      <div class="adm-ss-seg nonlabor">Non-labor · $11.1M · 24%</div>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-row">
+                    <div class="adm-kpi labor">
+                      <div class="adm-kpi-lbl">Labor spend</div>
+                      <div class="adm-kpi-val">$35.1M</div>
+                      <div class="adm-kpi-sub">76% of total · 312 FTE</div>
+                    </div>
+                    <div class="adm-kpi nonlabor">
+                      <div class="adm-kpi-lbl">Non-labor spend</div>
+                      <div class="adm-kpi-val">$11.1M</div>
+                      <div class="adm-kpi-sub">24% of total · 84 vendors</div>
+                    </div>
+                    <div class="adm-kpi">
+                      <div class="adm-kpi-lbl">Regional variance</div>
+                      <div class="adm-kpi-val"><span class="adm-count" data-target="5.2" data-suffix="x" data-decimals="1">0.0x</span></div>
+                      <div class="adm-kpi-sub">NA vs UK, per contract</div>
+                    </div>
+                    <div class="adm-kpi">
+                      <div class="adm-kpi-lbl">Activities found</div>
+                      <div class="adm-kpi-val"><span class="adm-count" data-target="14">0</span></div>
+                      <div class="adm-kpi-sub">3 low-confidence</div>
+                    </div>
+                    <div class="adm-kpi">
+                      <div class="adm-kpi-lbl">Drivers inferred</div>
+                      <div class="adm-kpi-val"><span class="adm-count" data-target="9">0</span></div>
+                      <div class="adm-kpi-sub">prospects, vendors, SKUs</div>
+                    </div>
+                  </div>
+                  <div class="adm-discovery">
+                    <div class="adm-disc-title">⚡ Discovery — built bottom-up from source records</div>
+                    <div class="adm-disc-row">
+                      <div class="adm-disc-box">
+                        <div class="adm-disc-icon">📦</div>
+                        <div class="adm-disc-content">
+                          <div class="adm-disc-lbl">Vendor records analyzed</div>
+                          <div class="adm-disc-val"><span class="adm-count" data-target="1247">0</span></div>
+                          <div class="adm-disc-sub">from vendor master</div>
+                        </div>
+                      </div>
+                      <div class="adm-disc-box">
+                        <div class="adm-disc-icon">✦</div>
+                        <div class="adm-disc-content">
+                          <div class="adm-disc-lbl">Vendors enriched</div>
+                          <div class="adm-disc-val"><span class="adm-count" data-target="84">0</span></div>
+                          <div class="adm-disc-sub">100% AI-classified</div>
+                        </div>
+                      </div>
+                      <div class="adm-disc-box">
+                        <div class="adm-disc-icon">👥</div>
+                        <div class="adm-disc-content">
+                          <div class="adm-disc-lbl">Job titles analyzed</div>
+                          <div class="adm-disc-val"><span class="adm-count" data-target="312">0</span></div>
+                          <div class="adm-disc-sub">from HRIS feed</div>
+                        </div>
+                      </div>
+                      <div class="adm-disc-box">
+                        <div class="adm-disc-icon">📄</div>
+                        <div class="adm-disc-content">
+                          <div class="adm-disc-lbl">SOPs scanned</div>
+                          <div class="adm-disc-val"><span class="adm-count" data-target="84">0</span></div>
+                          <div class="adm-disc-sub">policy + playbook</div>
+                        </div>
+                      </div>
+                      <div class="adm-disc-box">
+                        <div class="adm-disc-icon">▦</div>
+                        <div class="adm-disc-content">
+                          <div class="adm-disc-lbl">Cost centers reviewed</div>
+                          <div class="adm-disc-val"><span class="adm-count" data-target="16">0</span></div>
+                          <div class="adm-disc-sub">across 9 regions</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="adm-synth"><b>Synthesis:</b> 78% of activity volume is contract-related. Contract review sits in labor, not non-labor — the driver lens reveals where the cost actually lives.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- ─── Slide 6: Clean-Sheet — Classification + Cost Shadow Treemap ─── -->
+  <!-- ─── Slide 7 (id s6): Clean-Sheet — Classification + Cost Shadow Treemap ─── -->
   <div class="slide split" id="s6">
     <div class="fw-topbar">
       <div class="fw-rail-caption">AI-ZBO Framework · 2 of 4</div>
@@ -1735,6 +2012,38 @@ SLIDES.forEach((_, i) => {
 });
 function getDots() { return document.querySelectorAll('.dot'); }
 
+// ── Count-up animation (used by slide 6 / s5) ───────────────────────
+function animateCount(el, target, decimals, suffix, duration) {
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
+    const v = target * eased;
+    const formatted = decimals
+      ? v.toFixed(decimals)
+      : Math.round(v).toLocaleString();
+    el.textContent = formatted + (suffix || '');
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function resetS5Counts() {
+  document.querySelectorAll('#s5 .adm-count').forEach(el => {
+    const decimals = parseInt(el.dataset.decimals) || 0;
+    const suffix   = el.dataset.suffix || '';
+    el.textContent = (decimals ? (0).toFixed(decimals) : '0') + suffix;
+  });
+}
+function startS5Counts() {
+  document.querySelectorAll('#s5 .adm-count').forEach(el => {
+    const target   = parseFloat(el.dataset.target);
+    const decimals = parseInt(el.dataset.decimals) || 0;
+    const suffix   = el.dataset.suffix || '';
+    animateCount(el, target, decimals, suffix, 1400);
+  });
+}
+let _s5CountTimer = null;
+
 function activateSlide(idx) {
   SLIDES[current].classList.remove('active');
   getDots()[current].classList.remove('on');
@@ -1742,6 +2051,13 @@ function activateSlide(idx) {
   SLIDES[current].classList.add('active');
   getDots()[current].classList.add('on');
   document.getElementById('counter').textContent = (current + 1) + ' / ' + N;
+
+  // Slide 6 (s5): trigger counters once Layer 2 is on screen
+  if (_s5CountTimer) { clearTimeout(_s5CountTimer); _s5CountTimer = null; }
+  resetS5Counts();
+  if (SLIDES[current].id === 's5') {
+    _s5CountTimer = setTimeout(startS5Counts, 3700);
+  }
 }
 
 function seekToSlide(idx) {
