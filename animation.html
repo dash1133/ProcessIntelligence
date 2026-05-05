@@ -714,6 +714,139 @@
       transition: opacity 0.5s ease 0.05s, transform 0.5s ease 0.05s;
     }
     .slide.active .fw-rail-caption { opacity: 1; transform: none; }
+
+    /* ═══ Slide 4b: AI-ZBO Platform Showcase ═══ */
+    #s4b { padding: 50px 60px 28px; justify-content: flex-start; }
+    #s4b .label { margin-bottom: 14px; }
+    #s4b .headline { font-size: 32px; max-width: 980px; line-height: 1.22; }
+    #s4b .sub { font-size: 16px; max-width: 820px; margin-top: 14px; }
+    #s4b .divider { margin-top: 16px; }
+
+    .plat-mock {
+      width: 100%; max-width: 1160px;
+      margin-top: 22px;
+      background: #f5f7fa;
+      border: 1px solid #d8dfe8;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(15,31,61,0.14);
+      overflow: hidden;
+      opacity: 0; transform: translateY(20px) scale(0.985);
+      transform-origin: top center;
+      transition: opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s;
+    }
+    .slide.active .plat-mock { opacity: 1; transform: none; }
+
+    /* Top app nav */
+    .plat-nav {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 9px 14px; display: flex; align-items: center; gap: 14px;
+    }
+    .plat-logo { display: flex; align-items: center; gap: 7px; padding-right: 10px; border-right: 1px solid #e2e8f0; margin-right: 4px; }
+    .plat-logo-mark {
+      width: 22px; height: 22px; background: #0f1f3d;
+      color: #fff; font-size: 8px; font-weight: 800; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      letter-spacing: -0.04em;
+    }
+    .plat-logo-text { font-size: 10px; font-weight: 800; color: #0f1f3d; line-height: 1.1; }
+    .plat-logo-text span { display: block; font-size: 7px; font-weight: 600; color: #94a3b8; letter-spacing: 0.06em; }
+    .plat-bread { color: #475569; font-weight: 500; font-size: 11px; display: flex; align-items: center; gap: 7px; }
+    .plat-bread b { color: #0f1f3d; font-weight: 700; }
+    .plat-bread .sep { color: #cbd5e1; }
+    .plat-pills { display: flex; gap: 6px; margin-left: auto; }
+    .plat-pill {
+      padding: 6px 12px; border-radius: 8px;
+      font-size: 10.5px; font-weight: 600; color: #475569;
+      background: #f1f5f9;
+    }
+    .plat-pill.active { background: #2563eb; color: #fff; }
+    .plat-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #1e293b; color: #fff; font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .plat-avatar-name { font-size: 10px; font-weight: 700; color: #0f1f3d; line-height: 1.15; }
+    .plat-avatar-name span { display: block; font-size: 8.5px; font-weight: 500; color: #94a3b8; }
+
+    /* Header card */
+    .plat-header {
+      background: #fff; padding: 12px 18px;
+      display: flex; align-items: center; gap: 26px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .plat-h-title {
+      font-size: 15px; font-weight: 800; color: #0f1f3d;
+      margin-bottom: 5px;
+    }
+    .plat-h-meta { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 9.5px; color: #475569; }
+    .plat-h-meta-cell { display: flex; gap: 4px; }
+    .plat-h-meta-cell b { color: #94a3b8; font-weight: 600; }
+    .plat-h-btn {
+      margin-left: auto; padding: 7px 11px;
+      background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 7px; font-size: 10px; font-weight: 600;
+      color: #475569; flex-shrink: 0;
+    }
+
+    /* Body */
+    .plat-body { padding: 12px 18px 14px; }
+    .plat-agents {
+      font-size: 9.5px; font-weight: 800; letter-spacing: 0.18em;
+      color: #0f1f3d; text-transform: uppercase; margin-bottom: 7px;
+    }
+    .plat-agent-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px 6px 6px;
+      background: #fff; border: 1.5px solid #2563eb;
+      border-radius: 9px; margin-bottom: 10px;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+    }
+    .plat-agent-mark {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg,#3b82f6,#6366f1);
+      color: #fff; font-size: 9px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .plat-agent-name { font-size: 11px; font-weight: 700; color: #0f1f3d; }
+
+    .plat-section { margin-top: 8px; padding-top: 6px; border-top: 1px solid #e2e8f0; }
+    .plat-section:first-of-type { border-top: 0; padding-top: 0; }
+    .plat-section-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .plat-section-name { font-size: 11px; font-weight: 700; color: #0f1f3d; }
+    .plat-section-count { font-size: 9.5px; font-weight: 600; color: #2563eb; }
+    .plat-tasks {
+      display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 6px;
+      margin-bottom: 4px;
+    }
+    .plat-task {
+      background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 7px; padding: 6px 8px;
+      display: flex; align-items: center; gap: 7px;
+      min-height: 30px;
+    }
+    .plat-task-icon {
+      width: 18px; height: 18px; border-radius: 5px;
+      background: #eff6ff; color: #2563eb;
+      font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .plat-task-name {
+      flex: 1; min-width: 0;
+      font-size: 10px; font-weight: 600; color: #0f1f3d;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .plat-task-pill {
+      font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 9px;
+      flex-shrink: 0; letter-spacing: 0.02em;
+    }
+    .plat-task-pill.dash { background: #fee2e2; color: #c8102e; }
+    .plat-task-pill.art  { background: #dcfce7; color: #15803d; }
+    .plat-task-pill.list { background: #f3e8ff; color: #7c3aed; }
+    .plat-task-pill.chat { background: #dbeafe; color: #2563eb; }
   </style>
 </head>
 <body>
@@ -734,7 +867,7 @@
 
   <div id="debug">
     <div>Time: <span id="dbg-time">0.00s</span></div>
-    <div>Slide: <span id="dbg-slide">1</span> / 9</div>
+    <div>Slide: <span id="dbg-slide">1</span> / 10</div>
     <div>Next cue: <span id="dbg-next">—</span></div>
   </div>
 
@@ -794,6 +927,112 @@
         <div class="fw-num">Roadmap</div>
         <div class="fw-title">Implementation Roadmap</div>
         <div class="fw-desc">Identify and sequence the changes required to operate in future state.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Slide 4b: Platform Showcase ─── -->
+  <div class="slide" id="s4b">
+    <div class="label">The Platform</div>
+    <div class="headline">Engagement-ready <span class="accent">accelerators</span> &amp; orchestrated analyses.</div>
+    <div class="sub">Configured to each client's data, taxonomy, and ZBO objectives.</div>
+    <div class="divider"></div>
+    <div class="plat-mock">
+      <!-- Top nav -->
+      <div class="plat-nav">
+        <div class="plat-logo">
+          <div class="plat-logo-mark">A&amp;M</div>
+          <div class="plat-logo-text">AI ZBO<span>BY COMOPS</span></div>
+        </div>
+        <div class="plat-bread">Diagnostic<span class="sep">›</span>AI ZBO<span class="sep">›</span><b>NorthStar Frozen Foods</b></div>
+        <div class="plat-pills">
+          <div class="plat-pill active">⚡ Diagnostic</div>
+          <div class="plat-pill">📊 KPI Monitoring</div>
+        </div>
+        <div class="plat-avatar">P</div>
+        <div class="plat-avatar-name">Priya Nair<span>A&amp;M ComOps</span></div>
+      </div>
+      <!-- Header card -->
+      <div class="plat-header">
+        <div>
+          <div class="plat-h-title">NorthStar Frozen Foods</div>
+          <div class="plat-h-meta">
+            <div class="plat-h-meta-cell"><b>Industry:</b>Frozen &amp; Prepared Foods</div>
+            <div class="plat-h-meta-cell"><b>Sub Industry:</b>Multi-Region Manufacturing</div>
+            <div class="plat-h-meta-cell"><b>Users:</b>12</div>
+            <div class="plat-h-meta-cell"><b>Last Updated:</b>5/01/2026</div>
+          </div>
+        </div>
+        <div class="plat-h-btn">📦 Cost Optimization Files</div>
+      </div>
+      <!-- Body -->
+      <div class="plat-body">
+        <div class="plat-agents">Agents</div>
+        <div class="plat-agent-chip">
+          <div class="plat-agent-mark">AI</div>
+          <div class="plat-agent-name">AI ZBO</div>
+        </div>
+        <!-- Section 1: Data Foundation -->
+        <div class="plat-section">
+          <div class="plat-section-row">
+            <div class="plat-section-name">Data Foundation</div>
+            <div class="plat-section-count">4 tasks</div>
+          </div>
+          <div class="plat-tasks">
+            <div class="plat-task"><div class="plat-task-icon">📁</div><div class="plat-task-name">File Manager</div><div class="plat-task-pill art">Artifact</div></div>
+            <div class="plat-task"><div class="plat-task-icon">✦</div><div class="plat-task-name">AI Data Cleansing</div><div class="plat-task-pill chat">Chat</div></div>
+            <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Ontology</div><div class="plat-task-pill list">List</div></div>
+            <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">DRL Management</div><div class="plat-task-pill list">List</div></div>
+          </div>
+        </div>
+        <!-- Section 2: Process & Activity Taxonomy -->
+        <div class="plat-section">
+          <div class="plat-section-row">
+            <div class="plat-section-name">Process &amp; Activity Taxonomy</div>
+            <div class="plat-section-count">2 tasks</div>
+          </div>
+          <div class="plat-tasks">
+            <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Process Mapping</div><div class="plat-task-pill art">Artifact</div></div>
+            <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Activity &amp; Driver Mapping</div><div class="plat-task-pill dash">Dashboard</div></div>
+          </div>
+        </div>
+        <!-- Section 3: Transparency on True Profitability -->
+        <div class="plat-section">
+          <div class="plat-section-row">
+            <div class="plat-section-name">Transparency on True Profitability</div>
+            <div class="plat-section-count">5 tasks</div>
+          </div>
+          <div class="plat-tasks">
+            <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Cost Classification</div><div class="plat-task-pill dash">Dashboard</div></div>
+            <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Cost Driver Analysis</div><div class="plat-task-pill art">Artifact</div></div>
+            <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">Opportunity Prioritization</div><div class="plat-task-pill art">Artifact</div></div>
+            <div class="plat-task"><div class="plat-task-icon">⚠</div><div class="plat-task-name">Margin Leakage Detection</div><div class="plat-task-pill chat">Chat</div></div>
+            <div class="plat-task"><div class="plat-task-icon">⛨</div><div class="plat-task-name">Anomaly &amp; Red-Flag Spend</div><div class="plat-task-pill chat">Chat</div></div>
+          </div>
+        </div>
+        <!-- Section 4: Clean-sheet the Core -->
+        <div class="plat-section">
+          <div class="plat-section-row">
+            <div class="plat-section-name">Clean-sheet the Core</div>
+            <div class="plat-section-count">3 tasks</div>
+          </div>
+          <div class="plat-tasks">
+            <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">AI-VSM</div><div class="plat-task-pill art">Artifact</div></div>
+            <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Clean-sheet Operating Model</div><div class="plat-task-pill art">Artifact</div></div>
+            <div class="plat-task"><div class="plat-task-icon">◉</div><div class="plat-task-name">Clean-sheet Org Chart</div><div class="plat-task-pill art">Artifact</div></div>
+          </div>
+        </div>
+        <!-- Section 5: Improvement Initiatives and Roadmap -->
+        <div class="plat-section">
+          <div class="plat-section-row">
+            <div class="plat-section-name">Improvement Initiatives and Roadmap</div>
+            <div class="plat-section-count">2 tasks</div>
+          </div>
+          <div class="plat-tasks">
+            <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Initiative Sizing &amp; Business Case</div><div class="plat-task-pill art">Artifact</div></div>
+            <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">AI PMO Tracker</div><div class="plat-task-pill list">List</div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1441,7 +1680,7 @@
 
   <!-- ══ Chrome ══ -->
   <div id="dots"></div>
-  <div id="counter">1 / 9</div>
+  <div id="counter">1 / 10</div>
   <div id="timeline"></div>
   <div id="brand-bar"></div>
 
@@ -1454,15 +1693,16 @@
 //  Update these numbers whenever the VO file is refreshed.
 // ═══════════════════════════════════════════════════════════════════
 const CUES = [
-  0.0,   // Slide 1 — AI is changing the economics of work
-  3.15,   // Slide 2 — Zero-Based Optimization
-  6.68,   // Slide 3 — Traditional cost programs miss...
-  16.23,  // Slide 4 — A&M's AI-Enabled ZBO
-  20.40,  // Slide 5 — Transparency / true profitability
- 34.15,  // Slide 6 — Clean-sheet the core
-  43.0,  // Slide 7 — Not AI everywhere
- 52.72,  // Slide 8 — Cost structure transformation
-  67.35,  // Slide 9 — Quantified improvement roadmap
+  0.0,    // Slide 1  — AI is changing the economics of work
+  3.15,   // Slide 2  — Zero-Based Optimization
+  6.68,   // Slide 3  — Traditional cost programs miss...
+  16.23,  // Slide 4  — A&M's AI-Enabled ZBO (4-component framework)
+  18.31,  // Slide 4b — Platform showcase (NOTE: VO needs re-record to add coverage)
+  20.40,  // Slide 5  — Transparency / true profitability
+  34.15,  // Slide 6  — Clean-sheet the core
+  43.0,   // Slide 7  — Not AI everywhere
+  52.72,  // Slide 8  — Cost structure transformation
+  67.35,  // Slide 9  — Quantified improvement roadmap
 ];
 // ═══════════════════════════════════════════════════════════════════
 
