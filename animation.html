@@ -1122,6 +1122,182 @@
     }
     #s5 .csh-insight b { color: #1d4ed8; font-weight: 700; }
     #s5 .csh-insight .strong { color: #0f1f3d; font-weight: 700; }
+
+    /* ═══ Slide 7 (id s6): Home → AI-VSM → Operating Model → Org Chart ═══ */
+    #s6 .cl-stack { position: relative; width: 100%; height: 572px; }
+    #s6 .cl-layer { position: absolute; inset: 0; opacity: 0; display: flex; align-items: flex-start; justify-content: center; }
+
+    /* Layer animations */
+    #s6.active .cl-layer.cl-home         { animation: admHomeIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s forwards, admHomeOut 0.6s ease 2.5s forwards; }
+    #s6.active .cl-layer.cl-suitability  { animation: paIn 0.55s ease 3.0s forwards, paOut 0.55s ease 6.5s forwards; }
+    #s6.active .cl-layer.cl-opmodel      { animation: paIn 0.55s ease 7.0s forwards, paOut 0.55s ease 10.0s forwards; }
+    #s6.active .cl-layer.cl-orgchart     { animation: paIn 0.55s ease 10.5s forwards; }
+
+    /* Home plat-mock kept fully visible inside its layer */
+    #s6 .cl-home .plat-mock {
+      opacity: 1 !important; transform: none !important; transition: none !important;
+      box-shadow: 0 6px 24px rgba(15,31,61,0.10);
+    }
+
+    /* Cursor on slide 7's home — travels to AI-VSM in Clean-sheet section */
+    #s6 .s6-cursor {
+      position: absolute;
+      width: 24px; height: 24px;
+      top: 80px; left: 700px;
+      pointer-events: none;
+      z-index: 6; opacity: 0;
+      filter: drop-shadow(0 2px 5px rgba(15,31,61,0.4));
+    }
+    #s6.active .s6-cursor {
+      animation:
+        admCursorIn   0.25s ease 0.7s forwards,
+        s6CursorMove  1.6s  cubic-bezier(0.55,0.05,0.4,1) 1.0s forwards,
+        admCursorOut  0.25s ease 2.55s forwards;
+    }
+    @keyframes s6CursorMove {
+      0%   { transform: translate(0, 0); }
+      85%  { transform: translate(-545px, 394px); }
+      92%  { transform: translate(-545px, 394px) scale(0.78); }
+      100% { transform: translate(-545px, 394px) scale(1); }
+    }
+
+    /* Target chip overlay — column 1 of section 4 */
+    #s6 .s6-target {
+      position: absolute;
+      top: 458px; left: 50%;
+      width: 282px; height: 36px;
+      transform: translateX(calc(-868px / 2 + 18px + 282px / 2));
+      border: 2px solid transparent;
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 5; opacity: 0;
+    }
+    /* Easier: position the target chip from left edge of plat-mock */
+    #s6 .s6-target { left: 18px; transform: none; }
+    #s6.active .s6-target {
+      animation:
+        s6ChipIn    0.18s ease 2.4s forwards,
+        s6ChipPulse 0.45s ease 2.58s forwards,
+        s6ChipOut   0.3s  ease 2.95s forwards;
+    }
+    @keyframes s6ChipIn    { from { opacity: 0; box-shadow: 0 0 0 0 rgba(29,78,216,0); } to { opacity: 1; border-color: #1d4ed8; box-shadow: 0 0 0 6px rgba(29,78,216,0.20); } }
+    @keyframes s6ChipPulse { 0% { transform: scale(1); } 50% { transform: scale(1.04); } 100% { transform: scale(1); } }
+    @keyframes s6ChipOut   { from { opacity: 1; } to { opacity: 0; } }
+
+    /* === Layer 2: AI Suitability — reuses hb-* classes === */
+    #s6 .vsm-shell { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 8px 28px rgba(15,31,61,0.10); overflow: hidden; }
+    #s6 .vsm-body { padding: 12px 16px; }
+    #s6 .vsm-head { font-size: 9px; font-weight: 800; letter-spacing: 0.16em; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; }
+    #s6 .vsm-meta { font-size: 9.5px; color: #64748b; margin-bottom: 8px; display: flex; justify-content: space-between; }
+    #s6 .vsm-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    #s6 .vsm-table thead th {
+      font-size: 8.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 8px 4px 10px; text-align: center; border-bottom: 1.5px solid #e2e8f0;
+      line-height: 1.25;
+    }
+    #s6 .vsm-table thead th.lft { text-align: left; padding-left: 6px; }
+    #s6 .vsm-table tbody td { padding: 9px 4px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+
+    /* === Layer 3: Operating Model Summary === */
+    #s6 .om-shell { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 8px 28px rgba(15,31,61,0.10); overflow: hidden; display: flex; flex-direction: column; }
+    #s6 .om-body { padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 10px; }
+    #s6 .om-head .om-title { font-size: 14px; font-weight: 800; color: #0f1f3d; }
+    #s6 .om-head .om-sub { font-size: 9.5px; color: #64748b; margin-top: 3px; line-height: 1.4; }
+
+    #s6 .om-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    #s6 .om-stat { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 9px 11px; }
+    #s6 .om-stat-lbl { font-size: 8.5px; font-weight: 600; color: #64748b; }
+    #s6 .om-stat-val { font-size: 22px; font-weight: 800; color: #1d4ed8; line-height: 1; letter-spacing: -0.02em; margin-top: 3px; }
+    #s6 .om-stat.delta .om-stat-val { color: #1d4ed8; }
+    #s6 .om-stat.saved .om-stat-val { color: #059669; }
+    #s6 .om-stat-sub { font-size: 8.5px; color: #94a3b8; margin-top: 4px; }
+
+    #s6 .om-grid { display: grid; grid-template-columns: 1fr 360px; gap: 12px; }
+    #s6 .om-panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 9px; padding: 10px 12px; }
+    #s6 .om-panel-title { font-size: 9px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
+
+    #s6 .om-legend { display: flex; gap: 12px; font-size: 9px; color: #64748b; margin-bottom: 6px; }
+    #s6 .om-legend .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 4px; }
+    #s6 .om-legend .dot.cur { background: #93c5fd; }
+    #s6 .om-legend .dot.cs  { background: #14b8a6; }
+
+    #s6 .om-bar-row { display: grid; grid-template-columns: 70px 1fr 50px; gap: 8px; align-items: center; margin-bottom: 7px; }
+    #s6 .om-bar-name { font-size: 10.5px; font-weight: 700; color: #0f1f3d; }
+    #s6 .om-bar-bg { position: relative; height: 12px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
+    #s6 .om-bar-cur { position: absolute; left: 0; top: 0; height: 100%; background: #93c5fd; }
+    #s6 .om-bar-cs  { position: absolute; left: 0; top: 0; height: 100%; background: #14b8a6; }
+    #s6 .om-bar-tot { font-size: 10px; font-weight: 700; color: #059669; text-align: right; }
+
+    #s6 .om-change { display: flex; flex-direction: column; gap: 6px; }
+    #s6 .om-change-row { display: grid; grid-template-columns: 70px 1fr 96px; gap: 6px; align-items: center; padding: 4px 0; border-bottom: 1px dashed #f1f5f9; }
+    #s6 .om-change-row:last-child { border-bottom: 0; }
+    #s6 .om-change-name { font-size: 10.5px; font-weight: 700; color: #0f1f3d; }
+    #s6 .om-change-flow { font-size: 9.5px; color: #64748b; }
+    #s6 .om-change-flow s { color: #cbd5e1; }
+    #s6 .om-change-tag { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-align: center; }
+    #s6 .om-tag-auto { background: #eff6ff; color: #1d4ed8; }
+    #s6 .om-tag-cons { background: #ede9fe; color: #6d28d9; }
+    #s6 .om-tag-elim { background: #fef2f2; color: #dc2626; }
+    #s6 .om-tag-shar { background: #ecfdf5; color: #047857; }
+    #s6 .om-tag-off  { background: #fff7ed; color: #c2410c; }
+
+    /* === Layer 4: Clean-sheet Org Chart === */
+    #s6 .oc-shell { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 8px 28px rgba(15,31,61,0.10); overflow: hidden; display: flex; flex-direction: column; }
+    #s6 .oc-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+    #s6 .oc-head { font-size: 9px; font-weight: 800; letter-spacing: 0.16em; color: #94a3b8; text-transform: uppercase; }
+
+    #s6 .oc-tree { padding: 4px 6px 6px; }
+    #s6 .oc-row { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; position: relative; padding-top: 14px; }
+    #s6 .oc-row::before {
+      content: ""; position: absolute; top: 0; left: 50%; width: 1.5px; height: 14px;
+      background: #cbd5e1;
+    }
+    #s6 .oc-row.no-stem { padding-top: 0; }
+    #s6 .oc-row.no-stem::before { display: none; }
+
+    #s6 .oc-node {
+      background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px;
+      padding: 6px 9px; font-size: 9.5px; line-height: 1.3; min-width: 92px;
+      position: relative; flex-shrink: 0;
+    }
+    #s6 .oc-node.ceo {
+      background: #fff; border-color: #cbd5e1;
+      min-width: 130px; text-align: center;
+    }
+    #s6 .oc-node.fn  { background: #fff; min-width: 130px; }
+    #s6 .oc-node.fn.flat  { border-color: #5eead4; background: #f0fdfa; }
+    #s6 .oc-node.fn.cons  { border-color: #c4b5fd; background: #f5f3ff; }
+    #s6 .oc-node.fn.kept  { border-color: #cbd5e1; background: #fafafa; }
+    #s6 .oc-node.legal { border-color: #c4b5fd; background: #f5f3ff; min-width: 200px; text-align: center; }
+    #s6 .oc-node.sub  { background: #fff; min-width: 108px; }
+    #s6 .oc-node.sub.flat { border-color: #5eead4; background: #f0fdfa; }
+    #s6 .oc-node.sub.cons { border-color: #c4b5fd; background: #f5f3ff; }
+    #s6 .oc-node.sub.kept { border-color: #cbd5e1; background: #fafafa; }
+    #s6 .oc-node.new  { background: #eff6ff; border-color: #93c5fd; min-width: 116px; }
+    #s6 .oc-node.elim { background: #fef2f2; border-color: #fecaca; opacity: 0.78; min-width: 108px; }
+
+    #s6 .oc-name { font-size: 10px; font-weight: 800; color: #0f1f3d; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    #s6 .oc-tag { font-size: 7.5px; font-weight: 700; padding: 1.5px 6px; border-radius: 4px; letter-spacing: 0.04em; }
+    #s6 .oc-tag.flat { background: #ccfbf1; color: #0f766e; }
+    #s6 .oc-tag.cons { background: #ede9fe; color: #6d28d9; }
+    #s6 .oc-tag.kept { background: #f1f5f9; color: #475569; }
+    #s6 .oc-tag.new  { background: #dbeafe; color: #1d4ed8; }
+    #s6 .oc-tag.elim { background: #fee2e2; color: #b91c1c; }
+    #s6 .oc-vals { font-size: 9px; color: #475569; margin-top: 2px; }
+    #s6 .oc-vals s { color: #cbd5e1; }
+    #s6 .oc-vals b { color: #0f1f3d; font-weight: 700; }
+    #s6 .oc-elim-txt { text-decoration: line-through; color: #b91c1c; }
+
+    #s6 .oc-banner {
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;
+      padding: 8px 12px;
+      display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+      font-size: 9.5px;
+    }
+    #s6 .oc-banner-lbl { font-size: 9px; font-weight: 800; letter-spacing: 0.14em; color: #b91c1c; text-transform: uppercase; flex-shrink: 0; }
+    #s6 .oc-banner-item { display: flex; flex-direction: column; gap: 1px; }
+    #s6 .oc-banner-item .nm { font-size: 9.5px; font-weight: 700; color: #b91c1c; text-decoration: line-through; }
+    #s6 .oc-banner-item .sv { font-size: 11px; font-weight: 800; color: #059669; }
   </style>
 </head>
 <body>
@@ -1776,122 +1952,252 @@
       </div>
     </div>
     <div class="slide-text">
-      <div class="label">Clean Sheet the Core</div>
-      <div class="headline">We<br><span class="accent">clean-sheet<br>the core.</span></div>
-      <div class="sub">Re-baseline the cost shadow per customer. Sort every dollar by what the business must spend, what it could cut, and what it should protect.</div>
+      <div class="label">Clean-Sheet the Core</div>
+      <div class="headline">Priority workflows<br>mapped at the<br><span class="accent">activity level.</span></div>
+      <div class="sub">Every activity evaluated for AI suitability — identifying where AI-enabled redesign materially shifts labor, cost, and throughput.</div>
       <div class="divider"></div>
     </div>
     <div class="slide-visual">
-      <div class="mk-shell mk" style="--d:.5s">
-        <div class="mk-appbar">
-          <div class="mk-appbar-title">Clean-Sheet · Discretionary Lens + Cost Shadow</div>
-          <div class="mk-live"><div class="mk-live-dot"></div> $46M Legal pool · 12 functions</div>
-        </div>
-        <div class="cs-wrap">
-          <!-- LEFT: Cost Classification (Discretionary mix) -->
-          <div class="cs-panel mk" style="--d:.7s">
-            <div class="cs-panel-title">Cost Classification — Legal</div>
-            <div class="cs-panel-sub">Non-discretionary · Discretionary · Strategic</div>
-            <div class="cls-mix">
-              <div class="cls-tile nd">
-                <div class="cls-lbl"><span class="cls-dot nd"></span>Non-disc</div>
-                <div class="cls-val">$23.7M</div>
-                <div class="cls-meta">51% · 5 items</div>
+      <div class="cl-stack">
+
+        <!-- ─ Layer 1: Diagnostic home with cursor click on AI-VSM ─ -->
+        <div class="cl-layer cl-home">
+          <div class="plat-mock">
+            <div class="plat-nav">
+              <div class="plat-logo">
+                <div class="plat-logo-mark">A&amp;M</div>
+                <div class="plat-logo-text">AI ZBO<span>BY COMOPS</span></div>
               </div>
-              <div class="cls-tile dsc">
-                <div class="cls-lbl"><span class="cls-dot dsc"></span>Disc</div>
-                <div class="cls-val">$18.5M</div>
-                <div class="cls-meta">40% · 7 items</div>
+              <div class="plat-bread">Diagnostic<span class="sep">›</span>AI ZBO<span class="sep">›</span><b>NorthStar Frozen Foods</b></div>
+              <div class="plat-pills">
+                <div class="plat-pill active">⚡ Diagnostic</div>
+                <div class="plat-pill">📊 KPI Monitoring</div>
               </div>
-              <div class="cls-tile str">
-                <div class="cls-lbl"><span class="cls-dot str"></span>Strategic</div>
-                <div class="cls-val">$4.0M</div>
-                <div class="cls-meta">9% · 2 items</div>
+              <div class="plat-avatar">P</div>
+              <div class="plat-avatar-name">Priya Nair<span>A&amp;M ComOps</span></div>
+            </div>
+            <div class="plat-header">
+              <div>
+                <div class="plat-h-title">NorthStar Frozen Foods</div>
+                <div class="plat-h-meta">
+                  <div class="plat-h-meta-cell"><b>Industry:</b>Frozen &amp; Prepared Foods</div>
+                  <div class="plat-h-meta-cell"><b>Sub Industry:</b>Multi-Region Manufacturing</div>
+                  <div class="plat-h-meta-cell"><b>Users:</b>12</div>
+                  <div class="plat-h-meta-cell"><b>Last Updated:</b>5/01/2026</div>
+                </div>
               </div>
+              <div class="plat-h-btn">📦 Cost Optimization Files</div>
             </div>
-            <div class="cs-panel-sub" style="margin-bottom:6px">Mix by sub-function</div>
-            <div class="cls-byfn-row">
-              <div class="cls-byfn-name">Contracts</div>
-              <div class="cls-byfn-bar"><div class="cls-byfn-seg" style="background:#dc2626;width:38%"></div><div class="cls-byfn-seg" style="background:#f59e0b;width:62%"></div></div>
-              <div class="cls-byfn-tot">$16.2M</div>
-            </div>
-            <div class="cls-byfn-row">
-              <div class="cls-byfn-name">Disputes</div>
-              <div class="cls-byfn-bar"><div class="cls-byfn-seg" style="background:#dc2626;width:100%"></div></div>
-              <div class="cls-byfn-tot">$7.9M</div>
-            </div>
-            <div class="cls-byfn-row">
-              <div class="cls-byfn-name">Compliance</div>
-              <div class="cls-byfn-bar"><div class="cls-byfn-seg" style="background:#dc2626;width:100%"></div></div>
-              <div class="cls-byfn-tot">$5.6M</div>
-            </div>
-            <div class="cls-byfn-row">
-              <div class="cls-byfn-name">Procurement</div>
-              <div class="cls-byfn-bar"><div class="cls-byfn-seg" style="background:#f59e0b;width:100%"></div></div>
-              <div class="cls-byfn-tot">$3.5M</div>
-            </div>
-            <div class="cls-byfn-row">
-              <div class="cls-byfn-name">IP</div>
-              <div class="cls-byfn-bar"><div class="cls-byfn-seg" style="background:#10b981;width:100%"></div></div>
-              <div class="cls-byfn-tot">$2.0M</div>
-            </div>
-            <div class="cls-byfn-row">
-              <div class="cls-byfn-name">All Other</div>
-              <div class="cls-byfn-bar"><div class="cls-byfn-seg" style="background:#dc2626;width:36%"></div><div class="cls-byfn-seg" style="background:#f59e0b;width:46%"></div><div class="cls-byfn-seg" style="background:#10b981;width:18%"></div></div>
-              <div class="cls-byfn-tot">$11.0M</div>
+            <div class="plat-body">
+              <div class="plat-agents">Agents</div>
+              <div class="plat-agent-chip">
+                <div class="plat-agent-mark">AI</div>
+                <div class="plat-agent-name">AI ZBO</div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Data Foundation</div>
+                  <div class="plat-section-count">4 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">📁</div><div class="plat-task-name">File Manager</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">✦</div><div class="plat-task-name">AI Data Cleansing</div><div class="plat-task-pill chat">Chat</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Ontology</div><div class="plat-task-pill list">List</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">DRL Management</div><div class="plat-task-pill list">List</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Process &amp; Activity Taxonomy</div>
+                  <div class="plat-section-count">2 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Process Mapping</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Activity &amp; Driver Mapping</div><div class="plat-task-pill dash">Dashboard</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Transparency on True Profitability</div>
+                  <div class="plat-section-count">5 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Cost Classification</div><div class="plat-task-pill dash">Dashboard</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Cost Driver Analysis</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">Opportunity Prioritization</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">⚠</div><div class="plat-task-name">Margin Leakage Detection</div><div class="plat-task-pill chat">Chat</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">⛨</div><div class="plat-task-name">Anomaly &amp; Red-Flag Spend</div><div class="plat-task-pill chat">Chat</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Clean-sheet the Core</div>
+                  <div class="plat-section-count">3 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">AI-VSM</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Clean-sheet Operating Model</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◉</div><div class="plat-task-name">Clean-sheet Org Chart</div><div class="plat-task-pill art">Artifact</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row">
+                  <div class="plat-section-name">Improvement Initiatives and Roadmap</div>
+                  <div class="plat-section-count">2 tasks</div>
+                </div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Initiative Sizing &amp; Business Case</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">AI PMO Tracker</div><div class="plat-task-pill list">List</div></div>
+                </div>
+              </div>
             </div>
           </div>
-          <!-- RIGHT: Cost Shadow Treemap -->
-          <div class="cs-panel mk" style="--d:.95s">
-            <div class="cs-panel-title">Cost Shadow · per SMB customer / yr</div>
-            <div class="cs-panel-sub">tile area = share of fully-loaded cost · colour = function</div>
-            <div class="tm-grid">
-              <div class="tm-cell tm-a">
-                <div class="tm-name">Sell &amp; manage account</div>
-                <div>
-                  <div class="tm-val">$1,380</div>
-                  <div class="tm-pct">34%</div>
-                </div>
+          <div class="s6-target"></div>
+          <svg class="s6-cursor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 2 L3 18 L8 14 L11 21 L14 19.5 L11 12.5 L18 12 Z" fill="#0f1f3d" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- ─ Layer 2: AI Suitability — Sub-process Scoring (AI-VSM) ─ -->
+        <div class="cl-layer cl-suitability">
+          <div class="vsm-shell">
+            <div class="mk-appbar">
+              <div class="mk-appbar-title">Diagnostic · Clean-sheet the Core · AI-VSM</div>
+              <div class="mk-live"><div class="mk-live-dot"></div> 218 sub-processes scored</div>
+            </div>
+            <div class="vsm-body">
+              <div class="vsm-meta">
+                <div><span style="font-weight:800;color:#0f1f3d">AI Suitability — Sub-process Scoring</span> &nbsp;&nbsp;Harvey-ball score 0–100 per criterion · composite is /15</div>
+                <div style="color:#1d4ed8;font-weight:700">detailed mapping behind every recommendation</div>
               </div>
-              <div class="tm-cell tm-b">
-                <div class="tm-name">Handle service requests</div>
-                <div>
-                  <div class="tm-val">$640</div>
-                  <div class="tm-pct">16%</div>
-                </div>
+              <table class="vsm-table">
+                <thead>
+                  <tr>
+                    <th class="lft">Sub-process</th>
+                    <th>Margin<br>Impact</th>
+                    <th>Volume &amp;<br>Repetition</th>
+                    <th>Data<br>Availability</th>
+                    <th>Error<br>Tolerance</th>
+                    <th>Adoption<br>Readiness</th>
+                    <th>Score</th>
+                    <th>Recommend</th>
+                  </tr>
+                </thead>
+                <tbody id="s6-hb-body"><!-- rows injected via script --></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Layer 3: New Operating Model — summary stats + cost gap by function ─ -->
+        <div class="cl-layer cl-opmodel">
+          <div class="om-shell">
+            <div class="mk-appbar">
+              <div class="mk-appbar-title">Diagnostic · Clean-sheet Operating Model</div>
+              <div class="mk-live"><div class="mk-live-dot"></div> $390M annualised recoverable</div>
+            </div>
+            <div class="om-body">
+              <div class="om-head">
+                <div class="om-title">Where AI-enabled redesign shifts labor, cost &amp; throughput</div>
+                <div class="om-sub">Current state vs clean-sheet ideal — sized to the activity-level evidence base.</div>
               </div>
-              <div class="tm-cell tm-c">
-                <div class="tm-name">Fulfil &amp; ship</div>
-                <div>
-                  <div class="tm-val">$400</div>
-                  <div class="tm-pct">10%</div>
-                </div>
+              <div class="om-stats">
+                <div class="om-stat delta"><div class="om-stat-lbl">FTE reduction</div><div class="om-stat-val">−1,072</div><div class="om-stat-sub">3,262 → 2,190 FTE</div></div>
+                <div class="om-stat delta"><div class="om-stat-lbl">Layers flattened</div><div class="om-stat-val">−3</div><div class="om-stat-sub">7 layers → 4 layers</div></div>
+                <div class="om-stat delta"><div class="om-stat-lbl">Span improvement</div><div class="om-stat-val">1:8</div><div class="om-stat-sub">from 1:4.2 today</div></div>
+                <div class="om-stat saved"><div class="om-stat-lbl">Cost saved</div><div class="om-stat-val">$390M</div><div class="om-stat-sub">26% of total base</div></div>
               </div>
-              <div class="tm-cell tm-d">
-                <div class="tm-name">Run campaigns</div>
-                <div>
-                  <div class="tm-val">$290</div>
-                  <div class="tm-pct">7%</div>
+              <div class="om-grid">
+                <div class="om-panel">
+                  <div class="om-panel-title">Cost gap by function</div>
+                  <div class="om-legend"><span><span class="dot cur"></span>Current</span><span><span class="dot cs"></span>Clean-sheet</span></div>
+                  <div class="om-bar-row"><div class="om-bar-name">Selling</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:100%"></div><div class="om-bar-cs" style="width:72%"></div></div><div class="om-bar-tot">−$105M</div></div>
+                  <div class="om-bar-row"><div class="om-bar-name">IT</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:84%"></div><div class="om-bar-cs" style="width:57%"></div></div><div class="om-bar-tot">−$100M</div></div>
+                  <div class="om-bar-row"><div class="om-bar-name">Marketing</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:80%"></div><div class="om-bar-cs" style="width:59%"></div></div><div class="om-bar-tot">−$75M</div></div>
+                  <div class="om-bar-row"><div class="om-bar-name">HR</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:76%"></div><div class="om-bar-cs" style="width:53%"></div></div><div class="om-bar-tot">−$85M</div></div>
+                  <div class="om-bar-row"><div class="om-bar-name">Finance</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:46%"></div><div class="om-bar-cs" style="width:35%"></div></div><div class="om-bar-tot">−$40M</div></div>
+                  <div class="om-bar-row"><div class="om-bar-name">Legal</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:13%"></div><div class="om-bar-cs" style="width:9%"></div></div><div class="om-bar-tot">−$11M</div></div>
                 </div>
-              </div>
-              <div class="tm-cell tm-e">
-                <div class="tm-name">Trade funds</div>
-                <div>
-                  <div class="tm-val">$250</div>
-                  <div class="tm-pct">6%</div>
-                </div>
-              </div>
-              <div class="tm-cell tm-f">
-                <div class="tm-name">Review contracts</div>
-                <div>
-                  <div class="tm-val">$185</div>
-                  <div class="tm-pct">5%</div>
+                <div class="om-panel">
+                  <div class="om-panel-title">Change type &amp; FTE impact</div>
+                  <div class="om-change">
+                    <div class="om-change-row"><div class="om-change-name">Selling</div><div class="om-change-flow"><s>1,080</s> → 720 FTE</div><div class="om-change-tag om-tag-auto">Automate</div></div>
+                    <div class="om-change-row"><div class="om-change-name">IT</div><div class="om-change-flow"><s>620</s> → 390 FTE</div><div class="om-change-tag om-tag-cons">Consolidate</div></div>
+                    <div class="om-change-row"><div class="om-change-name">Marketing</div><div class="om-change-flow"><s>820</s> → 590 FTE</div><div class="om-change-tag om-tag-elim">Eliminate</div></div>
+                    <div class="om-change-row"><div class="om-change-name">HR</div><div class="om-change-flow"><s>510</s> → 320 FTE</div><div class="om-change-tag om-tag-shar">Shared svc</div></div>
+                    <div class="om-change-row"><div class="om-change-name">Finance</div><div class="om-change-flow"><s>460</s> → 280 FTE</div><div class="om-change-tag om-tag-off">Offshore</div></div>
+                    <div class="om-change-row"><div class="om-change-name">Legal</div><div class="om-change-flow"><s>312</s> → 220 FTE</div><div class="om-change-tag om-tag-cons">Consolidate</div></div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="tm-foot">$4,050 global avg · 2.5× spread · India runs 1.76× · UK is the internal benchmark</div>
           </div>
         </div>
+
+        <!-- ─ Layer 4: Clean-sheet Org Chart — final hierarchy ─ -->
+        <div class="cl-layer cl-orgchart">
+          <div class="oc-shell">
+            <div class="mk-appbar">
+              <div class="mk-appbar-title">Diagnostic · Clean-sheet Org Chart</div>
+              <div class="mk-live"><div class="mk-live-dot"></div> 7 layers → 4 layers</div>
+            </div>
+            <div class="oc-body">
+              <div class="oc-head">Clean-sheet hierarchy</div>
+              <div class="oc-tree">
+                <div class="oc-row no-stem">
+                  <div class="oc-node ceo">
+                    <div class="oc-name">CEO <span class="oc-tag kept">Kept</span></div>
+                    <div class="oc-vals">1 FTE · $2M</div>
+                  </div>
+                </div>
+                <div class="oc-row">
+                  <div class="oc-node fn flat">
+                    <div class="oc-name">Selling <span class="oc-tag flat">Flattened</span></div>
+                    <div class="oc-vals"><s>1,080</s> <b>720 FTE</b><br><s>$380M</s> <b>$275M</b></div>
+                  </div>
+                  <div class="oc-node fn cons">
+                    <div class="oc-name">IT <span class="oc-tag cons">Consolidated</span></div>
+                    <div class="oc-vals"><s>620</s> <b>390 FTE</b><br><s>$310M</s> <b>$210M</b></div>
+                  </div>
+                  <div class="oc-node fn flat">
+                    <div class="oc-name">Marketing <span class="oc-tag flat">Flattened</span></div>
+                    <div class="oc-vals"><s>820</s> <b>590 FTE</b><br><s>$295M</s> <b>$220M</b></div>
+                  </div>
+                  <div class="oc-node fn flat">
+                    <div class="oc-name">HR <span class="oc-tag flat">Flattened</span></div>
+                    <div class="oc-vals"><s>510</s> <b>320 FTE</b><br><s>$280M</s> <b>$195M</b></div>
+                  </div>
+                  <div class="oc-node fn cons">
+                    <div class="oc-name">Finance <span class="oc-tag cons">Consolidated</span></div>
+                    <div class="oc-vals"><s>460</s> <b>280 FTE</b><br><s>$170M</s> <b>$130M</b></div>
+                  </div>
+                  <div class="oc-node fn cons">
+                    <div class="oc-name">Legal <span class="oc-tag cons">Consolidated</span></div>
+                    <div class="oc-vals"><s>312</s> <b>220 FTE</b><br><s>$46M</s> <b>$35M</b></div>
+                  </div>
+                </div>
+                <div class="oc-row">
+                  <div class="oc-node sub kept"><div class="oc-name">Key accts <span class="oc-tag kept">Kept</span></div><div class="oc-vals">180 FTE · $68M</div></div>
+                  <div class="oc-node sub flat"><div class="oc-name">Field ops <span class="oc-tag flat">Flat</span></div><div class="oc-vals"><s>390</s> <b>240 FTE</b></div></div>
+                  <div class="oc-node sub cons"><div class="oc-name">Infra <span class="oc-tag cons">Cons</span></div><div class="oc-vals"><s>210</s> <b>150 FTE</b></div></div>
+                  <div class="oc-node sub cons"><div class="oc-name">Apps <span class="oc-tag cons">Cons</span></div><div class="oc-vals"><s>220</s> <b>140 FTE</b></div></div>
+                  <div class="oc-node sub flat"><div class="oc-name">Brand <span class="oc-tag flat">Flat</span></div><div class="oc-vals"><s>290</s> <b>190 FTE</b></div></div>
+                  <div class="oc-node new"><div class="oc-name">Global CoE <span class="oc-tag new">New</span></div><div class="oc-vals">200 FTE · $74M</div></div>
+                  <div class="oc-node new"><div class="oc-name">Shared svc <span class="oc-tag new">New</span></div><div class="oc-vals">130 FTE · $50M</div></div>
+                </div>
+              </div>
+              <div class="oc-banner">
+                <div class="oc-banner-lbl">Eliminated</div>
+                <div class="oc-banner-item"><span class="nm">Regional mgmt</span><span class="sv">−$42M saved</span></div>
+                <div class="oc-banner-item"><span class="nm">Country COOs</span><span class="sv">−$38M saved</span></div>
+                <div class="oc-banner-item"><span class="nm">Duplicate PMOs</span><span class="sv">−$28M saved</span></div>
+                <div class="oc-banner-item"><span class="nm">Local HR BPs</span><span class="sv">−$32M saved</span></div>
+                <div class="oc-banner-item"><span class="nm">Country Finance</span><span class="sv">−$24M saved</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -2299,10 +2605,10 @@ const CUES = [
   16.23,  // Slide 4  (s4)  — A&M's AI-Enabled ZBO (4-component framework)
   18.31,  // Slide 5  (s4b) — Platform showcase  (NOTE: VO needs re-record)
   20.40,  // Slide 6  (s5)  — Transparency: home → discovery → classification → cost shadow
-  34.15,  // Slide 7  (s6)  — Clean-sheet the core
-  43.0,   // Slide 8  (s7)  — Not AI everywhere
-  52.72,  // Slide 9  (s8)  — Cost structure transformation
-  67.35,  // Slide 10 (s9)  — Quantified improvement roadmap
+  34.15,  // Slide 7  (s6)  — Clean-sheet the core: home → AI-VSM → op model → org chart
+  50.00,  // Slide 8  (s7)  — Not AI everywhere
+  59.72,  // Slide 9  (s8)  — Cost structure transformation
+  74.35,  // Slide 10 (s9)  — Quantified improvement roadmap
 ];
 // ═══════════════════════════════════════════════════════════════════
 
@@ -2431,17 +2737,22 @@ document.addEventListener('keydown', e => {
     const c = colorFor(v);
     return `<td class="hb-cell"><div class="hb-circle" style="--p:${v};--c:${c}"><div class="hb-num" style="color:${c}">${v}</div></div></td>`;
   };
-  const body = document.getElementById('hb-body');
-  if (!body) return;
-  body.innerHTML = HB_ROWS.map((r, i) => {
-    const cells = r.scores.map(ball).join('');
-    return `<tr class="mk" style="--d:${(0.75 + i * 0.14).toFixed(2)}s">
-      <td><div class="hb-sub-name">${r.name}</div><div class="hb-sub-meta">${r.meta}</div></td>
-      ${cells}
-      <td class="hb-cell"><span class="hb-score-pill">${r.score}</span></td>
-      <td class="hb-cell"><span class="hb-rec ${r.recCls}">${r.rec}</span></td>
-    </tr>`;
-  }).join('');
+  const renderRows = (bodyEl) => {
+    if (!bodyEl) return;
+    bodyEl.innerHTML = HB_ROWS.map((r, i) => {
+      const cells = r.scores.map(ball).join('');
+      return `<tr class="mk" style="--d:${(0.75 + i * 0.14).toFixed(2)}s">
+        <td><div class="hb-sub-name">${r.name}</div><div class="hb-sub-meta">${r.meta}</div></td>
+        ${cells}
+        <td class="hb-cell"><span class="hb-score-pill">${r.score}</span></td>
+        <td class="hb-cell"><span class="hb-rec ${r.recCls}">${r.rec}</span></td>
+      </tr>`;
+    }).join('');
+  };
+  // Slide 8 (id s7) — the standalone "Not AI everywhere" deep-dive
+  renderRows(document.getElementById('hb-body'));
+  // Slide 7 (id s6) — same scoring table embedded as the AI-VSM phase
+  renderRows(document.getElementById('s6-hb-body'));
 })();
 
 activateSlide(0);
