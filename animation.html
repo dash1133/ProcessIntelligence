@@ -632,6 +632,88 @@
     .ex-tl-fill  { position: absolute; top: 8px; height: 4px; border-radius: 9px; }
     .ex-tl-mark  { position: absolute; top: -3px; font-size: 7.5px; color: #94a3b8; font-weight: 600; }
     .ex-target { font-size: 14px; font-weight: 800; color: #10b981; text-align: right; }
+
+    /* ═══ Slide 4: AI-ZBO 4-Component Framework ═══ */
+    #s4 { padding: 70px 60px; }
+    #s4 .headline { font-size: 40px; max-width: 900px; }
+    .fw-grid {
+      display: flex; align-items: stretch; justify-content: center;
+      gap: 8px; margin-top: 38px; width: 100%; max-width: 1160px;
+    }
+    .fw-card {
+      flex: 1 1 0; min-width: 0;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px 16px 16px 22px;
+      display: flex; flex-direction: column;
+      position: relative;
+      box-shadow: 0 2px 18px rgba(15,31,61,0.06);
+      opacity: 0; transform: translateY(14px);
+    }
+    .slide.active .fw-card { animation: mkIn 0.55s ease var(--d, 0s) forwards; }
+    .fw-card::before {
+      content: ""; position: absolute; left: 0; top: 12px; bottom: 12px;
+      width: 3px; background: #c8102e; border-radius: 2px;
+    }
+    .fw-num {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+      color: #c8102e; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .fw-num-big {
+      position: absolute; right: 14px; top: 12px;
+      font-size: 32px; font-weight: 800; color: #f1f5f9;
+      letter-spacing: -0.03em; line-height: 1;
+    }
+    .fw-title {
+      font-size: 14px; font-weight: 800; color: #0f1f3d;
+      line-height: 1.25; margin-bottom: 10px; text-transform: uppercase;
+      letter-spacing: 0.02em;
+      position: relative; z-index: 1;
+    }
+    .fw-desc {
+      font-size: 12px; color: #475569; line-height: 1.45; font-style: italic;
+    }
+    .fw-arrow {
+      align-self: center; color: #c8102e; font-size: 22px;
+      font-weight: 300; flex-shrink: 0; padding: 0 2px;
+      opacity: 0;
+    }
+    .slide.active .fw-arrow { animation: mkIn 0.4s ease var(--d, 0s) forwards; }
+
+    /* ═══ Framework Breadcrumb (slides 5-9) ═══ */
+    .fw-rail {
+      display: flex; align-items: center;
+      width: 100%; max-width: 320px;
+      margin-bottom: 20px;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+    }
+    .slide.active .fw-rail { opacity: 1; transform: none; }
+    .fw-rail-step {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: #f1f5f9; color: #94a3b8;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; border: 1.5px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .fw-rail-step.done { background: #fff; color: #10b981; border-color: #6ee7b7; }
+    .fw-rail-step.active {
+      background: #c8102e; color: #fff; border-color: #c8102e;
+      box-shadow: 0 0 0 4px rgba(200,16,46,0.14);
+    }
+    .fw-rail-line {
+      flex: 1; height: 2px; background: #e2e8f0;
+    }
+    .fw-rail-line.done { background: #6ee7b7; }
+    .fw-rail-caption {
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #94a3b8;
+      margin-bottom: 8px; opacity: 0; transform: translateY(8px);
+      transition: opacity 0.5s ease 0.05s, transform 0.5s ease 0.05s;
+    }
+    .slide.active .fw-rail-caption { opacity: 1; transform: none; }
   </style>
 </head>
 <body>
@@ -685,12 +767,51 @@
     <div class="label">Our Approach</div>
     <div class="headline"><span class="accent">A&amp;M's AI-Enabled ZBO</span><br>takes a different approach.</div>
     <div class="divider"></div>
+    <div class="fw-grid">
+      <div class="fw-card" style="--d:.7s">
+        <div class="fw-num-big">01</div>
+        <div class="fw-num">Transparency</div>
+        <div class="fw-title">Transparency on True Profitability</div>
+        <div class="fw-desc">Bring transparency to current state margins, costs, and profitability.</div>
+      </div>
+      <div class="fw-arrow" style="--d:.85s">→</div>
+      <div class="fw-card" style="--d:.95s">
+        <div class="fw-num-big">02</div>
+        <div class="fw-num">Clean Sheet</div>
+        <div class="fw-title">Clean Sheet the Core</div>
+        <div class="fw-desc">Develop clean-sheet cost structure to support the core business.</div>
+      </div>
+      <div class="fw-arrow" style="--d:1.1s">→</div>
+      <div class="fw-card" style="--d:1.2s">
+        <div class="fw-num-big">03</div>
+        <div class="fw-num">Improvement</div>
+        <div class="fw-title">Improvement Initiatives &amp; Strategic Investments</div>
+        <div class="fw-desc">Layer strategic investments and identify improvement opportunities.</div>
+      </div>
+      <div class="fw-arrow" style="--d:1.35s">→</div>
+      <div class="fw-card" style="--d:1.45s">
+        <div class="fw-num-big">04</div>
+        <div class="fw-num">Roadmap</div>
+        <div class="fw-title">Implementation Roadmap</div>
+        <div class="fw-desc">Identify and sequence the changes required to operate in future state.</div>
+      </div>
+    </div>
   </div>
 
   <!-- ─── Slide 5: Transparency — Process Map → Activity Mapping ─── -->
   <div class="slide split" id="s5">
     <div class="slide-text">
-      <div class="label">Step 1 — Transparency</div>
+      <div class="fw-rail-caption">AI-ZBO Framework · 1 of 4</div>
+      <div class="fw-rail">
+        <div class="fw-rail-step active">1</div>
+        <div class="fw-rail-line"></div>
+        <div class="fw-rail-step">2</div>
+        <div class="fw-rail-line"></div>
+        <div class="fw-rail-step">3</div>
+        <div class="fw-rail-line"></div>
+        <div class="fw-rail-step">4</div>
+      </div>
+      <div class="label">Transparency on True Profitability</div>
       <div class="headline">Start with<br>transparency<br>on <span class="accent">true profitability.</span></div>
       <div class="sub">From the end-to-end process map down to the activity, driver, and unit-cost layer underneath it.</div>
       <div class="divider"></div>
@@ -812,7 +933,17 @@
   <!-- ─── Slide 6: Clean-Sheet — Classification + Cost Shadow Treemap ─── -->
   <div class="slide split" id="s6">
     <div class="slide-text">
-      <div class="label">Step 2 — Clean-Sheet</div>
+      <div class="fw-rail-caption">AI-ZBO Framework · 2 of 4</div>
+      <div class="fw-rail">
+        <div class="fw-rail-step done">1</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step active">2</div>
+        <div class="fw-rail-line"></div>
+        <div class="fw-rail-step">3</div>
+        <div class="fw-rail-line"></div>
+        <div class="fw-rail-step">4</div>
+      </div>
+      <div class="label">Clean Sheet the Core</div>
       <div class="headline">We<br><span class="accent">clean-sheet<br>the core.</span></div>
       <div class="sub">Re-baseline the cost shadow per customer. Sort every dollar by what the business must spend, what it could cut, and what it should protect.</div>
       <div class="divider"></div>
@@ -935,7 +1066,17 @@
   <!-- ─── Slide 7: Not AI Everywhere — Harvey Ball Sub-process Scoring ─── -->
   <div class="slide split" id="s7">
     <div class="slide-text">
-      <div class="label">Step 3 — Targeted AI</div>
+      <div class="fw-rail-caption">AI-ZBO Framework · 3 of 4</div>
+      <div class="fw-rail">
+        <div class="fw-rail-step done">1</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step done">2</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step active">3</div>
+        <div class="fw-rail-line"></div>
+        <div class="fw-rail-step">4</div>
+      </div>
+      <div class="label">Improvement Initiatives &amp; Strategic Investments</div>
       <div class="headline">Not<br><span class="accent">AI everywhere.</span></div>
       <div class="sub">Every sub-process scored on five criteria — margin impact, volume, data, error tolerance, adoption — before any recommendation.</div>
       <div class="divider"></div>
@@ -976,7 +1117,17 @@
   <!-- ─── Slide 8: The Outcome — three sequential full-size artifacts ─── -->
   <div class="slide split" id="s8">
     <div class="slide-text">
-      <div class="label">The Outcome</div>
+      <div class="fw-rail-caption">AI-ZBO Framework · 3 of 4</div>
+      <div class="fw-rail">
+        <div class="fw-rail-step done">1</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step done">2</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step active">3</div>
+        <div class="fw-rail-line"></div>
+        <div class="fw-rail-step">4</div>
+      </div>
+      <div class="label">Improvement Initiatives — The Outcome</div>
       <div class="headline">Cost structure<br><span class="accent">transformation</span> —<br>not just reduction.</div>
       <div class="sub">Better transparency · sharper KPI monitoring · faster, more informed decisions.</div>
       <div class="divider"></div>
@@ -1124,7 +1275,17 @@
   <!-- ─── Slide 9: Roadmap — four sequential full-size artifacts ─── -->
   <div class="slide split" id="s9">
     <div class="slide-text">
-      <div class="label">The Deliverable</div>
+      <div class="fw-rail-caption">AI-ZBO Framework · 4 of 4</div>
+      <div class="fw-rail">
+        <div class="fw-rail-step done">1</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step done">2</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step done">3</div>
+        <div class="fw-rail-line done"></div>
+        <div class="fw-rail-step active">4</div>
+      </div>
+      <div class="label">Implementation Roadmap</div>
       <div class="headline">A quantified<br><span class="accent">improvement<br>roadmap.</span></div>
       <div class="sub">Sized EBITDA · New baseline · FTE targets · Execution plan tied to impact.</div>
       <div class="divider"></div>
