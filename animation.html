@@ -1761,59 +1761,50 @@
     }
     @keyframes s2HlSweep { to { right: 0; } }
 
-    /* ═══ Slide 3: animated 3-bar Cost Impact Potential chart ═══ */
-    #s3 { padding: 60px 90px 60px; justify-content: flex-start; }
+    /* ═══ Slide 3: 3-bar Cost Impact chart with emphasised message lines ═══ */
+    #s3 { padding: 56px 70px 56px; justify-content: flex-start; }
     #s3 .headline { font-size: 38px; max-width: 980px; }
-    #s3 .sub { max-width: 760px; }
     #s3 .divider { margin: 16px auto 0; }
     .s3-chart-wrap {
-      width: 100%; max-width: 1080px;
-      margin-top: 18px;
+      width: 100%; max-width: 1180px;
+      margin-top: 20px;
       opacity: 0; transform: translateY(8px);
       transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
     }
     .slide.active .s3-chart-wrap { opacity: 1; transform: none; }
-    .s3-chart-title {
-      font-size: 10.5px; font-weight: 700; letter-spacing: 0.22em;
-      color: #94a3b8; text-transform: uppercase; text-align: center;
-      margin-bottom: 12px;
-    }
-    .s3-svg { width: 100%; height: 320px; display: block; }
+    .s3-svg { width: 100%; height: 460px; display: block; }
     .s3-bar { transform-origin: bottom; transform: scaleY(0); }
     .s3-bar.b1 { fill: #cbd5e1; }
     .s3-bar.b2 { fill: #0f1f3d; }
     .s3-bar.b3 { fill: #1d4ed8; }
     .slide.active .s3-bar.b1 { animation: s3GrowBar 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards; }
     .slide.active .s3-bar.b2 { animation: s3GrowBar 0.7s cubic-bezier(0.4, 0, 0.2, 1) 1.0s forwards; }
-    .slide.active .s3-bar.b3 { animation: s3GrowBar 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) 3.4s forwards; }
+    .slide.active .s3-bar.b3 { animation: s3GrowBar 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) 3.0s forwards; }
     @keyframes s3GrowBar { to { transform: scaleY(1); } }
 
-    .s3-bar-val { font-size: 24px; font-weight: 800; fill: #0f1f3d; text-anchor: middle; opacity: 0; }
+    .s3-bar-val { font-size: 30px; font-weight: 800; fill: #0f1f3d; text-anchor: middle; opacity: 0; }
     .s3-bar-val.b1 { fill: #475569; }
-    .s3-bar-val.b3 { fill: #1d4ed8; font-size: 32px; }
+    .s3-bar-val.b3 { fill: #1d4ed8; font-size: 38px; }
     .slide.active .s3-bar-val.b1 { animation: s1FadeIn 0.4s ease 1.0s forwards; }
     .slide.active .s3-bar-val.b2 { animation: s1FadeIn 0.4s ease 1.4s forwards; }
-    .slide.active .s3-bar-val.b3 { animation: s3PopIn 0.5s ease 3.7s forwards; }
+    .slide.active .s3-bar-val.b3 { animation: s3PopIn 0.5s ease 3.4s forwards; }
     @keyframes s3PopIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    .s3-bar-name { font-size: 14px; font-weight: 800; fill: #0f1f3d; text-anchor: middle; opacity: 0; }
-    .s3-bar-name.b3 { fill: #1d4ed8; }
-    .s3-bar-sub { font-size: 11px; font-weight: 500; fill: #64748b; text-anchor: middle; opacity: 0; }
-    .s3-bar-sub.b3-strong { fill: #1d4ed8; font-weight: 700; }
+    /* Bar name (smaller, secondary) */
+    .s3-bar-name { font-size: 14px; font-weight: 600; fill: #94a3b8; text-anchor: middle; letter-spacing: 0.04em; opacity: 0; }
+    .s3-bar-name.b3 { fill: #1d4ed8; opacity: 0; }
+    /* Message line — the focus */
+    .s3-bar-msg { font-size: 24px; font-weight: 800; fill: #475569; text-anchor: middle; letter-spacing: -0.01em; opacity: 0; }
+    .s3-bar-msg.b3 { fill: #1d4ed8; font-size: 28px; }
 
-    .slide.active .s3-bar-name.b1, .slide.active .s3-bar-sub.b1 { animation: s1FadeIn 0.5s ease 1.0s forwards; }
-    .slide.active .s3-bar-name.b2, .slide.active .s3-bar-sub.b2 { animation: s1FadeIn 0.5s ease 1.4s forwards; }
-    .slide.active .s3-bar-name.b3, .slide.active .s3-bar-sub.b3 { animation: s1FadeIn 0.5s ease 3.9s forwards; }
+    .slide.active .s3-bar-name.b1, .slide.active .s3-bar-msg.b1 { animation: s1FadeIn 0.5s ease 1.0s forwards; }
+    .slide.active .s3-bar-name.b2, .slide.active .s3-bar-msg.b2 { animation: s1FadeIn 0.5s ease 1.4s forwards; }
+    .slide.active .s3-bar-name.b3 { animation: s1FadeIn 0.5s ease 3.6s forwards; }
+    .slide.active .s3-bar-msg.b3  { animation: s1FadeIn 0.6s ease 3.8s forwards; }
 
-    .s3-arrow { stroke: #94a3b8; stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; opacity: 0; }
-    .slide.active .s3-arrow { animation: s1FadeIn 0.6s ease 4.0s forwards; }
-    .s3-arrow-tip { fill: #94a3b8; opacity: 0; }
-    .slide.active .s3-arrow-tip { animation: s1FadeIn 0.4s ease 4.5s forwards; }
-    .s3-deeper {
-      font-size: 12px; font-weight: 800; fill: #94a3b8; letter-spacing: 0.18em;
-      text-transform: uppercase; text-anchor: middle; opacity: 0;
-    }
-    .slide.active .s3-deeper { animation: s1FadeIn 0.5s ease 4.2s forwards; }
+    .s3-axis      { stroke: #e2e8f0; stroke-width: 1; }
+    .s3-base      { stroke: #0f1f3d; stroke-width: 1.5; }
+    .s3-axis-label { font-size: 11px; fill: #94a3b8; letter-spacing: 0.06em; }
 
     .s3-axis { stroke: #e2e8f0; stroke-width: 1; }
     .s3-axis-label { font-size: 10px; fill: #94a3b8; }
@@ -1922,48 +1913,48 @@
   <div class="slide" id="s3">
     <div class="label">The Gap</div>
     <div class="headline">Traditional cost programs<br>miss the real opportunity.</div>
-    <div class="sub">They <b>trim the margins</b> or <b>optimize the operating model</b> — not the work itself.</div>
     <div class="divider"></div>
     <div class="s3-chart-wrap">
-      <div class="s3-chart-title">Why it matters now · Cost impact potential</div>
-      <svg class="s3-svg" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <!-- Y-axis grid lines + labels -->
-        <line class="s3-axis" x1="100" y1="40"  x2="900" y2="40" />
-        <line class="s3-axis" x1="100" y1="100" x2="900" y2="100" />
-        <line class="s3-axis" x1="100" y1="160" x2="900" y2="160" />
-        <line class="s3-axis" x1="100" y1="220" x2="900" y2="220" />
-        <line class="s3-axis" x1="100" y1="280" x2="900" y2="280" stroke="#0f1f3d" stroke-width="1.5" />
+      <svg class="s3-svg" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <!-- Y-axis grid lines + labels (chart area: y=60 top, y=290 baseline, range = 60% over 230px) -->
+        <line class="s3-axis" x1="120" y1="60"  x2="1080" y2="60" />
+        <line class="s3-axis" x1="120" y1="137" x2="1080" y2="137" />
+        <line class="s3-axis" x1="120" y1="213" x2="1080" y2="213" />
+        <line class="s3-base" x1="120" y1="290" x2="1080" y2="290" />
 
-        <text class="s3-axis-label" x="92" y="44"  text-anchor="end">60%</text>
-        <text class="s3-axis-label" x="92" y="104" text-anchor="end">40%</text>
-        <text class="s3-axis-label" x="92" y="164" text-anchor="end">20%</text>
-        <text class="s3-axis-label" x="92" y="224" text-anchor="end">10%</text>
-        <text class="s3-axis-label" x="92" y="284" text-anchor="end">0%</text>
+        <text class="s3-axis-label" x="112" y="64"  text-anchor="end">60%</text>
+        <text class="s3-axis-label" x="112" y="141" text-anchor="end">40%</text>
+        <text class="s3-axis-label" x="112" y="217" text-anchor="end">20%</text>
+        <text class="s3-axis-label" x="112" y="294" text-anchor="end">0%</text>
 
-        <text class="s3-axis-label" x="50" y="160" transform="rotate(-90 50 160)" text-anchor="middle" letter-spacing="0.1em">% of cost base unlocked</text>
+        <text class="s3-axis-label" x="58" y="175"
+              transform="rotate(-90 58 175)" text-anchor="middle"
+              letter-spacing="0.16em" font-weight="700">% of cost base unlocked</text>
 
-        <!-- Bar 1: Traditional 5-15% (top at y=235, height=45 → 0% to 15%) -->
-        <rect class="s3-bar b1" x="180" y="235" width="160" height="45" rx="2" />
-        <text class="s3-bar-val   b1" x="260" y="218">5–15%</text>
-        <text class="s3-bar-name  b1" x="260" y="305" font-size="14">Traditional cost program</text>
-        <text class="s3-bar-sub   b1" x="260" y="320">trims the margin</text>
+        <!--
+          Bar geometry (baseline at y=290):
+            5-15%  → height  58 → top at 232
+            20-30% → height 115 → top at 175
+            40-60% → height 230 → top at  60
+        -->
 
-        <!-- Bar 2: Classic ZBO 20-30% (top at y=190, height=90 → 0% to 30%) -->
-        <rect class="s3-bar b2" x="420" y="190" width="160" height="90" rx="2" />
-        <text class="s3-bar-val   b2" x="500" y="178">20–30%</text>
-        <text class="s3-bar-name  b2" x="500" y="305" font-size="14">Classic Zero-Based Optimization</text>
-        <text class="s3-bar-sub   b2" x="500" y="320">rebuilds the operating model</text>
+        <!-- Bar 1: Traditional 5-15% -->
+        <rect class="s3-bar b1" x="220" y="232" width="180" height="58" rx="3" />
+        <text class="s3-bar-val  b1" x="310" y="216">5–15%</text>
+        <text class="s3-bar-name b1" x="310" y="335">Traditional cost program</text>
+        <text class="s3-bar-msg  b1" x="310" y="375">trims the margin</text>
 
-        <!-- Bar 3: AI-Enabled ZBO 40-60% (top at y=40, height=240 → 0% to 60%) -->
-        <rect class="s3-bar b3" x="660" y="40" width="160" height="240" rx="2" />
-        <text class="s3-bar-val   b3" x="740" y="28">40–60%</text>
-        <text class="s3-bar-name  b3" x="740" y="305" font-size="14">AI-Enabled ZBO (A&amp;M approach)</text>
-        <text class="s3-bar-sub   b3 b3-strong" x="740" y="320">redesign how work gets done</text>
+        <!-- Bar 2: Classic ZBO 20-30% -->
+        <rect class="s3-bar b2" x="510" y="175" width="180" height="115" rx="3" />
+        <text class="s3-bar-val  b2" x="600" y="160">20–30%</text>
+        <text class="s3-bar-name b2" x="600" y="335">Classic Zero-Based Optimization</text>
+        <text class="s3-bar-msg  b2" x="600" y="375">optimizes current operating model</text>
 
-        <!-- Dashed arrow connecting bar tops -->
-        <path class="s3-arrow" d="M 260,225 Q 380,200 500,180 T 740,55" />
-        <polygon class="s3-arrow-tip" points="735,50 750,52 740,62" />
-        <text class="s3-deeper" x="500" y="120">Deeper reset, faster</text>
+        <!-- Bar 3: AI-Enabled ZBO 40-60% -->
+        <rect class="s3-bar b3" x="800" y="60" width="180" height="230" rx="3" />
+        <text class="s3-bar-val  b3" x="890" y="44">40–60%</text>
+        <text class="s3-bar-name b3" x="890" y="335">AI-Enabled ZBO (A&amp;M approach)</text>
+        <text class="s3-bar-msg  b3" x="890" y="378">redesigns how work gets done</text>
       </svg>
     </div>
   </div>
