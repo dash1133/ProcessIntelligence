@@ -47,6 +47,11 @@
 
     .accent { color: #1d4ed8; }
 
+    /* Slide 4 — make "AI-Enabled ZBO" the visual hero */
+    #s4 .headline { font-size: 78px; letter-spacing: -0.02em; line-height: 1.05; }
+    #s4 .sub { font-size: 22px; max-width: 760px; }
+    #s4 .sub b { color: #0f1f3d; font-weight: 800; }
+
     .sub {
       margin-top: 28px; font-size: 22px; font-weight: 400;
       color: #475569; text-align: center; max-width: 760px; line-height: 1.5;
@@ -54,6 +59,11 @@
       transition: opacity 0.6s ease 0.65s, transform 0.6s ease 0.65s;
     }
     .slide.active .sub { opacity: 1; transform: none; }
+    .sub.sub-2 {
+      margin-top: 10px; color: #64748b;
+      transition-delay: 0.85s;
+    }
+    .sub.sub-2 b { color: #0f1f3d; font-weight: 700; }
 
     .divider {
       width: 0; height: 3px; background: #1d4ed8;
@@ -682,23 +692,32 @@
     }
     .slide.active .fw-arrow { animation: mkIn 0.4s ease var(--d, 0s) forwards; }
 
-    /* ═══ Framework Breadcrumb — top bar next to A&M logo (slides 6-10) ═══ */
+    /* ═══ Framework Breadcrumb — top bar with step name + dots ═══ */
     .fw-topbar {
-      position: absolute; top: 38px; left: 200px; right: 440px;
-      display: flex; align-items: center; gap: 14px;
-      height: 28px; z-index: 9;
+      position: absolute; top: 28px; left: 200px; right: 440px;
+      display: flex; align-items: center; gap: 22px;
+      height: 48px; z-index: 9;
       opacity: 0; transform: translateY(-4px);
       transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
     }
     .slide.active .fw-topbar { opacity: 1; transform: none; }
+    .fw-step-block {
+      display: flex; flex-direction: column; gap: 3px;
+      flex-shrink: 0; min-width: 0;
+    }
     .fw-rail-caption {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
-      text-transform: uppercase; color: #64748b;
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: #94a3b8;
       white-space: nowrap;
+    }
+    .fw-step-name {
+      font-size: 14px; font-weight: 800; color: #0f1f3d;
+      white-space: nowrap; letter-spacing: -0.005em;
     }
     .fw-rail {
       display: flex; align-items: center;
-      flex: 1; max-width: 360px;
+      flex: 1; max-width: 320px;
+      margin-left: auto;
     }
     .fw-rail-step {
       width: 22px; height: 22px; border-radius: 50%;
@@ -721,8 +740,9 @@
     .fw-rail-line.done { background: #93c5fd; }
 
     /* ═══ Slide 4b: AI-ZBO Platform Showcase ═══ */
-    #s4b .headline { font-size: 28px; line-height: 1.22; }
-    #s4b .sub { max-width: 280px; }
+    #s4b .headline { font-size: 34px; line-height: 1.18; letter-spacing: -0.01em; }
+    #s4b .sub { max-width: 280px; font-size: 14px; margin-top: 18px; line-height: 1.5; }
+    #s4b .sub.sub-2 { margin-top: 8px; }
 
     .plat-mock {
       width: 100%;
@@ -1962,16 +1982,19 @@
   <!-- Slide 4 -->
   <div class="slide" id="s4">
     <div class="label">Our Approach</div>
-    <div class="headline"><span class="accent">AI-Enabled ZBO</span> is a clean-sheet approach to cost and performance that <span class="accent">redesigns priority workflows</span> with AI as the starting point.</div>
+    <div class="headline"><span class="accent">AI-Enabled ZBO</span></div>
+    <div class="sub">A <b>clean-sheet approach</b> to cost and performance.</div>
+    <div class="sub sub-2">Redesigns priority workflows with <b>AI as the starting point.</b></div>
     <div class="divider"></div>
   </div>
 
   <!-- ─── Slide 4b: Platform Showcase ─── -->
   <div class="slide split" id="s4b">
     <div class="slide-text">
-      <div class="label">Powered by the AI-ZBO Platform</div>
-      <div class="headline">Engagement-ready<br><span class="accent">accelerators &amp;<br>orchestrated analyses.</span></div>
-      <div class="sub">Configured to each client's data, taxonomy, and ZBO objectives.</div>
+      <div class="label">The Platform</div>
+      <div class="headline">Powered by the<br><span class="accent">AI-ZBO Platform.</span></div>
+      <div class="sub">Engagement-ready accelerators &amp; orchestrated analyses.</div>
+      <div class="sub sub-2">Configured to each client's data, taxonomy, and ZBO objectives.</div>
       <div class="divider"></div>
     </div>
     <div class="slide-visual">
@@ -2115,7 +2138,10 @@
   <!-- ─── Slide 7 (id s5): Home → click → Activity & Driver Mapping ─── -->
   <div class="slide split" id="s5">
     <div class="fw-topbar">
-      <div class="fw-rail-caption">AI-ZBO Framework · 1 of 4</div>
+      <div class="fw-step-block">
+        <div class="fw-rail-caption">Step 1 of 4 · AI-ZBO Framework</div>
+        <div class="fw-step-name">Transparency on True Profitability</div>
+      </div>
       <div class="fw-rail">
         <div class="fw-rail-step active">1</div>
         <div class="fw-rail-line"></div>
@@ -2127,7 +2153,6 @@
       </div>
     </div>
     <div class="slide-text">
-      <div class="label">Transparency on True Profitability</div>
       <div class="headline">Transparency on<br><span class="accent">true profitability.</span></div>
       <div class="sub">Bottom-up discovery from real records, classified by every dollar's role, and a per-customer cost shadow — surfacing where cost-to-serve, rework, and complexity are leaking margin.</div>
       <div class="divider"></div>
@@ -2560,7 +2585,10 @@
   <!-- ─── Slide 7 (id s6): Clean-Sheet — Classification + Cost Shadow Treemap ─── -->
   <div class="slide split" id="s6">
     <div class="fw-topbar">
-      <div class="fw-rail-caption">AI-ZBO Framework · 2 of 4</div>
+      <div class="fw-step-block">
+        <div class="fw-rail-caption">Step 2 of 4 · AI-ZBO Framework</div>
+        <div class="fw-step-name">Clean-Sheet the Core</div>
+      </div>
       <div class="fw-rail">
         <div class="fw-rail-step done">1</div>
         <div class="fw-rail-line done"></div>
@@ -2572,7 +2600,6 @@
       </div>
     </div>
     <div class="slide-text">
-      <div class="label">Clean-Sheet the Core</div>
       <div class="headline">Priority workflows<br>mapped at the<br><span class="accent">activity level.</span></div>
       <div class="sub">Every activity evaluated for AI suitability — identifying where AI-enabled redesign materially shifts labor, cost, and throughput.</div>
       <div class="divider"></div>
@@ -2825,7 +2852,10 @@
   <!-- ─── Slide 7: Not AI Everywhere — Harvey Ball Sub-process Scoring ─── -->
   <div class="slide split" id="s7">
     <div class="fw-topbar">
-      <div class="fw-rail-caption">AI-ZBO Framework · 3 of 4</div>
+      <div class="fw-step-block">
+        <div class="fw-rail-caption">Step 3 of 4 · AI-ZBO Framework</div>
+        <div class="fw-step-name">Improvement Initiatives &amp; Strategic Investments</div>
+      </div>
       <div class="fw-rail">
         <div class="fw-rail-step done">1</div>
         <div class="fw-rail-line done"></div>
@@ -2837,7 +2867,6 @@
       </div>
     </div>
     <div class="slide-text">
-      <div class="label">Improvement Initiatives &amp; Strategic Investments</div>
       <div class="headline">Cost structure<br><span class="accent">transformation,</span><br>not just reduction.</div>
       <div class="sub">Initiatives sized into business cases · KPIs monitored live · AI agents accelerating the next decision — strengthening the operating model end-to-end.</div>
       <div class="divider"></div>
@@ -3240,7 +3269,10 @@
   <!-- ─── Slide 9: Roadmap — four sequential full-size artifacts ─── -->
   <div class="slide split" id="s9">
     <div class="fw-topbar">
-      <div class="fw-rail-caption">AI-ZBO Framework · 4 of 4</div>
+      <div class="fw-step-block">
+        <div class="fw-rail-caption">Step 4 of 4 · AI-ZBO Framework</div>
+        <div class="fw-step-name">Implementation Roadmap</div>
+      </div>
       <div class="fw-rail">
         <div class="fw-rail-step done">1</div>
         <div class="fw-rail-line done"></div>
@@ -3252,7 +3284,6 @@
       </div>
     </div>
     <div class="slide-text">
-      <div class="label">Implementation Roadmap</div>
       <div class="headline">The result —<br>a quantified<br><span class="accent">improvement<br>roadmap.</span></div>
       <div class="sub">Sized EBITDA opportunity · new operating baseline · clear FTE recapture targets · execution plan tied to measurable impact.</div>
       <div class="divider"></div>
