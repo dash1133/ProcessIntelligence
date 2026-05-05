@@ -1217,9 +1217,9 @@
     #s6 .om-panel-title { font-size: 9px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
 
     #s6 .om-legend { display: flex; gap: 12px; font-size: 9px; color: #64748b; margin-bottom: 6px; }
-    #s6 .om-legend .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 4px; }
-    #s6 .om-legend .dot.cur { background: #93c5fd; }
-    #s6 .om-legend .dot.cs  { background: #14b8a6; }
+    #s6 .om-legend .lgd-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 4px; }
+    #s6 .om-legend .lgd-dot.cur { background: #93c5fd; }
+    #s6 .om-legend .lgd-dot.cs  { background: #14b8a6; }
 
     #s6 .om-bar-row { display: grid; grid-template-columns: 70px 1fr 50px; gap: 8px; align-items: center; margin-bottom: 7px; }
     #s6 .om-bar-name { font-size: 10.5px; font-weight: 700; color: #0f1f3d; }
@@ -1298,6 +1298,221 @@
     #s6 .oc-banner-item { display: flex; flex-direction: column; gap: 1px; }
     #s6 .oc-banner-item .nm { font-size: 9.5px; font-weight: 700; color: #b91c1c; text-decoration: line-through; }
     #s6 .oc-banner-item .sv { font-size: 11px; font-weight: 800; color: #059669; }
+
+    /* ═══ Slide 8 (id s7): Home → Initiative Sizing → KPI Monitoring → Forecast ═══ */
+    #s7 .cl-stack { position: relative; width: 100%; height: 572px; }
+    #s7 .cl-layer { position: absolute; inset: 0; opacity: 0; display: flex; align-items: flex-start; justify-content: center; }
+
+    #s7.active .cl-layer.cl-home        { animation: admHomeIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s forwards, admHomeOut 0.6s ease 2.5s forwards; }
+    #s7.active .cl-layer.cl-initiatives { animation: paIn 0.55s ease 3.0s forwards, paOut 0.55s ease 6.5s forwards; }
+    #s7.active .cl-layer.cl-kpis        { animation: paIn 0.55s ease 7.0s forwards, paOut 0.55s ease 10.0s forwards; }
+    #s7.active .cl-layer.cl-forecast    { animation: paIn 0.55s ease 10.5s forwards; }
+
+    #s7 .cl-home .plat-mock {
+      opacity: 1 !important; transform: none !important; transition: none !important;
+      box-shadow: 0 6px 24px rgba(15,31,61,0.10);
+    }
+
+    /* Cursor + target — slide 8 (Initiative Sizing in last section) */
+    #s7 .s7-cursor {
+      position: absolute;
+      width: 24px; height: 24px;
+      top: 80px; left: 700px;
+      pointer-events: none;
+      z-index: 6; opacity: 0;
+      filter: drop-shadow(0 2px 5px rgba(15,31,61,0.4));
+    }
+    #s7.active .s7-cursor {
+      animation:
+        admCursorIn   0.25s ease 0.7s forwards,
+        s7CursorMove  1.6s  cubic-bezier(0.55,0.05,0.4,1) 1.0s forwards,
+        admCursorOut  0.25s ease 2.55s forwards;
+    }
+    @keyframes s7CursorMove {
+      0%   { transform: translate(0, 0); }
+      85%  { transform: translate(-545px, 449px); }
+      92%  { transform: translate(-545px, 449px) scale(0.78); }
+      100% { transform: translate(-545px, 449px) scale(1); }
+    }
+    #s7 .s7-target {
+      position: absolute;
+      top: 514px; left: 18px;
+      width: 282px; height: 36px;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 5; opacity: 0;
+    }
+    #s7.active .s7-target {
+      animation:
+        s7ChipIn    0.18s ease 2.4s forwards,
+        s7ChipPulse 0.45s ease 2.58s forwards,
+        s7ChipOut   0.3s  ease 2.95s forwards;
+    }
+    @keyframes s7ChipIn    { from { opacity: 0; box-shadow: 0 0 0 0 rgba(29,78,216,0); } to { opacity: 1; border-color: #1d4ed8; box-shadow: 0 0 0 6px rgba(29,78,216,0.20); } }
+    @keyframes s7ChipPulse { 0% { transform: scale(1); } 50% { transform: scale(1.04); } 100% { transform: scale(1); } }
+    @keyframes s7ChipOut   { from { opacity: 1; } to { opacity: 0; } }
+
+    /* === Layer 2: Initiative Sizing & Business Case === */
+    #s7 .is-shell { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 8px 28px rgba(15,31,61,0.10); overflow: hidden; display: flex; flex-direction: column; }
+    #s7 .is-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; }
+
+    #s7 .is-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    #s7 .is-stat { background: #f0f7ff; border: 1px solid #cfe1ff; border-radius: 8px; padding: 8px 10px; }
+    #s7 .is-stat-lbl { font-size: 8.5px; font-weight: 600; color: #64748b; }
+    #s7 .is-stat-val { font-size: 18px; font-weight: 800; color: #0f1f3d; line-height: 1; letter-spacing: -0.02em; margin-top: 3px; }
+    #s7 .is-stat-val.saved   { color: #059669; }
+    #s7 .is-stat-val.invest  { color: #c2410c; }
+    #s7 .is-stat-val.pay     { color: #1d4ed8; }
+    #s7 .is-stat-sub { font-size: 8px; color: #94a3b8; margin-top: 3px; }
+
+    #s7 .is-grid { display: grid; grid-template-columns: 1fr 240px; gap: 8px; }
+    #s7 .is-pane { background: #fff; border: 1px solid #e2e8f0; border-radius: 9px; padding: 10px 11px; }
+    #s7 .is-pane-title { font-size: 8.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #94a3b8; margin-bottom: 7px; }
+
+    #s7 .is-list { display: flex; flex-direction: column; gap: 5px; }
+    #s7 .is-row { background: #fff; border: 1px solid #e2e8f0; border-radius: 7px; padding: 7px 10px; }
+    #s7 .is-row.active { border-color: #1d4ed8; background: #f5faff; box-shadow: 0 0 0 1.5px #1d4ed8; }
+    #s7 .is-row-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    #s7 .is-row-name { font-size: 10.5px; font-weight: 700; color: #0f1f3d; }
+    #s7 .is-row-val  { font-size: 11px; font-weight: 800; color: #059669; flex-shrink: 0; }
+    #s7 .is-row-eff  { font-size: 8px; font-weight: 700; padding: 2px 7px; border-radius: 5px; flex-shrink: 0; }
+    #s7 .is-row-eff.med  { background: #fffbeb; color: #b45309; }
+    #s7 .is-row-eff.low  { background: #ecfdf5; color: #047857; }
+    #s7 .is-row-eff.high { background: #fef2f2; color: #b91c1c; }
+    #s7 .is-row-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 5px; }
+    #s7 .is-meta-cell { font-size: 8.5px; }
+    #s7 .is-meta-cell .k { color: #94a3b8; font-weight: 600; display: block; }
+    #s7 .is-meta-cell .v { color: #0f1f3d; font-weight: 700; }
+    #s7 .is-row-bar { margin-top: 5px; height: 3px; background: #f1f5f9; border-radius: 2px; overflow: hidden; }
+    #s7 .is-row-bar > div { height: 100%; background: #14b8a6; border-radius: 2px; }
+    #s7 .is-row.active .is-row-bar > div { background: #1d4ed8; }
+
+    #s7 .is-bc-block { background: #f8fafc; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; }
+    #s7 .is-bc-block-lbl { font-size: 8px; font-weight: 800; letter-spacing: 0.14em; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
+    #s7 .is-bc-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; margin-bottom: 4px; }
+    #s7 .is-bc-row .k { font-size: 9.5px; color: #475569; }
+    #s7 .is-bc-row .v { font-size: 10px; font-weight: 700; color: #0f1f3d; text-align: right; }
+    #s7 .is-bc-row .v.green { color: #059669; }
+    #s7 .is-bc-row .v.red   { color: #dc2626; }
+    #s7 .is-bc-bar { display: flex; height: 4px; border-radius: 2px; overflow: hidden; background: #f1f5f9; margin-top: 2px; }
+    #s7 .is-bc-bar > div { height: 100%; }
+    #s7 .is-bc-bar > .seg-pos { background: #14b8a6; }
+    #s7 .is-bc-bar > .seg-neg { background: #fda4af; }
+    #s7 .is-assump { font-size: 8.5px; color: #475569; line-height: 1.45; padding: 6px 8px; background: #f8fafc; border-radius: 6px; }
+    #s7 .is-assump-row { padding-bottom: 4px; margin-bottom: 4px; border-bottom: 1px solid #f1f5f9; }
+    #s7 .is-assump-row:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
+
+    /* === Layer 3: KPI Monitoring === */
+    #s7 .kpm-shell { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 8px 28px rgba(15,31,61,0.10); overflow: hidden; display: flex; flex-direction: column; }
+    #s7 .kpm-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; }
+    #s7 .kpm-head { display: flex; align-items: center; gap: 12px; }
+    #s7 .kpm-head-title { font-size: 13px; font-weight: 800; color: #0f1f3d; }
+    #s7 .kpm-live-pill { font-size: 9px; font-weight: 700; color: #059669; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 999px; padding: 2px 8px; display: flex; align-items: center; gap: 4px; }
+    #s7 .kpm-live-pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #10b981; }
+    #s7 .kpm-head-sel { font-size: 9.5px; color: #64748b; padding: 3px 9px; border: 1px solid #e2e8f0; border-radius: 6px; }
+    #s7 .kpm-head-action { margin-left: auto; font-size: 9.5px; color: #1d4ed8; font-weight: 700; }
+
+    #s7 .kpm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    #s7 .kpm-tile {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 8px 10px;
+      border-top: 3px solid var(--c, #1d4ed8);
+    }
+    #s7 .kpm-tile.bad  { --c: #dc2626; }
+    #s7 .kpm-tile.warn { --c: #f59e0b; }
+    #s7 .kpm-tile.good { --c: #1d4ed8; }
+    #s7 .kpm-tile.b1 { --c: #1d4ed8; }   /* SG&A */
+    #s7 .kpm-tile.b2 { --c: #f59e0b; }   /* Consulting */
+    #s7 .kpm-tile.b3 { --c: #2563eb; }   /* AI Automation */
+    #s7 .kpm-tile.b4 { --c: #8b5cf6; }   /* Activity unit cost */
+    #s7 .kpm-tile.b5 { --c: #14b8a6; }   /* Indirect labor */
+    #s7 .kpm-tile.b6 { --c: #6366f1; }   /* Regional variance */
+    #s7 .kpm-tile-lbl { font-size: 8.5px; font-weight: 800; letter-spacing: 0.12em; color: #94a3b8; text-transform: uppercase; }
+    #s7 .kpm-tile-val { font-size: 22px; font-weight: 800; color: #0f1f3d; line-height: 1; letter-spacing: -0.02em; margin-top: 4px; }
+    #s7 .kpm-tile-trend { font-size: 8.5px; margin-top: 2px; }
+    #s7 .kpm-tile-trend.bad  { color: #dc2626; }
+    #s7 .kpm-tile-trend.good { color: #059669; }
+    #s7 .kpm-tile-target { font-size: 8.5px; color: #64748b; margin-top: 6px; display: flex; justify-content: space-between; }
+    #s7 .kpm-tile-bar { margin-top: 3px; height: 4px; background: #f1f5f9; border-radius: 2px; overflow: hidden; }
+    #s7 .kpm-tile-bar > div { height: 100%; background: var(--c, #1d4ed8); border-radius: 2px; }
+    #s7 .kpm-tile-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 8px; color: #94a3b8; }
+    #s7 .kpm-tile-gap { font-size: 8.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+    #s7 .kpm-tile-gap.bad  { background: #fef2f2; color: #b91c1c; }
+    #s7 .kpm-tile-gap.good { background: #ecfdf5; color: #047857; }
+
+    #s7 .kpm-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    #s7 .kpm-panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 9px 11px; }
+    #s7 .kpm-panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    #s7 .kpm-panel-title { font-size: 10px; font-weight: 800; color: #0f1f3d; display: flex; align-items: center; gap: 5px; }
+    #s7 .kpm-panel-meta { font-size: 9px; font-weight: 700; }
+    #s7 .kpm-panel-meta.commit { color: #059669; }
+    #s7 .kpm-panel-meta.poten  { color: #1d4ed8; }
+    #s7 .kpm-status { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 6px; }
+    #s7 .kpm-st { padding: 5px 7px; border-radius: 6px; text-align: center; }
+    #s7 .kpm-st.on   { background: #ecfdf5; color: #047857; border: 1px solid #6ee7b7; }
+    #s7 .kpm-st.at   { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    #s7 .kpm-st.off  { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    #s7 .kpm-st-num { font-size: 14px; font-weight: 800; line-height: 1; }
+    #s7 .kpm-st-lbl { font-size: 8px; font-weight: 600; margin-top: 2px; }
+
+    #s7 .kpm-init-row, #s7 .kpm-opp-row {
+      padding: 5px 0; border-top: 1px dashed #f1f5f9;
+      display: grid; grid-template-columns: 1fr 60px; gap: 6px; align-items: center;
+    }
+    #s7 .kpm-init-row:first-child, #s7 .kpm-opp-row:first-child { border-top: 0; }
+    #s7 .kpm-init-name { font-size: 9.5px; font-weight: 700; color: #0f1f3d; }
+    #s7 .kpm-init-meta { font-size: 8px; color: #94a3b8; }
+    #s7 .kpm-init-mini-bar { margin-top: 3px; height: 3px; background: #f1f5f9; border-radius: 2px; overflow: hidden; }
+    #s7 .kpm-init-mini-bar > div { height: 100%; border-radius: 2px; }
+    #s7 .kpm-init-status { font-size: 8.5px; font-weight: 700; text-align: right; }
+    #s7 .kpm-init-status.on { color: #059669; }
+    #s7 .kpm-init-status.at { color: #b45309; }
+    #s7 .kpm-init-status.off { color: #b91c1c; }
+
+    #s7 .kpm-opp-row { grid-template-columns: 1fr 70px; }
+    #s7 .kpm-opp-text { font-size: 9px; color: #475569; line-height: 1.35; }
+    #s7 .kpm-opp-text b { color: #0f1f3d; font-weight: 700; }
+    #s7 .kpm-opp-save { font-size: 11px; font-weight: 800; color: #059669; text-align: right; }
+
+    /* === Layer 4: KPI Trend & Forecast (variation of Layer 3) === */
+    #s7 .kpf-shell { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 8px 28px rgba(15,31,61,0.10); overflow: hidden; display: flex; flex-direction: column; }
+    #s7 .kpf-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; }
+    #s7 .kpf-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    #s7 .kpf-title { font-size: 13px; font-weight: 800; color: #0f1f3d; }
+    #s7 .kpf-sub { font-size: 9.5px; color: #64748b; margin-top: 2px; line-height: 1.4; }
+    #s7 .kpf-meta { font-size: 9px; color: #94a3b8; flex-shrink: 0; }
+    #s7 .kpf-tabs { display: flex; gap: 5px; }
+    #s7 .kpf-tab { padding: 4px 10px; font-size: 9.5px; font-weight: 700; color: #64748b; background: #f1f5f9; border-radius: 6px; }
+    #s7 .kpf-tab.active { background: #1d4ed8; color: #fff; }
+
+    #s7 .kpf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    #s7 .kpf-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 9px; padding: 10px 11px; }
+    #s7 .kpf-card-lbl { font-size: 8.5px; font-weight: 800; letter-spacing: 0.12em; color: #94a3b8; text-transform: uppercase; }
+    #s7 .kpf-card-vals { display: flex; align-items: baseline; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+    #s7 .kpf-card-current { font-size: 18px; font-weight: 800; color: #0f1f3d; letter-spacing: -0.02em; line-height: 1; }
+    #s7 .kpf-card-arrow { font-size: 13px; color: #94a3b8; }
+    #s7 .kpf-card-target { font-size: 14px; font-weight: 800; color: #059669; letter-spacing: -0.01em; }
+    #s7 .kpf-card-window { font-size: 8.5px; color: #94a3b8; margin-top: 2px; }
+    #s7 .kpf-spark { width: 100%; height: 60px; margin-top: 6px; }
+    #s7 .kpf-card-foot { display: flex; justify-content: space-between; font-size: 8.5px; margin-top: 4px; }
+    #s7 .kpf-card-foot .k { color: #94a3b8; }
+    #s7 .kpf-card-foot .v { color: #1d4ed8; font-weight: 700; }
+
+    #s7 .kpf-table {
+      width: 100%; border-collapse: collapse; font-size: 9.5px;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;
+    }
+    #s7 .kpf-table th { font-size: 8.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; text-align: left; padding: 7px 8px; background: #f8fafc; }
+    #s7 .kpf-table td { padding: 7px 8px; border-top: 1px solid #f1f5f9; vertical-align: middle; }
+    #s7 .kpf-q { font-size: 9.5px; color: #64748b; font-weight: 600; }
+    #s7 .kpf-fill { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+    #s7 .kpf-fill.bl { background: #1d4ed8; }
+    #s7 .kpf-fill.tg { background: #14b8a6; }
+    #s7 .kpf-fill.wn { background: #f59e0b; }
+    #s7 .kpf-callout { background: #f0f7ff; border: 1px solid #cfe1ff; border-radius: 8px; padding: 8px 11px; font-size: 10px; color: #475569; line-height: 1.45; }
+    #s7 .kpf-callout b { color: #1d4ed8; font-weight: 700; }
+    #s7 .kpf-callout .strong { color: #0f1f3d; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -2110,7 +2325,7 @@
               <div class="om-grid">
                 <div class="om-panel">
                   <div class="om-panel-title">Cost gap by function</div>
-                  <div class="om-legend"><span><span class="dot cur"></span>Current</span><span><span class="dot cs"></span>Clean-sheet</span></div>
+                  <div class="om-legend"><span><span class="lgd-dot cur"></span>Current</span><span><span class="lgd-dot cs"></span>Clean-sheet</span></div>
                   <div class="om-bar-row"><div class="om-bar-name">Selling</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:100%"></div><div class="om-bar-cs" style="width:72%"></div></div><div class="om-bar-tot">−$105M</div></div>
                   <div class="om-bar-row"><div class="om-bar-name">IT</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:84%"></div><div class="om-bar-cs" style="width:57%"></div></div><div class="om-bar-tot">−$100M</div></div>
                   <div class="om-bar-row"><div class="om-bar-name">Marketing</div><div class="om-bar-bg"><div class="om-bar-cur" style="width:80%"></div><div class="om-bar-cs" style="width:59%"></div></div><div class="om-bar-tot">−$75M</div></div>
@@ -2218,39 +2433,401 @@
     </div>
     <div class="slide-text">
       <div class="label">Improvement Initiatives &amp; Strategic Investments</div>
-      <div class="headline">Not<br><span class="accent">AI everywhere.</span></div>
-      <div class="sub">Every sub-process scored on five criteria — margin impact, volume, data, error tolerance, adoption — before any recommendation.</div>
+      <div class="headline">Cost structure<br><span class="accent">transformation,</span><br>not just reduction.</div>
+      <div class="sub">Initiatives sized into business cases · KPIs monitored live · AI agents accelerating the next decision — strengthening the operating model end-to-end.</div>
       <div class="divider"></div>
     </div>
     <div class="slide-visual">
-      <div class="mk-shell mk" style="--d:.5s">
-        <div class="mk-appbar">
-          <div class="mk-appbar-title">AI Suitability — Sub-process Scoring</div>
-          <div class="mk-live"><div class="mk-live-dot"></div> 218 sub-processes scored</div>
-        </div>
-        <div class="hb-wrap">
-          <div class="hb-intro mk" style="--d:.6s">
-            <div>Harvey-ball score 0–100 per criterion · composite is /15</div>
-            <div class="hb-tag">detailed mapping behind every recommendation</div>
+      <div class="cl-stack">
+
+        <!-- ─ Layer 1: Diagnostic home + cursor click on Initiative Sizing & Business Case ─ -->
+        <div class="cl-layer cl-home">
+          <div class="plat-mock">
+            <div class="plat-nav">
+              <div class="plat-logo">
+                <div class="plat-logo-mark">A&amp;M</div>
+                <div class="plat-logo-text">AI ZBO<span>BY COMOPS</span></div>
+              </div>
+              <div class="plat-bread">Diagnostic<span class="sep">›</span>AI ZBO<span class="sep">›</span><b>NorthStar Frozen Foods</b></div>
+              <div class="plat-pills">
+                <div class="plat-pill active">⚡ Diagnostic</div>
+                <div class="plat-pill">📊 KPI Monitoring</div>
+              </div>
+              <div class="plat-avatar">P</div>
+              <div class="plat-avatar-name">Priya Nair<span>A&amp;M ComOps</span></div>
+            </div>
+            <div class="plat-header">
+              <div>
+                <div class="plat-h-title">NorthStar Frozen Foods</div>
+                <div class="plat-h-meta">
+                  <div class="plat-h-meta-cell"><b>Industry:</b>Frozen &amp; Prepared Foods</div>
+                  <div class="plat-h-meta-cell"><b>Sub Industry:</b>Multi-Region Manufacturing</div>
+                  <div class="plat-h-meta-cell"><b>Users:</b>12</div>
+                  <div class="plat-h-meta-cell"><b>Last Updated:</b>5/01/2026</div>
+                </div>
+              </div>
+              <div class="plat-h-btn">📦 Cost Optimization Files</div>
+            </div>
+            <div class="plat-body">
+              <div class="plat-agents">Agents</div>
+              <div class="plat-agent-chip">
+                <div class="plat-agent-mark">AI</div>
+                <div class="plat-agent-name">AI ZBO</div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row"><div class="plat-section-name">Data Foundation</div><div class="plat-section-count">4 tasks</div></div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">📁</div><div class="plat-task-name">File Manager</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">✦</div><div class="plat-task-name">AI Data Cleansing</div><div class="plat-task-pill chat">Chat</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Ontology</div><div class="plat-task-pill list">List</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">DRL Management</div><div class="plat-task-pill list">List</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row"><div class="plat-section-name">Process &amp; Activity Taxonomy</div><div class="plat-section-count">2 tasks</div></div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Process Mapping</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Activity &amp; Driver Mapping</div><div class="plat-task-pill dash">Dashboard</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row"><div class="plat-section-name">Transparency on True Profitability</div><div class="plat-section-count">5 tasks</div></div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Cost Classification</div><div class="plat-task-pill dash">Dashboard</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">∿</div><div class="plat-task-name">Cost Driver Analysis</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">Opportunity Prioritization</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">⚠</div><div class="plat-task-name">Margin Leakage Detection</div><div class="plat-task-pill chat">Chat</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">⛨</div><div class="plat-task-name">Anomaly &amp; Red-Flag Spend</div><div class="plat-task-pill chat">Chat</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row"><div class="plat-section-name">Clean-sheet the Core</div><div class="plat-section-count">3 tasks</div></div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">◎</div><div class="plat-task-name">AI-VSM</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◇</div><div class="plat-task-name">Clean-sheet Operating Model</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">◉</div><div class="plat-task-name">Clean-sheet Org Chart</div><div class="plat-task-pill art">Artifact</div></div>
+                </div>
+              </div>
+              <div class="plat-section">
+                <div class="plat-section-row"><div class="plat-section-name">Improvement Initiatives and Roadmap</div><div class="plat-section-count">2 tasks</div></div>
+                <div class="plat-tasks">
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">Initiative Sizing &amp; Business Case</div><div class="plat-task-pill art">Artifact</div></div>
+                  <div class="plat-task"><div class="plat-task-icon">▦</div><div class="plat-task-name">AI PMO Tracker</div><div class="plat-task-pill list">List</div></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <table class="hb-table">
-            <thead>
-              <tr>
-                <th class="lft">Sub-process</th>
-                <th>Margin<br>Impact</th>
-                <th>Volume &amp;<br>Repetition</th>
-                <th>Data<br>Availability</th>
-                <th>Error<br>Tolerance</th>
-                <th>Adoption<br>Readiness</th>
-                <th>Score</th>
-                <th>Recommend</th>
-              </tr>
-            </thead>
-            <tbody id="hb-body">
-              <!-- rows injected via script below -->
-            </tbody>
-          </table>
+          <div class="s7-target"></div>
+          <svg class="s7-cursor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 2 L3 18 L8 14 L11 21 L14 19.5 L11 12.5 L18 12 Z" fill="#0f1f3d" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
         </div>
+
+        <!-- ─ Layer 2: Initiative Sizing & Business Case ─ -->
+        <div class="cl-layer cl-initiatives">
+          <div class="is-shell">
+            <div class="mk-appbar">
+              <div class="mk-appbar-title">Diagnostic · Improvement Initiatives · Initiative Sizing &amp; Business Case</div>
+              <div class="mk-live"><div class="mk-live-dot"></div> 10 active · $390M sized</div>
+            </div>
+            <div class="is-body">
+              <div class="is-stats">
+                <div class="is-stat"><div class="is-stat-lbl">Total initiatives</div><div class="is-stat-val">10</div><div class="is-stat-sub">Across 5 functions</div></div>
+                <div class="is-stat"><div class="is-stat-lbl">Total savings potential</div><div class="is-stat-val saved">$390M</div><div class="is-stat-sub">Annualised fully loaded</div></div>
+                <div class="is-stat"><div class="is-stat-lbl">Total investment</div><div class="is-stat-val invest">$42M</div><div class="is-stat-sub">One-time cost to deliver</div></div>
+                <div class="is-stat"><div class="is-stat-lbl">Avg payback period</div><div class="is-stat-val pay">14mo</div><div class="is-stat-sub">Range: 6–28 months</div></div>
+              </div>
+              <div class="is-grid">
+                <div class="is-pane">
+                  <div class="is-pane-title">All initiatives — click to view business case</div>
+                  <div class="is-list">
+                    <div class="is-row active">
+                      <div class="is-row-head"><div class="is-row-name">Redesign sales coverage model across 9 regions</div><div class="is-row-val">$94M</div><div class="is-row-eff med">Medium effort</div></div>
+                      <div class="is-row-meta">
+                        <div class="is-meta-cell"><span class="k">Function</span><span class="v">Selling</span></div>
+                        <div class="is-meta-cell"><span class="k">Investment</span><span class="v">$8M</span></div>
+                        <div class="is-meta-cell"><span class="k">Payback</span><span class="v">12mo</span></div>
+                        <div class="is-meta-cell"><span class="k">Horizon</span><span class="v">6–12mo</span></div>
+                      </div>
+                      <div class="is-row-bar"><div style="width:62%"></div></div>
+                    </div>
+                    <div class="is-row">
+                      <div class="is-row-head"><div class="is-row-name">Consolidate duplicated IT infrastructure &amp; apps</div><div class="is-row-val">$100M</div><div class="is-row-eff high">High effort</div></div>
+                      <div class="is-row-meta">
+                        <div class="is-meta-cell"><span class="k">Function</span><span class="v">IT</span></div>
+                        <div class="is-meta-cell"><span class="k">Investment</span><span class="v">$14M</span></div>
+                        <div class="is-meta-cell"><span class="k">Payback</span><span class="v">22mo</span></div>
+                        <div class="is-meta-cell"><span class="k">Horizon</span><span class="v">&gt;12mo</span></div>
+                      </div>
+                      <div class="is-row-bar"><div style="width:84%;background:#dc2626"></div></div>
+                    </div>
+                    <div class="is-row">
+                      <div class="is-row-head"><div class="is-row-name">Consolidate marketing briefs &amp; media buying</div><div class="is-row-val">$50M</div><div class="is-row-eff low">Low effort</div></div>
+                      <div class="is-row-meta">
+                        <div class="is-meta-cell"><span class="k">Function</span><span class="v">Marketing</span></div>
+                        <div class="is-meta-cell"><span class="k">Investment</span><span class="v">$3M</span></div>
+                        <div class="is-meta-cell"><span class="k">Payback</span><span class="v">6mo</span></div>
+                        <div class="is-meta-cell"><span class="k">Horizon</span><span class="v">&lt;6mo</span></div>
+                      </div>
+                      <div class="is-row-bar"><div style="width:32%"></div></div>
+                    </div>
+                    <div class="is-row">
+                      <div class="is-row-head"><div class="is-row-name">Replace HR advisory with internal shared services</div><div class="is-row-val">$85M</div><div class="is-row-eff med">Medium effort</div></div>
+                      <div class="is-row-meta">
+                        <div class="is-meta-cell"><span class="k">Function</span><span class="v">HR</span></div>
+                        <div class="is-meta-cell"><span class="k">Investment</span><span class="v">$6M</span></div>
+                        <div class="is-meta-cell"><span class="k">Payback</span><span class="v">10mo</span></div>
+                        <div class="is-meta-cell"><span class="k">Horizon</span><span class="v">6–12mo</span></div>
+                      </div>
+                      <div class="is-row-bar"><div style="width:55%"></div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="is-pane">
+                  <div class="is-pane-title">Business case — Sales coverage redesign</div>
+                  <div class="is-bc-block">
+                    <div class="is-bc-block-lbl">Financial summary</div>
+                    <div class="is-bc-row"><span class="k">Gross saving</span><span class="v green">$94M</span></div>
+                    <div class="is-bc-bar"><div class="seg-pos" style="width:100%"></div></div>
+                    <div class="is-bc-row" style="margin-top:6px"><span class="k">One-time cost</span><span class="v red">−$8M</span></div>
+                    <div class="is-bc-bar"><div class="seg-neg" style="width:9%"></div></div>
+                    <div class="is-bc-row" style="margin-top:6px"><span class="k">Net saving</span><span class="v green">$86M</span></div>
+                    <div class="is-bc-bar"><div class="seg-pos" style="width:91%"></div></div>
+                  </div>
+                  <div class="is-bc-block">
+                    <div class="is-bc-block-lbl">Key metrics</div>
+                    <div class="is-bc-row"><span class="k">Payback period</span><span class="v">12 months</span></div>
+                    <div class="is-bc-row"><span class="k">3-year NPV</span><span class="v">$234M</span></div>
+                    <div class="is-bc-row"><span class="k">Risk level</span><span class="v">Medium</span></div>
+                    <div class="is-bc-row"><span class="k">Owner</span><span class="v">CCO</span></div>
+                  </div>
+                  <div class="is-assump">
+                    <div class="is-bc-block-lbl" style="margin-bottom:4px">Key assumptions</div>
+                    <div class="is-assump-row">15–20% compression on rep cost via coverage model</div>
+                    <div class="is-assump-row">9 regions converged to 1 global coverage model</div>
+                    <div class="is-assump-row">No volume loss risk in first 12 months</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Layer 3: KPI Monitoring (live state) ─ -->
+        <div class="cl-layer cl-kpis">
+          <div class="kpm-shell">
+            <div class="mk-appbar">
+              <div class="mk-appbar-title">KPI Monitoring · My KPIs</div>
+              <div class="mk-live"><div class="mk-live-dot"></div> live · refreshed nightly</div>
+            </div>
+            <div class="kpm-body">
+              <div class="kpm-head">
+                <div class="kpm-head-title">My KPIs</div>
+                <div class="kpm-live-pill">Live</div>
+                <div class="kpm-head-sel">All SG&amp;A ▾</div>
+                <div class="kpm-head-action">✦ Ask AI to explain</div>
+              </div>
+              <div class="kpm-grid">
+                <div class="kpm-tile b1">
+                  <div class="kpm-tile-lbl">SG&amp;A % of Net Sales</div>
+                  <div class="kpm-tile-val">11.2%</div>
+                  <div class="kpm-tile-trend bad">↓ +0.4pp vs LY</div>
+                  <div class="kpm-tile-target"><span>Target</span><span>9.0%</span></div>
+                  <div class="kpm-tile-bar"><div style="width:80%"></div></div>
+                  <div class="kpm-tile-foot"><span>Gap to target</span><span class="kpm-tile-gap bad">+2.2pp</span></div>
+                </div>
+                <div class="kpm-tile b2">
+                  <div class="kpm-tile-lbl">Consulting &amp; Outside Services</div>
+                  <div class="kpm-tile-val">$150M</div>
+                  <div class="kpm-tile-trend bad">↓ +$12M YTD</div>
+                  <div class="kpm-tile-target"><span>Target</span><span>$100M</span></div>
+                  <div class="kpm-tile-bar"><div style="width:67%"></div></div>
+                  <div class="kpm-tile-foot"><span>Gap to target</span><span class="kpm-tile-gap bad">+$50M</span></div>
+                </div>
+                <div class="kpm-tile b3">
+                  <div class="kpm-tile-lbl">AI Automation Rate</div>
+                  <div class="kpm-tile-val">22%</div>
+                  <div class="kpm-tile-trend good">↑ +4.0pp vs LY</div>
+                  <div class="kpm-tile-target"><span>Target</span><span>60%</span></div>
+                  <div class="kpm-tile-bar"><div style="width:37%"></div></div>
+                  <div class="kpm-tile-foot"><span>Gap to target</span><span class="kpm-tile-gap bad">−38pp</span></div>
+                </div>
+                <div class="kpm-tile b4">
+                  <div class="kpm-tile-lbl">Activity Unit Cost vs Benchmark</div>
+                  <div class="kpm-tile-val">1.62×</div>
+                  <div class="kpm-tile-trend bad">↓ +0.05× vs LY</div>
+                  <div class="kpm-tile-target"><span>Target</span><span>1.10×</span></div>
+                  <div class="kpm-tile-bar"><div style="width:68%"></div></div>
+                  <div class="kpm-tile-foot"><span>Gap to target</span><span class="kpm-tile-gap bad">+0.52×</span></div>
+                </div>
+                <div class="kpm-tile b5">
+                  <div class="kpm-tile-lbl">Indirect Labor Cost / FTE</div>
+                  <div class="kpm-tile-val">$205K</div>
+                  <div class="kpm-tile-trend bad">↓ +$6K vs LY</div>
+                  <div class="kpm-tile-target"><span>Target</span><span>$165K</span></div>
+                  <div class="kpm-tile-bar"><div style="width:80%"></div></div>
+                  <div class="kpm-tile-foot"><span>Gap to target</span><span class="kpm-tile-gap bad">+$40K</span></div>
+                </div>
+                <div class="kpm-tile b6">
+                  <div class="kpm-tile-lbl">Regional SG&amp;A Variance</div>
+                  <div class="kpm-tile-val">3.2×</div>
+                  <div class="kpm-tile-trend bad">↓ +0.1× vs LY</div>
+                  <div class="kpm-tile-target"><span>Target</span><span>1.8×</span></div>
+                  <div class="kpm-tile-bar"><div style="width:56%"></div></div>
+                  <div class="kpm-tile-foot"><span>Gap to target</span><span class="kpm-tile-gap bad">+1.4×</span></div>
+                </div>
+              </div>
+              <div class="kpm-bottom">
+                <div class="kpm-panel">
+                  <div class="kpm-panel-head">
+                    <div class="kpm-panel-title">⊙ Cost Reduction Initiatives</div>
+                    <div class="kpm-panel-meta commit">$210M committed FY26</div>
+                  </div>
+                  <div class="kpm-status">
+                    <div class="kpm-st on"><div class="kpm-st-num">4</div><div class="kpm-st-lbl">On Track</div></div>
+                    <div class="kpm-st at"><div class="kpm-st-num">3</div><div class="kpm-st-lbl">At Risk</div></div>
+                    <div class="kpm-st off"><div class="kpm-st-num">1</div><div class="kpm-st-lbl">Off Track</div></div>
+                  </div>
+                  <div class="kpm-init-row">
+                    <div><div class="kpm-init-name">Consulting In-Sourcing — HR + IT</div><div class="kpm-init-meta">D. Chen · 38% · $55M</div><div class="kpm-init-mini-bar"><div style="width:38%;background:#10b981"></div></div></div>
+                    <div class="kpm-init-status on">On Track</div>
+                  </div>
+                  <div class="kpm-init-row">
+                    <div><div class="kpm-init-name">Regional SG&amp;A Convergence to SEA</div><div class="kpm-init-meta">P. Nair · 22% · $80M</div><div class="kpm-init-mini-bar"><div style="width:22%;background:#f59e0b"></div></div></div>
+                    <div class="kpm-init-status at">At Risk</div>
+                  </div>
+                  <div class="kpm-init-row">
+                    <div><div class="kpm-init-name">AI First-Pass Contract Review</div><div class="kpm-init-meta">J. Walsh · 64% · $14M</div><div class="kpm-init-mini-bar"><div style="width:64%;background:#10b981"></div></div></div>
+                    <div class="kpm-init-status on">On Track</div>
+                  </div>
+                </div>
+                <div class="kpm-panel">
+                  <div class="kpm-panel-head">
+                    <div class="kpm-panel-title">✦ Process Automation Opportunities</div>
+                    <div class="kpm-panel-meta poten">+$185M potential</div>
+                  </div>
+                  <div class="kpm-opp-row">
+                    <div class="kpm-opp-text">Today: External HR / IT consulting · <b>Move to:</b> In-house AI agent pool · $49M HR+IT pool</div>
+                    <div class="kpm-opp-save">−$55M/yr</div>
+                  </div>
+                  <div class="kpm-opp-row">
+                    <div class="kpm-opp-text">Today: Brand-manager briefs &amp; competitive scans · <b>Move to:</b> AI brief drafting + insight synthesis</div>
+                    <div class="kpm-opp-save">−$50M/yr</div>
+                  </div>
+                  <div class="kpm-opp-row">
+                    <div class="kpm-opp-text">Today: Manual NDA + vendor contract review · <b>Move to:</b> AI first-pass + 10% paralegal QA</div>
+                    <div class="kpm-opp-save">−$700/contract</div>
+                  </div>
+                  <div class="kpm-opp-row">
+                    <div class="kpm-opp-text">Today: Manual customer onboarding · <b>Move to:</b> AI workflow + agent escalation · 9 regions</div>
+                    <div class="kpm-opp-save">−$11M/yr</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Layer 4: KPI Trend & Forecast (variation of Layer 3) ─ -->
+        <div class="cl-layer cl-forecast">
+          <div class="kpf-shell">
+            <div class="mk-appbar">
+              <div class="mk-appbar-title">KPI Monitoring · Trend &amp; Forecast</div>
+              <div class="mk-live"><div class="mk-live-dot"></div> 12-month projection</div>
+            </div>
+            <div class="kpf-body">
+              <div class="kpf-head">
+                <div>
+                  <div class="kpf-title">KPI trajectory · current → forecast → target</div>
+                  <div class="kpf-sub">Where the operating model lands if priority initiatives execute on plan — informed decisions, faster.</div>
+                </div>
+                <div class="kpf-meta">refreshed 4 min ago · ✦ AI confidence 87%</div>
+              </div>
+              <div class="kpf-tabs">
+                <div class="kpf-tab active">12-month forecast</div>
+                <div class="kpf-tab">Initiative-driven</div>
+                <div class="kpf-tab">Sensitivity</div>
+              </div>
+              <div class="kpf-grid">
+                <div class="kpf-card">
+                  <div class="kpf-card-lbl">SG&amp;A % of Net Sales</div>
+                  <div class="kpf-card-vals">
+                    <span class="kpf-card-current">11.2%</span>
+                    <span class="kpf-card-arrow">→</span>
+                    <span class="kpf-card-target">9.0%</span>
+                  </div>
+                  <div class="kpf-card-window">forecast Q3'27 · −2.2pp</div>
+                  <svg class="kpf-spark" viewBox="0 0 200 60" preserveAspectRatio="none">
+                    <line x1="0" y1="14" x2="200" y2="14" stroke="#14b8a6" stroke-width="1" stroke-dasharray="3 3"/>
+                    <polyline fill="none" stroke="#1d4ed8" stroke-width="2" points="0,40 28,42 56,40 84,38 112,30 140,24 168,18 200,14"/>
+                    <circle cx="0" cy="40" r="3" fill="#1d4ed8"/>
+                    <circle cx="200" cy="14" r="3" fill="#14b8a6"/>
+                    <text x="6" y="56" font-size="6.5" fill="#94a3b8">Today</text>
+                    <text x="172" y="56" font-size="6.5" fill="#94a3b8">FY27</text>
+                  </svg>
+                  <div class="kpf-card-foot"><span class="k">Driver</span><span class="v">SG&amp;A Convergence + AI</span></div>
+                </div>
+                <div class="kpf-card">
+                  <div class="kpf-card-lbl">AI Automation Rate</div>
+                  <div class="kpf-card-vals">
+                    <span class="kpf-card-current">22%</span>
+                    <span class="kpf-card-arrow">→</span>
+                    <span class="kpf-card-target">60%</span>
+                  </div>
+                  <div class="kpf-card-window">forecast Q4'27 · +38pp</div>
+                  <svg class="kpf-spark" viewBox="0 0 200 60" preserveAspectRatio="none">
+                    <line x1="0" y1="10" x2="200" y2="10" stroke="#14b8a6" stroke-width="1" stroke-dasharray="3 3"/>
+                    <polyline fill="none" stroke="#1d4ed8" stroke-width="2" points="0,46 28,42 56,38 84,32 112,26 140,20 168,14 200,10"/>
+                    <circle cx="0" cy="46" r="3" fill="#1d4ed8"/>
+                    <circle cx="200" cy="10" r="3" fill="#14b8a6"/>
+                    <text x="6" y="56" font-size="6.5" fill="#94a3b8">Today</text>
+                    <text x="172" y="56" font-size="6.5" fill="#94a3b8">FY27</text>
+                  </svg>
+                  <div class="kpf-card-foot"><span class="k">Driver</span><span class="v">AI Agent Pool + NDA AI</span></div>
+                </div>
+                <div class="kpf-card">
+                  <div class="kpf-card-lbl">Indirect Labor / FTE</div>
+                  <div class="kpf-card-vals">
+                    <span class="kpf-card-current">$205K</span>
+                    <span class="kpf-card-arrow">→</span>
+                    <span class="kpf-card-target">$165K</span>
+                  </div>
+                  <div class="kpf-card-window">forecast FY27 · −$40K</div>
+                  <svg class="kpf-spark" viewBox="0 0 200 60" preserveAspectRatio="none">
+                    <line x1="0" y1="14" x2="200" y2="14" stroke="#14b8a6" stroke-width="1" stroke-dasharray="3 3"/>
+                    <polyline fill="none" stroke="#1d4ed8" stroke-width="2" points="0,40 28,40 56,38 84,34 112,28 140,22 168,18 200,14"/>
+                    <circle cx="0" cy="40" r="3" fill="#1d4ed8"/>
+                    <circle cx="200" cy="14" r="3" fill="#14b8a6"/>
+                    <text x="6" y="56" font-size="6.5" fill="#94a3b8">Today</text>
+                    <text x="172" y="56" font-size="6.5" fill="#94a3b8">FY27</text>
+                  </svg>
+                  <div class="kpf-card-foot"><span class="k">Driver</span><span class="v">Offshore + Shared Services</span></div>
+                </div>
+              </div>
+              <table class="kpf-table">
+                <thead>
+                  <tr>
+                    <th>Quarter</th>
+                    <th><span class="kpf-fill bl"></span>SG&amp;A %</th>
+                    <th><span class="kpf-fill bl"></span>AI Automation</th>
+                    <th><span class="kpf-fill bl"></span>Indirect $/FTE</th>
+                    <th>Initiative milestones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="kpf-q">Today</td><td>11.2%</td><td>22%</td><td>$205K</td><td>HR + IT in-sourcing 38% complete</td></tr>
+                  <tr><td class="kpf-q">Q2'26</td><td>10.8%</td><td>32%</td><td>$198K</td><td>NDA AI live · Marketing CCs consolidated</td></tr>
+                  <tr><td class="kpf-q">Q4'26</td><td>10.1%</td><td>45%</td><td>$185K</td><td>SEA SG&amp;A convergence cutover</td></tr>
+                  <tr><td class="kpf-q">Q3'27</td><td>9.0%</td><td>60%</td><td>$165K</td><td><b style="color:#14b8a6">Targets met · $390M annualised</b></td></tr>
+                </tbody>
+              </table>
+              <div class="kpf-callout">
+                ✦ <span class="strong">Forecast assumes initiatives execute on plan.</span> AI agent pool (HR + IT), NDA AI first-pass, and SEA convergence drive the largest deltas — together they deliver <b>~$210M of the $390M annualised</b> by FY27.
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -2606,9 +3183,9 @@ const CUES = [
   18.31,  // Slide 5  (s4b) — Platform showcase  (NOTE: VO needs re-record)
   20.40,  // Slide 6  (s5)  — Transparency: home → discovery → classification → cost shadow
   34.15,  // Slide 7  (s6)  — Clean-sheet the core: home → AI-VSM → op model → org chart
-  50.00,  // Slide 8  (s7)  — Not AI everywhere
-  59.72,  // Slide 9  (s8)  — Cost structure transformation
-  74.35,  // Slide 10 (s9)  — Quantified improvement roadmap
+  50.00,  // Slide 8  (s7)  — Improvement Initiatives: home → sizing → KPIs → forecast
+  66.00,  // Slide 9  (s8)  — Cost structure transformation outcomes
+  80.50,  // Slide 10 (s9)  — Quantified improvement roadmap
 ];
 // ═══════════════════════════════════════════════════════════════════
 
@@ -2625,7 +3202,7 @@ SLIDES.forEach((_, i) => {
   d.addEventListener('click', () => seekToSlide(i));
   dotsEl.appendChild(d);
 });
-function getDots() { return document.querySelectorAll('.dot'); }
+function getDots() { return document.querySelectorAll('#dots .dot'); }
 
 // ── Count-up animation (used by slide 6 / s5) ───────────────────────
 function animateCount(el, target, decimals, suffix, duration) {
