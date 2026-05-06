@@ -693,38 +693,58 @@
     }
     .slide.active .fw-arrow { animation: mkIn 0.4s ease var(--d, 0s) forwards; }
 
-    /* ═══ Framework Breadcrumb — rail on top, step name under active dot ═══ */
+    /* ═══ Framework Breadcrumb — sits next to the logo, caption + step name on the left, 4-dot rail on the right ═══ */
     .fw-topbar {
-      position: absolute; top: 26px; left: 200px; right: 240px;
-      display: flex; align-items: flex-start; justify-content: flex-end;
-      height: 64px; z-index: 9;
+      position: absolute; top: 28px; left: 218px;
+      display: flex; align-items: center;
+      height: 60px; z-index: 9;
       opacity: 0; transform: translateY(-4px);
       transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
     }
     .slide.active .fw-topbar { opacity: 1; transform: none; }
     .fw-rail-wrap {
-      display: flex; flex-direction: column; gap: 6px;
-      width: 320px; position: relative; flex-shrink: 0;
+      display: grid;
+      grid-template-columns: auto 1px auto;
+      grid-template-rows: auto auto;
+      column-gap: 18px;
+      row-gap: 1px;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid #e6ebf2;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(15, 31, 61, 0.04);
+    }
+    .fw-rail-wrap::before {
+      content: "";
+      grid-column: 2; grid-row: 1 / span 2;
+      width: 1px; height: 28px;
+      background: #e2e8f0;
+      align-self: center;
     }
     .fw-rail-caption {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+      grid-column: 1; grid-row: 1;
+      align-self: end;
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.2em;
       text-transform: uppercase; color: #94a3b8;
       white-space: nowrap;
     }
     .fw-step-name {
-      position: absolute; top: 100%; margin-top: 4px;
-      font-size: 12.5px; font-weight: 800; color: #0f1f3d;
+      grid-column: 1; grid-row: 2;
+      align-self: start;
+      position: static; margin: 0;
+      font-size: 14.5px; font-weight: 800; color: #0f1f3d;
       letter-spacing: -0.005em; white-space: nowrap;
-      max-width: 260px;
+      text-align: left; max-width: none;
     }
-    .fw-step-name.s1 { left: 0; }
-    .fw-step-name.s2 { left: 34.5%; transform: translateX(-50%); }
-    .fw-step-name.s3 { left: 65.5%; transform: translateX(-50%); }
-    .fw-step-name.s4 { right: 0; text-align: right; }
+    .fw-step-name.s1, .fw-step-name.s2, .fw-step-name.s3, .fw-step-name.s4 {
+      left: auto; right: auto; top: auto; transform: none; text-align: left;
+    }
     .fw-rail {
+      grid-column: 3; grid-row: 1 / span 2;
+      align-self: center;
       display: flex; align-items: center;
-      flex: 1; max-width: 320px;
-      margin-left: auto;
+      width: 220px; margin: 0;
     }
     .fw-rail-step {
       width: 22px; height: 22px; border-radius: 50%;
@@ -920,16 +940,18 @@
     @keyframes admCursorOut { from { opacity: 1; } to { opacity: 0; } }
     @keyframes admCursorMove {
       0%   { transform: translate(0, 0); }
-      85%  { transform: translate(-264px, 232px); }
-      92%  { transform: translate(-264px, 232px) scale(0.78); }
-      100% { transform: translate(-264px, 232px) scale(1); }
+      85%  { transform: translate(-262px, 250px); }
+      92%  { transform: translate(-262px, 250px) scale(0.78); }
+      100% { transform: translate(-262px, 250px) scale(1); }
     }
 
+    /* Centred horizontally on column 2 of the plat-mock (the "Activity & Driver Mapping" task);
+       top placed to sit on the section-2 task row (~y=315). */
     #s5 .adm-target-chip {
       position: absolute;
-      top: 300px; left: 50%;
+      top: 313px; left: 50%;
       transform: translateX(-50%);
-      width: 282px; height: 36px;
+      width: 282px; height: 32px;
       border: 2px solid transparent;
       border-radius: 8px;
       pointer-events: none;
@@ -1739,6 +1761,7 @@
     }
     .slide.active .s1-chart-wrap { opacity: 1; transform: none; }
     .s1-svg { width: 100%; height: 440px; display: block; }
+    .s1-img { width: 100%; height: auto; max-height: 520px; display: block; object-fit: contain; }
     .s1-pool  { fill: rgba(29, 78, 216, 0.10); }
     .s1-curve { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
     .s1-curve.pre { stroke: #0f1f3d; }
@@ -1804,7 +1827,7 @@
       color: #94a3b8; text-transform: uppercase; text-align: center;
       margin-bottom: 12px;
     }
-    .s3-svg { width: 100%; height: 440px; display: block; }
+    .s3-svg { width: 100%; height: 500px; display: block; }
     .s3-bar { transform-origin: bottom; transform: scaleY(0); }
     .s3-bar.b1 { fill: #cbd5e1; }
     .s3-bar.b2 { fill: #0f1f3d; }
@@ -1813,26 +1836,54 @@
     .slide.active .s3-bar.b2 { animation: s3GrowBar 0.7s cubic-bezier(0.4, 0, 0.2, 1) 1.0s forwards; }
     .slide.active .s3-bar.b3 { animation: s3GrowBar 0.85s cubic-bezier(0.34, 1.4, 0.64, 1) 3.0s forwards; }
     @keyframes s3GrowBar { to { transform: scaleY(1); } }
+    @keyframes s1FadeIn { to { opacity: 1; } }
 
     .s3-bar-val { font-size: 30px; font-weight: 800; fill: #0f1f3d; text-anchor: middle; opacity: 0; }
     .s3-bar-val.b1 { fill: #475569; }
-    .s3-bar-val.b3 { fill: #1d4ed8; font-size: 38px; }
+    .s3-bar-val.b3 { fill: #1d4ed8; font-size: 40px; }
     .slide.active .s3-bar-val.b1 { animation: s1FadeIn 0.4s ease 1.0s forwards; }
     .slide.active .s3-bar-val.b2 { animation: s1FadeIn 0.4s ease 1.4s forwards; }
     .slide.active .s3-bar-val.b3 { animation: s3PopIn 0.5s ease 3.4s forwards; }
     @keyframes s3PopIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Bar name (smaller, secondary) */
-    .s3-bar-name { font-size: 14px; font-weight: 600; fill: #94a3b8; text-anchor: middle; letter-spacing: 0.04em; opacity: 0; }
-    .s3-bar-name.b3 { fill: #1d4ed8; opacity: 0; }
-    /* Message line — the focus */
-    .s3-bar-msg { font-size: 24px; font-weight: 800; fill: #475569; text-anchor: middle; letter-spacing: -0.01em; opacity: 0; }
-    .s3-bar-msg.b3 { fill: #1d4ed8; font-size: 28px; }
+    /* Bar name — under baseline, secondary */
+    .s3-bar-name { font-size: 16px; font-weight: 700; fill: #0f1f3d; text-anchor: middle; letter-spacing: 0.01em; opacity: 0; }
+    .s3-bar-name.b3 { fill: #1d4ed8; }
 
-    .slide.active .s3-bar-name.b1, .slide.active .s3-bar-msg.b1 { animation: s1FadeIn 0.5s ease 1.0s forwards; }
-    .slide.active .s3-bar-name.b2, .slide.active .s3-bar-msg.b2 { animation: s1FadeIn 0.5s ease 1.4s forwards; }
-    .slide.active .s3-bar-name.b3 { animation: s1FadeIn 0.5s ease 3.6s forwards; }
-    .slide.active .s3-bar-msg.b3  { animation: s1FadeIn 0.6s ease 3.8s forwards; }
+    /* Approach message cards — the focal point of the slide */
+    .s3-msg-card { opacity: 0; }
+    .s3-msg-card.b1 { fill: #f8fafc; stroke: #e2e8f0; stroke-width: 1.5; }
+    .s3-msg-card.b2 { fill: #f8fafc; stroke: #e2e8f0; stroke-width: 1.5; }
+    .s3-msg-card.b3 { fill: #1d4ed8; stroke: #1e3a8a; stroke-width: 2; }
+    .s3-msg-accent { fill: #1d4ed8; opacity: 0; }
+    .s3-msg-eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
+      fill: #94a3b8; text-transform: uppercase; text-anchor: middle; opacity: 0;
+    }
+    .s3-msg-eyebrow.b3 { fill: rgba(255, 255, 255, 0.78); }
+    .s3-bar-msg {
+      font-size: 22px; font-weight: 800; text-anchor: middle;
+      letter-spacing: -0.01em; opacity: 0;
+    }
+    .s3-bar-msg.b1, .s3-bar-msg.b2 { fill: #0f1f3d; }
+    .s3-bar-msg.b3 { fill: #ffffff; font-size: 26px; }
+
+    .slide.active .s3-bar-name.b1 { animation: s1FadeIn 0.5s ease 1.0s forwards; }
+    .slide.active .s3-bar-name.b2 { animation: s1FadeIn 0.5s ease 1.4s forwards; }
+    .slide.active .s3-bar-name.b3 { animation: s1FadeIn 0.5s ease 3.55s forwards; }
+
+    .slide.active .s3-msg-card.b1,
+    .slide.active .s3-msg-eyebrow.b1,
+    .slide.active .s3-msg-accent.b1,
+    .slide.active .s3-bar-msg.b1 { animation: s1FadeIn 0.5s ease 1.15s forwards; }
+    .slide.active .s3-msg-card.b2,
+    .slide.active .s3-msg-eyebrow.b2,
+    .slide.active .s3-msg-accent.b2,
+    .slide.active .s3-bar-msg.b2 { animation: s1FadeIn 0.5s ease 1.55s forwards; }
+    .slide.active .s3-msg-card.b3 { animation: s3PopIn 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) 3.65s forwards; }
+    .slide.active .s3-msg-accent.b3 { animation: s1FadeIn 0.4s ease 3.85s forwards; }
+    .slide.active .s3-msg-eyebrow.b3 { animation: s1FadeIn 0.4s ease 3.9s forwards; }
+    .slide.active .s3-bar-msg.b3 { animation: s3PopIn 0.55s ease 3.95s forwards; }
 
     .s3-axis      { stroke: #e2e8f0; stroke-width: 1; }
     .s3-base      { stroke: #0f1f3d; stroke-width: 1.5; }
@@ -1847,9 +1898,6 @@
       text-transform: uppercase; text-anchor: middle; opacity: 0;
     }
     .slide.active .s3-deeper { animation: s1FadeIn 0.5s ease 3.85s forwards; }
-
-    .s3-axis { stroke: #e2e8f0; stroke-width: 1; }
-    .s3-axis-label { font-size: 10px; fill: #94a3b8; }
   </style>
 </head>
 <body>
@@ -1882,60 +1930,7 @@
     <div class="headline">AI is changing the <span class="accent">economics of work.</span></div>
     <div class="divider"></div>
     <div class="s1-chart-wrap">
-      <svg class="s1-svg" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <!-- Plot frame + horizontal grid (chart area: x 110 → 1010, y 60 → 540) -->
-        <line class="s1-grid" x1="110" y1="180" x2="1010" y2="180" />
-        <line class="s1-grid" x1="110" y1="300" x2="1010" y2="300" />
-        <line class="s1-grid" x1="110" y1="420" x2="1010" y2="420" />
-        <line class="s1-tick" x1="110" y1="60"  x2="110" y2="540" />
-        <line class="s1-tick" x1="110" y1="540" x2="1010" y2="540" />
-
-        <!-- Y / X axis labels -->
-        <text class="s1-axis-label" x="50" y="300" text-anchor="middle"
-              transform="rotate(-90 50 300)">COST PER OUTPUT UNIT</text>
-        <text class="s1-axis-label" x="560" y="582" text-anchor="middle">TIME →</text>
-
-        <!--
-          Curves share start at (160, 130).
-            Pre-AI ends at (1010, 280) — gentle decline.
-            AI-enabled ends at (1010, 510) — steep decline.
-          Pool path traces AI forward, vertical up to Pre-AI end,
-          Pre-AI backward, close. Reuses identical control points.
-        -->
-
-        <!-- Value pool between the two curves -->
-        <path class="s1-pool"
-              d="M 160,130
-                 C 360,210 720,420 1010,510
-                 L 1010,280
-                 C 720,210 400,150 160,130
-                 Z" />
-
-        <!-- Pre-AI curve (top, navy) -->
-        <path class="s1-curve pre"
-              d="M 160,130 C 400,150 720,210 1010,280" />
-        <!-- AI-enabled curve (bottom, blue) -->
-        <path class="s1-curve ai"
-              d="M 160,130 C 360,210 720,420 1010,510" />
-
-        <!-- Endpoint dots -->
-        <circle cx="160"  cy="130" r="11" fill="#0f1f3d" />
-        <circle cx="1010" cy="280" r="11" fill="#0f1f3d" />
-        <circle cx="1010" cy="510" r="11" fill="#1d4ed8" />
-
-        <!-- Right-side leader lines + labels -->
-        <line x1="1022" y1="280" x2="1072" y2="280" stroke="#0f1f3d" stroke-width="2" />
-        <text class="s1-line-label"     x="1082" y="276">Pre-AI cost curve</text>
-        <text class="s1-line-sub"       x="1082" y="302">incremental efficiency gains</text>
-
-        <line x1="1022" y1="510" x2="1072" y2="510" stroke="#1d4ed8" stroke-width="2" />
-        <text class="s1-line-label ai"  x="1082" y="506">AI-enabled cost curve</text>
-        <text class="s1-line-sub"       x="1082" y="532">step-change in unit economics</text>
-
-        <!-- Pool labels — placed inside the wedge -->
-        <text class="s1-pool-label" x="700" y="360">The new value pool</text>
-        <text class="s1-pool-sub"   x="700" y="388">work re-priced, not just trimmed</text>
-      </svg>
+      <img class="s1-img" src="assets/image 43 (1).png" alt="Cost per output unit over time: Pre-AI cost curve shows incremental efficiency gains while the AI-enabled cost curve delivers a step-change in unit economics, opening a new value pool between them." />
     </div>
   </div>
 
@@ -1953,8 +1948,8 @@
     <div class="divider"></div>
     <div class="s3-chart-wrap">
       <div class="s3-chart-title">Why it matters now · Cost impact potential</div>
-      <svg class="s3-svg" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <!-- Y-axis grid lines + labels (chart area: y=60 top, y=290 baseline, range = 60% over 230px) -->
+      <svg class="s3-svg" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <!-- Y-axis grid (chart area: y=60 top, y=290 baseline) -->
         <line class="s3-axis" x1="120" y1="60"  x2="1080" y2="60" />
         <line class="s3-axis" x1="120" y1="137" x2="1080" y2="137" />
         <line class="s3-axis" x1="120" y1="213" x2="1080" y2="213" />
@@ -1969,34 +1964,44 @@
               transform="rotate(-90 58 175)" text-anchor="middle"
               letter-spacing="0.16em" font-weight="700">% of cost base unlocked</text>
 
-        <!--
-          Bar geometry (baseline at y=290):
-            5-15%  → height  58 → top at 232
-            20-30% → height 115 → top at 175
-            40-60% → height 230 → top at  60
-        -->
+        <!-- Bars (baseline y=290; 60% spans 230px) -->
+        <rect class="s3-bar b1" x="190" y="232" width="160" height="58"  rx="3" />
+        <rect class="s3-bar b2" x="520" y="175" width="160" height="115" rx="3" />
+        <rect class="s3-bar b3" x="850" y="60"  width="160" height="230" rx="3" />
 
-        <!-- Bar 1: Traditional 5-15% -->
-        <rect class="s3-bar b1" x="220" y="232" width="180" height="58" rx="3" />
-        <text class="s3-bar-val  b1" x="310" y="216">5–15%</text>
-        <text class="s3-bar-name b1" x="310" y="335">Traditional cost program</text>
-        <text class="s3-bar-msg  b1" x="310" y="375">trims the margin</text>
+        <!-- Value labels above bars -->
+        <text class="s3-bar-val b1" x="270" y="216">5–15%</text>
+        <text class="s3-bar-val b2" x="600" y="160">20–30%</text>
+        <text class="s3-bar-val b3" x="930" y="44">40–60%</text>
 
-        <!-- Bar 2: Classic ZBO 20-30% -->
-        <rect class="s3-bar b2" x="510" y="175" width="180" height="115" rx="3" />
-        <text class="s3-bar-val  b2" x="600" y="160">20–30%</text>
-        <text class="s3-bar-name b2" x="600" y="335">Classic Zero-Based Optimization</text>
-        <text class="s3-bar-msg  b2" x="600" y="375">optimizes current operating model</text>
+        <!-- Bar names just below baseline -->
+        <text class="s3-bar-name b1" x="270" y="318">Traditional cost program</text>
+        <text class="s3-bar-name b2" x="600" y="318">Classic Zero-Based Optimization</text>
+        <text class="s3-bar-name b3" x="930" y="318">AI-Enabled ZBO</text>
 
-        <!-- Bar 3: AI-Enabled ZBO 40-60% -->
-        <rect class="s3-bar b3" x="800" y="60" width="180" height="230" rx="3" />
-        <text class="s3-bar-val  b3" x="890" y="44">40–60%</text>
-        <text class="s3-bar-name b3" x="890" y="335">AI-Enabled ZBO (A&amp;M approach)</text>
-        <text class="s3-bar-msg  b3" x="890" y="378">redesigns how work gets done</text>
+        <!-- Approach message cards — the focal point of the slide -->
+        <rect class="s3-msg-card b1" x="115" y="345" width="310" height="95"  rx="14" ry="14" />
+        <rect class="s3-msg-card b2" x="445" y="345" width="310" height="95"  rx="14" ry="14" />
+        <rect class="s3-msg-card b3" x="765" y="335" width="330" height="115" rx="16" ry="16" />
 
-        <!-- Dashed connector arrow from bar1 top through bar2 top up to bar3 top -->
-        <path class="s3-arrow" d="M 310,224 Q 460,200 600,168 T 890,72" />
-        <polygon class="s3-arrow-tip" points="884,67 902,68 893,80" />
+        <!-- Tiny accent bar on each card (left edge) -->
+        <rect class="s3-msg-accent b1" x="115" y="345" width="4"  height="95"  rx="2" />
+        <rect class="s3-msg-accent b2" x="445" y="345" width="4"  height="95"  rx="2" />
+        <rect class="s3-msg-accent b3" x="765" y="335" width="4"  height="115" rx="2" fill="#fbbf24" />
+
+        <!-- Eyebrow + approach message -->
+        <text class="s3-msg-eyebrow b1" x="270" y="375">approach</text>
+        <text class="s3-bar-msg b1"     x="270" y="408">trims the margins</text>
+
+        <text class="s3-msg-eyebrow b2" x="600" y="375">approach</text>
+        <text class="s3-bar-msg b2"     x="600" y="408">optimize current operating model</text>
+
+        <text class="s3-msg-eyebrow b3" x="930" y="370">approach</text>
+        <text class="s3-bar-msg b3"     x="930" y="412">redesigns the work itself</text>
+
+        <!-- Dashed connector showing depth progression -->
+        <path class="s3-arrow" d="M 270,224 Q 460,200 600,168 T 930,72" />
+        <polygon class="s3-arrow-tip" points="924,67 942,68 933,80" />
         <text class="s3-deeper" x="600" y="125">Deeper reset, faster</text>
       </svg>
     </div>
