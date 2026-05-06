@@ -940,16 +940,18 @@
     @keyframes admCursorOut { from { opacity: 1; } to { opacity: 0; } }
     @keyframes admCursorMove {
       0%   { transform: translate(0, 0); }
-      85%  { transform: translate(-264px, 232px); }
-      92%  { transform: translate(-264px, 232px) scale(0.78); }
-      100% { transform: translate(-264px, 232px) scale(1); }
+      85%  { transform: translate(-262px, 250px); }
+      92%  { transform: translate(-262px, 250px) scale(0.78); }
+      100% { transform: translate(-262px, 250px) scale(1); }
     }
 
+    /* Centred horizontally on column 2 of the plat-mock (the "Activity & Driver Mapping" task);
+       top placed to sit on the section-2 task row (~y=315). */
     #s5 .adm-target-chip {
       position: absolute;
-      top: 300px; left: 50%;
+      top: 313px; left: 50%;
       transform: translateX(-50%);
-      width: 282px; height: 36px;
+      width: 282px; height: 32px;
       border: 2px solid transparent;
       border-radius: 8px;
       pointer-events: none;
