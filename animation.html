@@ -1739,6 +1739,7 @@
     }
     .slide.active .s1-chart-wrap { opacity: 1; transform: none; }
     .s1-svg { width: 100%; height: 440px; display: block; }
+    .s1-img { width: 100%; height: auto; max-height: 520px; display: block; object-fit: contain; }
     .s1-pool  { fill: rgba(29, 78, 216, 0.10); }
     .s1-curve { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
     .s1-curve.pre { stroke: #0f1f3d; }
@@ -1882,60 +1883,7 @@
     <div class="headline">AI is changing the <span class="accent">economics of work.</span></div>
     <div class="divider"></div>
     <div class="s1-chart-wrap">
-      <svg class="s1-svg" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <!-- Plot frame + horizontal grid (chart area: x 110 → 1010, y 60 → 540) -->
-        <line class="s1-grid" x1="110" y1="180" x2="1010" y2="180" />
-        <line class="s1-grid" x1="110" y1="300" x2="1010" y2="300" />
-        <line class="s1-grid" x1="110" y1="420" x2="1010" y2="420" />
-        <line class="s1-tick" x1="110" y1="60"  x2="110" y2="540" />
-        <line class="s1-tick" x1="110" y1="540" x2="1010" y2="540" />
-
-        <!-- Y / X axis labels -->
-        <text class="s1-axis-label" x="50" y="300" text-anchor="middle"
-              transform="rotate(-90 50 300)">COST PER OUTPUT UNIT</text>
-        <text class="s1-axis-label" x="560" y="582" text-anchor="middle">TIME →</text>
-
-        <!--
-          Curves share start at (160, 130).
-            Pre-AI ends at (1010, 280) — gentle decline.
-            AI-enabled ends at (1010, 510) — steep decline.
-          Pool path traces AI forward, vertical up to Pre-AI end,
-          Pre-AI backward, close. Reuses identical control points.
-        -->
-
-        <!-- Value pool between the two curves -->
-        <path class="s1-pool"
-              d="M 160,130
-                 C 360,210 720,420 1010,510
-                 L 1010,280
-                 C 720,210 400,150 160,130
-                 Z" />
-
-        <!-- Pre-AI curve (top, navy) -->
-        <path class="s1-curve pre"
-              d="M 160,130 C 400,150 720,210 1010,280" />
-        <!-- AI-enabled curve (bottom, blue) -->
-        <path class="s1-curve ai"
-              d="M 160,130 C 360,210 720,420 1010,510" />
-
-        <!-- Endpoint dots -->
-        <circle cx="160"  cy="130" r="11" fill="#0f1f3d" />
-        <circle cx="1010" cy="280" r="11" fill="#0f1f3d" />
-        <circle cx="1010" cy="510" r="11" fill="#1d4ed8" />
-
-        <!-- Right-side leader lines + labels -->
-        <line x1="1022" y1="280" x2="1072" y2="280" stroke="#0f1f3d" stroke-width="2" />
-        <text class="s1-line-label"     x="1082" y="276">Pre-AI cost curve</text>
-        <text class="s1-line-sub"       x="1082" y="302">incremental efficiency gains</text>
-
-        <line x1="1022" y1="510" x2="1072" y2="510" stroke="#1d4ed8" stroke-width="2" />
-        <text class="s1-line-label ai"  x="1082" y="506">AI-enabled cost curve</text>
-        <text class="s1-line-sub"       x="1082" y="532">step-change in unit economics</text>
-
-        <!-- Pool labels — placed inside the wedge -->
-        <text class="s1-pool-label" x="700" y="360">The new value pool</text>
-        <text class="s1-pool-sub"   x="700" y="388">work re-priced, not just trimmed</text>
-      </svg>
+      <img class="s1-img" src="assets/image 43 (1).png" alt="Cost per output unit over time: Pre-AI cost curve shows incremental efficiency gains while the AI-enabled cost curve delivers a step-change in unit economics, opening a new value pool between them." />
     </div>
   </div>
 
