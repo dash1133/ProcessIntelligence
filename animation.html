@@ -48,10 +48,10 @@
     .accent { color: #1d4ed8; }
 
     /* Slide 4 — title smaller, sub-text larger so the message reads first */
-    #s4 .headline { font-size: 56px; letter-spacing: -0.02em; line-height: 1.05; }
-    #s4 .sub { font-size: 28px; max-width: 820px; line-height: 1.42; margin-top: 32px; }
-    #s4 .sub.sub-2 { font-size: 26px; margin-top: 14px; }
-    #s4 .sub b { color: #0f1f3d; font-weight: 800; }
+    #s4 .headline, #s10 .headline { font-size: 56px; letter-spacing: -0.02em; line-height: 1.05; }
+    #s4 .sub, #s10 .sub { font-size: 28px; max-width: 820px; line-height: 1.42; margin-top: 32px; }
+    #s4 .sub.sub-2, #s10 .sub.sub-2 { font-size: 26px; margin-top: 14px; }
+    #s4 .sub b, #s10 .sub b { color: #0f1f3d; font-weight: 800; }
 
     .sub {
       margin-top: 28px; font-size: 22px; font-weight: 400;
@@ -1918,7 +1918,7 @@
 
   <div id="debug">
     <div>Time: <span id="dbg-time">0.00s</span></div>
-    <div>Slide: <span id="dbg-slide">1</span> / 10</div>
+    <div>Slide: <span id="dbg-slide">1</span> / 11</div>
     <div>Next cue: <span id="dbg-next">—</span></div>
   </div>
 
@@ -3609,9 +3609,18 @@
     </div>
   </div>
 
+  <!-- Slide 11 — Closing -->
+  <div class="slide" id="s10">
+    <div class="label">Let's Get Started</div>
+    <div class="headline"><span class="accent">Redesign the work itself.</span></div>
+    <div class="sub">Pick a <b>priority workflow</b> and we'll co-design the AI-enabled target state in <b>weeks, not quarters.</b></div>
+    <div class="sub sub-2">A&amp;M ComOps · <b>AI-ZBO</b></div>
+    <div class="divider"></div>
+  </div>
+
   <!-- ══ Chrome ══ -->
   <div id="dots"></div>
-  <div id="counter">1 / 10</div>
+  <div id="counter">1 / 11</div>
   <div id="timeline"></div>
   <div id="brand-bar"></div>
 
@@ -3634,6 +3643,7 @@ const CUES = [
   55.75,  // Slide 8  (s6)  — Clean-sheet the core: home → AI-VSM → op model → org chart
   75.15,  // Slide 9  (s7)  — Improvement Initiatives: home → sizing → KPIs → forecast
   90.25,  // Slide 10 (s9)  — Implementation Roadmap: home → AI PMO Tracker
+  9999,   // Slide 11 (s10) — Closing: redesign the work itself (manual advance only)
 ];
 // ═══════════════════════════════════════════════════════════════════
 
