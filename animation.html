@@ -53,6 +53,31 @@
     #s4 .sub.sub-2, #s10 .sub.sub-2 { font-size: 26px; margin-top: 14px; }
     #s4 .sub b, #s10 .sub b { color: #0f1f3d; font-weight: 800; }
 
+    /* Slide 4 — two-card message layout */
+    .s4-cards {
+      display: flex; gap: 28px; margin-top: 56px;
+      width: 100%; max-width: 1080px; padding: 0 40px;
+      box-sizing: border-box; justify-content: center;
+    }
+    .s4-card {
+      flex: 1 1 0; position: relative;
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 18px; padding: 30px 32px 30px 40px;
+      font-size: 22px; line-height: 1.5; color: #334155;
+      text-align: left;
+      box-shadow: 0 1px 2px rgba(15, 31, 61, 0.04);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .s4-card::before {
+      content: ''; position: absolute; left: 0; top: 28px; bottom: 28px;
+      width: 4px; border-radius: 2px; background: #1d4ed8;
+    }
+    .s4-card.c2::before { background: #fbbf24; }
+    .s4-card b { color: #0f1f3d; font-weight: 800; }
+    .slide.active .s4-card.c1 { opacity: 1; transform: none; transition-delay: 0.55s; }
+    .slide.active .s4-card.c2 { opacity: 1; transform: none; transition-delay: 0.8s; }
+
     .sub {
       margin-top: 28px; font-size: 22px; font-weight: 400;
       color: #475569; text-align: center; max-width: 760px; line-height: 1.5;
@@ -2005,9 +2030,11 @@
   <div class="slide" id="s4">
     <div class="label">Our Approach</div>
     <div class="headline"><span class="accent">AI-Enabled ZBO</span></div>
-    <div class="sub">A <b>clean-sheet redesign</b> of priority workflows around <b>targeted AI</b> deployment.</div>
-    <div class="sub sub-2">Compresses both labor and non-labor cost structures to deliver <b>faster, durable EBITDA impact.</b></div>
     <div class="divider"></div>
+    <div class="s4-cards">
+      <div class="s4-card c1">A <b>clean-sheet redesign</b> of priority workflows around <b>targeted AI</b> deployment.</div>
+      <div class="s4-card c2">Compresses both labor and non-labor cost structures to deliver <b>faster, durable EBITDA impact.</b></div>
+    </div>
   </div>
 
   <!-- ─── Slide 4b: Toolkit Showcase ─── -->
