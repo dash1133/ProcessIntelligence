@@ -53,6 +53,31 @@
     #s4 .sub.sub-2, #s10 .sub.sub-2 { font-size: 26px; margin-top: 14px; }
     #s4 .sub b, #s10 .sub b { color: #0f1f3d; font-weight: 800; }
 
+    /* Slide 4 — two-card message layout */
+    .s4-cards {
+      display: flex; gap: 28px; margin-top: 56px;
+      width: 100%; max-width: 1080px; padding: 0 40px;
+      box-sizing: border-box; justify-content: center;
+    }
+    .s4-card {
+      flex: 1 1 0; position: relative;
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 18px; padding: 30px 32px 30px 40px;
+      font-size: 22px; line-height: 1.5; color: #334155;
+      text-align: left;
+      box-shadow: 0 1px 2px rgba(15, 31, 61, 0.04);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .s4-card::before {
+      content: ''; position: absolute; left: 0; top: 28px; bottom: 28px;
+      width: 4px; border-radius: 2px; background: #1d4ed8;
+    }
+    .s4-card.c2::before { background: #fbbf24; }
+    .s4-card b { color: #0f1f3d; font-weight: 800; }
+    .slide.active .s4-card.c1 { opacity: 1; transform: none; transition-delay: 0.55s; }
+    .slide.active .s4-card.c2 { opacity: 1; transform: none; transition-delay: 0.8s; }
+
     .sub {
       margin-top: 28px; font-size: 22px; font-weight: 400;
       color: #475569; text-align: center; max-width: 760px; line-height: 1.5;
@@ -1969,40 +1994,34 @@
         <rect class="s3-bar b2" x="520" y="175" width="160" height="115" rx="3" />
         <rect class="s3-bar b3" x="850" y="60"  width="160" height="230" rx="3" />
 
-        <!-- Value labels above bars -->
-        <text class="s3-bar-val b1" x="270" y="216">5–15</text>
-        <text class="s3-bar-val b2" x="600" y="160">20–30</text>
-        <text class="s3-bar-val b3" x="930" y="30">40–60</text>
-
         <!-- Bar names just below baseline -->
         <text class="s3-bar-name b1" x="270" y="318">Traditional cost program</text>
         <text class="s3-bar-name b2" x="600" y="318">Classic Zero-Based Optimization</text>
         <text class="s3-bar-name b3" x="930" y="318">AI-Enabled ZBO</text>
 
         <!-- Approach message cards — the focal point of the slide -->
-        <rect class="s3-msg-card b1" x="115" y="345" width="310" height="95"  rx="14" ry="14" />
-        <rect class="s3-msg-card b2" x="445" y="345" width="310" height="95"  rx="14" ry="14" />
-        <rect class="s3-msg-card b3" x="765" y="335" width="330" height="115" rx="16" ry="16" />
+        <rect class="s3-msg-card b1" x="115" y="355" width="310" height="95"  rx="14" ry="14" />
+        <rect class="s3-msg-card b2" x="445" y="355" width="310" height="95"  rx="14" ry="14" />
+        <rect class="s3-msg-card b3" x="765" y="355" width="330" height="115" rx="16" ry="16" />
 
         <!-- Tiny accent bar on each card (left edge) -->
-        <rect class="s3-msg-accent b1" x="115" y="345" width="4"  height="95"  rx="2" />
-        <rect class="s3-msg-accent b2" x="445" y="345" width="4"  height="95"  rx="2" />
-        <rect class="s3-msg-accent b3" x="765" y="335" width="4"  height="115" rx="2" fill="#fbbf24" />
+        <rect class="s3-msg-accent b1" x="115" y="355" width="4"  height="95"  rx="2" />
+        <rect class="s3-msg-accent b2" x="445" y="355" width="4"  height="95"  rx="2" />
+        <rect class="s3-msg-accent b3" x="765" y="355" width="4"  height="115" rx="2" fill="#fbbf24" />
 
         <!-- Eyebrow + approach message -->
-        <text class="s3-msg-eyebrow b1" x="270" y="375">approach</text>
-        <text class="s3-bar-msg b1"     x="270" y="408">trims the margins</text>
+        <text class="s3-msg-eyebrow b1" x="270" y="385">approach</text>
+        <text class="s3-bar-msg b1"     x="270" y="418">trims the margins</text>
 
-        <text class="s3-msg-eyebrow b2" x="600" y="375">approach</text>
-        <text class="s3-bar-msg b2"     x="600" y="408">optimize current operating model</text>
+        <text class="s3-msg-eyebrow b2" x="600" y="385">approach</text>
+        <text class="s3-bar-msg b2"     x="600" y="418">optimize current operating model</text>
 
-        <text class="s3-msg-eyebrow b3" x="930" y="370">approach</text>
-        <text class="s3-bar-msg b3"     x="930" y="412">redesign the work itself</text>
+        <text class="s3-msg-eyebrow b3" x="930" y="390">approach</text>
+        <text class="s3-bar-msg b3"     x="930" y="432">redesign the work itself</text>
 
         <!-- Dashed connector showing depth progression -->
         <path class="s3-arrow" d="M 270,224 Q 460,200 600,168 T 930,72" />
         <polygon class="s3-arrow-tip" points="924,67 942,68 933,80" />
-        <text class="s3-deeper" x="600" y="125">Deeper reset, faster</text>
       </svg>
     </div>
   </div>
@@ -2011,9 +2030,11 @@
   <div class="slide" id="s4">
     <div class="label">Our Approach</div>
     <div class="headline"><span class="accent">AI-Enabled ZBO</span></div>
-    <div class="sub">A <b>clean-sheet redesign</b> of priority workflows around <b>targeted AI</b> deployment.</div>
-    <div class="sub sub-2">Compresses both labor and non-labor cost structures to deliver <b>faster, durable EBITDA impact.</b></div>
     <div class="divider"></div>
+    <div class="s4-cards">
+      <div class="s4-card c1">A <b>clean-sheet redesign</b> of priority workflows around <b>targeted AI</b> deployment.</div>
+      <div class="s4-card c2">Compresses both labor and non-labor cost structures to deliver <b>faster, durable EBITDA impact.</b></div>
+    </div>
   </div>
 
   <!-- ─── Slide 4b: Toolkit Showcase ─── -->
@@ -3612,7 +3633,7 @@
   <!-- Slide 11 — Closing -->
   <div class="slide" id="s10">
     <div class="label">Let's Get Started</div>
-    <div class="headline">Let's get started with<br><span class="accent">AI-ZBO and A&amp;M ComOps.</span></div>
+    <div class="headline">Let's get started with<br><span class="accent">AI-ZBO.</span></div>
     <div class="divider"></div>
   </div>
 
